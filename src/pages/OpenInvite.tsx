@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
+import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { getTemplate, sampleFor } from "../data/templates";
 import "./open-invite.css";
@@ -15,6 +16,7 @@ export function OpenInvite() {
         Back to home
       </Link>
       {template.style === "gazal" ? <GazalInvite fields={fields} /> : null}
+      {template.style === "aurelia" ? <AureliaInvite fields={fields} /> : null}
     </div>
   );
 }

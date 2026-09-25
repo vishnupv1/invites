@@ -331,6 +331,22 @@ export function Home() {
               <em className="tag">Free</em>
             </div>
           </Link>
+          <Link className="template" to="/open/aurelia">
+            <div className="art art-gold" style={{ background: "#0b1020" }}>
+              <div>
+                <span>Wedding</span>
+                <strong>Aurelia</strong>
+                <em>A title screen, then the celebration</em>
+              </div>
+            </div>
+            <div className="template-meta">
+              <div>
+                <strong>Aurelia</strong>
+                <span>Marriage</span>
+              </div>
+              <em className="tag">Free</em>
+            </div>
+          </Link>
         </div>
       </section>
 

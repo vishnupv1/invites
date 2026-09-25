@@ -1,4 +1,5 @@
 import type { InviteFields, Template } from "../types";
+import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite } from "./GazalInvite";
 import { getEvent } from "../data/events";
 import { formatLongDate, formatTime } from "../lib/dates";
@@ -169,6 +170,8 @@ export function InviteView({ template, fields }: { template: Template; fields: I
   switch (template.style) {
     case "gazal":
       return <GazalInvite fields={fields} quiet />;
+    case "aurelia":
+      return <AureliaInvite fields={fields} quiet />;
     case "garden":
       return <Garden fields={fields} />;
     case "midnight":

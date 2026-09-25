@@ -4,6 +4,7 @@ import type { InviteFields, Template } from "../types";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { assetUrl } from "../api";
 import "./invite-site.css";
+import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite, type GazalWish } from "./GazalInvite";
 
 type Reply = { name: string; note: string; attending: boolean };
@@ -307,6 +308,9 @@ export function InviteSite({
 }) {
   if (template.style === "gazal") {
     return <GazalInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "aurelia") {
+    return <AureliaInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   let body: ReactNode;
   switch (template.style) {

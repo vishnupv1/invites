@@ -50,6 +50,35 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "aurelia",
+    name: "Aurelia",
+    style: "aurelia",
+    price: 0,
+    free: true,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A navy and gold wedding page. A title screen, the couple, the ceremony and reception, then wishes.",
+    asks: { photos: 4, audio: true, location: true },
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "The Hashim & Rahman families",
+        names: "Imran Hashim & Safa Rahman",
+        title: "We joyfully invite you to the wedding of our beloved children",
+        detail: "",
+        date: "2027-01-15",
+        time: "11:00",
+        venue: "Al Noor Masjid & Hall",
+        address: "Main Road, Malappuram",
+        message: "Two souls, one heart. Your presence and wishes mean the world to us.",
+        dress: "",
+        rsvpBy: "2026-12-31",
+        receptionTime: "19:00",
+        receptionVenue: "Grand Palace Auditorium",
+        receptionAddress: "NH Bypass, Malappuram",
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {
