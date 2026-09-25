@@ -454,10 +454,10 @@ function InviteDetail({
   const event = invite.event ? getEvent(invite.event) : undefined;
   const functions = [
     invite.time || invite.venue
-      ? { name: event && invite.event ? event.label : "Celebration", when: [formatShortDate(invite.date), formatTime(invite.time)].filter(Boolean).join(" · "), place: invite.venue }
+      ? { name: event && invite.event ? event.label : "Celebration", when: [formatShortDate(invite.date), formatTime(invite.time ?? "")].filter(Boolean).join(" · "), place: invite.venue }
       : null,
     invite.receptionTime || invite.receptionVenue
-      ? { name: "Reception", when: formatTime(invite.receptionTime), place: invite.receptionVenue }
+      ? { name: "Reception", when: formatTime(invite.receptionTime ?? ""), place: invite.receptionVenue }
       : null,
   ].filter((item): item is { name: string; when: string; place: string | undefined } => Boolean(item));
 

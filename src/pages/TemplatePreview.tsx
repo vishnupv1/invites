@@ -164,7 +164,9 @@ export function TemplatePreview() {
   const lineMl = "നിങ്ങളെ സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു";
 
   function toggleFav() {
-    setFavs((current) => (current.includes(template.id) ? current.filter((item) => item !== template.id) : [...current, template.id]));
+    if (!template) return;
+    const templateId = template.id;
+    setFavs((current) => (current.includes(templateId) ? current.filter((item) => item !== templateId) : [...current, templateId]));
     setToast(liked ? "Removed from favourites." : "Saved to your favourites.");
   }
 
