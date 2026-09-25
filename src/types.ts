@@ -71,6 +71,8 @@ export type SavedInvite = {
   createdAt: string;
   replies?: number;
   yes?: number;
+  event?: string;
+  cover?: string;
 };
 
 export type Rsvp = {

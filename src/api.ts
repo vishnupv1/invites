@@ -19,13 +19,41 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   return payload as T;
 }
 
+function storeToken(token: string) {
+  localStorage.setItem(TOKEN, token);
+}
+
+export async function signUp(name: string, email: string, password: string) {
+  const session = await request<{ token: string }>("/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ name, email, password }),
+  });
+  storeToken(session.token);
+}
+
+export async function logIn(email: string, password: string) {
+  const session = await request<{ token: string }>("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+  storeToken(session.token);
+}
+
 export async function ensureSession(email: string, name: string) {
   const session = await request<{ token: string }>("/api/session", {
     method: "POST",
     body: JSON.stringify({ email, name: name.trim() || "Host" }),
   });
-  localStorage.setItem(TOKEN, session.token);
+  storeToken(session.token);
   return session.token;
+}
+
+export function signOut() {
+  localStorage.removeItem(TOKEN);
+}
+
+export function getHost() {
+  return request<{ id: string; email: string; name: string }>("/api/session");
 }
 
 export function listPurchases() {
