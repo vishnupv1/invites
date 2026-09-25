@@ -16,7 +16,7 @@ function Shell({ children }: { children: ReactNode }) {
     <>
       <header className="nav">
         <Link className="wordmark" to="/">
-          inviesready.com
+          invitesready.com
         </Link>
         <nav>
           <Link to="/#occasions">Celebrations</Link>
