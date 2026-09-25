@@ -73,6 +73,10 @@ export type SavedInvite = {
   yes?: number;
   event?: string;
   cover?: string;
+  venue?: string;
+  time?: string;
+  receptionVenue?: string;
+  receptionTime?: string;
 };
 
 export type Rsvp = {

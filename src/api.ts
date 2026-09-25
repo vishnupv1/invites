@@ -1,4 +1,4 @@
-import type { InviteFields, SavedInvite } from "./types";
+import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
 const TOKEN = "vellum.token.v1";
 
@@ -52,8 +52,41 @@ export function signOut() {
   localStorage.removeItem(TOKEN);
 }
 
+export type AdminSummary = {
+  admin: { name: string; email: string };
+  users: { id: string; name: string; email: string; events: number; joined: string }[];
+  events: { id: string; name: string; templateId: string; host: string; date: string; replies: number; yes: number; code: string }[];
+  purchases: { id: string; templateId: string; host: string; price: number; at: string }[];
+};
+
+export function adminSummary() {
+  return request<AdminSummary>("/api/admin/summary");
+}
+
 export function getHost() {
   return request<{ id: string; email: string; name: string }>("/api/session");
+}
+
+export type CatalogEvent = {
+  id: EventId;
+  label: string;
+  cardLabel: string;
+  detailLabel: string;
+  namesLabel: string;
+  hostsLabel: string;
+  titleLabel: string;
+};
+
+export function listEvents() {
+  return request<CatalogEvent[]>("/api/events");
+}
+
+export function listTemplates() {
+  return request<Template[]>("/api/templates");
+}
+
+export function getTemplateRecord(id: string) {
+  return request<Template>(`/api/templates/${encodeURIComponent(id)}`);
 }
 
 export function listPurchases() {
@@ -69,6 +102,12 @@ export function purchaseTemplate(templateId: string) {
 
 export function listInvites() {
   return request<SavedInvite[]>("/api/invites");
+}
+
+export function listGreetings(slug: string) {
+  return request<{ id: string; name: string; note: string; attending: boolean; at: string }[]>(
+    `/api/invites/${slug}/greetings`,
+  );
 }
 
 export function createInvite(templateId: string, fields: InviteFields) {

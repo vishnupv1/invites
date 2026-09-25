@@ -178,5 +178,9 @@ audio { margin: 12px auto; display: block; }
   .site-nav { left: 8px; }
   .pair, .tiles { grid-template-columns: 1fr; }
   .wait-bar { flex-wrap: wrap; position: static; transform: none; width: auto; margin-top: 28px; }
-  .site-hero { padding-bottom: 48px; }
+  .site-hero { padding: 24px 16px 48px; }
+  .layout-frame { padding: 16px; }
+  .layout-frame > div { padding: 28px 16px; }
+  .layout-editorial, .layout-program, .story-copy { padding-left: 16px; padding-right: 16px; }
+  .layout-letter { margin: 16px; padding: 28px 18px; }
 }
