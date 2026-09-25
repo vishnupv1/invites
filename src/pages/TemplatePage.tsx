@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Checkout } from "../components/Checkout";
 import { InviteView } from "../components/InviteView";
-import { PreviewModal } from "../components/PreviewModal";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor } from "../data/templates";
 import { useLibrary } from "../state";
@@ -15,7 +14,6 @@ export function TemplatePage() {
   const { owns, purchase } = useLibrary();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [preview, setPreview] = useState(false);
   const requested = params.get("event") as EventId | null;
   const [picked, setPicked] = useState<EventId | null>(null);
   const event =
@@ -51,9 +49,9 @@ export function TemplatePage() {
         </div>
         <p className="price">{owned && !template.free ? "Owned" : formatPrice(template)}</p>
         <div className="hero-actions">
-          <button type="button" className="ghost" onClick={() => setPreview(true)}>
+          <Link className="ghost" to={`/preview/${template.id}?event=${event}`}>
             Preview
-          </button>
+          </Link>
         {owned ? (
           <Link className="solid" to={createTo}>
             {template.free ? "Use this version" : "Create this invite"}
@@ -73,14 +71,6 @@ export function TemplatePage() {
             await purchase(template.id);
             navigate(createTo);
           }}
-        />
-      ) : null}
-      {preview ? (
-        <PreviewModal
-          template={template}
-          event={event}
-          onEvent={setPicked}
-          onClose={() => setPreview(false)}
         />
       ) : null}
     </section>

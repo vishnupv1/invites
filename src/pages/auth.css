@@ -544,6 +544,8 @@
   gap: 8px;
 }
 
+.m-top { display: none; }
+
 @media (max-width: 980px) {
   .auth {
     grid-template-columns: 1fr;
@@ -562,4 +564,55 @@
   .auth-card-form {
     padding: 28px 20px;
   }
+}
+
+@media (max-width: 720px) {
+  .auth {
+    display: flex;
+    flex-direction: column;
+    background: #faf7f2;
+  }
+  .auth-brand { display: none; }
+  .m-top {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+    overflow: hidden;
+    background: #4a263e;
+    color: #fff;
+    padding: 22px 20px 64px;
+  }
+  .m-rings { position: absolute; right: -90px; top: -90px; width: 240px; height: 240px; }
+  .m-bar { display: flex; justify-content: space-between; align-items: center; position: relative; }
+  .m-bar a {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #6b3a5b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .m-bar span { font-family: Fraunces, Georgia, serif; font-size: 21px; font-weight: 700; }
+  .m-bar em { color: #c89b5b; font-style: italic; }
+  .m-bar i { width: 44px; }
+  .m-copy { position: relative; display: flex; flex-direction: column; gap: 6px; }
+  .m-copy h1 { margin: 0; font-family: Fraunces, Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.12; color: #fff; }
+  .m-copy p { margin: 0; font-size: 15px; color: #eadce4; }
+  .auth main {
+    display: block;
+    margin: -40px 16px 0;
+    padding: 0 0 24px;
+    position: relative;
+  }
+  .auth-card-form {
+    width: auto;
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: 0 20px 40px rgba(74, 38, 62, 0.08);
+  }
+  .auth-head { display: none; }
+  .secure { justify-content: center; text-align: center; margin: 20px 20px 0; }
+  .auth-done h2 { font-family: Fraunces, Georgia, serif; font-size: 28px; }
 }

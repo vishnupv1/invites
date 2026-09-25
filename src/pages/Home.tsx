@@ -91,6 +91,7 @@ const faqs = [
 
 export function Home() {
   const [openFaq, setOpenFaq] = useState(0);
+  const [menu, setMenu] = useState(false);
 
   return (
     <div className="lp">
@@ -110,11 +111,38 @@ export function Home() {
           <Link className="text-link" to="/login">
             Log in
           </Link>
-          <Link className="btn btn-fill" to="/create/garden?event=marriage">
+          <Link className="btn btn-fill lp-create" to="/create/garden?event=marriage">
             Create invite
           </Link>
+          <button
+            type="button"
+            className="lp-burger"
+            aria-label={menu ? "Close menu" : "Open menu"}
+            aria-expanded={menu}
+            onClick={() => setMenu((open) => !open)}
+          >
+            {menu ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            )}
+          </button>
         </div>
       </header>
+      {menu ? (
+        <nav className="lp-drawer" aria-label="Menu" onClick={() => setMenu(false)}>
+          <a href="#templates">Templates</a>
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+          <Link to="/create/garden?event=marriage">Create your invitation</Link>
+        </nav>
+      ) : null}
 
       <section className="hero">
         <div className="hero-copy">

@@ -51,8 +51,12 @@ export function Auth() {
 
     setBusy(true);
     try {
-      if (login) await logIn(email.trim(), password);
-      else await signUp(name.trim(), email.trim(), password);
+      if (login) {
+        await logIn(email.trim(), password);
+        window.location.assign("/studio");
+        return;
+      }
+      await signUp(name.trim(), email.trim(), password);
       setDone(true);
     } catch (error) {
       setErrors({ form: error instanceof Error ? error.message : "Could not sign you in." });
@@ -62,11 +66,32 @@ export function Auth() {
   }
 
   function continueOn() {
-    window.location.assign(login ? "/studio" : "/create/garden?event=marriage");
+    window.location.assign("/studio");
   }
 
   return (
     <div className="auth">
+      <header className="m-top">
+        <svg className="m-rings" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+          <circle cx="120" cy="120" r="110" stroke="#C89B5B" strokeOpacity="0.25" strokeWidth="1.5" />
+          <circle cx="120" cy="120" r="70" stroke="#C89B5B" strokeOpacity="0.25" strokeWidth="1.5" />
+        </svg>
+        <div className="m-bar">
+          <Link to="/" aria-label="Back to home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 12H5M11 18l-6-6 6-6" />
+            </svg>
+          </Link>
+          <span>
+            Invites<em>Ready</em>
+          </span>
+          <i />
+        </div>
+        <div className="m-copy">
+          <h1>{login ? "Welcome back" : "Create your account"}</h1>
+          <p>{login ? "Log in to manage your invites." : "Your first invite is free."}</p>
+        </div>
+      </header>
       <aside className="auth-brand">
         <Link className="auth-logo" to="/">
           <Envelope />
@@ -142,7 +167,7 @@ export function Auth() {
                   : "Your account is ready. The free wedding note is the place to start."}
               </p>
               <button type="button" onClick={continueOn}>
-                {login ? "Go to studio" : "Create my first invite"}
+                Go to dashboard
               </button>
               <button type="button" className="quiet" onClick={() => setDone(false)}>
                 Back to the form
@@ -176,17 +201,17 @@ export function Auth() {
                 <i />
               </div>
               <div className="methods">
-                <button type="button" className={method === "email" ? "on" : ""} aria-pressed={method === "email"} onClick={() => { setMethod("email"); setNotice(""); }}>
-                  Email
-                </button>
                 <button type="button" className={method === "phone" ? "on" : ""} aria-pressed={method === "phone"} onClick={() => { setMethod("phone"); setNotice(""); }}>
                   Mobile number
+                </button>
+                <button type="button" className={method === "email" ? "on" : ""} aria-pressed={method === "email"} onClick={() => { setMethod("email"); setNotice(""); }}>
+                  Email
                 </button>
               </div>
               {!login ? (
                 <label>
                   Full name
-                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. Anjali Menon" autoComplete="name" />
+                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Your full name" autoComplete="name" />
                   {errors.name ? <small>{errors.name}</small> : null}
                 </label>
               ) : null}
