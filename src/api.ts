@@ -1,6 +1,12 @@
 import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
 const TOKEN = "vellum.token.v1";
+export const API_URL = (import.meta.env.VITE_API_URL || "https://invites-be.vercel.app").replace(/\/$/, "");
+
+export function assetUrl(url: string) {
+  if (!url || /^(https?:|data:|blob:)/.test(url)) return url;
+  return `${API_URL}${url.startsWith("/") ? url : `/${url}`}`;
+}
 
 export function getToken() {
   return localStorage.getItem(TOKEN);
@@ -13,7 +19,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (init.body && !(init.body instanceof FormData) && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
-  const response = await fetch(path, { ...init, headers });
+  const response = await fetch(`${API_URL}${path}`, { ...init, headers });
   const payload = (await response.json().catch(() => ({}))) as { error?: string };
   if (!response.ok) throw new Error(payload.error || "Request failed.");
   return payload as T;
@@ -118,7 +124,7 @@ export function createInvite(templateId: string, fields: InviteFields) {
 }
 
 export function getPublicInvite(slug: string) {
-  return request<{ slug: string; templateId: string; fields: InviteFields }>(`/api/invites/${slug}`);
+  return request<{ slug: string; templateId: string; fields: InviteFields; greetings?: { name: string; note: string }[] }>(`/api/invites/${slug}`);
 }
 
 export function sendGreeting(slug: string, body: { name: string; note: string; attending: boolean }) {

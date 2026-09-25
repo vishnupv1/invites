@@ -1,4 +1,5 @@
 import type { InviteFields, Template } from "../types";
+import { GazalInvite } from "./GazalInvite";
 import { getEvent } from "../data/events";
 import { formatLongDate, formatTime } from "../lib/dates";
 
@@ -166,6 +167,8 @@ function Palette({ fields, tone }: { fields: InviteFields; tone: string }) {
 
 export function InviteView({ template, fields }: { template: Template; fields: InviteFields }) {
   switch (template.style) {
+    case "gazal":
+      return <GazalInvite fields={fields} quiet />;
     case "garden":
       return <Garden fields={fields} />;
     case "midnight":

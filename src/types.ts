@@ -46,7 +46,8 @@ export type TemplateStyle =
   | "spark"
   | "years"
   | "promise"
-  | "hearth";
+  | "hearth"
+  | "gazal";
 
 export type Template = {
   id: string;

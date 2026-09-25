@@ -2,7 +2,9 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields, Template } from "../types";
 import { formatLongDate, formatTime } from "../lib/dates";
+import { assetUrl } from "../api";
 import "./invite-site.css";
+import { GazalInvite, type GazalWish } from "./GazalInvite";
 
 type Reply = { name: string; note: string; attending: boolean };
 
@@ -23,7 +25,7 @@ function useCountdown(date: string, time: string) {
 }
 
 function photosOf(fields: InviteFields) {
-  return fields.photos ?? [];
+  return (fields.photos ?? []).map(assetUrl);
 }
 
 function MapBlock({ fields }: { fields: InviteFields }) {
@@ -35,6 +37,7 @@ function MapBlock({ fields }: { fields: InviteFields }) {
 }
 
 function AudioBlock({ src }: { src: string }) {
+  src = assetUrl(src);
   if (!src) return null;
   if (src.startsWith("http")) {
     return (
@@ -295,11 +298,16 @@ export function InviteSite({
   template,
   fields,
   onReply,
+  wishes = [],
 }: {
   template: Template;
   fields: InviteFields;
   onReply?: (reply: Reply) => void;
+  wishes?: GazalWish[];
 }) {
+  if (template.style === "gazal") {
+    return <GazalInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
   let body: ReactNode;
   switch (template.style) {
     case "garden":

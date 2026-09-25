@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { InviteView } from "../components/InviteView";
+import { GazalInvite } from "../components/GazalInvite";
 import { getEvent } from "../data/events";
 import { getTemplate, sampleFor } from "../data/templates";
-import { createInvite, ensureSession, getToken, uploadMedia } from "../api";
+import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields } from "../types";
@@ -187,7 +188,7 @@ export function Editor() {
                     )
                   }
                 >
-                  <img src={photo} alt="" />
+                  <img src={assetUrl(photo)} alt="" />
                   Remove
                 </button>
               ))}
@@ -300,7 +301,7 @@ export function Editor() {
         ) : null}
       </div>
       <div className="preview">
-        <InviteView template={template} fields={draft} />
+        {template.style === "gazal" ? <GazalInvite fields={draft} /> : <InviteView template={template} fields={draft} />}
       </div>
     </section>
   );
