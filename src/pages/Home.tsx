@@ -98,7 +98,7 @@ export function Home() {
       <header className="lp-nav">
         <Link className="brand" to="/">
           <Mark />
-          <span>inviesready.com</span>
+          <span>invitesready.com</span>
         </Link>
         <nav className="lp-links">
           <a href="#templates">Templates</a>
@@ -456,7 +456,7 @@ export function Home() {
           <div>
             <Link className="brand light" to="/">
               <Mark gold />
-              <span>inviesready.com</span>
+              <span>invitesready.com</span>
             </Link>
             <p>Invitations for the wedding, and for the days around it.</p>
           </div>
@@ -485,7 +485,7 @@ export function Home() {
           </div>
         </div>
         <div className="foot-bottom">
-          <span>© 2026 inviesready.com</span>
+          <span>© 2026 invitesready.com</span>
           <span>One free note. Every other style is bought once.</span>
         </div>
       </footer>
