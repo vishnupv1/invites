@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { InviteView } from "../components/InviteView";
+import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { getEvent } from "../data/events";
 import { getTemplate, sampleFor } from "../data/templates";
@@ -301,7 +302,7 @@ export function Editor() {
         ) : null}
       </div>
       <div className="preview">
-        {template.style === "gazal" ? <GazalInvite fields={draft} /> : <InviteView template={template} fields={draft} />}
+        {template.style === "gazal" ? <GazalInvite fields={draft} /> : template.style === "aurelia" ? <AureliaInvite fields={draft} /> : <InviteView template={template} fields={draft} />}
       </div>
     </section>
   );

@@ -1,0 +1,79 @@
+.au-splash,
+.au { font-family: Manrope, "Helvetica Neue", sans-serif; color: #f4efe6; }
+.au-splash {
+  min-height: 100vh;
+  width: 100%;
+  border: none;
+  background: #0b1020;
+  color: #e6c893;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  cursor: pointer;
+}
+.au-splash em { font-family: "Pinyon Script", cursive; font-style: normal; font-size: 72px; }
+.au-splash span { letter-spacing: 4px; text-transform: uppercase; font-size: 12px; }
+.au-splash i { width: 72px; height: 1px; background: #e6c893; }
+.au { background: #0b1020; }
+.au-hero {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 72px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 20%, #1a2748, #0b1020 62%);
+  background-size: cover;
+  background-position: center;
+}
+.au-mark { letter-spacing: 4px; color: #e6c893; font-family: "Cormorant Garamond", Georgia, serif; }
+.au-hero > span { letter-spacing: 4px; text-transform: uppercase; font-size: 11px; color: #e6c893; }
+.au-hero h1 { margin: 0; font-family: "Pinyon Script", cursive; font-weight: 400; font-size: 76px; line-height: 0.9; color: #f3e2b8; }
+.au-hero h1 small { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 28px; color: #e7b7c3; }
+.au-hero p, .au-hero b { margin: 0; font-weight: 500; }
+.au-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.au-chips span { border: 1px solid rgba(230, 200, 147, 0.45); border-radius: 999px; padding: 8px 12px; font-size: 13px; }
+.au-hero > a, .au-events a, .au-share a, .au-share button, .au-wishes form > button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: none;
+  background: #e6c893;
+  color: #1a1408;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.au-count, .au-couple, .au-events, .au-gallery, .au-share, .au-wishes { padding: 48px 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.au-count { background: #10182e; }
+.au-count > div { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: min(520px, 100%); }
+.au-count strong { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 36px; color: #e6c893; }
+.au h2 { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: 40px; font-weight: 500; }
+.au-couple > div { display: flex; align-items: center; gap: 18px; }
+.au-couple strong { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 32px; }
+.au-couple small, .au-couple blockquote { color: #c9c2b4; }
+.au-couple em { font-family: "Pinyon Script", cursive; font-size: 42px; color: #e7b7c3; }
+.au-couple blockquote { max-width: 460px; margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: 22px; font-style: italic; }
+.au-events { background: #10182e; }
+.au-events article, .au-wishes form, .au-wishes blockquote { width: min(460px, 100%); box-sizing: border-box; background: #17223d; border: 1px solid rgba(230, 200, 147, 0.25); border-radius: 18px; padding: 18px; text-align: left; }
+.au-events small { color: #e6c893; letter-spacing: 2px; text-transform: uppercase; }
+.au-events strong { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 28px; }
+.au-gallery div { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(520px, 100%); }
+.au-gallery img { width: 100%; height: 180px; object-fit: cover; border-radius: 18px; }
+.au-share div, .au-wishes form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.au-wishes form { flex-direction: column; align-items: stretch; }
+.au-wishes label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.au-wishes input, .au-wishes textarea { width: 100%; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(230, 200, 147, 0.3); background: #0b1020; color: #fff; padding: 12px; font: inherit; }
+.au-wishes span { color: #e7b7c3; }
+.au-wishes cite { color: #e6c893; font-style: normal; }
+.au-audio { width: calc(100% - 40px); margin: 0 20px 20px; }
+.au footer { padding: 36px 20px 56px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.au footer a { color: #c9c2b4; font-size: 12px; }
