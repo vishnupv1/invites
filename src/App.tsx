@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, Route, Routes } from "react-router-dom";
+import { Auth } from "./pages/Auth";
 import { Category } from "./pages/Category";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
@@ -12,12 +13,12 @@ function Shell({ children }: { children: ReactNode }) {
     <>
       <header className="nav">
         <Link className="wordmark" to="/">
-          Vellum
+          inviesready.com
         </Link>
         <nav>
-          <a href="/#categories">Celebrations</a>
-          <Link to="/c/marriage">Wedding styles</Link>
-          <Link to="/studio">Studio</Link>
+          <Link to="/#occasions">Celebrations</Link>
+          <Link to="/c/marriage">Templates</Link>
+          <Link to="/studio">Dashboard</Link>
         </nav>
       </header>
       <main className="wrap">{children}</main>
@@ -28,14 +29,8 @@ function Shell({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <Shell>
-            <Home />
-          </Shell>
-        }
-      />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Auth />} />
       <Route
         path="/c/:id"
         element={
@@ -60,14 +55,7 @@ export default function App() {
           </Shell>
         }
       />
-      <Route
-        path="/studio"
-        element={
-          <Shell>
-            <Studio />
-          </Shell>
-        }
-      />
+      <Route path="/studio" element={<Studio />} />
       <Route path="/i/:code" element={<InvitePage />} />
     </Routes>
   );

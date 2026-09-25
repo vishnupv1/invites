@@ -1,8 +1,8 @@
 .site {
-  --sage: #6d9080;
-  --ink: #243028;
-  --blush: #d98984;
-  background: #f4f7f4;
+  --sage: #6f8b74;
+  --ink: #211c1e;
+  --blush: #6b3a5b;
+  background: #faf7f2;
   color: var(--ink);
   min-height: 100vh;
   position: relative;
@@ -41,10 +41,10 @@
   text-align: center;
   padding: 80px 24px 140px;
   background:
-    radial-gradient(circle at 12% 18%, rgba(232, 196, 196, 0.55), transparent 26%),
-    radial-gradient(circle at 88% 24%, rgba(186, 206, 190, 0.65), transparent 30%),
-    radial-gradient(circle at 72% 82%, rgba(244, 220, 210, 0.7), transparent 28%),
-    #f3f6f3;
+    radial-gradient(circle at 12% 18%, rgba(107, 58, 91, 0.16), transparent 26%),
+    radial-gradient(circle at 88% 24%, rgba(200, 155, 91, 0.28), transparent 30%),
+    radial-gradient(circle at 72% 82%, rgba(111, 139, 116, 0.22), transparent 28%),
+    #faf7f2;
 }
 .site-midnight .site-hero { background: radial-gradient(circle at 50% 40%, #2a261f, #12110f 70%); }
 .site-marigold .site-hero { background: radial-gradient(circle at 50% 30%, #8a3040, #5c1824 72%); }
@@ -140,8 +140,8 @@
 .layout-basic {
   max-width: 420px;
   margin: 48px auto;
-  background: #fffdf8;
-  border: 1px solid #ddd4c6;
+  background: #ffffff;
+  border: 1px solid #e8dfd6;
   padding: 36px 28px;
   text-align: center;
 }
