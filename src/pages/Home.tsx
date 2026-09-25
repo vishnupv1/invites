@@ -529,25 +529,6 @@ function Diamond() {
   );
 }
 
-function Lotus() {
-  return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-      <path d="M22 4c4 8 10 10 10 18a10 10 0 0 1-20 0c0-8 6-10 10-18z" stroke="#C89B5B" strokeWidth="1.5" />
-      <circle cx="22" cy="24" r="4" stroke="#C89B5B" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-function GardenLine() {
-  return (
-    <svg width="100%" height="60" viewBox="0 0 220 60" fill="none" aria-hidden="true">
-      <path d="M10 50c20-30 40-30 50-10M60 40c10-25 30-30 45-15M105 25c15-15 35-10 45 5M150 30c10-10 30-12 60 10" stroke="#6F8B74" strokeWidth="1.6" />
-      <circle cx="60" cy="40" r="4" fill="#C89B5B" />
-      <circle cx="150" cy="30" r="4" fill="#C89B5B" />
-    </svg>
-  );
-}
-
 function Icon({ name }: { name: string }) {
   const common = {
     width: 26,
