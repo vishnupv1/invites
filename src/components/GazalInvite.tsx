@@ -90,18 +90,22 @@ export function GazalInvite({
     window.setTimeout(() => setOpen(true), 680);
   }
 
+  const short = [first, second].filter(Boolean).map((part) => part.trim().split(/\s+/)[0]).join(" & ");
   const envelope = (
     <>
-      <div className="gazal-flap" />
+      <div className="gazal-flap" aria-hidden="true">
+        <svg viewBox="0 0 320 148" preserveAspectRatio="none">
+          <rect width="320" height="148" fill="#f7f3ec" />
+          <polygon points="14,6 306,6 160,136" fill="#1c4a3a" />
+          <polyline points="14,6 160,136 306,6" fill="none" stroke="#c4a36a" strokeWidth="1.6" />
+        </svg>
+      </div>
       <div className="gazal-seal">{initials(fields.names)}</div>
-      <div className="gazal-envelope-copy">
+      <div className="gazal-letter">
         <span>Assalamu alaikum</span>
-        <strong>You are invited to the Nikah of</strong>
-        <em>
-          {first}
-          {second ? " & " : ""}
-          {second}
-        </em>
+        {fields.hosts ? <strong>{fields.hosts}</strong> : null}
+        <small>You are invited to the Nikah of</small>
+        <em>{short || fields.names}</em>
       </div>
     </>
   );
@@ -109,6 +113,12 @@ export function GazalInvite({
   if (!open) {
     return (
       <div className={`gazal-open${lifting ? " is-lifting" : ""}`}>
+        <svg className="gazal-rings" viewBox="0 0 400 400" aria-hidden="true">
+          <circle cx="200" cy="210" r="78" />
+          <circle cx="200" cy="210" r="118" />
+          <circle cx="200" cy="210" r="158" />
+          <circle cx="200" cy="210" r="198" />
+        </svg>
         <span className="gazal-bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</span>
         {quiet ? (
           <div className="gazal-envelope">{envelope}</div>
@@ -118,9 +128,16 @@ export function GazalInvite({
           </button>
         )}
         {quiet ? null : (
-          <button type="button" className="gazal-open-btn" onClick={begin}>
-            Open invitation
-          </button>
+          <>
+            <button type="button" className="gazal-open-btn" onClick={begin}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 7 9-7" />
+              </svg>
+              Open invitation
+            </button>
+            <p className="gazal-hint">Tap to open · Best with sound on</p>
+          </>
         )}
       </div>
     );
