@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
@@ -41,6 +41,25 @@ function mapsHref(venue: string, address: string, lat: string, lng: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue} ${address}`.trim())}`;
 }
 
+function Reveal({ className, id, children }: { className: string; id?: string; children: ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting) setShown(true);
+    }, { threshold: 0.18 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <section ref={ref} id={id} className={`${className}${shown ? " in" : ""}`}>
+      {children}
+    </section>
+  );
+}
+
 export function GazalInvite({
   fields,
   quiet = false,
@@ -55,6 +74,7 @@ export function GazalInvite({
   const { first, second } = coupleOf(fields.names);
   const count = useCountdown(fields.date, fields.time);
   const [open, setOpen] = useState(false);
+  const [lifting, setLifting] = useState(false);
   const [name, setName] = useState("");
   const [attending, setAttending] = useState(true);
   const [note, setNote] = useState("");
@@ -64,25 +84,41 @@ export function GazalInvite({
   const photos = (fields.photos ?? []).map(assetUrl);
   const shown = [...localWishes, ...wishes.filter((wish) => wish.note.trim())];
 
+  function begin() {
+    if (quiet || lifting) return;
+    setLifting(true);
+    window.setTimeout(() => setOpen(true), 680);
+  }
+
+  const envelope = (
+    <>
+      <div className="gazal-flap" />
+      <div className="gazal-seal">{initials(fields.names)}</div>
+      <div className="gazal-envelope-copy">
+        <span>Assalamu alaikum</span>
+        <strong>You are invited to the Nikah of</strong>
+        <em>
+          {first}
+          {second ? " & " : ""}
+          {second}
+        </em>
+      </div>
+    </>
+  );
+
   if (!open) {
     return (
-      <div className="gazal-open">
+      <div className={`gazal-open${lifting ? " is-lifting" : ""}`}>
         <span className="gazal-bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</span>
-        <div className="gazal-envelope">
-          <div className="gazal-flap" />
-          <div className="gazal-seal">{initials(fields.names)}</div>
-          <div className="gazal-envelope-copy">
-            <span>Assalamu alaikum</span>
-            <strong>You are invited to the Nikah of</strong>
-            <em>
-              {first}
-              {second ? " & " : ""}
-              {second}
-            </em>
-          </div>
-        </div>
+        {quiet ? (
+          <div className="gazal-envelope">{envelope}</div>
+        ) : (
+          <button type="button" className="gazal-envelope" onClick={begin} aria-label="Open invitation">
+            {envelope}
+          </button>
+        )}
         {quiet ? null : (
-          <button type="button" className="gazal-open-btn" onClick={() => setOpen(true)}>
+          <button type="button" className="gazal-open-btn" onClick={begin}>
             Open invitation
           </button>
         )}
@@ -127,7 +163,7 @@ export function GazalInvite({
         </a>
       </section>
 
-      <section className="gazal-count">
+      <Reveal className="gazal-count">
         <span>Counting down to the Nikah</span>
         <div>
           {[
@@ -142,9 +178,9 @@ export function GazalInvite({
             </div>
           ))}
         </div>
-      </section>
+      </Reveal>
 
-      <section className="gazal-events">
+      <Reveal className="gazal-events">
         <h2>Wedding events</h2>
         <EventCard
           kicker="The ceremony"
@@ -166,41 +202,41 @@ export function GazalInvite({
             lng=""
           />
         ) : null}
-      </section>
+      </Reveal>
 
       {fields.message ? (
-        <section className="gazal-note">
+        <Reveal className="gazal-note">
           <span>إن شاء الله</span>
           <h2>A note from our families</h2>
           <p>{fields.message}</p>
           {fields.hosts ? <em>— {fields.hosts}</em> : null}
-        </section>
+        </Reveal>
       ) : null}
 
       {photos.length ? (
-        <section className="gazal-photos">
+        <Reveal className="gazal-photos">
           <h2>Moments</h2>
           <div>
             {photos.map((src) => (
               <img key={src} src={src} alt="" />
             ))}
           </div>
-        </section>
+        </Reveal>
       ) : null}
 
       {fields.dress ? (
-        <section className="gazal-know">
+        <Reveal className="gazal-know">
           <h2>Good to know</h2>
           <div>
             <strong>Dress code</strong>
             <p>{fields.dress}</p>
           </div>
-        </section>
+        </Reveal>
       ) : null}
 
       {fields.audio ? <audio className="gazal-audio" controls src={assetUrl(fields.audio)} /> : null}
 
-      <section id="gazal-rsvp" className="gazal-rsvp">
+      <Reveal id="gazal-rsvp" className="gazal-rsvp">
         <h2>Will you join us?</h2>
         {fields.rsvpBy ? <p>Kindly reply by {formatLongDate(fields.rsvpBy)}</p> : null}
         {done ? (
@@ -232,9 +268,9 @@ export function GazalInvite({
             <button type="submit">Send my reply</button>
           </form>
         )}
-      </section>
+      </Reveal>
 
-      <section className="gazal-wishes">
+      <Reveal className="gazal-wishes">
         <h2>Duas & wishes</h2>
         {shown.length === 0 ? <p>Messages appear here after guests reply.</p> : null}
         {shown.map((wish) => (
@@ -243,7 +279,7 @@ export function GazalInvite({
             <cite>— {wish.name}</cite>
           </blockquote>
         ))}
-      </section>
+      </Reveal>
 
       <footer>
         <strong>
