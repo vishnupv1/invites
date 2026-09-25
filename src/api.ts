@@ -1,7 +1,7 @@
 import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
 const TOKEN = "vellum.token.v1";
-export const API_URL = (import.meta.env.VITE_API_URL || "https://invites-be.vercel.app").replace(/\/$/, "");
+export const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 export function assetUrl(url: string) {
   if (!url || /^(https?:|data:|blob:)/.test(url)) return url;
