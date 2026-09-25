@@ -81,7 +81,7 @@ const faqs = [
   },
   {
     q: "What is free, and what is bought?",
-    a: "The Garden Note is a free wedding letter: names, a date, and a place you type. Other styles are bought once, and those ask for photographs, a song, or a map when the design needs them.",
+    a: "Gazal is free. You add the names, the Nikah, and the walima, then share one link.",
   },
   {
     q: "Can I change the invitation after I send it?",
@@ -111,7 +111,7 @@ export function Home() {
           <Link className="text-link" to="/login">
             Log in
           </Link>
-          <Link className="btn btn-fill lp-create" to="/create/garden?event=marriage">
+          <Link className="btn btn-fill lp-create" to="/create/gazal?event=marriage">
             Create invite
           </Link>
           <button
@@ -140,7 +140,7 @@ export function Home() {
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
-          <Link to="/create/garden?event=marriage">Create your invitation</Link>
+          <Link to="/create/gazal?event=marriage">Create your invitation</Link>
         </nav>
       ) : null}
 
@@ -158,7 +158,7 @@ export function Home() {
             a birthday, or the evening after.
           </p>
           <div className="hero-actions">
-            <Link className="btn btn-fill btn-lg" to="/create/garden?event=marriage">
+            <Link className="btn btn-fill btn-lg" to="/create/gazal?event=marriage">
               Create your invitation — free
               <Arrow />
             </Link>
@@ -310,90 +310,25 @@ export function Home() {
             <p>Templates</p>
             <h2>Designs that feel like the occasion.</h2>
           </div>
-          <Link className="btn btn-gold" to="/c/marriage">
-            See wedding styles
+          <Link className="btn btn-gold" to="/template/gazal">
+            See Gazal
           </Link>
         </div>
         <div className="template-grid">
-          <Link className="template" to="/template/marigold">
-            <div className="art art-gold">
+          <Link className="template" to="/template/gazal">
+            <div className="art art-gold" style={{ background: "#12352b" }}>
               <div>
-                <Lotus />
-                <span>Wedding</span>
-                <strong>
-                  Meera
-                  <br />& Arjun
-                </strong>
-                <i />
-                <em>12 · 01 · 2027</em>
+                <span>Nikah</span>
+                <strong>Gazal</strong>
+                <em>An opening card, then the invitation</em>
               </div>
             </div>
             <div className="template-meta">
               <div>
-                <strong>Marigold</strong>
-                <span>Wedding</span>
-              </div>
-              <em className="tag tag-gold">$39</em>
-            </div>
-          </Link>
-          <Link className="template" to="/template/garden">
-            <div className="art art-garden">
-              <GardenLine />
-              <div>
-                <span>Wedding</span>
-                <strong>Clara & Jonah</strong>
-                <em>A letter · November 2026</em>
-              </div>
-            </div>
-            <div className="template-meta">
-              <div>
-                <strong>The Garden Note</strong>
-                <span>Wedding</span>
+                <strong>Gazal</strong>
+                <span>Marriage</span>
               </div>
               <em className="tag">Free</em>
-            </div>
-          </Link>
-          <Link className="template" to="/template/hearth">
-            <div className="art art-home">
-              <div className="art-top">
-                <span>Housewarming</span>
-                <span>2027</span>
-              </div>
-              <strong>
-                Come
-                <br />
-                home
-                <br />
-                with us.
-              </strong>
-              <div>
-                <b>The Thomas family</b>
-                <em>Sat, 6 Feb · 11:00 AM</em>
-              </div>
-            </div>
-            <div className="template-meta">
-              <div>
-                <strong>The Hearth</strong>
-                <span>Housewarming</span>
-              </div>
-              <em className="tag">$18</em>
-            </div>
-          </Link>
-          <Link className="template" to="/template/spark">
-            <div className="art art-party">
-              <span>Birthday</span>
-              <div>
-                <b>30</b>
-                <strong>Nico turns thirty</strong>
-              </div>
-              <em>Sunday · cake at nine</em>
-            </div>
-            <div className="template-meta">
-              <div>
-                <strong>Spark</strong>
-                <span>Birthday</span>
-              </div>
-              <em className="tag tag-gold">$19</em>
             </div>
           </Link>
         </div>
@@ -459,57 +394,23 @@ export function Home() {
         <div className="section-intro center">
           <p>Pricing</p>
           <h2>Pay once for a style. No subscription.</h2>
-          <span>Start with the free wedding note, and buy a design only when the day wants more.</span>
+          <span>Gazal is free. Add the names, the Nikah, and the walima, then share the link.</span>
         </div>
         <div className="prices">
           <article>
             <div>
               <h3>Free</h3>
-              <p>The Garden Note</p>
+              <p>Gazal</p>
             </div>
             <strong>$0</strong>
             <ul>
-              <li>One wedding letter</li>
-              <li>Names, a date, and a place you type</li>
-              <li>Replies and wishes on the page</li>
-              <li>No photographs, song, or map</li>
+              <li>Opening card and Nikah page</li>
+              <li>Ceremony and walima</li>
+              <li>Photographs, a song, and a map when you add them</li>
+              <li>Replies on the page</li>
             </ul>
-            <Link className="btn btn-line" to="/create/garden?event=marriage">
+            <Link className="btn btn-line" to="/create/gazal?event=marriage">
               Start free
-            </Link>
-          </article>
-          <article className="price-loved">
-            <em>Most loved</em>
-            <div>
-              <h3>Wedding</h3>
-              <p>For the marriage styles</p>
-            </div>
-            <strong>from $29</strong>
-            <ul>
-              <li>After Dark and Marigold</li>
-              <li>Photographs and a song</li>
-              <li>Venue on a map</li>
-              <li>Ceremony and reception on the page</li>
-              <li>Bought once</li>
-            </ul>
-            <Link className="btn btn-white" to="/c/marriage">
-              See wedding styles
-            </Link>
-          </article>
-          <article>
-            <div>
-              <h3>Every other day</h3>
-              <p>Birthdays, receptions, and home</p>
-            </div>
-            <strong>from $18</strong>
-            <ul>
-              <li>Birthday, anniversary, engagement</li>
-              <li>Reception and housewarming</li>
-              <li>Each style belongs to one occasion</li>
-              <li>Bought once</li>
-            </ul>
-            <Link className="btn btn-line" to="/c/birthday">
-              Browse celebrations
             </Link>
           </article>
         </div>
@@ -545,7 +446,7 @@ export function Home() {
           <h2>Your celebration deserves more than a forwarded PDF.</h2>
           <p>The free wedding note is a real invitation. Upgrade when the day wants photographs and a map.</p>
         </div>
-        <Link className="btn btn-white btn-lg" to="/create/garden?event=marriage">
+        <Link className="btn btn-white btn-lg" to="/create/gazal?event=marriage">
           Create your invitation
         </Link>
       </section>
