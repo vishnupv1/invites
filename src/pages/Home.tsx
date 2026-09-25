@@ -310,12 +310,12 @@ export function Home() {
             <p>Templates</p>
             <h2>Designs that feel like the occasion.</h2>
           </div>
-          <Link className="btn btn-gold" to="/template/gazal">
+          <Link className="btn btn-gold" to="/open/gazal">
             See Gazal
           </Link>
         </div>
         <div className="template-grid">
-          <Link className="template" to="/template/gazal">
+          <Link className="template" to="/open/gazal">
             <div className="art art-gold" style={{ background: "#12352b" }}>
               <div>
                 <span>Nikah</span>

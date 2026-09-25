@@ -8,6 +8,7 @@ import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
 import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
+import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
 import { Templates } from "./pages/Templates";
 
@@ -37,6 +38,7 @@ export default function App() {
       <Route path="/admin" element={<Admin />} />
       <Route path="/templates" element={<Templates />} />
       <Route path="/preview/:id" element={<TemplatePreview />} />
+      <Route path="/open/:id" element={<OpenInvite />} />
       <Route
         path="/c/:id"
         element={
