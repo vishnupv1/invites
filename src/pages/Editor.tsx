@@ -987,7 +987,7 @@ export function Editor() {
                   </button>
                 </div>
                 {showQr ? <img className="ed-qr" alt="QR code for the invitation" src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(link)}`} /> : null}
-                <Link className="ed-studio" to="/studio">Go to guest list</Link>
+                <Link className="ed-studio" to="/guests">Go to guest list</Link>
               </div>
             ) : (
               <button type="button" className="ed-go" onClick={() => void publish()}>Publish</button>

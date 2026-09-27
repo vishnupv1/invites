@@ -58,6 +58,7 @@ export default function App() {
       <Route path="/create/:id" element={<Editor />} />
       <Route path="/studio" element={<Studio view="dashboard" />} />
       <Route path="/events" element={<Studio view="events" />} />
+      <Route path="/guests" element={<Studio view="guests" />} />
       <Route path="/i/:code" element={<InvitePage />} />
     </Routes>
   );
