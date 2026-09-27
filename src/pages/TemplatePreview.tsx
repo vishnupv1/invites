@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { InviteView } from "../components/InviteView";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { VivahInvite } from "../components/VivahInvite";
@@ -480,20 +479,17 @@ export function TemplatePreview() {
               <Link to="/templates">See all templates</Link>
             </div>
             <div className="pv-like">
-              {similar.map((item) => {
-                const sampleEvent = item.events[0];
-                return (
+              {similar.map((item) => (
                   <Link key={item.id} to={`/preview/${item.id}`}>
                     <div className="pv-like-shot">
-                      <InviteView template={item} fields={sampleFor(item, sampleEvent)} />
+                      <img src={`/covers/${item.id}.jpg`} alt="" />
                     </div>
                     <div className="pv-like-meta">
                       <strong>{item.name}</strong>
                       <span className={item.free ? "pv-badge free" : "pv-badge gold"}>{item.free ? "Free" : "Premium"}</span>
                     </div>
                   </Link>
-                );
-              })}
+              ))}
             </div>
           </section>
         ) : null}

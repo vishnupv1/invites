@@ -252,7 +252,7 @@
 .pv-like { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
 .pv-like a { display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: #211c1e; }
 .pv-like-shot { height: 220px; overflow: hidden; border-radius: 18px; background: #faf7f2; border: 1px solid #e8dfd6; }
-.pv-like-shot .card, .pv-like-shot article { transform: scale(0.42); transform-origin: top center; }
+.pv-like-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pv-like-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .pv-like-meta strong { font-size: 15px; }
 

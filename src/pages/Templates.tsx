@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { InviteView } from "../components/InviteView";
 import { getHost, getToken, listEvents, listTemplates, signOut, type CatalogEvent } from "../api";
-import { formatPrice, sampleFor } from "../data/templates";
+import { formatPrice } from "../data/templates";
 import type { Template } from "../types";
 import "./studio.css";
 import "./templates.css";
@@ -229,7 +228,7 @@ export function Templates() {
                 <article className="tpl-card" key={template.id}>
                   <div style={{ position: "relative" }}>
                     <button type="button" className="tpl-shot" aria-label={`Preview ${template.name}`} onClick={() => navigate(`/preview/${template.id}`)}>
-                      <InviteView template={template} fields={sampleFor(template, event)} />
+                      <img src={`/covers/${template.id}.jpg`} alt="" />
                     </button>
                     <button type="button" className="tpl-heart" aria-label={liked ? `Remove ${template.name} from favourites` : `Save ${template.name}`} aria-pressed={liked} onClick={() => toggleFav(template.id)}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill={liked ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
