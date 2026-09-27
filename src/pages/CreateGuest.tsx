@@ -9,7 +9,7 @@ import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { InviteSite } from "../components/InviteSite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, formatPrice, sampleFor } from "../data/templates";
+import { TEMPLATES, formatPrice, sampleFor, usesField, withCatalogMeta } from "../data/templates";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
@@ -17,7 +17,6 @@ import "./create-guest.css";
 
 const DRAFT_KEY = "vellum.guest-draft.v1";
 const STEPS = ["Occasion", "Template", "Customise", "Publish"] as const;
-const COUPLE = new Set<EventId>(["marriage", "reception", "engagement", "anniversary"]);
 const BLURB: Record<string, string> = {
   marriage: "The wedding day",
   engagement: "Ring ceremony and party",
@@ -73,13 +72,8 @@ function loadDraft(): Partial<Draft> {
   }
 }
 
-function palettesFor(style: string) {
-  if (style === "anna") return ["terracotta", "emerald", "midnight"];
-  if (style === "baptism") return ["sky", "rose", "emerald"];
-  if (style === "vivah") return ["midnight", "plum", "emerald"];
-  if (style === "beach") return ["terracotta", "sky", "plum"];
-  if (style === "home") return ["terracotta", "rose", "midnight"];
-  return [] as string[];
+function palettesFor(template: { meta?: { themes: { id: string }[]; defaultTheme: string } }) {
+  return template.meta?.themes.map((item) => item.id) ?? [];
 }
 
 function annaTheme(swatch: string) {
@@ -170,7 +164,7 @@ export function CreateGuest() {
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => undefined);
-    listTemplates().then(setTemplates).catch(() => undefined);
+    listTemplates().then((rows) => setTemplates(rows.map(withCatalogMeta))).catch(() => undefined);
     if (!getToken()) return;
     getHost()
       .then((person) => setHost({ name: person.name, email: person.email }))
@@ -209,7 +203,7 @@ export function CreateGuest() {
   const matching = templates.filter((item) => item.events.includes(event.id));
   const visible = matching.filter((item) => price === "All" || (price === "Free" ? item.free : !item.free));
   const template = templates.find((item) => item.id === templateId && item.events.includes(event.id)) ?? matching[0] ?? templates[0];
-  const two = COUPLE.has(event.id);
+  const two = template?.meta.names === "couple";
   const sample = template ? sampleFor(template, event.id) : null;
   const typedNames = two ? [name1.trim(), name2.trim()].filter(Boolean).join(" & ") : name1.trim();
   const fields: InviteFields | null = sample
@@ -231,7 +225,7 @@ export function CreateGuest() {
     : null;
   const previewNames = typedNames || "Your names";
   const previewWhen = date ? `${formatLongDate(date)}${time ? ` · ${formatTime(time)}` : ""}` : "Date and time";
-  const palettes = template ? palettesFor(template.style) : [];
+  const palettes = template ? palettesFor(template) : [];
   const ownsTemplate = Boolean(template && (template.free || owned.includes(template.id) || library.owns(template.id, template.free)));
   const link = liveCode ? `${window.location.origin}/i/${liveCode}` : "";
 
@@ -243,8 +237,10 @@ export function CreateGuest() {
   function pickEvent(id: EventId) {
     const next = templates.find((item) => item.events.includes(id));
     setEventId(id);
-    if (next) setTemplateId(next.id);
-    setSwatch("terracotta");
+    if (next) {
+      setTemplateId(next.id);
+      setSwatch(next.meta.defaultTheme || palettesFor(next)[0] || "");
+    }
   }
 
   function openAuth(mode: AuthMode) {
@@ -466,7 +462,7 @@ export function CreateGuest() {
                         aria-pressed={selected}
                         onClick={() => {
                           setTemplateId(item.id);
-                          setSwatch(palettesFor(item.style)[0] ?? "terracotta");
+                          setSwatch(item.meta.defaultTheme || palettesFor(item)[0] || "");
                         }}
                       >
                         <img src={`/covers/${item.id}.jpg`} alt="" />
@@ -489,7 +485,7 @@ export function CreateGuest() {
                           className="cg-use"
                           onClick={() => {
                             setTemplateId(item.id);
-                            setSwatch(palettesFor(item.style)[0] ?? "terracotta");
+                            setSwatch(item.meta.defaultTheme || palettesFor(item)[0] || "");
                             setStep(3);
                           }}
                         >
@@ -523,7 +519,7 @@ export function CreateGuest() {
               </div>
               <div className={two ? "cg-fields two" : "cg-fields"}>
                 <label className="cg-field">
-                  {two ? "Your name" : event.id === "baptism" ? "Child's name" : event.id === "housewarming" ? "Family name" : "Name"}
+                  {two ? "Your name" : template.meta.names === "child" ? "Child's name" : template.meta.names === "family" ? "Family name" : "Name"}
                   <input value={name1} onChange={(input) => { setName1(input.target.value); touch(); }} />
                 </label>
                 {two ? (
@@ -547,22 +543,24 @@ export function CreateGuest() {
                 Venue
                 <input value={venue} onChange={(input) => { setVenue(input.target.value); touch(); }} />
               </label>
-              <label className="cg-field">
-                Message to guests
-                <textarea rows={3} value={message} onChange={(input) => { setMessage(input.target.value); touch(); }} />
-              </label>
+              {usesField(template, "message") ? (
+                <label className="cg-field">
+                  Message to guests
+                  <textarea rows={3} value={message} onChange={(input) => { setMessage(input.target.value); touch(); }} />
+                </label>
+              ) : null}
               <div className="cg-field">
                 Functions
                 <label className="cg-fn">
                   <input type="checkbox" checked readOnly onChange={() => setToast("This design always includes that section.")} />
-                  {event.label}
+                  {template.meta.ceremony}
                   <span>{time ? formatTime(time) : "Time"}</span>
                 </label>
-                {sample?.receptionVenue ? (
+                {template.meta.reception ? (
                   <label className="cg-fn">
                     <input type="checkbox" checked={receptionOn} onChange={() => { setReceptionOn((on) => !on); touch(); }} />
-                    Reception
-                    <span>{sample.receptionTime ? formatTime(sample.receptionTime) : "Evening"}</span>
+                    {template.meta.reception}
+                    <span>{sample?.receptionTime ? formatTime(sample.receptionTime) : "Evening"}</span>
                   </label>
                 ) : null}
               </div>
@@ -579,7 +577,7 @@ export function CreateGuest() {
                           type="button"
                           className={swatch === id ? "cg-swatch on" : "cg-swatch"}
                           style={{ background: tone.cover }}
-                          aria-label={tone.name}
+                          aria-label={template.meta.themes.find((theme) => theme.id === id)?.name ?? tone.name}
                           aria-pressed={swatch === id}
                           onClick={() => setSwatch(id)}
                         >

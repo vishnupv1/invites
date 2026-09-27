@@ -230,11 +230,11 @@ export function GazalInvite({
         </Reveal>
       ) : null}
 
-      {photos.length ? (
+      {photos.some(Boolean) ? (
         <Reveal className="gazal-photos">
           <h2>Moments</h2>
           <div>
-            {photos.map((src) => (
+            {photos.filter(Boolean).map((src) => (
               <img key={src} src={src} alt="" />
             ))}
           </div>

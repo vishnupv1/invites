@@ -181,11 +181,11 @@ export function AureliaInvite({
         ) : null}
       </section>
 
-      {photos.length > 1 ? (
+      {photos.slice(1).some(Boolean) ? (
         <section className="au-gallery">
           <h2>Moments</h2>
           <div>
-            {photos.slice(1).map((src) => (
+            {photos.slice(1).filter(Boolean).map((src) => (
               <img key={src} src={src} alt="" />
             ))}
           </div>

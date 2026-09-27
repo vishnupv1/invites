@@ -9,7 +9,7 @@ import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
-import { getTemplate, sampleFor } from "../data/templates";
+import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { useLibrary } from "../state";
@@ -19,22 +19,17 @@ import "./editor.css";
 type Tab = "Details" | "Functions" | "Design" | "Sections" | "RSVP" | "Music";
 type FnKind = "main" | "reception";
 
-type Section = { id: string; label: string; help: string; on: boolean };
+type Section = { id: string; label: string; help: string; on: boolean; configurable: boolean };
 
 type Model = {
   draft: InviteFields;
   receptionOn: boolean;
-  fnNames: Record<FnKind, string>;
-  order: FnKind[];
   motion: boolean;
   swatch: string;
   sections: Section[];
-  askCount: boolean;
-  askMeal: boolean;
-  askSong: boolean;
-  askMessage: boolean;
-  maxGuests: number;
 };
+
+const HIDEABLE = new Set(["dress", "gallery", "music", "message", "reception"]);
 
 const TABS: { id: Tab; icon: string }[] = [
   { id: "Details", icon: "M4 4h16v16H4zM8 9h8M8 13h8M8 17h5" },
@@ -54,28 +49,6 @@ const SWATCHES = [
   { id: "midnight", name: "Midnight", cover: "#1B2433", dot: "#D9B26A" },
 ];
 
-const LAYOUTS = [
-  { id: "classic", label: "Classic arch", sample: "A&J" },
-  { id: "editorial", label: "Editorial", sample: "Anna" },
-  { id: "heavenly", label: "Heavenly halo", sample: "◯" },
-] as const;
-
-const FONTS = [
-  { id: "classic", label: "Classic · Cormorant", family: '"Cormorant Garamond", Georgia, serif' },
-  { id: "modern", label: "Editorial · Pinyon Script + Gloock", family: '"Pinyon Script", cursive' },
-  { id: "playful", label: "Soft · Great Vibes + Lora", family: '"Great Vibes", cursive' },
-] as const;
-
-const INTROs = [
-  { id: "envelope", label: "Envelope" },
-  { id: "flip", label: "Flip card" },
-  { id: "none", label: "None" },
-] as const;
-
-function coupleEvent(event: EventId) {
-  return event === "marriage" || event === "reception" || event === "engagement" || event === "anniversary";
-}
-
 function splitNames(names: string) {
   const parts = names.split(/\s+&\s+/);
   return { first: parts[0] ?? "", second: parts.slice(1).join(" & ") };
@@ -84,33 +57,6 @@ function splitNames(names: string) {
 function joinNames(first: string, second: string, couple: boolean) {
   if (!couple || !second) return first;
   return `${first} & ${second}`;
-}
-
-function layoutOf(style: string) {
-  if (style === "anna") return "editorial";
-  if (style === "baptism") return "heavenly";
-  return "classic";
-}
-
-function fontOf(style: string) {
-  if (style === "anna") return "modern";
-  if (style === "baptism") return "playful";
-  return "classic";
-}
-
-function introOf(style: string) {
-  if (style === "anna") return "flip";
-  if (style === "gazal" || style === "aurelia") return "envelope";
-  return "none";
-}
-
-function mainName(style: string) {
-  if (style === "gazal") return "Nikah";
-  if (style === "baptism") return "Holy Baptism";
-  if (style === "vivah") return "Muhurtham";
-  if (style === "beach") return "Sunset vows";
-  if (style === "home") return "Griha Pravesh";
-  return "Ceremony";
 }
 
 function annaThemeOf(swatch: string): AnnaTheme {
@@ -149,34 +95,54 @@ function swatchForAnna(theme: AnnaTheme) {
   return "terracotta";
 }
 
-function sectionsFor(draft: InviteFields): Section[] {
-  return [
-    { id: "countdown", label: "Countdown", help: "Days until the day", on: true },
-    { id: "story", label: "Our story", help: "Kept with this design", on: true },
-    { id: "gallery", label: "Photo gallery", help: "Photos you upload", on: true },
-    { id: "dress", label: "Dress code", help: "What guests should wear", on: Boolean(draft.dress) },
-    { id: "travel", label: "Travel & stay", help: "Kept with this design", on: false },
-    { id: "faq", label: "FAQ", help: "Kept with this design", on: false },
-    { id: "rsvp", label: "RSVP form", help: "Guests reply on the invitation", on: true },
-    { id: "wishes", label: "Wishes wall", help: "Kept with this design", on: true },
-  ];
+function sectionHelp(id: string, configurable: boolean) {
+  if (!configurable) return "Stays with this design.";
+  if (HIDEABLE.has(id)) return "Turn off to leave it off the invitation.";
+  if (id === "rsvp") return "Set the reply date under RSVP.";
+  if (id === "ceremony" || id === "when") return "Edit the time and place under Functions.";
+  return "Edit the wording under Details.";
+}
+
+function sectionsFor(template: Template, draft: InviteFields): Section[] {
+  return template.meta.components.map((component) => ({
+    id: component.id,
+    label: component.label,
+    help: sectionHelp(component.id, component.configurable),
+    configurable: component.configurable,
+    on:
+      component.id === "dress"
+        ? Boolean(draft.dress)
+        : component.id === "reception"
+          ? Boolean(draft.receptionVenue || draft.receptionTime)
+          : component.id === "message"
+            ? Boolean(draft.message)
+            : true,
+  }));
+}
+
+function shownFields(model: Model): InviteFields {
+  const on = (id: string) => model.sections.find((item) => item.id === id)?.on !== false;
+  const draft = model.draft;
+  return {
+    ...draft,
+    dress: on("dress") ? draft.dress : "",
+    photos: on("gallery") ? draft.photos : [],
+    message: on("message") ? draft.message : "",
+    audio: on("music") ? draft.audio : "",
+    receptionTime: on("reception") && model.receptionOn ? draft.receptionTime : "",
+    receptionVenue: on("reception") && model.receptionOn ? draft.receptionVenue : "",
+    receptionAddress: on("reception") && model.receptionOn ? draft.receptionAddress : "",
+  };
 }
 
 function modelFor(template: Template, eventId: string | undefined): Model {
   const draft = sampleFor(template, eventId);
   return {
     draft,
-    receptionOn: Boolean(draft.receptionVenue || draft.receptionTime),
-    fnNames: { main: mainName(template.style), reception: template.style === "baptism" ? "Lunch & cake" : "Reception" },
-    order: ["main", "reception"],
+    receptionOn: Boolean(template.meta.reception && (draft.receptionVenue || draft.receptionTime)),
     motion: true,
-    swatch: template.style === "baptism" ? "sky" : template.style === "vivah" ? "midnight" : "terracotta",
-    sections: sectionsFor(draft),
-    askCount: true,
-    askMeal: template.style === "anna",
-    askSong: false,
-    askMessage: true,
-    maxGuests: template.style === "baptism" || template.style === "home" ? 12 : template.style === "vivah" || template.style === "beach" ? 10 : 4,
+    swatch: template.meta.defaultTheme,
+    sections: sectionsFor(template, draft),
   };
 }
 
@@ -216,6 +182,7 @@ export function Editor() {
   const innerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const photoRef = useRef<HTMLInputElement>(null);
+  const photoSlot = useRef(0);
   const audioPickRef = useRef<HTMLInputElement>(null);
   modelRef.current = model;
 
@@ -245,20 +212,19 @@ export function Editor() {
 
   const draft = model.draft;
   const event = getEvent(draft.event);
-  const couple = coupleEvent(draft.event);
+  const couple = template.meta.names === "couple";
   const names = splitNames(draft.names);
   const title = `${draft.names.trim() || template.name} — ${event.label}`;
-  const layout = layoutOf(template.style);
-  const font = fontOf(template.style);
-  const intro = introOf(template.style);
-  const dressOn = model.sections.find((item) => item.id === "dress")?.on ?? true;
-  const galleryOn = model.sections.find((item) => item.id === "gallery")?.on ?? true;
-  const previewFields: InviteFields = {
-    ...draft,
-    dress: dressOn ? draft.dress : "",
-    photos: galleryOn ? draft.photos : [],
-  };
-  const functions = model.order.filter((kind) => kind === "main" || model.receptionOn);
+  const previewFields = shownFields(model);
+  const functions: FnKind[] = template.meta.reception && model.receptionOn ? ["main", "reception"] : ["main"];
+  const themeName = template.meta.themes.find((item) => item.id === model.swatch)?.name ?? "This design";
+  const nameLabel = template.meta.names === "child" ? "Child's name" : template.meta.names === "family" ? "Family name" : "Your name";
+  const tabs = TABS.filter((item) => {
+    if (item.id === "Music") return hasComponent(template, "music");
+    if (item.id === "Functions") return hasComponent(template, "ceremony");
+    if (item.id === "RSVP") return hasComponent(template, "rsvp");
+    return true;
+  });
 
   function notify(message: string) {
     setToast(message);
@@ -330,21 +296,29 @@ export function Editor() {
     await ensureSession(email, current.hosts || current.names || "Host");
   }
 
-  async function addPhotos(files: File[]) {
-    if (!files.length || !modelRef.current || !template) return;
+  async function setPhoto(index: number, file: File) {
+    if (!modelRef.current || !template) return;
     try {
       await ensureHost();
-      const next = [...(modelRef.current.draft.photos ?? [])];
-      for (const file of files) {
-        if (next.length >= template.asks.photos) break;
-        next.push(await uploadMedia(file));
-      }
-      patchDraft({ photos: next });
+      const url = await uploadMedia(file);
+      const current = modelRef.current;
+      if (!current) return;
+      const next = [...(current.draft.photos ?? [])];
+      while (next.length < template.meta.shots.length) next.push("");
+      next[index] = url;
+      patchDraft({ photos: next.slice(0, template.meta.shots.length) });
       setError("");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not add that photo.");
       setPublishOpen(true);
     }
+  }
+
+  function clearPhoto(index: number) {
+    const next = [...(modelRef.current?.draft.photos ?? [])];
+    while (next.length <= index) next.push("");
+    next[index] = "";
+    patchDraft({ photos: next });
   }
 
   async function addAudio(file: File) {
@@ -374,35 +348,23 @@ export function Editor() {
     }
   }
 
-  function moveSection(index: number, dir: number) {
-    if (!model) return;
-    const next = [...model.sections];
-    const target = index + dir;
-    if (target < 0 || target >= next.length) return;
-    [next[index], next[target]] = [next[target], next[index]];
-    update({ sections: next });
-  }
-
   function toggleSection(id: string) {
     if (!model) return;
-    const locked = id !== "dress" && id !== "gallery";
-    if (locked) {
-      notify("This design always includes that section.");
+    const section = model.sections.find((item) => item.id === id);
+    if (!section?.configurable || !HIDEABLE.has(id)) {
+      notify(section?.configurable ? "Edit this piece in the other tabs. It stays on the invitation." : "This piece stays with the design.");
       return;
     }
+    const on = !section.on;
     update({
-      sections: model.sections.map((item) => (item.id === id ? { ...item, on: !item.on } : item)),
+      sections: model.sections.map((item) => (item.id === id ? { ...item, on } : item)),
+      receptionOn: id === "reception" ? on : model.receptionOn,
     });
   }
 
   function pickSwatch(swatchId: string) {
     if (!template) return;
-    const annaOk = template.style === "anna" && (swatchId === "terracotta" || swatchId === "emerald" || swatchId === "midnight");
-    const baptismOk = template.style === "baptism" && (swatchId === "sky" || swatchId === "rose" || swatchId === "emerald");
-    const vivahOk = template.style === "vivah" && (swatchId === "midnight" || swatchId === "plum" || swatchId === "emerald");
-    const beachOk = template.style === "beach" && (swatchId === "terracotta" || swatchId === "sky" || swatchId === "plum");
-    const homeOk = template.style === "home" && (swatchId === "terracotta" || swatchId === "rose" || swatchId === "midnight");
-    if (annaOk || baptismOk || vivahOk || beachOk || homeOk) {
+    if (template.meta.themes.some((item) => item.id === swatchId)) {
       update({ swatch: swatchId });
       return;
     }
@@ -412,11 +374,7 @@ export function Editor() {
   async function publish() {
     const current = modelRef.current;
     if (!current || !template) return;
-    const fields: InviteFields = {
-      ...current.draft,
-      dress: current.sections.find((item) => item.id === "dress")?.on ? current.draft.dress : "",
-      photos: current.sections.find((item) => item.id === "gallery")?.on ? current.draft.photos : [],
-    };
+    const fields = shownFields(current);
     if (!fields.names.trim() || !fields.date) {
       setError("Add the names and a date before publishing.");
       return;
@@ -446,21 +404,6 @@ export function Editor() {
     }
     notify("The preview is what guests will see. Publish to open a shareable link.");
   }
-
-  const themeName =
-    template?.style === "home"
-      ? homeThemeOf(model.swatch) === "sunset"
-        ? "Sunset"
-        : homeThemeOf(model.swatch) === "night"
-          ? "Night"
-          : "Day"
-      : template?.style === "beach"
-      ? beachThemeOf(model.swatch) === "tropical"
-        ? "Tropical"
-        : beachThemeOf(model.swatch) === "dusk"
-          ? "Dusk"
-          : "Sunset"
-      : (SWATCHES.find((item) => item.id === model.swatch)?.name ?? "Terracotta");
 
   return (
     <div className={`ed-root${model.motion ? "" : " ed-still"}${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
@@ -518,7 +461,7 @@ export function Editor() {
 
       <div className="ed-body">
         <nav className="ed-rail" aria-label="Editor sections">
-          {TABS.map((item) => (
+          {tabs.map((item) => (
             <button
               key={item.id}
               type="button"
@@ -550,7 +493,7 @@ export function Editor() {
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>Invitation details</h2>
-                <p className="ed-lead">Names, date and the message guests see first.</p>
+                <p className="ed-lead">Only the wording this design actually prints.</p>
               </div>
               <div className="ed-field">
                 <span className="ed-label">Occasion</span>
@@ -562,47 +505,57 @@ export function Editor() {
                   ))}
                 </div>
               </div>
-              <div className={couple ? "ed-grid-2" : "ed-field"}>
-                <div className="ed-field">
-                  <label className="ed-label" htmlFor="ed-n1">{couple ? "Your name" : draft.event === "baptism" ? "Child's name" : event.namesLabel}</label>
-                  <input id="ed-n1" className="ed-input" value={names.first} onChange={(change) => patchDraft({ names: joinNames(change.target.value, names.second, couple) })} />
-                </div>
-                {couple ? (
+              {usesField(template, "names") ? (
+                <div className={couple ? "ed-grid-2" : "ed-field"}>
                   <div className="ed-field">
-                    <label className="ed-label" htmlFor="ed-n2">Partner's name</label>
-                    <input id="ed-n2" className="ed-input" value={names.second} onChange={(change) => patchDraft({ names: joinNames(names.first, change.target.value, true) })} />
+                    <label className="ed-label" htmlFor="ed-n1">{nameLabel}</label>
+                    <input id="ed-n1" className="ed-input" value={names.first} onChange={(change) => patchDraft({ names: joinNames(change.target.value, names.second, couple) })} />
                   </div>
-                ) : null}
-              </div>
-              <div className="ed-field">
-                <label className="ed-label" htmlFor="ed-hosts">Opening line</label>
-                <input id="ed-hosts" className="ed-input" value={draft.hosts} onChange={(change) => patchDraft({ hosts: change.target.value })} />
-              </div>
-              <div className="ed-field">
-                <label className="ed-label" htmlFor="ed-title">{event.titleLabel}</label>
-                <input id="ed-title" className="ed-input" value={draft.title} onChange={(change) => patchDraft({ title: change.target.value })} />
-              </div>
-              {event.detailLabel ? (
+                  {couple ? (
+                    <div className="ed-field">
+                      <label className="ed-label" htmlFor="ed-n2">Partner's name</label>
+                      <input id="ed-n2" className="ed-input" value={names.second} onChange={(change) => patchDraft({ names: joinNames(names.first, change.target.value, true) })} />
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+              {usesField(template, "hosts") ? (
                 <div className="ed-field">
-                  <label className="ed-label" htmlFor="ed-detail">{event.detailLabel}</label>
+                  <label className="ed-label" htmlFor="ed-hosts">{template.meta.components.find((item) => item.id === "hosts")?.label ?? "Opening line"}</label>
+                  <input id="ed-hosts" className="ed-input" value={draft.hosts} onChange={(change) => patchDraft({ hosts: change.target.value })} />
+                </div>
+              ) : null}
+              {usesField(template, "title") ? (
+                <div className="ed-field">
+                  <label className="ed-label" htmlFor="ed-title">{template.meta.components.find((item) => item.id === "line")?.label ?? event.titleLabel}</label>
+                  <input id="ed-title" className="ed-input" value={draft.title} onChange={(change) => patchDraft({ title: change.target.value })} />
+                </div>
+              ) : null}
+              {usesField(template, "detail") ? (
+                <div className="ed-field">
+                  <label className="ed-label" htmlFor="ed-detail">{template.meta.components.find((item) => item.id === "detail")?.label ?? "Detail"}</label>
                   <input id="ed-detail" className="ed-input" value={draft.detail} onChange={(change) => patchDraft({ detail: change.target.value })} />
                 </div>
               ) : null}
-              <div className="ed-grid-2 ed-date">
-                <div className="ed-field">
-                  <label className="ed-label" htmlFor="ed-date">Date</label>
-                  <input id="ed-date" className="ed-input" type="date" value={draft.date} onChange={(change) => patchDraft({ date: change.target.value })} />
+              {usesField(template, "date") ? (
+                <div className="ed-grid-2 ed-date">
+                  <div className="ed-field">
+                    <label className="ed-label" htmlFor="ed-date">Date</label>
+                    <input id="ed-date" className="ed-input" type="date" value={draft.date} onChange={(change) => patchDraft({ date: change.target.value })} />
+                  </div>
+                  <div className="ed-field">
+                    <label className="ed-label" htmlFor="ed-time">Time</label>
+                    <input id="ed-time" className="ed-input" type="time" value={draft.time} onChange={(change) => patchDraft({ time: change.target.value })} />
+                  </div>
                 </div>
+              ) : null}
+              {usesField(template, "message") ? (
                 <div className="ed-field">
-                  <label className="ed-label" htmlFor="ed-time">Time</label>
-                  <input id="ed-time" className="ed-input" type="time" value={draft.time} onChange={(change) => patchDraft({ time: change.target.value })} />
+                  <label className="ed-label" htmlFor="ed-msg">{template.meta.components.find((item) => item.id === "message")?.label ?? "Welcome message"}</label>
+                  <textarea id="ed-msg" rows={3} value={draft.message} onChange={(change) => patchDraft({ message: change.target.value.slice(0, 180) })} />
+                  <span className="ed-count">{Math.min(draft.message.length, 180)}/180</span>
                 </div>
-              </div>
-              <div className="ed-field">
-                <label className="ed-label" htmlFor="ed-msg">Welcome message</label>
-                <textarea id="ed-msg" rows={3} value={draft.message} onChange={(change) => patchDraft({ message: change.target.value.slice(0, 180) })} />
-                <span className="ed-count">{Math.min(draft.message.length, 180)}/180</span>
-              </div>
+              ) : null}
               <div className="ed-field">
                 <span className="ed-label">Language</span>
                 <div className="ed-grid-3">
@@ -618,41 +571,33 @@ export function Editor() {
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>Functions</h2>
-                <p className="ed-lead">Each function gets its own time, venue and map.</p>
+                <p className="ed-lead">Time and place for each gathering on this design.</p>
               </div>
-              {functions.map((kind, index) => {
+              {functions.map((kind) => {
                 const isMain = kind === "main";
                 return (
                   <div className="ed-fn" key={kind}>
                     <div className="ed-fn-head">
-                      <input
-                        className="ed-input"
-                        aria-label="Function name"
-                        value={model.fnNames[kind]}
-                        onChange={(change) => update({ fnNames: { ...model.fnNames, [kind]: change.target.value } })}
-                      />
-                      <button type="button" className="ed-move" aria-label={`Move ${model.fnNames[kind]} up`} disabled={index === 0} onClick={() => update({ order: [...model.order].reverse() })}>↑</button>
-                      <button type="button" className="ed-move" aria-label={`Move ${model.fnNames[kind]} down`} disabled={index === functions.length - 1} onClick={() => update({ order: [...model.order].reverse() })}>↓</button>
-                      <button
-                        type="button"
-                        className="ed-remove"
-                        aria-label={`Remove ${model.fnNames[kind]}`}
-                        onClick={() => {
-                          if (isMain) {
-                            notify("The ceremony stays on the invitation.");
-                            return;
-                          }
-                          update({
-                            receptionOn: false,
-                            draft: { ...draft, receptionTime: "", receptionVenue: "", receptionAddress: "" },
-                          });
-                          notify(`${model.fnNames.reception} removed. Use undo to bring it back.`);
-                        }}
-                      >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C45B63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
-                        </svg>
-                      </button>
+                      <input className="ed-input" readOnly aria-label="Function name" value={isMain ? template.meta.ceremony : template.meta.reception ?? ""} />
+                      {isMain ? null : (
+                        <button
+                          type="button"
+                          className="ed-remove"
+                          aria-label={`Remove ${template.meta.reception}`}
+                          onClick={() => {
+                            update({
+                              receptionOn: false,
+                              sections: model.sections.map((item) => (item.id === "reception" ? { ...item, on: false } : item)),
+                              draft: { ...draft, receptionTime: "", receptionVenue: "", receptionAddress: "" },
+                            });
+                            notify(`${template.meta.reception} removed. Use undo to bring it back.`);
+                          }}
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C45B63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
                     <div className="ed-grid-2">
                       <input className="ed-input" aria-label="Date" type="date" value={draft.date} onChange={(change) => patchDraft({ date: change.target.value })} />
@@ -681,20 +626,25 @@ export function Editor() {
                   </div>
                 );
               })}
-              <button
-                type="button"
-                className="ed-add"
-                onClick={() => {
-                  if (model.receptionOn) {
-                    notify("This invitation has the ceremony and one gathering.");
-                    return;
-                  }
-                  update({ receptionOn: true });
-                }}
-              >
-                + Add a function
-              </button>
-              {template.asks.location ? (
+              {template.meta.reception ? (
+                <button
+                  type="button"
+                  className="ed-add"
+                  onClick={() => {
+                    if (model.receptionOn) {
+                      notify(`This invitation has ${template.meta.ceremony} and ${template.meta.reception}.`);
+                      return;
+                    }
+                    update({
+                      receptionOn: true,
+                      sections: model.sections.map((item) => (item.id === "reception" ? { ...item, on: true } : item)),
+                    });
+                  }}
+                >
+                  + Add {template.meta.reception}
+                </button>
+              ) : null}
+              {usesField(template, "lat") ? (
                 <div className="ed-field">
                   <span className="ed-label">Find the ceremony on the map</span>
                   <div className="ed-search">
@@ -745,90 +695,71 @@ export function Editor() {
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>Design</h2>
-                <p className="ed-lead">Layout, colours, fonts and motion.</p>
+                <p className="ed-lead">Colours and motion this design can change. Layout, type and the opening stay with it.</p>
               </div>
-              <div className="ed-field">
-                <span className="ed-label">Layout style</span>
-                <div className="ed-grid-3">
-                  {LAYOUTS.map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      className={`ed-layout ${item.id}`}
-                      aria-pressed={layout === item.id}
-                      onClick={() => layout !== item.id && notify("This invitation keeps its own layout.")}
-                    >
-                      <div className="ed-thumb">{item.sample}</div>
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
+              {template.meta.themes.length ? (
+                <div className="ed-field">
+                  <span className="ed-label">Colour theme · <span style={{ fontWeight: 500, color: "#716A6D" }}>{themeName}</span></span>
+                  <div className="ed-swatches">
+                    {template.meta.themes.map((theme) => {
+                      const tone = SWATCHES.find((item) => item.id === theme.id);
+                      return (
+                        <button key={theme.id} type="button" className="ed-swatch" aria-label={theme.name} aria-pressed={model.swatch === theme.id} style={{ background: tone?.cover ?? "#F6F0E6" }} onClick={() => pickSwatch(theme.id)}>
+                          <i style={{ background: tone?.dot ?? "#A44B32" }} />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <p className="ed-lead">This invitation keeps its own colours.</p>
+              )}
+              {template.meta.shots.length ? (
               <div className="ed-field">
-                <span className="ed-label">Colour theme · <span style={{ fontWeight: 500, color: "#716A6D" }}>{themeName}</span></span>
-                <div className="ed-swatches">
-                  {SWATCHES.map((item) => (
-                    <button key={item.id} type="button" className="ed-swatch" aria-label={item.name} aria-pressed={model.swatch === item.id} style={{ background: item.cover }} onClick={() => pickSwatch(item.id)}>
-                      <i style={{ background: item.dot }} />
-                    </button>
-                  ))}
+                <span className="ed-label">Photographs</span>
+                <div className="ed-shots">
+                  {template.meta.shots.map((shot, index) => {
+                    const photo = draft.photos[index];
+                    return (
+                      <div className="ed-shot" key={`${shot.label}-${index}`}>
+                        {photo ? <img src={assetUrl(photo)} alt="" /> : <span className="ed-shot-empty" aria-hidden="true" />}
+                        <div>
+                          <b>{shot.label}</b>
+                          <div className="ed-shot-actions">
+                            <button
+                              type="button"
+                              aria-label={`${photo ? "Replace" : "Upload"} ${shot.label}`}
+                              onClick={() => {
+                                photoSlot.current = index;
+                                photoRef.current?.click();
+                              }}
+                            >
+                              {photo ? "Replace" : "Upload"}
+                            </button>
+                            {photo ? (
+                              <button type="button" aria-label={`Remove ${shot.label}`} onClick={() => clearPhoto(index)}>
+                                Remove
+                              </button>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
-              <div className="ed-field">
-                <span className="ed-label">Font pairing</span>
-                {FONTS.map((item) => (
-                  <button key={item.id} type="button" className="ed-font" aria-pressed={font === item.id} onClick={() => font !== item.id && notify("This invitation keeps its own type.")}>
-                    <strong style={{ fontFamily: item.family }}>{draft.names.trim() || template.name}</strong>
-                    <small>{item.label}</small>
-                  </button>
-                ))}
-              </div>
-              <div className="ed-field">
-                <span className="ed-label">Cover photo</span>
-                <button type="button" className="ed-upload" onClick={() => photoRef.current?.click()}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B3A5B" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M12 16V4M7 9l5-5 5 5" />
-                    <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
-                  </svg>
-                  <b>Upload a photo</b>
-                  <span>JPG or PNG · up to {template.asks.photos}</span>
-                </button>
                 <input
                   ref={photoRef}
                   hidden
                   type="file"
                   accept="image/*"
-                  multiple
                   onChange={(change) => {
-                    const files = [...(change.target.files ?? [])];
+                    const file = change.target.files?.[0];
                     change.target.value = "";
-                    void addPhotos(files);
+                    if (file) void setPhoto(photoSlot.current, file);
                   }}
                 />
-                {draft.photos.length ? (
-                  <div className="ed-photos">
-                    {draft.photos.map((photo, index) => (
-                      <button
-                        key={`${photo.slice(0, 24)}-${index}`}
-                        type="button"
-                        onClick={() => patchDraft({ photos: draft.photos.filter((_, item) => item !== index) })}
-                      >
-                        <img src={assetUrl(photo)} alt="" />
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
               </div>
-              <div className="ed-field">
-                <span className="ed-label">Opening animation</span>
-                <div className="ed-grid-3">
-                  {INTROs.map((item) => (
-                    <button key={item.id} type="button" className="ed-chip" aria-pressed={intro === item.id} onClick={() => intro !== item.id && notify("This invitation keeps its own opening.")}>
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              ) : null}
               <label className="ed-check">
                 <span>
                   <b>Animations</b>
@@ -842,24 +773,29 @@ export function Editor() {
           {tab === "Sections" ? (
             <div className="ed-stack">
               <div className="ed-intro">
-                <h2>Page sections</h2>
-                <p className="ed-lead">Dress and photos follow these switches. The rest of this design stays in place.</p>
+                <h2>Components</h2>
+                <p className="ed-lead">Every piece on this design. Switches only hide pieces you can leave out.</p>
               </div>
-              {model.sections.map((section, index) => (
-                <div className={section.on ? "ed-row" : "ed-row off"} key={section.id}>
-                  <input type="checkbox" checked={section.on} aria-label={`${section.on ? "Hide" : "Show"} ${section.label}`} onChange={() => toggleSection(section.id)} />
-                  <div className="grow">
-                    <b>{section.label}</b>
-                    <small>{section.help}</small>
+              {model.sections.map((section) => {
+                const hideable = section.configurable && HIDEABLE.has(section.id);
+                return (
+                  <div className={section.on ? "ed-row" : "ed-row off"} key={section.id}>
+                    {hideable ? (
+                      <input type="checkbox" checked={section.on} aria-label={`${section.on ? "Hide" : "Show"} ${section.label}`} onChange={() => toggleSection(section.id)} />
+                    ) : null}
+                    <div className="grow">
+                      <b>{section.label}</b>
+                      <small>{section.help}</small>
+                    </div>
                   </div>
-                  <button type="button" className="ed-move" aria-label={`Move ${section.label} up`} disabled={index === 0} onClick={() => moveSection(index, -1)}>↑</button>
-                  <button type="button" className="ed-move" aria-label={`Move ${section.label} down`} disabled={index === model.sections.length - 1} onClick={() => moveSection(index, 1)}>↓</button>
+                );
+              })}
+              {usesField(template, "dress") ? (
+                <div className="ed-field">
+                  <label className="ed-label" htmlFor="ed-dress">Dress code</label>
+                  <input id="ed-dress" className="ed-input" value={draft.dress} onChange={(change) => patchDraft({ dress: change.target.value })} />
                 </div>
-              ))}
-              <div className="ed-field">
-                <label className="ed-label" htmlFor="ed-dress">Dress code</label>
-                <input id="ed-dress" className="ed-input" value={draft.dress} onChange={(change) => patchDraft({ dress: change.target.value })} />
-              </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -867,7 +803,7 @@ export function Editor() {
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>RSVP form</h2>
-                <p className="ed-lead">Reply-by is saved with the invitation. Guests answer the questions on this design.</p>
+                <p className="ed-lead">Guests reply on this invitation. The reply date is saved with it.</p>
               </div>
               <div className="ed-field">
                 <label className="ed-label" htmlFor="ed-dl">Reply by</label>
@@ -877,35 +813,15 @@ export function Editor() {
                 <label className="ed-label" htmlFor="ed-email">Your email for replies</label>
                 <input id="ed-email" className="ed-input" type="email" value={draft.hostEmail} onChange={(change) => patchDraft({ hostEmail: change.target.value })} />
               </div>
-              {(
-                [
-                  ["askCount", "Number of guests", "Guests say how many are coming", model.askCount],
-                  ["askMeal", "Meal preference", "Veg, non-veg or kids", model.askMeal],
-                  ["askSong", "Song request", "A note with the reply", model.askSong],
-                  ["askMessage", "Message to the family", "Wishes sent with the reply", model.askMessage],
-                ] as const
-              ).map(([key, label, help, on]) => (
-                <label className="ed-check" key={key}>
-                  <span>
-                    <b>{label}</b>
-                    <small>{help}</small>
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={on}
-                    onChange={() => {
-                      update({ [key]: !on });
-                      notify("Guests answer the questions built into this invitation.");
-                    }}
-                  />
-                </label>
-              ))}
-              <div className="ed-check">
-                <b>Max guests per invite</b>
-                <div className="ed-step">
-                  <button type="button" aria-label="Decrease" onClick={() => update({ maxGuests: Math.max(1, model.maxGuests - 1) })}>−</button>
-                  <span>{model.maxGuests}</span>
-                  <button type="button" aria-label="Increase" onClick={() => update({ maxGuests: Math.min(12, model.maxGuests + 1) })}>+</button>
+              <div className="ed-row">
+                <div className="grow">
+                  <b>Reply on the page</b>
+                  <small>
+                    Guests reply on the page.
+                    {template.meta.rsvp.meal ? " They can note a meal." : ""}
+                    {template.meta.rsvp.song ? " They can request a song." : ""}
+                    {template.meta.rsvp.maxGuests > 0 ? ` The form allows up to ${template.meta.rsvp.maxGuests}.` : ""}
+                  </small>
                 </div>
               </div>
             </div>
