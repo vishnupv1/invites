@@ -342,7 +342,7 @@ export function Home() {
                 <strong>Baptism</strong>
                 <span>Baptism</span>
               </div>
-              <em className="tag">Free</em>
+              <em className="tag">₹1,299</em>
             </div>
           </Link>
           <Link className="template" to="/open/vivah">
@@ -353,6 +353,16 @@ export function Home() {
                 <span>Marriage</span>
               </div>
               <em className="tag">₹1,500</em>
+            </div>
+          </Link>
+          <Link className="template" to="/open/beach">
+            <img className="template-cover" src="/covers/beach.jpg" alt="" />
+            <div className="template-meta">
+              <div>
+                <strong>Beach</strong>
+                <span>Marriage</span>
+              </div>
+              <em className="tag">Free</em>
             </div>
           </Link>
           <Link className="template" to="/open/anna">

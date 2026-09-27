@@ -6,6 +6,7 @@ import { assetUrl } from "../api";
 import "./invite-site.css";
 import { AnnaInvite } from "./AnnaInvite";
 import { BaptismInvite } from "./BaptismInvite";
+import { BeachInvite } from "./BeachInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite, type GazalWish } from "./GazalInvite";
@@ -323,6 +324,9 @@ export function InviteSite({
   }
   if (template.style === "vivah") {
     return <VivahInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "beach") {
+    return <BeachInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   let body: ReactNode;
   switch (template.style) {
