@@ -8,7 +8,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
-import { eventLabels, formatPrice, sampleFor } from "../data/templates";
+import { eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { useLibrary } from "../state";
 import type { EventId, Template } from "../types";
 import "./preview.css";
@@ -82,12 +82,8 @@ function countdown(text: string) {
 }
 
 function extras(template: Template) {
-  const items = ["Invite card", "event page"];
-  if (template.asks.photos) items.push("photo gallery");
-  if (template.asks.audio) items.push("music");
-  if (template.asks.location) items.push("map");
-  items.push("RSVP");
-  return items.join(", ");
+  const labels = template.meta?.components?.map((item) => item.label) ?? [];
+  return labels.length ? labels.join(", ") : "Invite card";
 }
 
 export function TemplatePreview() {
@@ -118,8 +114,8 @@ export function TemplatePreview() {
       .then(([row, rows, eventRows]) => {
         const fields = sampleFor(row, row.events[0]);
         const parts = splitNames(fields.names);
-        setTemplate(row);
-        setCatalog(rows);
+        setTemplate(withCatalogMeta(row));
+        setCatalog(rows.map(withCatalogMeta));
         setEvents(eventRows);
         setFirst(parts.first);
         setSecond(parts.second);

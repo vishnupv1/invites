@@ -1,5 +1,8 @@
-import type { EventId, InviteFields, Template } from "../types";
+import type { EventId, InviteFields, Template, TemplateMeta } from "../types";
 import { getEvent } from "./events";
+import catalogMeta from "./template-meta.json" with { type: "json" };
+
+const META = catalogMeta as Record<string, TemplateMeta>;
 
 function sample(
   event: EventId,
@@ -31,6 +34,7 @@ export const TEMPLATES: Template[] = [
     tagline: "Nikah",
     description: "An emerald Nikah invitation. An opening card, the ceremony and walima, photographs if you add them, and a reply on the page.",
     asks: { photos: 4, audio: true, location: true },
+    meta: META.gazal,
     samples: {
       marriage: sample("marriage", {
         hosts: "The Hashim & Rahman families",
@@ -60,6 +64,7 @@ export const TEMPLATES: Template[] = [
     tagline: "Wedding",
     description: "A navy and gold wedding page. A title screen, the couple, the ceremony and reception, then wishes.",
     asks: { photos: 4, audio: true, location: true },
+    meta: META.aurelia,
     samples: {
       marriage: sample("marriage", {
         hosts: "The Hashim & Rahman families",
@@ -88,7 +93,8 @@ export const TEMPLATES: Template[] = [
     events: ["marriage"],
     tagline: "Garden wedding",
     description: "A cream garden wedding. Flip the card for the date, then the day, the venues, and a reply.",
-    asks: { photos: 4, audio: true, location: true },
+    asks: { photos: 3, audio: true, location: true },
+    meta: META.anna,
     samples: {
       marriage: sample("marriage", {
         hosts: "Together with their families",
@@ -118,6 +124,7 @@ export const TEMPLATES: Template[] = [
     tagline: "Baptism",
     description: "A sky-blue baptism. A dove opens the invitation, then the day, the godparents, and a blessing.",
     asks: { photos: 4, audio: true, location: true },
+    meta: META.baptism,
     samples: {
       baptism: sample("baptism", {
         hosts: "Jacob & Maria Thomas",
@@ -147,6 +154,7 @@ export const TEMPLATES: Template[] = [
     tagline: "Wedding",
     description: "A night-sky wedding. The doors open onto the Muhurtham, the celebrations, and a reply.",
     asks: { photos: 6, audio: true, location: true },
+    meta: META.vivah,
     samples: {
       marriage: sample("marriage", {
         hosts: "the Menon & Nair families",
@@ -175,7 +183,8 @@ export const TEMPLATES: Template[] = [
     events: ["marriage"],
     tagline: "Wedding",
     description: "A bottle on the shore opens onto sunset vows, a beach reception, and a reply.",
-    asks: { photos: 6, audio: true, location: true },
+    asks: { photos: 3, audio: true, location: true },
+    meta: META.beach,
     samples: {
       marriage: sample("marriage", {
         hosts: "",
@@ -205,6 +214,7 @@ export const TEMPLATES: Template[] = [
     tagline: "Housewarming",
     description: "A front door opens onto a griha pravesh, a house tour, and a reply.",
     asks: { photos: 4, audio: true, location: true },
+    meta: META.hearth,
     samples: {
       housewarming: sample("housewarming", {
         hosts: "",
@@ -234,6 +244,34 @@ export function templatesFor(eventId: string | undefined) {
 export function sampleFor(template: Template, eventId: string | undefined) {
   const event = template.events.includes(eventId as EventId) ? (eventId as EventId) : template.events[0];
   return { ...(template.samples[event] as InviteFields) };
+}
+
+export function withCatalogMeta(template: Omit<Template, "meta"> & { meta?: TemplateMeta }): Template {
+  const local = META[template.id];
+  const incoming = template.meta?.components?.length ? template.meta : undefined;
+  const meta = incoming
+    ? { ...local, ...incoming, shots: incoming.shots?.length ? incoming.shots : local?.shots ?? [] }
+    : local;
+  return {
+    ...template,
+    meta: meta ?? {
+      names: "couple",
+      components: [],
+      themes: [],
+      defaultTheme: "",
+      shots: [],
+      ceremony: "Ceremony",
+      rsvp: { meal: false, song: false, maxGuests: 4 },
+    },
+  };
+}
+
+export function usesField(template: Template, field: keyof InviteFields) {
+  return template.meta.components.some((item) => item.configurable && item.fields.includes(field));
+}
+
+export function hasComponent(template: Template, id: Template["meta"]["components"][number]["id"]) {
+  return template.meta.components.some((item) => item.id === id);
 }
 
 export function formatPrice(template: Template) {
