@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { PreviewModal } from "../components/PreviewModal";
-import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
-import { formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
+import { formatPrice, getTemplate, templatesFor } from "../data/templates";
 import { useLibrary } from "../state";
 import type { EventId } from "../types";
 
@@ -37,7 +36,7 @@ export function Category() {
                 aria-label={`Preview ${template.name}`}
                 onClick={() => setPreviewId(template.id)}
               >
-                <InviteView template={template} fields={sampleFor(template, id)} />
+                <img src={`/covers/${template.id}.jpg`} alt="" />
               </button>
               <div className="shop-copy">
                 <div className="shop-top">

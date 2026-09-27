@@ -316,13 +316,7 @@ export function Home() {
         </div>
         <div className="template-grid">
           <Link className="template" to="/open/gazal">
-            <div className="art art-gold" style={{ background: "#12352b" }}>
-              <div>
-                <span>Nikah</span>
-                <strong>Gazal</strong>
-                <em>An opening card, then the invitation</em>
-              </div>
-            </div>
+            <img className="template-cover" src="/covers/gazal.jpg" alt="" />
             <div className="template-meta">
               <div>
                 <strong>Gazal</strong>
@@ -332,13 +326,7 @@ export function Home() {
             </div>
           </Link>
           <Link className="template" to="/open/aurelia">
-            <div className="art art-gold" style={{ background: "#0b1020" }}>
-              <div>
-                <span>Wedding</span>
-                <strong>Aurelia</strong>
-                <em>A title screen, then the celebration</em>
-              </div>
-            </div>
+            <img className="template-cover" src="/covers/aurelia.jpg" alt="" />
             <div className="template-meta">
               <div>
                 <strong>Aurelia</strong>
@@ -348,13 +336,7 @@ export function Home() {
             </div>
           </Link>
           <Link className="template" to="/open/baptism">
-            <div className="art art-gold" style={{ background: "#cfe4f5", color: "#2f5e8a" }}>
-              <div>
-                <span>Baptism</span>
-                <strong>Baptism</strong>
-                <em>A dove, then the holy day</em>
-              </div>
-            </div>
+            <img className="template-cover" src="/covers/baptism.jpg" alt="" />
             <div className="template-meta">
               <div>
                 <strong>Baptism</strong>
@@ -364,29 +346,17 @@ export function Home() {
             </div>
           </Link>
           <Link className="template" to="/open/vivah">
-            <div className="art art-gold" style={{ background: "#0B1424" }}>
-              <div>
-                <span>Wedding</span>
-                <strong>Vivah</strong>
-                <em>Doors open onto the night</em>
-              </div>
-            </div>
+            <img className="template-cover" src="/covers/vivah.jpg" alt="" />
             <div className="template-meta">
               <div>
                 <strong>Vivah</strong>
                 <span>Marriage</span>
               </div>
-              <em className="tag">Free</em>
+              <em className="tag">₹1,500</em>
             </div>
           </Link>
           <Link className="template" to="/open/anna">
-            <div className="art art-gold" style={{ background: "#f6f0e6", color: "#2b2622" }}>
-              <div>
-                <span>Wedding</span>
-                <strong>Anna</strong>
-                <em>Flip the card, then the garden day</em>
-              </div>
-            </div>
+            <img className="template-cover" src="/covers/anna.jpg" alt="" />
             <div className="template-meta">
               <div>
                 <strong>Anna</strong>
