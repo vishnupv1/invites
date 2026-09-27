@@ -1,3 +1,7 @@
+@media (min-width: 980px) {
+  .open-invite .anna-bar { padding-left: 210px; }
+  .open-invite .bp-nav { padding-left: 210px; }
+}
 .open-home {
   position: fixed;
   top: 16px;

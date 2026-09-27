@@ -57,6 +57,15 @@ export const EVENTS: EventDef[] = [
     titleLabel: "Announcement",
   },
   {
+    id: "baptism",
+    label: "Baptism",
+    cardLabel: "Baptism",
+    detailLabel: "",
+    namesLabel: "Child",
+    hostsLabel: "Parents",
+    titleLabel: "Invitation line",
+  },
+  {
     id: "housewarming",
     label: "Housewarming",
     cardLabel: "Housewarming",

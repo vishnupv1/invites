@@ -108,6 +108,35 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "baptism",
+    name: "Baptism",
+    style: "baptism",
+    price: 0,
+    free: true,
+    events: ["baptism"],
+    tagline: "Baptism",
+    description: "A sky-blue baptism. A dove opens the invitation, then the day, the godparents, and a blessing.",
+    asks: { photos: 4, audio: true, location: true },
+    samples: {
+      baptism: sample("baptism", {
+        hosts: "Jacob & Maria Thomas",
+        names: "Ethan Joseph",
+        title: "Please join us for the Holy Baptism of",
+        detail: "",
+        date: "2027-03-14",
+        time: "10:30",
+        venue: "St. Mary's Church",
+        address: "Pala",
+        message: "Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God.",
+        dress: "",
+        rsvpBy: "2027-02-28",
+        receptionTime: "12:30",
+        receptionVenue: "Parish Hall",
+        receptionAddress: "next to the church",
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {
