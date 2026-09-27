@@ -55,14 +55,7 @@ export default function App() {
           </Shell>
         }
       />
-      <Route
-        path="/create/:id"
-        element={
-          <Shell>
-            <Editor />
-          </Shell>
-        }
-      />
+      <Route path="/create/:id" element={<Editor />} />
       <Route path="/studio" element={<Studio />} />
       <Route path="/i/:code" element={<InvitePage />} />
     </Routes>

@@ -5,7 +5,8 @@ import { assetUrl } from "../api";
 import { calendarUrl, formatTime } from "../lib/dates";
 import "./baptism.css";
 
-type Theme = "sky" | "blush" | "sage";
+export type BaptismTheme = "sky" | "blush" | "sage";
+type Theme = BaptismTheme;
 
 const THEMES: Record<Theme, { sky: string; deep: string; water: string }> = {
   sky: { sky: "linear-gradient(180deg, #CFE4F5 0%, #EAF3FB 55%, #FDF9F1 100%)", deep: "#2F5E8A", water: "linear-gradient(160deg, #4F86B8 0%, #2F5E8A 100%)" },
@@ -176,18 +177,20 @@ export function BaptismInvite({
   quiet = false,
   wishes = [],
   onReply,
+  theme: themeProp,
 }: {
   fields: InviteFields;
   quiet?: boolean;
   wishes?: { name: string; note: string }[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
+  theme?: Theme;
 }) {
   const child = firstName(fields.names);
   const when = whenOf(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [theme] = useState<Theme>("sky");
+  const theme: Theme = themeProp ?? "sky";
   const [open, setOpen] = useState(false);
   const [music, setMusic] = useState(false);
   const [name, setName] = useState("");
