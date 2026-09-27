@@ -3,6 +3,7 @@ import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
+import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { InviteView } from "../components/InviteView";
@@ -106,6 +107,7 @@ function mainName(style: string) {
   if (style === "gazal") return "Nikah";
   if (style === "baptism") return "Holy Baptism";
   if (style === "vivah") return "Muhurtham";
+  if (style === "beach") return "Sunset vows";
   return "Ceremony";
 }
 
@@ -113,6 +115,12 @@ function annaThemeOf(swatch: string): AnnaTheme {
   if (swatch === "emerald") return "sage";
   if (swatch === "midnight") return "dusk";
   return "terracotta";
+}
+
+function beachThemeOf(swatch: string): BeachTheme {
+  if (swatch === "sky") return "tropical";
+  if (swatch === "plum") return "dusk";
+  return "sunset";
 }
 
 function vivahThemeOf(swatch: string): VivahTheme {
@@ -160,7 +168,7 @@ function modelFor(template: Template, eventId: string | undefined): Model {
     askMeal: template.style === "anna",
     askSong: false,
     askMessage: true,
-    maxGuests: template.style === "baptism" ? 12 : template.style === "vivah" ? 10 : 4,
+    maxGuests: template.style === "baptism" ? 12 : template.style === "vivah" || template.style === "beach" ? 10 : 4,
   };
 }
 
@@ -383,7 +391,8 @@ export function Editor() {
     const annaOk = template.style === "anna" && (swatchId === "terracotta" || swatchId === "emerald" || swatchId === "midnight");
     const baptismOk = template.style === "baptism" && (swatchId === "sky" || swatchId === "rose" || swatchId === "emerald");
     const vivahOk = template.style === "vivah" && (swatchId === "midnight" || swatchId === "plum" || swatchId === "emerald");
-    if (annaOk || baptismOk || vivahOk) {
+    const beachOk = template.style === "beach" && (swatchId === "terracotta" || swatchId === "sky" || swatchId === "plum");
+    if (annaOk || baptismOk || vivahOk || beachOk) {
       update({ swatch: swatchId });
       return;
     }
@@ -428,7 +437,14 @@ export function Editor() {
     notify("The preview is what guests will see. Publish to open a shareable link.");
   }
 
-  const themeName = SWATCHES.find((item) => item.id === model.swatch)?.name ?? "Terracotta";
+  const themeName =
+    template?.style === "beach"
+      ? beachThemeOf(model.swatch) === "tropical"
+        ? "Tropical"
+        : beachThemeOf(model.swatch) === "dusk"
+          ? "Dusk"
+          : "Sunset"
+      : (SWATCHES.find((item) => item.id === model.swatch)?.name ?? "Terracotta");
 
   return (
     <div className={`ed-root${model.motion ? "" : " ed-still"}`}>
@@ -932,6 +948,8 @@ export function Editor() {
                     <BaptismInvite fields={previewFields} theme={baptismThemeOf(model.swatch)} />
                   ) : template.style === "vivah" ? (
                     <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
+                  ) : template.style === "beach" ? (
+                    <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} motion={model.motion} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}
