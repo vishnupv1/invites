@@ -4,6 +4,7 @@ import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
 import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
+import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { InviteView } from "../components/InviteView";
@@ -108,6 +109,7 @@ function mainName(style: string) {
   if (style === "baptism") return "Holy Baptism";
   if (style === "vivah") return "Muhurtham";
   if (style === "beach") return "Sunset vows";
+  if (style === "home") return "Griha Pravesh";
   return "Ceremony";
 }
 
@@ -115,6 +117,12 @@ function annaThemeOf(swatch: string): AnnaTheme {
   if (swatch === "emerald") return "sage";
   if (swatch === "midnight") return "dusk";
   return "terracotta";
+}
+
+function homeThemeOf(swatch: string): HomeTheme {
+  if (swatch === "rose") return "sunset";
+  if (swatch === "midnight") return "night";
+  return "day";
 }
 
 function beachThemeOf(swatch: string): BeachTheme {
@@ -168,7 +176,7 @@ function modelFor(template: Template, eventId: string | undefined): Model {
     askMeal: template.style === "anna",
     askSong: false,
     askMessage: true,
-    maxGuests: template.style === "baptism" ? 12 : template.style === "vivah" || template.style === "beach" ? 10 : 4,
+    maxGuests: template.style === "baptism" || template.style === "home" ? 12 : template.style === "vivah" || template.style === "beach" ? 10 : 4,
   };
 }
 
@@ -392,7 +400,8 @@ export function Editor() {
     const baptismOk = template.style === "baptism" && (swatchId === "sky" || swatchId === "rose" || swatchId === "emerald");
     const vivahOk = template.style === "vivah" && (swatchId === "midnight" || swatchId === "plum" || swatchId === "emerald");
     const beachOk = template.style === "beach" && (swatchId === "terracotta" || swatchId === "sky" || swatchId === "plum");
-    if (annaOk || baptismOk || vivahOk || beachOk) {
+    const homeOk = template.style === "home" && (swatchId === "terracotta" || swatchId === "rose" || swatchId === "midnight");
+    if (annaOk || baptismOk || vivahOk || beachOk || homeOk) {
       update({ swatch: swatchId });
       return;
     }
@@ -438,7 +447,13 @@ export function Editor() {
   }
 
   const themeName =
-    template?.style === "beach"
+    template?.style === "home"
+      ? homeThemeOf(model.swatch) === "sunset"
+        ? "Sunset"
+        : homeThemeOf(model.swatch) === "night"
+          ? "Night"
+          : "Day"
+      : template?.style === "beach"
       ? beachThemeOf(model.swatch) === "tropical"
         ? "Tropical"
         : beachThemeOf(model.swatch) === "dusk"
@@ -950,6 +965,8 @@ export function Editor() {
                     <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
                   ) : template.style === "beach" ? (
                     <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} motion={model.motion} />
+                  ) : template.style === "home" ? (
+                    <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} motion={model.motion} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}
