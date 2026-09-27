@@ -266,6 +266,47 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.my-events {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.my-event {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e8dfd6;
+}
+.my-event-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.my-event-top div {
+  flex-grow: 1;
+  min-width: 0;
+}
+.my-event-top strong {
+  display: block;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.my-event-top small {
+  display: block;
+  font-size: 13px;
+  color: #716a6d;
+  padding-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .event-card {
   min-height: 76px;
   display: flex;
@@ -573,6 +614,15 @@
   grid-template-columns: 1.4fr 1.6fr 0.8fr 0.9fr;
   gap: 12px;
   align-items: center;
+}
+.guest-table .table-head,
+.guest-table .row {
+  grid-template-columns: 1.3fr 1.1fr 1.4fr 0.8fr 0.9fr;
+}
+.guest-events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .table-head {
   padding: 0 8px 10px;

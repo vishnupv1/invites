@@ -8,12 +8,13 @@ import type { SavedInvite } from "../types";
 import "./studio.css";
 
 type Greeting = { id: string; name: string; note: string; attending: boolean; at: string };
+type GuestRow = Greeting & { inviteId: string; eventName: string };
 type Filter = "All" | "Attending" | "Declined";
 
 const NAV = [
   { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
   { label: "My events", href: "/events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
-  { label: "Guests", href: "/studio#guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6M17 11a3 3 0 1 0 0-6M19 15c1.8.6 2.8 2.5 3 5" },
+  { label: "Guests", href: "/guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6M17 11a3 3 0 1 0 0-6M19 15c1.8.6 2.8 2.5 3 5" },
   { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
 ];
 
@@ -68,8 +69,8 @@ function Icon({ d, color }: { d: string; color: string }) {
   );
 }
 
-export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }) {
-  const { pathname, hash } = useLocation();
+export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" | "guests" }) {
+  const { pathname } = useLocation();
   const { invites, ready } = useLibrary();
   const signedIn = Boolean(getToken());
   const [hostName, setHostName] = useState("");
@@ -78,6 +79,9 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
   const [query, setQuery] = useState("");
   const [toast, setToast] = useState("");
   const [replies, setReplies] = useState<Greeting[]>([]);
+  const [roster, setRoster] = useState<GuestRow[]>([]);
+  const [rosterReady, setRosterReady] = useState(false);
+  const [eventFilter, setEventFilter] = useState("all");
 
   useEffect(() => {
     if (!signedIn) return;
@@ -89,14 +93,33 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
   const selected = invites.find((invite) => invite.id === selectedId) ?? invites[0];
 
   useEffect(() => {
-    if (!selected?.code) {
+    if (view === "guests" || !selected?.code) {
       setReplies([]);
       return;
     }
     listGreetings(selected.code)
       .then(setReplies)
       .catch(() => setReplies([]));
-  }, [selected?.code]);
+  }, [view, selected?.code]);
+
+  useEffect(() => {
+    if (view !== "guests" || !signedIn || !ready) return;
+    let cancel = false;
+    setRosterReady(false);
+    Promise.all(
+      invites.map(async (invite) => {
+        const rows = await listGreetings(invite.code).catch(() => [] as Greeting[]);
+        return rows.map((row) => ({ ...row, inviteId: invite.id, eventName: invite.names }));
+      }),
+    ).then((groups) => {
+      if (cancel) return;
+      setRoster(groups.flat().sort((a, b) => (a.at < b.at ? 1 : -1)));
+      setRosterReady(true);
+    });
+    return () => {
+      cancel = true;
+    };
+  }, [view, signedIn, ready, invites]);
 
   const guests = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -106,6 +129,16 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
       return statusOk && textOk;
     });
   }, [replies, filter, query]);
+
+  const rosterRows = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return roster.filter((reply) => {
+      const eventOk = eventFilter === "all" || reply.inviteId === eventFilter;
+      const statusOk = filter === "All" || (filter === "Attending" ? reply.attending : !reply.attending);
+      const textOk = !q || reply.name.toLowerCase().includes(q) || reply.note.toLowerCase().includes(q) || reply.eventName.toLowerCase().includes(q);
+      return eventOk && statusOk && textOk;
+    });
+  }, [roster, eventFilter, filter, query]);
 
   const attending = replies.filter((reply) => reply.attending).length;
   const declined = replies.length - attending;
@@ -128,8 +161,8 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
     }
   }
 
-  const pageTitle = view === "events" ? "My events" : signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations";
-  const pageLede = view === "events" ? "The invitations on your account." : signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account.";
+  const pageTitle = view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations";
+  const pageLede = view === "events" ? "The invitations on your account." : view === "guests" ? "Replies from every invitation." : signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account.";
 
   return (
     <div className="board">
@@ -147,7 +180,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
         </Link>
         <nav aria-label="Main">
           {NAV.map((item) => {
-            const current = item.href === "/studio" ? pathname === "/studio" && hash !== "#guests" : item.href === "/studio#guests" ? pathname === "/studio" && hash === "#guests" : pathname === item.href;
+            const current = pathname === item.href;
             return (
               <Link key={item.label} className={current ? "nav-item on" : "nav-item"} to={item.href} aria-current={current ? "page" : undefined}>
                 <Icon d={item.icon} color={current ? "#211C1E" : "#E3D3DC"} />
@@ -196,7 +229,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
             <div className="avatar">{initialsOf(hostName) || "?"}</div>
             <div>
               <div className="dash-greet">{signedIn ? greetingHour() : "Your invitations"}</div>
-              <div className="dash-name">{view === "events" ? "My events" : signedIn && first ? first : "Log in"}</div>
+              <div className="dash-name">{view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? first : "Log in"}</div>
             </div>
           </div>
         </div>
@@ -217,7 +250,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
 
         {!signedIn ? (
           <section className="panel empty-card">
-            <h2>Log in to open your dashboard.</h2>
+            <h2>{view === "events" ? "Log in to see your events." : view === "guests" ? "Log in to see your guests." : "Log in to open your dashboard."}</h2>
             <Link className="create" to="/login">
               Log in
             </Link>
@@ -229,14 +262,120 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
         {signedIn && ready && invites.length === 0 ? (
           <section className="panel empty-card">
             <h2>Nothing published yet.</h2>
-            <p>Create an invitation and the guest replies will show up here.</p>
+            <p>{view === "events" ? "Create an invitation and it will show up here." : view === "guests" ? "Create an invitation and replies will show up here." : "Create an invitation and the guest replies will show up here."}</p>
             <Link className="create" to="/templates">
               Create invite
             </Link>
           </section>
         ) : null}
 
-        {signedIn && selected ? (
+        {signedIn && ready && invites.length > 0 && view === "events" ? (
+          <div className="my-events">
+            {invites.map((invite, index) => {
+              const finished = (daysUntil(invite.date) ?? 0) < 0;
+              return (
+                <article className="my-event" key={invite.id}>
+                  <div className="my-event-top">
+                    <span className="thumb" style={{ background: AVATARS[index % AVATARS.length] }}>
+                      {initialsOf(invite.names) || "•"}
+                    </span>
+                    <div>
+                      <strong>{invite.names}</strong>
+                      <small>{[formatShortDate(invite.date), invite.venue].filter(Boolean).join(" · ")}</small>
+                    </div>
+                    <span className={`pill ${finished ? "completed" : "live"}`}>{finished ? "Completed" : "Live"}</span>
+                  </div>
+                  {countdown(invite.date) ? <span className="countdown">{countdown(invite.date)}</span> : null}
+                  <div className="head-actions">
+                    <Link className="line" to={`/i/${invite.code}`}>
+                      View page
+                    </Link>
+                    <button type="button" className="whatsapp" onClick={() => share(invite)}>
+                      Copy link
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : null}
+
+        {signedIn && ready && invites.length > 0 && view === "guests" ? (
+          <section className="panel guests">
+            <div className="guests-head">
+              <h3>Guest list</h3>
+              <div className="search">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#716A6D" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M20 20l-3.5-3.5" />
+                </svg>
+                <label htmlFor="guest-search">Search guests</label>
+                <input id="guest-search" type="search" placeholder="Search guests" value={query} onChange={(input) => setQuery(input.target.value)} />
+              </div>
+            </div>
+            <div className="guest-events">
+              <button type="button" className={eventFilter === "all" ? "filter on" : "filter"} aria-pressed={eventFilter === "all"} onClick={() => setEventFilter("all")}>
+                All events <span>{roster.length}</span>
+              </button>
+              {invites.map((invite) => (
+                <button
+                  key={invite.id}
+                  type="button"
+                  className={eventFilter === invite.id ? "filter on" : "filter"}
+                  aria-pressed={eventFilter === invite.id}
+                  onClick={() => setEventFilter(invite.id)}
+                >
+                  {invite.names} <span>{roster.filter((row) => row.inviteId === invite.id).length}</span>
+                </button>
+              ))}
+            </div>
+            <div className="filters">
+              {(["All", "Attending", "Declined"] as Filter[]).map((label) => {
+                const scoped = eventFilter === "all" ? roster : roster.filter((row) => row.inviteId === eventFilter);
+                const total = label === "All" ? scoped.length : scoped.filter((row) => (label === "Attending" ? row.attending : !row.attending)).length;
+                return (
+                  <button key={label} type="button" className={filter === label ? "filter on" : "filter"} aria-pressed={filter === label} onClick={() => setFilter(label)}>
+                    {label} <span>{total}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {!rosterReady ? <p className="empty">Loading replies…</p> : null}
+            {rosterReady ? (
+              <div className="guest-table">
+                <div className="table-head">
+                  <span>Guest</span>
+                  <span>Event</span>
+                  <span>Note</span>
+                  <span>Status</span>
+                  <span>When</span>
+                </div>
+                {rosterRows.map((guest, index) => (
+                  <div className="row" key={`${guest.inviteId}-${guest.id}`}>
+                    <div className="who">
+                      <span className="guest-av" style={{ background: AVATARS[index % AVATARS.length] }}>
+                        {initialsOf(guest.name)}
+                      </span>
+                      <strong>{guest.name}</strong>
+                    </div>
+                    <span className="muted">{guest.eventName}</span>
+                    <span className="muted">{guest.note || "—"}</span>
+                    <span className={`pill ${guest.attending ? "attending" : "declined"}`}>{guest.attending ? "Attending" : "Declined"}</span>
+                    <span className="muted">{whenLabel(guest.at)}</span>
+                  </div>
+                ))}
+                {rosterRows.length === 0 ? <div className="empty">No replies yet.</div> : null}
+              </div>
+            ) : null}
+            <div className="foot">
+              <span>
+                Showing {rosterRows.length} of {eventFilter === "all" ? roster.length : roster.filter((row) => row.inviteId === eventFilter).length} replies
+              </span>
+            </div>
+          </section>
+        ) : null}
+
+        {signedIn && selected && view === "dashboard" ? (
           <>
             <div className="dash-chips" id="events">
               {invites.map((invite) => (
@@ -382,12 +521,12 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }
             <path d="M12 5v14M5 12h14" />
           </svg>
         </Link>
-        <a href="#guests">
+        <Link to="/guests" aria-current={view === "guests" ? "page" : undefined}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" />
           </svg>
           Guests
-        </a>
+        </Link>
         {signedIn ? (
           <button
             type="button"
