@@ -137,6 +137,35 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "vivah",
+    name: "Vivah",
+    style: "vivah",
+    price: 0,
+    free: true,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A night-sky wedding. The doors open onto the Muhurtham, the celebrations, and a reply.",
+    asks: { photos: 6, audio: true, location: true },
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "the Menon & Nair families",
+        names: "Karthik & Nandana",
+        title: "request the honour of your presence",
+        detail: "",
+        date: "2027-02-12",
+        time: "10:30",
+        venue: "Sree Krishna Temple Auditorium",
+        address: "Guruvayur",
+        message: "",
+        dress: "Kasavu, silks and jewel tones for the Muhurtham. Go bold and festive for the Sangeet.",
+        rsvpBy: "2027-01-15",
+        receptionTime: "19:00",
+        receptionVenue: "Grand Hyatt Bolgatty",
+        receptionAddress: "Kochi",
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

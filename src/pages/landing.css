@@ -672,6 +672,14 @@
   font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
+}
+.art-gold span,
+.art-gold em,
+.art-gold strong {
+  color: inherit;
+}
+.art-garden span,
+.art-party > span {
   color: #f3e6d0;
 }
 
@@ -694,19 +702,22 @@
 .art-party em {
   font-style: normal;
   font-size: 13px;
+}
+.art-garden em,
+.art-party em {
   color: #f3e6d0;
 }
 
 .art-garden {
   background: #e7f0ea;
-  color: #3f5c48;
+  color: #3f5a45;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .art-garden span {
-  color: #3f5c48;
+  color: #3f5a45;
 }
 
 .art-garden strong {
@@ -718,7 +729,7 @@
 }
 
 .art-garden em {
-  color: #3f5c48;
+  color: #3f5a45;
 }
 
 .art-home {
@@ -973,17 +984,17 @@
 
 .pill-attending {
   background: rgba(111, 139, 116, 0.18);
-  color: #3f5c48;
+  color: #3f5a45;
 }
 
 .pill-pending {
   background: rgba(200, 155, 91, 0.22);
-  color: #6a4e28;
+  color: #7a5a26;
 }
 
 .pill-declined {
-  background: #f3ece4;
-  color: var(--muted);
+  background: #f7e3e5;
+  color: #9a3b43;
 }
 
 .pricing {

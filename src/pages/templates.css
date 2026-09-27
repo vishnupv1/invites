@@ -54,7 +54,7 @@
 .tpl-seg button { border: none; min-height: 36px; color: #716a6d; }
 .tpl-seg button.on { background: #6b3a5b; color: #fff; }
 .tpl-fav { display: inline-flex; align-items: center; gap: 8px; }
-.tpl-fav.on { background: #f7e3e5; color: #6e2a31; border-color: #c45b63; }
+.tpl-fav.on { background: #f7e3e5; color: #9a3b43; border-color: #c45b63; }
 .tpl-sort { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
 .tpl-sort select, .tpl-occasion select { min-height: 42px; padding: 0 12px; border: 1.5px solid #e8dfd6; border-radius: 10px; font: inherit; background: #fff; }
 .tpl-occasion { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }

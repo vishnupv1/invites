@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getHost, getToken, listGreetings, signOut } from "../api";
 import { getEvent } from "../data/events";
 import { formatShortDate, formatTime } from "../lib/dates";
@@ -11,10 +11,10 @@ type Greeting = { id: string; name: string; note: string; attending: boolean; at
 type Filter = "All" | "Attending" | "Declined";
 
 const NAV = [
-  { label: "Dashboard", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
-  { label: "My events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
-  { label: "Guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6M17 11a3 3 0 1 0 0-6M19 15c1.8.6 2.8 2.5 3 5" },
-  { label: "Templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11", href: "/templates" },
+  { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
+  { label: "My events", href: "/events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
+  { label: "Guests", href: "/studio#guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6M17 11a3 3 0 1 0 0-6M19 15c1.8.6 2.8 2.5 3 5" },
+  { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
 ];
 
 const AVATARS = ["#6B3A5B", "#C89B5B", "#6F8B74", "#4A263E", "#8A5A7A"];
@@ -68,11 +68,11 @@ function Icon({ d, color }: { d: string; color: string }) {
   );
 }
 
-export function Studio() {
+export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" }) {
+  const { pathname, hash } = useLocation();
   const { invites, ready } = useLibrary();
   const signedIn = Boolean(getToken());
   const [hostName, setHostName] = useState("");
-  const [nav, setNav] = useState("Dashboard");
   const [selectedId, setSelectedId] = useState("");
   const [filter, setFilter] = useState<Filter>("All");
   const [query, setQuery] = useState("");
@@ -128,6 +128,9 @@ export function Studio() {
     }
   }
 
+  const pageTitle = view === "events" ? "My events" : signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations";
+  const pageLede = view === "events" ? "The invitations on your account." : signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account.";
+
   return (
     <div className="board">
       <aside className="side">
@@ -143,28 +146,15 @@ export function Studio() {
           </span>
         </Link>
         <nav aria-label="Main">
-          {NAV.map((item) =>
-            item.href ? (
-              <Link key={item.label} className="nav-item" to={item.href}>
-                <Icon d={item.icon} color="#E3D3DC" />
+          {NAV.map((item) => {
+            const current = item.href === "/studio" ? pathname === "/studio" && hash !== "#guests" : item.href === "/studio#guests" ? pathname === "/studio" && hash === "#guests" : pathname === item.href;
+            return (
+              <Link key={item.label} className={current ? "nav-item on" : "nav-item"} to={item.href} aria-current={current ? "page" : undefined}>
+                <Icon d={item.icon} color={current ? "#211C1E" : "#E3D3DC"} />
                 <span>{item.label}</span>
               </Link>
-            ) : (
-              <button
-                key={item.label}
-                type="button"
-                className={nav === item.label ? "nav-item on" : "nav-item"}
-                aria-current={nav === item.label ? "page" : undefined}
-                onClick={() => {
-                  setNav(item.label);
-                  document.getElementById(item.label === "Guests" ? "guests" : "events")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <Icon d={item.icon} color={nav === item.label ? "#211C1E" : "#E3D3DC"} />
-                <span>{item.label}</span>
-              </button>
-            ),
-          )}
+            );
+          })}
         </nav>
         <div className="side-foot">
           <div className="account">
@@ -206,14 +196,14 @@ export function Studio() {
             <div className="avatar">{initialsOf(hostName) || "?"}</div>
             <div>
               <div className="dash-greet">{signedIn ? greetingHour() : "Your invitations"}</div>
-              <div className="dash-name">{signedIn && first ? first : "Log in"}</div>
+              <div className="dash-name">{view === "events" ? "My events" : signedIn && first ? first : "Log in"}</div>
             </div>
           </div>
         </div>
         <div className="top">
           <div>
-            <h1>{signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations"}</h1>
-            <p>{signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account."}</p>
+            <h1>{pageTitle}</h1>
+            <p>{pageLede}</p>
           </div>
           <div className="top-actions">
             <Link className="create" to="/templates">
@@ -374,7 +364,7 @@ export function Studio() {
       </main>
 
       <nav className="dash-nav" aria-label="Main">
-        <Link to="/studio" aria-current="page">
+        <Link to="/studio" aria-current={view === "dashboard" ? "page" : undefined}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M3 11l9-7 9 7v9H3z" />
             <path d="M9 20v-6h6v6" />
