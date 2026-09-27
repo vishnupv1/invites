@@ -3,6 +3,7 @@ import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
+import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
@@ -104,6 +105,7 @@ function introOf(style: string) {
 function mainName(style: string) {
   if (style === "gazal") return "Nikah";
   if (style === "baptism") return "Holy Baptism";
+  if (style === "vivah") return "Muhurtham";
   return "Ceremony";
 }
 
@@ -111,6 +113,12 @@ function annaThemeOf(swatch: string): AnnaTheme {
   if (swatch === "emerald") return "sage";
   if (swatch === "midnight") return "dusk";
   return "terracotta";
+}
+
+function vivahThemeOf(swatch: string): VivahTheme {
+  if (swatch === "emerald") return "emerald";
+  if (swatch === "plum") return "royal";
+  return "midnight";
 }
 
 function baptismThemeOf(swatch: string): BaptismTheme {
@@ -146,13 +154,13 @@ function modelFor(template: Template, eventId: string | undefined): Model {
     fnNames: { main: mainName(template.style), reception: template.style === "baptism" ? "Lunch & cake" : "Reception" },
     order: ["main", "reception"],
     motion: true,
-    swatch: template.style === "baptism" ? "sky" : "terracotta",
+    swatch: template.style === "baptism" ? "sky" : template.style === "vivah" ? "midnight" : "terracotta",
     sections: sectionsFor(draft),
     askCount: true,
     askMeal: template.style === "anna",
     askSong: false,
     askMessage: true,
-    maxGuests: template.style === "baptism" ? 12 : 4,
+    maxGuests: template.style === "baptism" ? 12 : template.style === "vivah" ? 10 : 4,
   };
 }
 
@@ -374,7 +382,8 @@ export function Editor() {
     if (!template) return;
     const annaOk = template.style === "anna" && (swatchId === "terracotta" || swatchId === "emerald" || swatchId === "midnight");
     const baptismOk = template.style === "baptism" && (swatchId === "sky" || swatchId === "rose" || swatchId === "emerald");
-    if (annaOk || baptismOk) {
+    const vivahOk = template.style === "vivah" && (swatchId === "midnight" || swatchId === "plum" || swatchId === "emerald");
+    if (annaOk || baptismOk || vivahOk) {
       update({ swatch: swatchId });
       return;
     }
@@ -921,6 +930,8 @@ export function Editor() {
                     <AnnaInvite fields={previewFields} theme={annaThemeOf(model.swatch)} onTheme={(next) => update({ swatch: swatchForAnna(next) })} />
                   ) : template.style === "baptism" ? (
                     <BaptismInvite fields={previewFields} theme={baptismThemeOf(model.swatch)} />
+                  ) : template.style === "vivah" ? (
+                    <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}
