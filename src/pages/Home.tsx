@@ -347,6 +347,22 @@ export function Home() {
               <em className="tag">Free</em>
             </div>
           </Link>
+          <Link className="template" to="/open/anna">
+            <div className="art art-gold" style={{ background: "#f6f0e6", color: "#2b2622" }}>
+              <div>
+                <span>Wedding</span>
+                <strong>Anna</strong>
+                <em>Flip the card, then the garden day</em>
+              </div>
+            </div>
+            <div className="template-meta">
+              <div>
+                <strong>Anna</strong>
+                <span>Marriage</span>
+              </div>
+              <em className="tag">₹1,250</em>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -427,6 +443,22 @@ export function Home() {
             </ul>
             <Link className="btn btn-line" to="/create/gazal?event=marriage">
               Start free
+            </Link>
+          </article>
+          <article>
+            <div>
+              <h3>₹1,250</h3>
+              <p>Anna</p>
+            </div>
+            <strong>Once</strong>
+            <ul>
+              <li>A card that flips to the date</li>
+              <li>The wedding day and both venues</li>
+              <li>Dress, travel, and questions</li>
+              <li>A reply on the page</li>
+            </ul>
+            <Link className="btn btn-line" to="/open/anna">
+              See Anna
             </Link>
           </article>
         </div>

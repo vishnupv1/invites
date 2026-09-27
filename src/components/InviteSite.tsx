@@ -4,6 +4,7 @@ import type { InviteFields, Template } from "../types";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { assetUrl } from "../api";
 import "./invite-site.css";
+import { AnnaInvite } from "./AnnaInvite";
 import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite, type GazalWish } from "./GazalInvite";
 
@@ -311,6 +312,9 @@ export function InviteSite({
   }
   if (template.style === "aurelia") {
     return <AureliaInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "anna") {
+    return <AnnaInvite fields={fields} onReply={onReply} />;
   }
   let body: ReactNode;
   switch (template.style) {

@@ -1,0 +1,124 @@
+.anna-open, .anna { font-family: "Instrument Sans", Manrope, sans-serif; color: #2b2622; }
+.anna-open {
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #f6f0e6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  padding: 40px 24px;
+}
+.anna-leaf { position: absolute; width: 200px; left: -30px; top: -20px; pointer-events: none; }
+.anna-hero .anna-leaf { left: auto; right: -40px; top: 10px; }
+.anna-hello { letter-spacing: 3px; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); }
+.anna-card {
+  position: relative;
+  width: min(290px, 100%);
+  min-height: 400px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px;
+  font: inherit;
+}
+.anna-card.front { background: #fffdf9; border: 1px solid #e3d8c8; color: #2b2622; box-shadow: 0 24px 50px rgba(43, 38, 34, 0.16); }
+.anna-card.back { background: var(--accent); color: #fffdf9; box-shadow: 0 24px 50px rgba(43, 38, 34, 0.2); }
+.anna-card span, .anna-card small { font-size: 12px; letter-spacing: 1px; color: #6e655e; font-weight: 600; }
+.anna-card.back span, .anna-card.back small { color: #fffdf9; letter-spacing: 3px; text-transform: uppercase; font-size: 10px; }
+.anna-card em { font-family: "Pinyon Script", cursive; font-style: normal; font-size: 64px; line-height: 1; color: var(--accent); }
+.anna-card b { font-family: Gloock, Georgia, serif; font-size: 22px; font-weight: 400; }
+.anna-card.back strong { font-family: Gloock, Georgia, serif; font-size: 96px; line-height: 1; font-weight: 400; }
+.anna-card.back em { font-family: Gloock, Georgia, serif; font-size: 28px; letter-spacing: 6px; text-transform: uppercase; color: #fffdf9; }
+.anna-card.back b { font-size: 28px; }
+.anna-enter, .anna-bar a, .anna-venue a, .anna-rsvp form > button {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  border: none;
+  border-radius: 4px;
+  background: #2b2622;
+  color: #fffdf9;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.anna { background: #f6f0e6; }
+.anna-bar { height: 56px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e3d8c8; }
+.anna-bar > span { font-family: Gloock, Georgia, serif; font-size: 18px; }
+.anna-bar i { font-family: "Pinyon Script", cursive; font-size: 24px; color: var(--accent); font-style: normal; }
+.anna-bar > div, .anna-themes { display: flex; align-items: center; gap: 8px; }
+.anna-themes button { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #fffdf9; box-shadow: 0 0 0 1px #2b2622; cursor: pointer; }
+.anna-bar a { min-height: 40px; padding: 0 14px; font-size: 12px; }
+.anna-hero, .anna-block, .anna-day, .anna-wear, .anna-faq { position: relative; padding: 44px 24px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
+.anna-hero > span, .anna-block > span, .anna-day > span, .anna-wear > span, .anna-rsvp > span { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-text); }
+.anna-hero h1 { margin: 0; display: flex; flex-direction: column; }
+.anna-hero h1 em { font-family: "Pinyon Script", cursive; font-style: normal; font-size: 84px; line-height: 0.95; color: var(--accent); }
+.anna-hero h1 em:last-child { padding-left: 40px; }
+.anna-hero h1 small { font-family: Gloock, Georgia, serif; font-size: 26px; padding-left: 70px; }
+.anna-hero p, .anna h2 { margin: 0; font-family: Gloock, Georgia, serif; font-weight: 400; }
+.anna-hero p { font-size: 22px; line-height: 1.35; }
+.anna h2 { font-size: 34px; line-height: 1.1; }
+.anna-facts { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #2b2622; border-bottom: 1px solid #2b2622; }
+.anna-facts div { padding: 14px 0; text-align: center; }
+.anna-facts div + div { border-left: 1px solid #2b2622; }
+.anna-facts small { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #6e655e; }
+.anna-facts strong { font-family: Gloock, Georgia, serif; font-size: 26px; font-weight: 400; }
+.anna-hero img { width: 100%; height: 300px; object-fit: cover; border-radius: 160px 160px 4px 4px; }
+.anna-count { background: var(--accent); color: #fffdf9; padding: 22px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.anna-count > span { font-family: Gloock, Georgia, serif; font-size: 20px; line-height: 1.2; }
+.anna-count > div, .anna-choice, .anna-meals { display: flex; gap: 14px; }
+.anna-count strong { display: block; font-family: Gloock, Georgia, serif; font-size: 30px; font-weight: 400; }
+.anna-count small { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+.anna-story { display: flex; gap: 16px; }
+.anna-story i { width: 14px; height: 14px; margin-top: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.anna-story strong { font-family: Gloock, Georgia, serif; font-size: 24px; color: var(--accent-text); font-weight: 400; }
+.anna-story p, .anna-venue p, .anna-wear p, .anna-note p, .anna-faq p { margin: 4px 0 0; color: #6e655e; line-height: 1.6; }
+.anna-day { background: #fffdf9; border-top: 1px solid #e3d8c8; border-bottom: 1px solid #e3d8c8; }
+.anna-day > div, .anna-tabs { display: flex; gap: 18px; align-items: baseline; padding: 14px 0; border-bottom: 1px dashed #d8ccbb; }
+.anna-day b { width: 84px; font-family: Gloock, Georgia, serif; font-size: 20px; font-weight: 400; }
+.anna-day small { display: block; color: #6e655e; }
+.anna-tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #2b2622; border-radius: 4px; overflow: hidden; padding: 0; gap: 0; }
+.anna-tabs button, .anna-choice button, .anna-meals button { min-height: 46px; border: none; background: transparent; font: inherit; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; }
+.anna-tabs button.on { background: #2b2622; color: #fffdf9; }
+.anna-venue, .anna-note { background: #fffdf9; border: 1px solid #e3d8c8; border-radius: 4px; padding: 18px; }
+.anna-venue strong, .anna-note strong { font-family: Gloock, Georgia, serif; font-size: 24px; font-weight: 400; }
+.anna-venue > div { display: flex; gap: 8px; }
+.anna-venue a { flex: 1; }
+.anna-venue a:last-child { background: transparent; color: #2b2622; border: 1px solid #2b2622; }
+.anna-wear { background: var(--soft); }
+.anna-wear > div { display: flex; gap: 10px; flex-wrap: wrap; }
+.anna-wear > div > span { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; }
+.anna-wear i { width: 52px; height: 52px; border-radius: 50%; border: 3px solid #fffdf9; box-shadow: 0 0 0 1px #d8ccbb; }
+.anna-faq button { width: 100%; min-height: 56px; display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border: none; border-bottom: 1px solid #d8ccbb; background: none; font: inherit; font-size: 16px; font-weight: 600; text-align: left; cursor: pointer; }
+.anna-rsvp { padding: 48px 24px; background: #2b2622; color: #fffdf9; display: flex; flex-direction: column; gap: 18px; }
+.anna-rsvp > span { color: var(--soft); }
+.anna-rsvp h2 { font-size: 38px; }
+.anna-rsvp form { display: flex; flex-direction: column; gap: 16px; }
+.anna-rsvp label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.anna-rsvp input { border: none; border-bottom: 1.5px solid #6e655e; background: transparent; color: #fffdf9; min-height: 50px; font: inherit; font-size: 16px; text-transform: none; letter-spacing: 0; }
+.anna-choice, .anna-meals { display: grid; grid-template-columns: 1fr 1fr; }
+.anna-meals { grid-template-columns: repeat(3, 1fr); }
+.anna-choice button, .anna-meals button { border: 1px solid #6e655e; color: #d8ccbb; border-radius: 4px; }
+.anna-choice button.on, .anna-meals button.on { background: #fffdf9; color: #2b2622; border-color: #fffdf9; }
+.anna-rsvp form > button { background: var(--soft); color: #2b2622; }
+.anna-rsvp small { color: #f2b8a8; }
+.anna-done em { font-family: "Pinyon Script", cursive; font-size: 54px; color: var(--soft); font-style: normal; }
+.anna-done button, .anna-gifts p { background: none; border: none; color: #d8ccbb; }
+.anna-gifts p, .anna footer a { color: #b8ada3; font-size: 14px; line-height: 1.6; }
+.anna footer { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 24px; }
+.anna footer em { font-family: "Pinyon Script", cursive; font-size: 40px; color: var(--soft); font-style: normal; }
+.anna-audio { width: 140px; height: 32px; }

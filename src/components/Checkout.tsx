@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { ensureSession } from "../api";
+import { formatPrice } from "../data/templates";
 import type { Template } from "../types";
 
 type Props = {
@@ -48,7 +49,7 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
         <p className="eyebrow">One-time purchase</p>
         <h2>Unlock {template.name}</h2>
         <p className="lede">
-          Pay ${template.price} once. The design stays yours for every function after this. Demo
+          Pay {formatPrice(template)} once. The design stays yours for every function after this. Demo
           checkout — nothing is charged.
         </p>
         <label>
@@ -96,7 +97,7 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
             Cancel
           </button>
           <button type="submit" className="solid">
-            Pay ${template.price} once
+            Pay {formatPrice(template)} once
           </button>
         </div>
       </form>

@@ -48,7 +48,8 @@ export type TemplateStyle =
   | "promise"
   | "hearth"
   | "gazal"
-  | "aurelia";
+  | "aurelia"
+  | "anna";
 
 export type Template = {
   id: string;
