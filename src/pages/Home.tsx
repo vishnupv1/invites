@@ -362,7 +362,7 @@ export function Home() {
                 <strong>Beach</strong>
                 <span>Marriage</span>
               </div>
-              <em className="tag">Free</em>
+              <em className="tag">₹2,000</em>
             </div>
           </Link>
           <Link className="template" to="/open/anna">
