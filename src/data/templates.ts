@@ -79,6 +79,35 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "anna",
+    name: "Anna",
+    style: "anna",
+    price: 1250,
+    free: false,
+    events: ["marriage"],
+    tagline: "Garden wedding",
+    description: "A cream garden wedding. Flip the card for the date, then the day, the venues, and a reply.",
+    asks: { photos: 4, audio: true, location: true },
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Anna & Joel",
+        title: "are getting married and would love for you to be there.",
+        detail: "Kottayam, Kerala",
+        date: "2027-05-08",
+        time: "15:00",
+        venue: "St. Joseph's Church",
+        address: "Baker Junction, Kottayam",
+        message: "From classmates to forever.",
+        dress: "Sarees, lehengas, suits or linen. Earthy shades are welcome — please skip white and ivory.",
+        rsvpBy: "2027-04-01",
+        receptionTime: "19:00",
+        receptionVenue: "Lakeside Convention Centre",
+        receptionAddress: "Kumarakom Road, Kottayam",
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {
@@ -95,7 +124,7 @@ export function sampleFor(template: Template, eventId: string | undefined) {
 }
 
 export function formatPrice(template: Template) {
-  return template.free ? "Free" : `$${template.price}`;
+  return template.free ? "Free" : `₹${template.price.toLocaleString("en-IN")}`;
 }
 
 export function eventLabels(template: Template) {

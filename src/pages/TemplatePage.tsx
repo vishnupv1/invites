@@ -58,7 +58,7 @@ export function TemplatePage() {
           </Link>
         ) : (
           <button className="solid" type="button" onClick={() => setOpen(true)}>
-            Buy once · ${template.price}
+            Buy once · {formatPrice(template)}
           </button>
         )}
         </div>
