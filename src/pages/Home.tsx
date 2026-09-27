@@ -347,6 +347,22 @@ export function Home() {
               <em className="tag">Free</em>
             </div>
           </Link>
+          <Link className="template" to="/open/baptism">
+            <div className="art art-gold" style={{ background: "#cfe4f5", color: "#2f5e8a" }}>
+              <div>
+                <span>Baptism</span>
+                <strong>Baptism</strong>
+                <em>A dove, then the holy day</em>
+              </div>
+            </div>
+            <div className="template-meta">
+              <div>
+                <strong>Baptism</strong>
+                <span>Baptism</span>
+              </div>
+              <em className="tag">Free</em>
+            </div>
+          </Link>
           <Link className="template" to="/open/anna">
             <div className="art art-gold" style={{ background: "#f6f0e6", color: "#2b2622" }}>
               <div>

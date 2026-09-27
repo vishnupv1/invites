@@ -91,12 +91,11 @@ export function Admin() {
   }, [data]);
   const maxWeek = Math.max(1, ...weeks.map(([, count]) => count));
 
-  const usedIds = new Set([...(data?.events ?? []).map((event) => event.templateId), ...(data?.purchases ?? []).map((row) => row.templateId)]);
   const occasions = ["All", ...EVENTS.map((event) => event.label)];
   const templates = TEMPLATES.filter((template) => {
     const occasionOk = occasion === "All" || template.events.some((id) => EVENTS.find((event) => event.id === id)?.label === occasion);
     const textOk = !tplQuery.trim() || template.name.toLowerCase().includes(tplQuery.trim().toLowerCase());
-    return occasionOk && textOk && usedIds.has(template.id);
+    return occasionOk && textOk;
   });
   const users = (data?.users ?? []).filter((user) => {
     const q = userQuery.trim().toLowerCase();

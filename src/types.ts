@@ -4,7 +4,8 @@ export type EventId =
   | "birthday"
   | "anniversary"
   | "engagement"
-  | "housewarming";
+  | "housewarming"
+  | "baptism";
 
 export type InviteFields = {
   event: EventId;
@@ -49,7 +50,8 @@ export type TemplateStyle =
   | "hearth"
   | "gazal"
   | "aurelia"
-  | "anna";
+  | "anna"
+  | "baptism";
 
 export type Template = {
   id: string;

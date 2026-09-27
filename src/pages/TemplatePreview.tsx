@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { InviteView } from "../components/InviteView";
 import { AnnaInvite } from "../components/AnnaInvite";
+import { BaptismInvite } from "../components/BaptismInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
@@ -254,6 +255,15 @@ export function TemplatePreview() {
             </div>
 
             <div className="pv-canvas">
+              {template.style === "baptism" ? (
+                <BaptismInvite
+                  fields={{
+                    ...sample,
+                    names: n2 ? `${n1} & ${n2}` : n1,
+                    venue: venueText === "Venue" ? sample.venue : venueText,
+                  }}
+                />
+              ) : null}
               {template.style === "anna" ? (
                 <AnnaInvite
                   fields={{
@@ -281,7 +291,7 @@ export function TemplatePreview() {
                   }}
                 />
               ) : null}
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && view === "card" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && view === "card" ? (
                 <div className="pv-card" style={{ ...ink, border: colour.bg === "#FAF7F2" ? "1px solid #E8DFD6" : undefined }}>
                   <div className="pv-card-in" style={{ borderColor: colour.accent, outlineColor: colour.accent }}>
                     <svg width="120" height="22" viewBox="0 0 120 22" fill="none" aria-hidden="true">
@@ -305,7 +315,7 @@ export function TemplatePreview() {
                 </div>
               ) : null}
 
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && view === "phone" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && view === "phone" ? (
                 <div className="pv-phone">
                   <div className="pv-phone-in">
                     <div className="pv-cover" style={ink}>
@@ -339,7 +349,7 @@ export function TemplatePreview() {
                 </div>
               ) : null}
 
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && view === "desktop" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && view === "desktop" ? (
                 <div className="pv-desk">
                   <div className="pv-chrome">
                     <span className="pv-dot" />
