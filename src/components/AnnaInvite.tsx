@@ -5,7 +5,8 @@ import { assetUrl } from "../api";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import "./anna.css";
 
-type Theme = "terracotta" | "sage" | "dusk";
+export type AnnaTheme = "terracotta" | "sage" | "dusk";
+type Theme = AnnaTheme;
 
 const THEMES: Record<Theme, { accent: string; text: string; leaf: string; soft: string }> = {
   terracotta: { accent: "#A44B32", text: "#9C4630", leaf: "#8A9A7B", soft: "#EFD9C8" },
@@ -101,11 +102,15 @@ export function AnnaInvite({
   fields,
   quiet = false,
   onReply,
+  theme: themeProp,
+  onTheme,
 }: {
   fields: InviteFields;
   quiet?: boolean;
   wishes?: { name: string; note: string }[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
+  theme?: Theme;
+  onTheme?: (theme: Theme) => void;
 }) {
   const { first, second } = coupleOf(fields.names);
   const when = dateParts(fields.date);
@@ -113,7 +118,12 @@ export function AnnaInvite({
   const photos = (fields.photos ?? []).map(assetUrl);
   const place = placeName(fields.detail, fields.address);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [theme, setTheme] = useState<Theme>("terracotta");
+  const [picked, setPicked] = useState<Theme>(themeProp ?? "terracotta");
+  const theme = themeProp ?? picked;
+  function chooseTheme(next: Theme) {
+    setPicked(next);
+    onTheme?.(next);
+  }
   const [flipped, setFlipped] = useState(false);
   const [open, setOpen] = useState(false);
   const [music, setMusic] = useState(false);
@@ -222,7 +232,7 @@ export function AnnaInvite({
             <div>
               <div className="anna-themes" role="group" aria-label="Colour">
                 {(Object.keys(THEMES) as Theme[]).map((item) => (
-                  <button key={item} type="button" aria-pressed={theme === item} style={{ background: THEMES[item].accent }} onClick={() => setTheme(item)} />
+                  <button key={item} type="button" aria-pressed={theme === item} style={{ background: THEMES[item].accent }} onClick={() => chooseTheme(item)} />
                 ))}
               </div>
               {fields.audio ? (
