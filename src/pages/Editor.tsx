@@ -198,6 +198,7 @@ export function Editor() {
   const [future, setFuture] = useState<Model[]>([]);
   const [saving, setSaving] = useState(false);
   const [tab, setTab] = useState<Tab>("Details");
+  const [sheet, setSheet] = useState(true);
   const [device, setDevice] = useState<"phone" | "desktop">("phone");
   const [publishOpen, setPublishOpen] = useState(false);
   const [link, setLink] = useState("");
@@ -462,7 +463,7 @@ export function Editor() {
       : (SWATCHES.find((item) => item.id === model.swatch)?.name ?? "Terracotta");
 
   return (
-    <div className={`ed-root${model.motion ? "" : " ed-still"}`}>
+    <div className={`ed-root${model.motion ? "" : " ed-still"}${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
       <header className="ed-top">
         <div className="ed-brand">
           <Link className="ed-back" to={`/template/${template.id}?event=${draft.event}`} aria-label="Back to template">
@@ -485,7 +486,7 @@ export function Editor() {
               <path d="M4 9h11a5 5 0 0 1 0 10h-3" />
             </svg>
           </button>
-          <button type="button" className="ed-iconbtn" aria-label="Redo" disabled={!future.length} onClick={redo}>
+          <button type="button" className="ed-iconbtn ed-redo" aria-label="Redo" disabled={!future.length} onClick={redo}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M15 14l5-5-5-5" />
               <path d="M20 9H9a5 5 0 0 0 0 10h3" />
@@ -508,25 +509,46 @@ export function Editor() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" />
             </svg>
-            Publish & share
+            <span className="ed-pub-long">Publish & share</span>
+            <span className="ed-pub-short">Publish</span>
           </button>
         </div>
       </header>
+      {getToken() ? null : <div className="ed-guest-strip">Designing as a guest · draft saved on this phone</div>}
 
       <div className="ed-body">
         <nav className="ed-rail" aria-label="Editor sections">
           {TABS.map((item) => (
-            <button key={item.id} type="button" className="ed-tab" aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}>
-              <Icon d={item.icon} stroke={tab === item.id ? "#6B3A5B" : "#716A6D"} />
+            <button
+              key={item.id}
+              type="button"
+              className="ed-tab"
+              aria-current={tab === item.id ? "page" : undefined}
+              aria-pressed={sheet && tab === item.id}
+              onClick={() => {
+                if (window.matchMedia("(max-width: 860px)").matches) setSheet((open) => (tab === item.id ? !open : true));
+                setTab(item.id);
+              }}
+            >
+              <Icon d={item.icon} stroke={sheet && tab === item.id ? "#6B3A5B" : "#716A6D"} />
               <span>{item.id}</span>
             </button>
           ))}
         </nav>
 
-        <aside className="ed-panel">
+        <aside className="ed-panel" inert={sheet ? undefined : true}>
+          <div className="ed-sheet-head">
+            <span className="ed-grab" aria-hidden="true" />
+            <div>
+              <h2>{tab}</h2>
+              <button type="button" className="ed-done" onClick={() => setSheet(false)}>
+                Done
+              </button>
+            </div>
+          </div>
           {tab === "Details" ? (
             <div className="ed-stack">
-              <div>
+              <div className="ed-intro">
                 <h2>Invitation details</h2>
                 <p className="ed-lead">Names, date and the message guests see first.</p>
               </div>
@@ -594,7 +616,7 @@ export function Editor() {
 
           {tab === "Functions" ? (
             <div className="ed-stack">
-              <div>
+              <div className="ed-intro">
                 <h2>Functions</h2>
                 <p className="ed-lead">Each function gets its own time, venue and map.</p>
               </div>
@@ -721,7 +743,7 @@ export function Editor() {
 
           {tab === "Design" ? (
             <div className="ed-stack">
-              <div>
+              <div className="ed-intro">
                 <h2>Design</h2>
                 <p className="ed-lead">Layout, colours, fonts and motion.</p>
               </div>
@@ -819,7 +841,7 @@ export function Editor() {
 
           {tab === "Sections" ? (
             <div className="ed-stack">
-              <div>
+              <div className="ed-intro">
                 <h2>Page sections</h2>
                 <p className="ed-lead">Dress and photos follow these switches. The rest of this design stays in place.</p>
               </div>
@@ -843,7 +865,7 @@ export function Editor() {
 
           {tab === "RSVP" ? (
             <div className="ed-stack">
-              <div>
+              <div className="ed-intro">
                 <h2>RSVP form</h2>
                 <p className="ed-lead">Reply-by is saved with the invitation. Guests answer the questions on this design.</p>
               </div>
@@ -891,7 +913,7 @@ export function Editor() {
 
           {tab === "Music" ? (
             <div className="ed-stack">
-              <div>
+              <div className="ed-intro">
                 <h2>Background music</h2>
                 <p className="ed-lead">Plays when guests tap the music button. Add your own file.</p>
               </div>

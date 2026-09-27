@@ -3,6 +3,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
 import { Category } from "./pages/Category";
+import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
@@ -55,6 +56,7 @@ export default function App() {
           </Shell>
         }
       />
+      <Route path="/create" element={<CreateGuest />} />
       <Route path="/create/:id" element={<Editor />} />
       <Route path="/studio" element={<Studio view="dashboard" />} />
       <Route path="/events" element={<Studio view="events" />} />
