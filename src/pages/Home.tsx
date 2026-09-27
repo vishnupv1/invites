@@ -552,6 +552,11 @@ export function Home() {
               <a href="#faq">FAQ</a>
               <a href="#how">How it works</a>
             </div>
+            <div>
+              <span>Contact</span>
+              <strong>Vishnu P V</strong>
+              <a href="tel:+917510208562">+91 7510208562</a>
+            </div>
           </div>
         </div>
         <div className="foot-bottom">

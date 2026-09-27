@@ -1212,7 +1212,8 @@
   gap: 12px;
 }
 
-.foot-cols span {
+.foot-cols span,
+.foot-cols strong {
   color: #fff;
   font-weight: 700;
 }
