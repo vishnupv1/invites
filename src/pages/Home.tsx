@@ -111,7 +111,7 @@ export function Home() {
           <Link className="text-link" to="/login">
             Log in
           </Link>
-          <Link className="btn btn-fill lp-create" to="/create/gazal?event=marriage">
+          <Link className="btn btn-fill lp-create" to="/create">
             Create invite
           </Link>
           <button
@@ -140,7 +140,7 @@ export function Home() {
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
-          <Link to="/create/gazal?event=marriage">Create your invitation</Link>
+          <Link to="/create">Create your invitation</Link>
         </nav>
       ) : null}
 
@@ -158,7 +158,7 @@ export function Home() {
             a birthday, or the evening after.
           </p>
           <div className="hero-actions">
-            <Link className="btn btn-fill btn-lg" to="/create/gazal?event=marriage">
+            <Link className="btn btn-fill btn-lg" to="/create">
               Create your invitation — free
               <Arrow />
             </Link>
@@ -463,7 +463,7 @@ export function Home() {
               <li>Photographs, a song, and a map when you add them</li>
               <li>Replies on the page</li>
             </ul>
-            <Link className="btn btn-line" to="/create/gazal?event=marriage">
+            <Link className="btn btn-line" to="/create">
               Start free
             </Link>
           </article>
@@ -516,7 +516,7 @@ export function Home() {
           <h2>Your celebration deserves more than a forwarded PDF.</h2>
           <p>The free wedding note is a real invitation. Upgrade when the day wants photographs and a map.</p>
         </div>
-        <Link className="btn btn-white btn-lg" to="/create/gazal?event=marriage">
+        <Link className="btn btn-white btn-lg" to="/create">
           Create your invitation
         </Link>
       </section>
