@@ -53,7 +53,8 @@ export type TemplateStyle =
   | "anna"
   | "baptism"
   | "vivah"
-  | "beach";
+  | "beach"
+  | "home";
 
 export type Template = {
   id: string;

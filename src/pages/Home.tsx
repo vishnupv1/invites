@@ -365,6 +365,16 @@ export function Home() {
               <em className="tag">₹2,000</em>
             </div>
           </Link>
+          <Link className="template" to="/open/hearth">
+            <img className="template-cover" src="/covers/hearth.jpg" alt="" />
+            <div className="template-meta">
+              <div>
+                <strong>Hearth</strong>
+                <span>Housewarming</span>
+              </div>
+              <em className="tag">₹599</em>
+            </div>
+          </Link>
           <Link className="template" to="/open/anna">
             <img className="template-cover" src="/covers/anna.jpg" alt="" />
             <div className="template-meta">

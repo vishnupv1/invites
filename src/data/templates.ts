@@ -195,6 +195,32 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "hearth",
+    name: "Hearth",
+    style: "home",
+    price: 599,
+    free: false,
+    events: ["housewarming"],
+    tagline: "Housewarming",
+    description: "A front door opens onto a griha pravesh, a house tour, and a reply.",
+    asks: { photos: 4, audio: true, location: true },
+    samples: {
+      housewarming: sample("housewarming", {
+        hosts: "",
+        names: "Arun, Deepa & little Aadi",
+        title: "invite you to bless our new home",
+        detail: "",
+        date: "2027-01-17",
+        time: "06:30",
+        venue: "Flat 4B, Green Meadows Villas",
+        address: "Kakkanad",
+        message: "",
+        dress: "",
+        rsvpBy: "2027-01-10",
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {
