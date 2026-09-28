@@ -13,6 +13,7 @@ import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite, type GazalWish } from "./GazalInvite";
 import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
+import { PeaceInvite } from "./PeaceInvite";
 
 type Reply = { name: string; note: string; attending: boolean };
 
@@ -339,6 +340,9 @@ export function InviteSite({
   }
   if (template.style === "thiruvizha") {
     return <ThiruvizhaInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "peace") {
+    return <PeaceInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   let body: ReactNode;
   switch (template.style) {

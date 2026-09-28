@@ -107,19 +107,29 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
         <>
           {pack.programme.map((item, index) => (
             <div className="ed-fn" key={`programme-${index}`}>
-              {index === 0 ? <p className="ed-lead">The day’s programme</p> : null}
+              {index === 0 ? <p className="ed-lead">{item.kick !== undefined ? "The celebration" : "The day’s programme"}</p> : null}
               <div className="ed-fn-head">
-                <input className="ed-input" aria-label="Programme title" value={item.title} onChange={(event) => patchList<ProgrammeItem>("programme", index, { title: event.target.value })} />
+                <input className="ed-input" aria-label={item.kick !== undefined ? "Gathering name" : "Programme title"} value={item.title} onChange={(event) => patchList<ProgrammeItem>("programme", index, { title: event.target.value })} />
                 <RemoveButton label={`Remove ${item.title || "gathering"}`} onClick={() => dropItem("programme", index)} />
               </div>
+              {item.kick !== undefined ? (
+                <input className="ed-input" aria-label="Occasion" value={item.kick} onChange={(event) => patchList<ProgrammeItem>("programme", index, { kick: event.target.value })} />
+              ) : null}
               {item.tamil !== undefined ? (
                 <input className="ed-input" aria-label="Tamil name" lang="ta" value={item.tamil} onChange={(event) => patchList<ProgrammeItem>("programme", index, { tamil: event.target.value })} />
               ) : null}
-              <input className="ed-input" aria-label="Time" value={item.time} onChange={(event) => patchList<ProgrammeItem>("programme", index, { time: event.target.value })} />
-              <textarea className="ed-input" aria-label="Programme detail" rows={2} value={item.text} onChange={(event) => patchList<ProgrammeItem>("programme", index, { text: event.target.value })} />
+              <input className="ed-input" aria-label={item.kick !== undefined ? "When" : "Time"} value={item.time} onChange={(event) => patchList<ProgrammeItem>("programme", index, { time: event.target.value })} />
+              {item.kick !== undefined ? (
+                <input className="ed-input" aria-label="Venue" value={item.text} onChange={(event) => patchList<ProgrammeItem>("programme", index, { text: event.target.value })} />
+              ) : (
+                <textarea className="ed-input" aria-label="Programme detail" rows={2} value={item.text} onChange={(event) => patchList<ProgrammeItem>("programme", index, { text: event.target.value })} />
+              )}
+              {item.note !== undefined ? (
+                <input className="ed-input" aria-label="Dress" value={item.note} onChange={(event) => patchList<ProgrammeItem>("programme", index, { note: event.target.value })} />
+              ) : null}
             </div>
           ))}
-          <button type="button" className="ed-add" onClick={() => addItem<ProgrammeItem>("programme", { time: "", title: "New gathering", text: "", ...(pack.inviteTamil !== undefined ? { tamil: "" } : {}) })}>+ Add a gathering</button>
+          <button type="button" className="ed-add" onClick={() => addItem<ProgrammeItem>("programme", { time: "", title: "New gathering", text: "", ...(pack.inviteTamil !== undefined ? { tamil: "" } : {}), ...(pack.programme?.[0]?.kick !== undefined ? { kick: "", note: "" } : {}) })}>+ Add a gathering</button>
         </>
       ) : null}
       {pack.rooms ? (
@@ -168,6 +178,12 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
           ))}
           <button type="button" className="ed-add" onClick={() => addItem<FactItem>("facts", { label: "New fact", value: "" })}>+ Add a fact</button>
         </>
+      ) : null}
+      {pack.caption !== undefined && pack.sangeetName === undefined ? (
+        <div className="ed-fn">
+          <p className="ed-lead">Hashtag</p>
+          <input className="ed-input" aria-label="Hashtag" value={pack.caption} onChange={(event) => write({ ...pack, caption: event.target.value })} />
+        </div>
       ) : null}
       {pack.airport !== undefined ? (
         <div className="ed-fn">

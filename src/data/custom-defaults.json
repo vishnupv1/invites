@@ -77,5 +77,22 @@
       { "time": "10:30 AM", "title": "Oonjal", "tamil": "ஊஞ்சல்", "text": "The couple is seated on the swing and showered with rice and flowers." },
       { "time": "6:30 PM", "title": "Virundhu", "tamil": "விருந்து", "text": "A banana-leaf feast, then an evening of music under the pandhal." }
     ]
+  },
+  "peace": {
+    "story": [
+      { "year": "2019", "title": "A shared umbrella", "text": "Caught in a monsoon downpour outside the same bookshop." },
+      { "year": "2021", "title": "The first trip", "text": "A road trip to the hills and far too many playlists." },
+      { "year": "2024", "title": "Moving in", "text": "Two cities, one tiny apartment, a very opinionated cat." },
+      { "year": "2027", "title": "The question", "text": "A quiet morning, a handwritten note and a very happy yes." }
+    ],
+    "programme": [
+      { "kick": "Friday evening", "title": "Welcome Cocktails", "time": "Fri, 8 December · 7:00 PM", "text": "The Rooftop Terrace", "note": "Cocktail chic" },
+      { "kick": "The main event", "title": "The Ceremony", "time": "Sat, 9 December · 5:00 PM", "text": "The Glasshouse Garden", "note": "Black-tie optional" },
+      { "kick": "After dark", "title": "Dinner & Dancing", "time": "Sat, 9 December · 7:30 PM", "text": "The Crystal Ballroom", "note": "Bring dancing shoes" }
+    ],
+    "gift": "Your presence is our present. If you'd like, a donation to our chosen charity would mean the world.",
+    "stay": "Rooms are held at two hotels nearby. Mention the couple when booking.",
+    "airport": "Valet parking on site, and cabs from the airport take about 50 minutes.",
+    "caption": "#MayaMeetsDev"
   }
 }

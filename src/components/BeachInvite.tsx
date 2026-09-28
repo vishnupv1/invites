@@ -1,6 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import "./beach.css";
@@ -198,6 +200,7 @@ export function BeachInvite({
   const dateLine = dotted(fields.date, place);
   const tag = first === "Rohan" && second === "Alisha" ? "#RohanAndAlishaAshore" : `#${first.replace(/\s/g, "")}And${second.replace(/\s/g, "")}`;
   const photos = (fields.photos ?? []).map(assetUrl);
+  const captions = photoNotes(fields.notes, catalogMeta.beach.shots);
   const journey = packOf("beach", fields.lines);
   const story = (journey.story ?? []).filter((item) => item.title.trim() || item.text.trim()).map((item, index) => ({ ...item, color: STORY_COLORS[index] ?? "#F6C08F" }));
   const ceremonyName = eventName(fields.lines, "ceremonyName", "Sunset vows");
@@ -391,8 +394,8 @@ export function BeachInvite({
                       {photos[index] ? <img src={photos[index]} alt="" /> : "Photo"}
                     </div>
                     <span className="bw-year">{item.year}</span>
-                    <strong>{item.title}</strong>
-                    <small>{item.text}</small>
+                    <strong>{captions[index] && captions[index].title !== catalogMeta.beach.shots[index]?.label ? captions[index].title : item.title}</strong>
+                    <small>{captions[index]?.text || item.text}</small>
                   </div>
                 </div>
               ))}

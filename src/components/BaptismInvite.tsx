@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatTime } from "../lib/dates";
 import "./baptism.css";
 
@@ -189,6 +191,7 @@ export function BaptismInvite({
   const when = whenOf(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
+  const captions = photoNotes(fields.notes, catalogMeta.baptism.shots);
   const audioRef = useRef<HTMLAudioElement>(null);
   const theme: Theme = themeProp ?? "sky";
   const [open, setOpen] = useState(false);
@@ -318,7 +321,10 @@ export function BaptismInvite({
             </div>
             <div className="bp-halo">
               <Halo />
-              <div className="bp-portrait">{photos[0] ? <img src={photos[0]} alt="" /> : "Baby photo"}</div>
+              <div className="bp-portrait">
+                {photos[0] ? <img src={photos[0]} alt="" /> : captions[0]?.title || "Baby photo"}
+                {captions[0]?.text ? <small className="bp-portrait-note">{captions[0].text}</small> : null}
+              </div>
               <div className="bp-float-dove"><Dove /></div>
               <div className="bp-float-dove alt"><Dove /></div>
             </div>
@@ -410,10 +416,10 @@ export function BaptismInvite({
           </div> : null}
 
           <section className="bp-gallery">
-            <Shot className="tall" label="Family photo" src={photos[1]} />
+            <Shot className="tall" label={captions[1]?.title || "Family photo"} text={captions[1]?.text} src={photos[1]} />
             <div className="bp-pair">
-              <Shot className="short sand arch" label="Tiny feet" src={photos[2]} delay="-4s" duration="10s" />
-              <Shot className="short sand" label="First smile" src={photos[3]} delay="-7s" duration="14s" />
+              <Shot className="short sand arch" label={captions[2]?.title || "Tiny feet"} text={captions[2]?.text} src={photos[2]} delay="-4s" duration="10s" />
+              <Shot className="short sand" label={captions[3]?.title || "First smile"} text={captions[3]?.text} src={photos[3]} delay="-7s" duration="14s" />
             </div>
           </section>
 
@@ -551,10 +557,11 @@ function Halo() {
   );
 }
 
-function Shot({ className, label, src, delay = "0s", duration = "12s" }: { className: string; label: string; src?: string; delay?: string; duration?: string }) {
+function Shot({ className, label, text, src, delay = "0s", duration = "12s" }: { className: string; label: string; text?: string; src?: string; delay?: string; duration?: string }) {
   return (
     <div className={`bp-shot ${className}`}>
       {src ? <img src={src} alt="" style={{ animationDelay: delay, animationDuration: duration }} /> : <span style={{ animationDelay: delay, animationDuration: duration }}>{label}</span>}
+      {text ? <small className="bp-shot-note">{text}</small> : null}
     </div>
   );
 }

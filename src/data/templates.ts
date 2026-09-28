@@ -298,6 +298,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "peace",
+    name: "Peace",
+    style: "peace",
+    price: 999,
+    free: false,
+    events: ["marriage"],
+    tagline: "Gift hamper",
+    description: "A gift-hamper wedding. The ribbon opens onto the day, the story, the celebrations and a reply.",
+    asks: { photos: 5, audio: true, location: true },
+    meta: META.peace,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Maya & Dev",
+        title: "are getting married",
+        detail: "Priya & Vivek",
+        date: "2028-12-09",
+        time: "17:00",
+        venue: "The Glasshouse",
+        address: "Bengaluru",
+        message: "See you there",
+        dress: "Black-tie optional in soft neutrals, blush and champagne.",
+        rsvpBy: "2028-11-09",
+        lines: linesFor("peace"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

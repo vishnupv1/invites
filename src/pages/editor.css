@@ -382,13 +382,17 @@
 .ed-shots { display: grid; gap: 10px; }
 .ed-shot {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 8px;
   border: 1px solid #e8dfd6;
   border-radius: 14px;
   background: #fff;
 }
+.ed-shot-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.ed-shot-copy label { display: flex; flex-direction: column; gap: 4px; }
+.ed-shot-copy label span { font-size: 12px; font-weight: 700; color: #716a6d; }
+.ed-shot-copy .ed-input { min-height: 38px; padding: 8px 12px; font-size: 14px; }
 .ed-shot img,
 .ed-shot-empty {
   width: 64px;

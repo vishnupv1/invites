@@ -298,5 +298,43 @@
       { "id": "wishes", "label": "Blessings", "configurable": false, "fields": [] },
       { "id": "music", "label": "Nadaswaram", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "peace": {
+    "names": "couple",
+    "ceremony": "The ceremony",
+    "themes": [
+      { "id": "blush", "name": "Blush" },
+      { "id": "noir", "name": "Noir" },
+      { "id": "sage", "name": "Sage" }
+    ],
+    "defaultTheme": "blush",
+    "shots": [
+      { "label": "Paris, 2023" },
+      { "label": "Our first home" },
+      { "label": "The proposal" },
+      { "label": "Sunday mornings" },
+      { "label": "Road trip" }
+    ],
+    "rsvp": { "meal": true, "song": false, "maxGuests": 8 },
+    "components": [
+      { "id": "opening", "label": "Gift hamper", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Family line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "The gift is for", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "Closing line", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Place", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "programme", "label": "The celebration", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "dress", "label": "Dress code", "configurable": true, "fields": ["dress"] },
+      { "id": "travel", "label": "Stay and the journey", "configurable": true, "fields": ["lines"] },
+      { "id": "gift", "label": "Gifts", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Love notes", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
   }
 }

@@ -89,6 +89,8 @@
 .anna-facts small { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #6e655e; }
 .anna-facts strong { font-family: Gloock, Georgia, serif; font-size: 26px; font-weight: 400; }
 .anna-portrait:not(:has(img)) { display: none; }
+.anna-portrait figcaption, .anna-venue-shot figcaption { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; font-size: 13px; }
+.anna-portrait figcaption span, .anna-venue-shot figcaption span { font-size: 12px; line-height: 1.4; opacity: 0.75; }
 .anna-portrait img, .anna-hero img { width: 100%; height: 300px; object-fit: cover; border-radius: 160px 160px 4px 4px; }
 .anna-count { background: var(--accent); color: #fffdf9; padding: 22px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .anna-count > span { font-family: Gloock, Georgia, serif; font-size: 20px; line-height: 1.2; }
