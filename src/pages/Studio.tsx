@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getHost, getToken, listGreetings, signOut } from "../api";
+import { getHost, getToken, listGreetings, listTemplates, signOut } from "../api";
 import { getEvent } from "../data/events";
+import { formatPrice } from "../data/templates";
 import { formatShortDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
-import type { SavedInvite } from "../types";
+import type { SavedInvite, Template } from "../types";
 import "./studio.css";
 
 type Greeting = { id: string; name: string; note: string; attending: boolean; at: string };
@@ -15,6 +16,7 @@ const NAV = [
   { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
   { label: "My events", href: "/events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
   { label: "Guests", href: "/guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6M17 11a3 3 0 1 0 0-6M19 15c1.8.6 2.8 2.5 3 5" },
+  { label: "Purchases", href: "/purchases", icon: "M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" },
   { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
 ];
 
@@ -69,9 +71,9 @@ function Icon({ d, color }: { d: string; color: string }) {
   );
 }
 
-export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" | "guests" }) {
+export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" | "guests" | "purchases" }) {
   const { pathname } = useLocation();
-  const { invites, ready } = useLibrary();
+  const { invites, ready, owned } = useLibrary();
   const signedIn = Boolean(getToken());
   const [hostName, setHostName] = useState("");
   const [selectedId, setSelectedId] = useState("");
@@ -82,6 +84,8 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
   const [roster, setRoster] = useState<GuestRow[]>([]);
   const [rosterReady, setRosterReady] = useState(false);
   const [eventFilter, setEventFilter] = useState("all");
+  const [catalog, setCatalog] = useState<Template[]>([]);
+  const [catalogReady, setCatalogReady] = useState(false);
 
   useEffect(() => {
     if (!signedIn) return;
@@ -89,6 +93,14 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
       .then((host) => setHostName(host.name))
       .catch(() => setHostName(""));
   }, [signedIn]);
+
+  useEffect(() => {
+    if (view !== "purchases") return;
+    listTemplates()
+      .then(setCatalog)
+      .catch(() => setCatalog([]))
+      .finally(() => setCatalogReady(true));
+  }, [view]);
 
   const selected = invites.find((invite) => invite.id === selectedId) ?? invites[0];
 
@@ -161,8 +173,11 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
     }
   }
 
-  const pageTitle = view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations";
-  const pageLede = view === "events" ? "The invitations on your account." : view === "guests" ? "Replies from every invitation." : signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account.";
+  const purchased = owned
+    .map((id) => catalog.find((template) => template.id === id))
+    .filter((template): template is Template => Boolean(template));
+  const pageTitle = view === "purchases" ? "Purchases" : view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations";
+  const pageLede = view === "purchases" ? "Templates you've bought, ready to use again." : view === "events" ? "The invitations on your account." : view === "guests" ? "Replies from every invitation." : signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account.";
 
   return (
     <div className="board">
@@ -229,7 +244,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
             <div className="avatar">{initialsOf(hostName) || "?"}</div>
             <div>
               <div className="dash-greet">{signedIn ? greetingHour() : "Your invitations"}</div>
-              <div className="dash-name">{view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? first : "Log in"}</div>
+              <div className="dash-name">{view === "purchases" ? "Purchases" : view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? first : "Log in"}</div>
             </div>
           </div>
         </div>
@@ -250,7 +265,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
 
         {!signedIn ? (
           <section className="panel empty-card">
-            <h2>{view === "events" ? "Log in to see your events." : view === "guests" ? "Log in to see your guests." : "Log in to open your dashboard."}</h2>
+            <h2>{view === "purchases" ? "Log in to see your purchases." : view === "events" ? "Log in to see your events." : view === "guests" ? "Log in to see your guests." : "Log in to open your dashboard."}</h2>
             <Link className="create" to="/login">
               Log in
             </Link>
@@ -259,7 +274,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
 
         {signedIn && !ready ? <p className="empty">Loading your invitations…</p> : null}
 
-        {signedIn && ready && invites.length === 0 ? (
+        {signedIn && ready && invites.length === 0 && view !== "purchases" ? (
           <section className="panel empty-card">
             <h2>Nothing published yet.</h2>
             <p>{view === "events" ? "Create an invitation and it will show up here." : view === "guests" ? "Create an invitation and replies will show up here." : "Create an invitation and the guest replies will show up here."}</p>
@@ -500,6 +515,39 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
             </div>
           </>
         ) : null}
+
+        {signedIn && ready && view === "purchases" ? (
+          !catalogReady ? (
+            <p className="empty">Loading your purchases…</p>
+          ) : purchased.length === 0 ? (
+            <section className="panel empty-card">
+              <h2>No purchases yet.</h2>
+              <p>Templates you buy show up here, ready to use again.</p>
+              <Link className="create" to="/templates">
+                Browse templates
+              </Link>
+            </section>
+          ) : (
+            <div className="purchase-grid">
+              {purchased.map((template) => {
+                const event = template.events[0];
+                return (
+                  <article className="purchase-card" key={template.id}>
+                    <img src={`/covers/${template.id}.jpg`} alt="" />
+                    <div>
+                      <strong>{template.name}</strong>
+                      <small>{[event ? getEvent(event)?.label : "", formatPrice(template)].filter(Boolean).join(" · ")}</small>
+                    </div>
+                    <span className="pill pending">Purchased</span>
+                    <Link className="line" to={`/create/${template.id}?event=${event ?? "marriage"}`}>
+                      Use template
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
+          )
+        ) : null}
       </main>
 
       <nav className="dash-nav" aria-label="Main">
@@ -526,6 +574,12 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
             <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" />
           </svg>
           Guests
+        </Link>
+        <Link to="/purchases" aria-current={view === "purchases" ? "page" : undefined}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" />
+          </svg>
+          Purchases
         </Link>
         {signedIn ? (
           <button

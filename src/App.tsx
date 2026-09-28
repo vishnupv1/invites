@@ -61,6 +61,7 @@ export default function App() {
       <Route path="/studio" element={<Studio view="dashboard" />} />
       <Route path="/events" element={<Studio view="events" />} />
       <Route path="/guests" element={<Studio view="guests" />} />
+      <Route path="/purchases" element={<Studio view="purchases" />} />
       <Route path="/i/:code" element={<InvitePage />} />
     </Routes>
   );
