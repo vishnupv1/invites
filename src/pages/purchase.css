@@ -1,6 +1,20 @@
+.buy-board {
+  height: 100vh;
+  overflow: hidden;
+}
 .buy-board > .buy {
   flex: 1;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.buy-bar {
+  flex-shrink: 0;
+  z-index: 4;
+  background: #fff;
 }
 @media (min-width: 1101px) {
   .buy-board .side {
@@ -12,7 +26,6 @@
 }
 .buy-board .modal-back { z-index: 20; }
 .buy {
-  min-height: 100vh;
   background: #faf7f2;
   color: #211c1e;
   font-family: Manrope, "Helvetica Neue", sans-serif;
@@ -83,7 +96,7 @@
 .buy-crumbs { margin: 0; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e8dfd6; }
 .buy-crumbs.crumbs { margin: 0; }
 
-.buy-body { padding: 28px 40px 72px; display: flex; flex-direction: column; gap: 36px; }
+.buy-body { flex: 1; min-height: 0; overflow: auto; padding: 28px 40px 72px; display: flex; flex-direction: column; gap: 36px; }
 .buy-split { display: grid; grid-template-columns: 1fr; gap: 28px; align-items: start; }
 @media (min-width: 1680px) {
   .buy-split { grid-template-columns: minmax(0, 1fr) 380px; }
