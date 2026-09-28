@@ -108,7 +108,8 @@ export type TemplateStyle =
   | "vivah"
   | "beach"
   | "home"
-  | "shaadi";
+  | "shaadi"
+  | "thiruvizha";
 
 export type Template = {
   id: string;

@@ -95,6 +95,14 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
           <p className="ed-lead">The longer note is the Paalukachal field under Details. Clear it to leave this section without a paragraph.</p>
         </div>
       ) : null}
+      {pack.hostsTamil !== undefined || pack.inviteTamil !== undefined || pack.tamilNote !== undefined ? (
+        <div className="ed-fn">
+          <p className="ed-lead">Tamil wording</p>
+          {pack.hostsTamil !== undefined ? <input className="ed-input" aria-label="Tamil family line" lang="ta" value={pack.hostsTamil} onChange={(event) => write({ ...pack, hostsTamil: event.target.value })} /> : null}
+          {pack.inviteTamil !== undefined ? <input className="ed-input" aria-label="Tamil invitation line" lang="ta" value={pack.inviteTamil} onChange={(event) => write({ ...pack, inviteTamil: event.target.value })} /> : null}
+          {pack.tamilNote !== undefined ? <textarea className="ed-input" aria-label="Tamil blessing" lang="ta" rows={3} value={pack.tamilNote} onChange={(event) => write({ ...pack, tamilNote: event.target.value })} /> : null}
+        </div>
+      ) : null}
       {pack.programme ? (
         <>
           {pack.programme.map((item, index) => (
@@ -104,11 +112,14 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
                 <input className="ed-input" aria-label="Programme title" value={item.title} onChange={(event) => patchList<ProgrammeItem>("programme", index, { title: event.target.value })} />
                 <RemoveButton label={`Remove ${item.title || "gathering"}`} onClick={() => dropItem("programme", index)} />
               </div>
+              {item.tamil !== undefined ? (
+                <input className="ed-input" aria-label="Tamil name" lang="ta" value={item.tamil} onChange={(event) => patchList<ProgrammeItem>("programme", index, { tamil: event.target.value })} />
+              ) : null}
               <input className="ed-input" aria-label="Time" value={item.time} onChange={(event) => patchList<ProgrammeItem>("programme", index, { time: event.target.value })} />
               <textarea className="ed-input" aria-label="Programme detail" rows={2} value={item.text} onChange={(event) => patchList<ProgrammeItem>("programme", index, { text: event.target.value })} />
             </div>
           ))}
-          <button type="button" className="ed-add" onClick={() => addItem<ProgrammeItem>("programme", { time: "", title: "New gathering", text: "" })}>+ Add a gathering</button>
+          <button type="button" className="ed-add" onClick={() => addItem<ProgrammeItem>("programme", { time: "", title: "New gathering", text: "", ...(pack.inviteTamil !== undefined ? { tamil: "" } : {}) })}>+ Add a gathering</button>
         </>
       ) : null}
       {pack.rooms ? (

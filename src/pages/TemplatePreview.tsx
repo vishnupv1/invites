@@ -8,6 +8,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ShaadiInvite } from "../components/ShaadiInvite";
+import { ThiruvizhaInvite } from "../components/ThiruvizhaInvite";
 import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
 import { eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { useLibrary } from "../state";
@@ -333,7 +334,19 @@ export function TemplatePreview() {
                   theme="rani"
                 />
               ) : null}
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && view === "card" ? (
+              {template.style === "thiruvizha" ? (
+                <div className={view === "phone" ? "pv-live phone" : view === "card" ? "pv-live card" : "pv-live desk"}>
+                  <ThiruvizhaInvite
+                    fields={{
+                      ...sample,
+                      names: n2 ? `${n1} & ${n2}` : n1,
+                      venue: venueText === "Venue" ? sample.venue : venueText,
+                    }}
+                    lang={lang === "en" ? "en" : lang === "both" ? "both" : "ta"}
+                  />
+                </div>
+              ) : null}
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && view === "card" ? (
                 <div className="pv-card" style={{ ...ink, border: colour.bg === "#FAF7F2" ? "1px solid #E8DFD6" : undefined }}>
                   <div className="pv-card-in" style={{ borderColor: colour.accent, outlineColor: colour.accent }}>
                     <svg width="120" height="22" viewBox="0 0 120 22" fill="none" aria-hidden="true">
@@ -357,7 +370,7 @@ export function TemplatePreview() {
                 </div>
               ) : null}
 
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && view === "phone" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && view === "phone" ? (
                 <div className="pv-phone">
                   <div className="pv-phone-in">
                     <div className="pv-cover" style={ink}>
@@ -391,7 +404,7 @@ export function TemplatePreview() {
                 </div>
               ) : null}
 
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && view === "desktop" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && view === "desktop" ? (
                 <div className="pv-desk">
                   <div className="pv-chrome">
                     <span className="pv-dot" />
@@ -463,7 +476,7 @@ export function TemplatePreview() {
               <div className="pv-lang">
                 <span>Language</span>
                 <div className="pv-langs" role="group" aria-label="Language">
-                  {([["en", "English"], ["ml", "മലയാളം"], ["both", "Bilingual"]] as const).map(([id, label]) => (
+                  {([["en", "English"], ["ml", template.style === "thiruvizha" ? "தமிழ்" : "മലയാളം"], ["both", "Bilingual"]] as const).map(([id, label]) => (
                     <button key={id} type="button" aria-pressed={lang === id} onClick={() => setLang(id)}>{label}</button>
                   ))}
                 </div>
@@ -485,7 +498,7 @@ export function TemplatePreview() {
               <p>{template.description}</p>
               <div className="pv-facts">
                 <div><span>Best for</span><strong>{eventLabels(template)}</strong></div>
-                <div><span>Languages</span><strong>English, Malayalam, bilingual</strong></div>
+                <div><span>Languages</span><strong>{template.style === "thiruvizha" ? "English, Tamil, bilingual" : "English, Malayalam, bilingual"}</strong></div>
                 <div><span>Includes</span><strong>{extras(template)}</strong></div>
                 <div><span>Price</span><strong>{formatPrice(template)}</strong></div>
               </div>

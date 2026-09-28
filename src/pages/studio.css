@@ -136,7 +136,7 @@
 }
 .account {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 36px;
+  grid-template-columns: 44px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   padding: 10px;
@@ -160,6 +160,68 @@
   color: #211c1e;
   font-size: 14px;
   letter-spacing: 0.4px;
+}
+button.avatar {
+  border: none;
+  padding: 0;
+  font-family: Manrope, sans-serif;
+  cursor: pointer;
+}
+.acct-menu {
+  position: relative;
+  flex-shrink: 0;
+}
+.acct-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  min-width: 176px;
+  padding: 6px;
+  border: 1px solid #efe6dc;
+  border-radius: 14px;
+  background: #fff;
+  color: #211c1e;
+  box-shadow: 0 12px 32px rgba(33, 28, 30, 0.16);
+}
+.side .acct-pop {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+.acct-pop-name {
+  padding: 8px 12px 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #716a6d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.acct-pop button,
+.acct-pop a {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #211c1e;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+}
+.acct-pop button:hover,
+.acct-pop a:hover {
+  background: #faf7f2;
+  color: #6b3a5b;
 }
 .account .who {
   min-width: 0;

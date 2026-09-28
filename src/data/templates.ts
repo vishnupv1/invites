@@ -267,6 +267,37 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "thiruvizha",
+    name: "Thiruvizha",
+    style: "thiruvizha",
+    price: 1600,
+    free: false,
+    events: ["marriage"],
+    tagline: "Tamil wedding",
+    description: "A Tamil wedding. The kolam opens onto the muhurtham, the rituals and a reply — in English, Tamil, or both — with one nadaswaram.",
+    asks: { photos: 4, audio: true, location: true },
+    meta: META.thiruvizha,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "The Iyer & Subramanian families",
+        names: "Arjun & Meenakshi",
+        title: "request the honour of your presence at the wedding of our children",
+        detail: "அர்ஜுன் & மீனாட்சி",
+        date: "2027-04-18",
+        time: "09:15",
+        venue: "Meenakshi Temple Mandapam",
+        address: "Madurai",
+        message: "With the blessings of our elders, we invite you to the thiruvizha of our children. Your presence will complete the day.",
+        dress: "Kanjivaram silks and veshti. Temple jewellery welcome.\nகாஞ்சிபுரம் பட்டு, வேட்டி. கோவில் நகைகள் வரவேற்கப்படுகின்றன.",
+        rsvpBy: "2027-03-20",
+        receptionTime: "18:30",
+        receptionVenue: "The Grand Pandhal",
+        receptionAddress: "KK Nagar, Madurai",
+        lines: linesFor("thiruvizha"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

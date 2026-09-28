@@ -8,6 +8,7 @@ import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
+import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, type ShaadiFunction } from "../components/shaadi";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
@@ -113,6 +114,12 @@ function shaadiThemeOf(swatch: string): ShaadiTheme {
   return "rani";
 }
 
+function thiruThemeOf(swatch: string): ThiruvizhaTheme {
+  if (swatch === "ivory") return "ivory";
+  if (swatch === "emerald") return "emerald";
+  return "rani";
+}
+
 function baptismThemeOf(swatch: string): BaptismTheme {
   if (swatch === "rose") return "blush";
   if (swatch === "emerald") return "sage";
@@ -205,6 +212,7 @@ export function Editor() {
   const [placeQuery, setPlaceQuery] = useState("");
   const [places, setPlaces] = useState<PlaceHit[]>([]);
   const [searching, setSearching] = useState(false);
+  const [inviteLang, setInviteLang] = useState<ThiruvizhaLang>("both");
   const [scale, setScale] = useState(1);
   const [innerHeight, setInnerHeight] = useState(1600);
   const modelRef = useRef(model);
@@ -632,9 +640,19 @@ export function Editor() {
               <div className="ed-field">
                 <span className="ed-label">Language</span>
                 <div className="ed-grid-3">
-                  <button type="button" className="ed-chip" aria-pressed="true">English</button>
-                  <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.")}>മലയാളം</button>
-                  <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.")}>Bilingual</button>
+                  {template.id === "thiruvizha" ? (
+                    <>
+                      <button type="button" className="ed-chip" aria-pressed={inviteLang === "en"} onClick={() => setInviteLang("en")}>English</button>
+                      <button type="button" className="ed-chip" aria-pressed={inviteLang === "ta"} onClick={() => setInviteLang("ta")}>தமிழ்</button>
+                      <button type="button" className="ed-chip" aria-pressed={inviteLang === "both"} onClick={() => setInviteLang("both")}>Bilingual</button>
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" className="ed-chip" aria-pressed="true">English</button>
+                      <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.")}>മലയാളം</button>
+                      <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.")}>Bilingual</button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -932,15 +950,15 @@ export function Editor() {
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>Background music</h2>
-                <p className="ed-lead">Plays when guests tap the music button. Add your own file.</p>
+                <p className="ed-lead">{template.id === "thiruvizha" ? "One nadaswaram plays when guests tap the music button. Upload a file only to replace it." : "Plays when guests tap the music button. Add your own file."}</p>
               </div>
               <div className={draft.audio ? "ed-row ed-track" : "ed-row ed-track on"}>
                 <button type="button" className="ed-play" aria-label="No music" disabled>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="#CDC6C9" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
                 </button>
                 <div className="grow">
-                  <b>No music</b>
-                  <small>Silent</small>
+                  <b>{template.id === "thiruvizha" && !draft.audio ? "Nadaswaram" : "No music"}</b>
+                  <small>{template.id === "thiruvizha" && !draft.audio ? "Included with this design" : "Silent"}</small>
                 </div>
                 <button type="button" className={draft.audio ? "ed-use" : "ed-use on"} onClick={() => { patchDraft({ audio: "" }); setPlaying(false); }}>
                   {draft.audio ? "Use" : "Selected"}
@@ -1008,6 +1026,8 @@ export function Editor() {
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (
                     <ShaadiInvite fields={previewFields} theme={shaadiThemeOf(model.swatch)} />
+                  ) : template.style === "thiruvizha" ? (
+                    <ThiruvizhaInvite fields={previewFields} theme={thiruThemeOf(model.swatch)} lang={inviteLang} allowMusic={model.sections.find((item) => item.id === "music")?.on !== false} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}
