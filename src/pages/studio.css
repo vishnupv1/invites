@@ -1437,6 +1437,7 @@ button.avatar {
   font-weight: 800;
 }
 .dv-status.done { background: #efeae6; color: #716a6d; }
+.dv-status.draft { background: #f6ecdd; color: #7a5a26; }
 .dv-template, .dv-meta { font-size: 14px; color: #5e5550; }
 .dv-meta { display: flex; gap: 26px; flex-wrap: wrap; }
 .dv-meta strong { color: #211c1e; }

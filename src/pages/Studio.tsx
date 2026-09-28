@@ -310,8 +310,8 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
 
         {view !== "dashboard" && signedIn && ready && invites.length === 0 && view !== "purchases" ? (
           <section className="panel empty-card">
-            <h2>Nothing published yet.</h2>
-            <p>{view === "events" ? "Create an invitation and it will show up here." : view === "guests" ? "Create an invitation and replies will show up here." : "Create an invitation and the guest replies will show up here."}</p>
+            <h2>Nothing here yet.</h2>
+            <p>{view === "events" ? "Start an invitation and it will show up here, including drafts." : view === "guests" ? "Create an invitation and replies will show up here." : "Create an invitation and the guest replies will show up here."}</p>
             <Link className="create" to="/templates">
               Create invite
             </Link>
@@ -321,7 +321,9 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
         {signedIn && ready && invites.length > 0 && view === "events" ? (
           <div className="my-events">
             {invites.map((invite, index) => {
-              const finished = (daysUntil(invite.date) ?? 0) < 0;
+              const draftMode = invite.status === "draft";
+              const finished = !draftMode && (daysUntil(invite.date) ?? 0) < 0;
+              const editTo = `/create/${invite.templateId}?invite=${invite.id}`;
               return (
                 <article className="my-event" key={invite.id}>
                   <div className="my-event-top">
@@ -332,16 +334,23 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
                       <strong>{invite.names}</strong>
                       <small>{[formatShortDate(invite.date), invite.venue].filter(Boolean).join(" · ")}</small>
                     </div>
-                    <span className={`pill ${finished ? "completed" : "live"}`}>{finished ? "Completed" : "Live"}</span>
+                    <span className={`pill ${draftMode ? "draft" : finished ? "completed" : "live"}`}>{draftMode ? "Draft" : finished ? "Completed" : "Live"}</span>
                   </div>
                   {countdown(invite.date) ? <span className="countdown">{countdown(invite.date)}</span> : null}
                   <div className="head-actions">
-                    <Link className="line" to={`/i/${invite.code}`}>
-                      View page
+                    {draftMode ? null : (
+                      <Link className="line" to={`/i/${invite.code}`}>
+                        View page
+                      </Link>
+                    )}
+                    <Link className="line" to={editTo}>
+                      Edit
                     </Link>
-                    <button type="button" className="whatsapp" onClick={() => share(invite)}>
-                      Copy link
-                    </button>
+                    {draftMode ? null : (
+                      <button type="button" className="whatsapp" onClick={() => share(invite)}>
+                        Copy link
+                      </button>
+                    )}
                   </div>
                 </article>
               );

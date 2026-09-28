@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
@@ -17,7 +17,7 @@ import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
 import { PackFields } from "./PackFields";
 import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
-import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
+import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
@@ -186,6 +186,42 @@ function shownFields(model: Model): InviteFields {
   };
 }
 
+function editorState(model: Model): EditorState {
+  return {
+    swatch: model.swatch,
+    receptionOn: model.receptionOn,
+    sections: model.sections.map((item) => ({ id: item.id, on: item.on })),
+  };
+}
+
+function modelFromSaved(template: Template, fields: InviteFields, editor?: EditorState | null): Model {
+  const merged = { ...sampleFor(template, fields.event), ...fields };
+  const base = sectionsFor(template, merged);
+  const saved = new Map((editor?.sections ?? []).map((item) => [item.id, item.on]));
+  return {
+    draft: merged,
+    receptionOn: editor?.receptionOn ?? Boolean(merged.receptionVenue || merged.receptionTime),
+    swatch: editor?.swatch || template.meta.defaultTheme,
+    sections: base.map((item) => (saved.has(item.id) ? { ...item, on: Boolean(saved.get(item.id)) } : item)),
+  };
+}
+
+function localDraftKey(templateId: string) {
+  return `vellum.editor-draft.v1.${templateId}`;
+}
+
+function readLocal(templateId: string) {
+  try {
+    const raw = localStorage.getItem(localDraftKey(templateId));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { fields?: InviteFields; editor?: EditorState | null };
+    if (!parsed.fields) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
 function modelFor(template: Template, eventId: string | undefined): Model {
   const draft = sampleFor(template, eventId);
   return {
@@ -207,14 +243,21 @@ function Icon({ d, stroke = "currentColor" }: { d: string; stroke?: string }) {
 export function Editor() {
   const { id } = useParams();
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const template = getTemplate(id);
-  const { owns, remember } = useLibrary();
+  const inviteQuery = params.get("invite") ?? "";
+  const { owns, remember, invites, ready: libraryReady } = useLibrary();
   const { signedIn, host } = useSession();
   const hostName = host?.name ?? "";
-  const [model, setModel] = useState<Model | null>(() => (template ? modelFor(template, params.get("event") ?? undefined) : null));
+  const [model, setModel] = useState<Model | null>(() => {
+    if (!template || inviteQuery) return null;
+    const local = readLocal(template.id);
+    if (local?.fields) return modelFromSaved(template, local.fields, local.editor);
+    return modelFor(template, params.get("event") ?? undefined);
+  });
   const [past, setPast] = useState<Model[]>([]);
   const [future, setFuture] = useState<Model[]>([]);
-  const [saving, setSaving] = useState(false);
+  const [saveLabel, setSaveLabel] = useState(inviteQuery ? "Opening your invitation…" : template && readLocal(template.id) ? "Saved on this device" : "Draft");
   const [tab, setTab] = useState<Tab>("Details");
   const [sheet, setSheet] = useState(true);
   const [device, setDevice] = useState<"phone" | "desktop">("phone");
@@ -232,6 +275,13 @@ export function Editor() {
   const [scale, setScale] = useState(1);
   const [innerHeight, setInnerHeight] = useState(1600);
   const modelRef = useRef(model);
+  const inviteIdRef = useRef(inviteQuery);
+  const statusRef = useRef<"draft" | "live">("draft");
+  const codeRef = useRef("");
+  const dirtyRef = useRef(false);
+  const creatingRef = useRef<Promise<void> | null>(null);
+  const resumedRef = useRef(false);
+  const persistRef = useRef<() => Promise<void>>(async () => undefined);
   const frameRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -241,10 +291,73 @@ export function Editor() {
   modelRef.current = model;
 
   useEffect(() => {
-    if (!saving) return;
-    const timer = window.setTimeout(() => setSaving(false), 900);
+    if (!template || !inviteQuery) return;
+    if (inviteIdRef.current === inviteQuery && modelRef.current) return;
+    let cancel = false;
+    setSaveLabel("Opening your invitation…");
+    getInviteRecord(inviteQuery)
+      .then((record) => {
+        if (cancel) return;
+        if (record.templateId !== template.id) {
+          navigate(`/create/${record.templateId}?invite=${record.id}`, { replace: true });
+          return;
+        }
+        inviteIdRef.current = record.id;
+        statusRef.current = record.status === "live" ? "live" : "draft";
+        codeRef.current = record.code;
+        dirtyRef.current = false;
+        setModel(modelFromSaved(template, record.fields, record.editor));
+        setSaveLabel(statusRef.current === "live" ? "Saved" : "Draft saved");
+        if (statusRef.current === "live") setLink(`${window.location.origin}/i/${record.code}`);
+      })
+      .catch(() => {
+        if (cancel) return;
+        setSaveLabel("Could not open that invitation");
+        if (!modelRef.current) setModel(modelFor(template, params.get("event") ?? undefined));
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [template, inviteQuery, navigate, params]);
+
+  useEffect(() => {
+    if (resumedRef.current || !template || !signedIn || !libraryReady || inviteQuery || params.get("fresh") === "1") return;
+    resumedRef.current = true;
+    const local = readLocal(template.id);
+    const existing = invites.find((item) => item.templateId === template.id && item.status === "draft");
+    if (existing) {
+      inviteIdRef.current = existing.id;
+      codeRef.current = existing.code;
+      statusRef.current = "draft";
+      if (dirtyRef.current || local?.fields) {
+        dirtyRef.current = true;
+        void persistRef.current();
+      } else {
+        navigate(`/create/${template.id}?invite=${existing.id}`, { replace: true });
+      }
+      return;
+    }
+    if (local?.fields) {
+      dirtyRef.current = true;
+      void persistRef.current();
+    }
+  }, [template, signedIn, libraryReady, inviteQuery, invites, navigate, params, remember]);
+
+  useEffect(() => {
+    if (!model || !dirtyRef.current) return;
+    const timer = window.setTimeout(() => {
+      void persistRef.current();
+    }, 700);
     return () => window.clearTimeout(timer);
-  }, [saving, model]);
+  }, [model, signedIn]);
+
+  useEffect(() => {
+    const flush = () => {
+      if (dirtyRef.current) void persistRef.current();
+    };
+    window.addEventListener("pagehide", flush);
+    return () => window.removeEventListener("pagehide", flush);
+  }, []);
 
   useEffect(() => {
     if (!toast) return;
@@ -267,8 +380,52 @@ export function Editor() {
     return () => observer.disconnect();
   }, [device, model, tab]);
 
-  if (!template || !model) return <Navigate to="/" replace />;
+  persistRef.current = async () => {
+    const current = modelRef.current;
+    if (!current || !template || !dirtyRef.current) return;
+    dirtyRef.current = false;
+    const fields = shownFields(current);
+    const editor = editorState(current);
+    if (!getToken()) {
+      localStorage.setItem(localDraftKey(template.id), JSON.stringify({ fields, editor, at: Date.now() }));
+      setSaveLabel("Saved on this device");
+      return;
+    }
+    setSaveLabel("Saving…");
+    try {
+      if (!inviteIdRef.current) {
+        if (!creatingRef.current) {
+          creatingRef.current = saveDraft(template.id, fields, editor).then((saved) => {
+            inviteIdRef.current = saved.id;
+            codeRef.current = saved.code;
+            statusRef.current = saved.status === "live" ? "live" : "draft";
+            remember(saved);
+            localStorage.removeItem(localDraftKey(template.id));
+            navigate(`/create/${template.id}?invite=${saved.id}`, { replace: true });
+          });
+        }
+        await creatingRef.current;
+        creatingRef.current = null;
+      }
+      const latest = modelRef.current;
+      if (inviteIdRef.current && latest) {
+        const saved = await updateInvite(inviteIdRef.current, template.id, shownFields(latest), editorState(latest));
+        remember(saved);
+        localStorage.removeItem(localDraftKey(template.id));
+      }
+      setSaveLabel(statusRef.current === "live" ? "Saved" : "Draft saved");
+    } catch (reason) {
+      creatingRef.current = null;
+      dirtyRef.current = true;
+      setSaveLabel("Could not save");
+      setToastTone("bad");
+      setToast(reason instanceof Error ? reason.message : "Could not save this invitation.");
+    }
+  };
+
+  if (!template) return <Navigate to="/" replace />;
   if (!owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
+  if (!model) return <div className="ed-root"><p className="ed-save">Opening your invitation…</p></div>;
 
   const draft = model.draft;
   const event = getEvent(draft.event);
@@ -300,7 +457,7 @@ export function Editor() {
     setPast((items) => [...items.slice(-40), current]);
     setFuture([]);
     setModel({ ...current, ...patch });
-    setSaving(true);
+    dirtyRef.current = true;
   }
 
   function shotLimit(lines: string | undefined) {
@@ -354,7 +511,7 @@ export function Editor() {
       const previous = items[items.length - 1];
       setFuture((next) => [modelRef.current as Model, ...next]);
       setModel(previous);
-      setSaving(true);
+      dirtyRef.current = true;
       return items.slice(0, -1);
     });
   }
@@ -365,7 +522,7 @@ export function Editor() {
       const next = items[0];
       setPast((history) => [...history.slice(-40), modelRef.current as Model]);
       setModel(next);
-      setSaving(true);
+      dirtyRef.current = true;
       return items.slice(1);
     });
   }
@@ -495,11 +652,26 @@ export function Editor() {
     }
     try {
       await ensureHost();
-      const saved = await createInvite(template.id, fields);
+      dirtyRef.current = true;
+      await persistRef.current();
+      if (!inviteIdRef.current) {
+        setError("Could not save this invitation.");
+        return;
+      }
+      if (statusRef.current === "live") {
+        setError("");
+        setLink(`${window.location.origin}/i/${codeRef.current}`);
+        setShowQr(false);
+        return;
+      }
+      const saved = await publishSaved(inviteIdRef.current);
+      statusRef.current = "live";
+      codeRef.current = saved.code;
       remember(saved);
       setError("");
       setLink(`${window.location.origin}/i/${saved.code}`);
       setShowQr(false);
+      setSaveLabel("Saved");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not publish.");
     }
@@ -523,8 +695,8 @@ export function Editor() {
           <div>
             <div className="ed-title">{title}</div>
             <div className="ed-save">
-              <span className={saving ? "ed-dot busy" : "ed-dot"} />
-              {saving ? "Updating…" : "Draft on this page"}
+              <span className={saveLabel === "Saving…" || saveLabel.startsWith("Opening") ? "ed-dot busy" : "ed-dot"} />
+              {saveLabel}
             </div>
           </div>
         </div>
@@ -552,12 +724,22 @@ export function Editor() {
         </div>
         <div className="ed-actions">
           {signedIn ? null : <span className="ed-guest">Guest view</span>}
-          <button type="button" className="ed-publish" onClick={() => { setError(""); setPublishOpen(true); }}>
+          <button type="button" className="ed-publish" onClick={() => {
+            setError("");
+            if (statusRef.current === "live" && codeRef.current) setLink(`${window.location.origin}/i/${codeRef.current}`);
+            setPublishOpen(true);
+          }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" />
             </svg>
-            <span className="ed-pub-long">Publish & share</span>
-            <span className="ed-pub-short">Publish</span>
+            {statusRef.current === "live" ? (
+              <span>Share</span>
+            ) : (
+              <>
+                <span className="ed-pub-long">Publish & share</span>
+                <span className="ed-pub-short">Publish</span>
+              </>
+            )}
           </button>
         </div>
       </header>
@@ -569,7 +751,7 @@ export function Editor() {
           { label: template.name },
         ]}
       />
-      {signedIn ? null : <div className="ed-guest-strip">Designing as a guest · draft saved on this phone</div>}
+      {signedIn ? null : <div className="ed-guest-strip">Designing as a guest · {saveLabel === "Draft" ? "your changes save on this phone" : saveLabel.toLowerCase()}</div>}
 
       <div className="ed-body">
         <nav className="ed-rail" aria-label="Editor sections">

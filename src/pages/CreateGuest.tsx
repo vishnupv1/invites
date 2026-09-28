@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { createInvite, getHost, getToken, listEvents, listPurchases, listTemplates, logIn, signUp } from "../api";
+import { createInvite, getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
@@ -67,6 +67,7 @@ type Draft = {
   venue: string;
   message: string;
   receptionOn: boolean;
+  inviteId?: string;
 };
 
 function loadDraft(): Partial<Draft> {
@@ -180,6 +181,9 @@ export function CreateGuest() {
   const [checkout, setCheckout] = useState(false);
   const [toast, setToast] = useState("");
   const [inviteLang, setInviteLang] = useState<ThiruvizhaLang>("both");
+  const inviteIdRef = useRef(saved.inviteId || "");
+  const creatingRef = useRef<Promise<string> | null>(null);
+  const liveRef = useRef(false);
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => undefined);
@@ -208,6 +212,7 @@ export function CreateGuest() {
       venue,
       message,
       receptionOn,
+      inviteId: inviteIdRef.current || undefined,
     };
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
   }, [step, eventId, templateId, price, swatch, device, name1, name2, date, time, venue, message, receptionOn]);
@@ -242,6 +247,43 @@ export function CreateGuest() {
         receptionAddress: receptionOn ? sample.receptionAddress : "",
       }
     : null;
+
+  useEffect(() => {
+    if (liveRef.current || !getToken() || !template || !fields) return;
+    if (!name1.trim() && !date && !venue.trim() && !message.trim()) return;
+    const templateIdNow = template.id;
+    const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
+    const editor = { swatch, receptionOn };
+    const timer = window.setTimeout(() => {
+      const run = async () => {
+        if (liveRef.current && inviteIdRef.current) {
+          const saved = await updateInvite(inviteIdRef.current, templateIdNow, payload, editor);
+          library.remember(saved);
+          return;
+        }
+        if (liveRef.current) return;
+        if (!inviteIdRef.current) {
+          if (!creatingRef.current) {
+            creatingRef.current = saveDraft(templateIdNow, payload, editor).then((saved) => {
+              inviteIdRef.current = saved.id;
+              library.remember(saved);
+              return saved.id;
+            });
+          }
+          await creatingRef.current;
+          creatingRef.current = null;
+        }
+        if (!inviteIdRef.current || liveRef.current) return;
+        const saved = await updateInvite(inviteIdRef.current, templateIdNow, payload, editor);
+        library.remember(saved);
+      };
+      void run().catch(() => {
+        creatingRef.current = null;
+      });
+    }, 700);
+    return () => window.clearTimeout(timer);
+  }, [name1, name2, date, time, venue, message, receptionOn, swatch, templateId, eventId, host]);
+
   const previewNames = typedNames || "Your names";
   const previewWhen = date ? `${formatLongDate(date)}${time ? ` · ${formatTime(time)}` : ""}` : "Date and time";
   const palettes = template ? palettesFor(template) : [];
@@ -304,7 +346,7 @@ export function CreateGuest() {
   function finishAuth() {
     setAuthOpen(false);
     if (authMode === "publish") setStep(4);
-    else setToast("Draft kept on this device. Publish it to save the invitation to your account.");
+    else setToast(getToken() ? "Draft saved to your events. You can pick it up anytime." : "Draft kept on this device.");
   }
 
   async function publishNow() {
@@ -313,13 +355,17 @@ export function CreateGuest() {
     if (!date) return setToast("Add the date before you publish.");
     setBusy(true);
     try {
-      const savedInvite = await createInvite(template.id, {
-        ...fields,
-        names: typedNames,
-        message,
-        venue,
-        time,
-      });
+      const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
+      if (creatingRef.current) inviteIdRef.current = await creatingRef.current;
+      let savedInvite;
+      if (inviteIdRef.current) {
+        await updateInvite(inviteIdRef.current, template.id, payload, { swatch, receptionOn });
+        savedInvite = await publishSaved(inviteIdRef.current);
+      } else {
+        savedInvite = await createInvite(template.id, payload);
+        inviteIdRef.current = savedInvite.id;
+      }
+      liveRef.current = true;
       library.remember(savedInvite);
       setLiveCode(savedInvite.code);
       setShowQr(false);
