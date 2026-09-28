@@ -206,6 +206,7 @@ export function TemplatePreview() {
     <div className="board pv-board">
       {menu}
     <div className="pv">
+      <div className="pv-bar">
       <header className="pv-head">
         <div className="pv-id">
           <Link className="pv-back" to="/templates">
@@ -252,6 +253,7 @@ export function TemplatePreview() {
           { label: template.name },
         ]}
       />
+      </div>
 
       <div className="pv-body">
         <div className="pv-split">
