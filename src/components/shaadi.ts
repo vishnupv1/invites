@@ -39,14 +39,37 @@ export const SHAADI_FUNCTIONS: ShaadiFunction[] = [
 export const SHAADI_LINES = JSON.stringify(SHAADI_FUNCTIONS);
 
 export const SHAADI_VOWS = [
-  { title: "Nourishment", text: "To share food, home, and the work of keeping one another well." },
-  { title: "Strength", text: "To stand together in health and in hardship." },
-  { title: "Prosperity", text: "To build a life that is generous beyond the two of you." },
-  { title: "Family", text: "To honour the people who brought you here." },
-  { title: "Children", text: "To welcome the next generation with patience." },
-  { title: "Seasons", text: "To stay through the bright years and the quiet ones." },
-  { title: "Friendship", text: "To remain companions, in this life and after." },
+  { title: "Nourishment", text: "We promise to care for each other and our home, sharing every meal and every blessing." },
+  { title: "Strength", text: "We promise to grow strong together — in body, mind and spirit — and to face life side by side." },
+  { title: "Prosperity", text: "We promise to build our future honestly and share whatever fortune comes our way." },
+  { title: "Family", text: "We promise to love and respect each other’s families as our very own." },
+  { title: "Children", text: "We pray to be blessed with children and promise to raise them with kindness." },
+  { title: "Seasons", text: "We promise to stay together through every season of life, in health and in hardship." },
+  { title: "Friendship", text: "We promise to remain lifelong friends, partners and companions, forever." },
 ];
+
+export type ShaadiEventKind = "haldi" | "mehendi" | "sangeet" | "baraat" | "pheras" | "reception" | "other";
+
+export function eventKind(name: string): ShaadiEventKind {
+  const label = name.toLowerCase();
+  if (label.includes("haldi")) return "haldi";
+  if (label.includes("meh")) return "mehendi";
+  if (label.includes("sang")) return "sangeet";
+  if (label.includes("bara") || label.includes("barat")) return "baraat";
+  if (label.includes("pher")) return "pheras";
+  if (label.includes("reception") || label.includes("swagat")) return "reception";
+  return "other";
+}
+
+export const EVENT_LOOK: Record<ShaadiEventKind, { c1: string; c2: string; ink: string }> = {
+  haldi: { c1: "#F4B400", c2: "#8A5A00", ink: "#2A1A00" },
+  mehendi: { c1: "#6FA83F", c2: "#2F5A1A", ink: "#FFFFFF" },
+  sangeet: { c1: "#C2185B", c2: "#5E0A2C", ink: "#FFFFFF" },
+  baraat: { c1: "#E86A10", c2: "#6E2C00", ink: "#FFFFFF" },
+  pheras: { c1: "#D32F2F", c2: "#5A0F0F", ink: "#FFFFFF" },
+  reception: { c1: "#C9982E", c2: "#3A2A08", ink: "#2A1A00" },
+  other: { c1: "#C9982E", c2: "#3A2A08", ink: "#2A1A00" },
+};
 
 export function festivitiesOf(lines: string | undefined): ShaadiFunction[] {
   if (!lines?.trim()) return SHAADI_FUNCTIONS.map((item) => ({ ...item }));

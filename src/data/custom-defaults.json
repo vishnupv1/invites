@@ -1,0 +1,62 @@
+{
+  "vivah": {
+    "story": [
+      { "year": "2019", "title": "A wrong train", "text": "Both missed the Chennai Mail — and shared a very long wait at Ernakulam." },
+      { "year": "2023", "title": "Families meet", "text": "Two families, one sadhya, and a lot of approving nods." },
+      { "year": "2026", "title": "The yes", "text": "A houseboat, a sunset on Vembanad, and a ring hidden in payasam." }
+    ],
+    "sangeetTime": "18:00",
+    "sangeetVenue": "Poolside lawns, Casino Hotel, Kochi",
+    "caption": "Pre-wedding shoot · Alleppey"
+  },
+  "beach": {
+    "story": [
+      { "year": "2020", "title": "Surf school, day one", "text": "Both wiped out on the same wave in Kovalam." },
+      { "year": "2023", "title": "Island hopping", "text": "Lakshadweep, a leaky kayak and zero regrets." },
+      { "year": "2026", "title": "The proposal", "text": "Written in the sand at Varkala. The tide nearly won." }
+    ],
+    "travelFrom": "Trivandrum Airport",
+    "travelKm": "50 km"
+  },
+  "anna": {
+    "story": [
+      { "year": "2016", "title": "First day of college", "text": "Assigned the same lab bench in first-year chemistry. One broken beaker, and a laugh that stayed." },
+      { "year": "2022", "title": "A monsoon road trip", "text": "Munnar in the rain, one flat tyre and a lot of chai. That was when they knew." },
+      { "year": "2026", "title": "The question", "text": "A proposal on the Kumarakom backwaters at sunset. The answer came before the question finished." }
+    ],
+    "airport": "Cochin International — about 1.5 hours by road. Shuttles will run on the day.",
+    "stay": "Rooms are held at two hotels near the church. Mention the couple when booking.",
+    "gift": "Your presence is the greatest gift. If you'd like to bless them further, a card at the reception is more than enough.",
+    "faqs": [
+      { "q": "Can I bring a plus-one?", "a": "Your invite shows how many seats are reserved. Please say if that changes." },
+      { "q": "Are children welcome?", "a": "Yes. There is a children's corner at the reception." },
+      { "q": "Is there parking?", "a": "Yes, at both venues, with people to guide you in." }
+    ]
+  },
+  "baptism": {
+    "people": [
+      { "name": "Tony Mathew", "role": "Godfather" },
+      { "name": "Anita George", "role": "Godmother" }
+    ],
+    "facts": [
+      { "label": "Born", "value": "2 November 2026" },
+      { "label": "Loves", "value": "Milk & long naps" },
+      { "label": "First smile", "value": "Christmas Eve" },
+      { "label": "Best friend", "value": "Bruno the bear" }
+    ]
+  },
+  "hearth": {
+    "programme": [
+      { "time": "6:30 AM", "title": "Ganapathi pooja", "text": "Lighting the lamp and a small prayer at the doorway." },
+      { "time": "7:15 AM", "title": "Paalukachal", "text": "Boiling milk for the first time in our kitchen." },
+      { "time": "12:00 PM", "title": "Sadya lunch", "text": "A full banana-leaf feast. Come hungry!" },
+      { "time": "6:00 PM", "title": "Evening get-together", "text": "Tea, snacks, music and fairy lights on the terrace." }
+    ],
+    "rooms": [
+      { "label": "Living room", "name": "The living room", "text": "Big windows, a swing (yes, indoors!) and a wall waiting for family photos.", "note": "Aadi’s favourite spot" },
+      { "label": "Kitchen", "name": "The kitchen", "text": "Where the paalukachal happens — and where Deepa promises unlimited filter coffee.", "note": "Coffee always on" },
+      { "label": "Kids’ room", "name": "Aadi’s room", "text": "Glow-in-the-dark stars on the ceiling and a reading nook full of picture books.", "note": "Toys everywhere, sorry!" },
+      { "label": "Balcony", "name": "The balcony garden", "text": "Curry leaves, tulsi, and a view of the evening sky over the paddy fields.", "note": "Best seat for sunsets" }
+    ]
+  }
+}

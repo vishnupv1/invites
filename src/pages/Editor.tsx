@@ -11,6 +11,7 @@ import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, type ShaadiFunction } from "../components/shaadi";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
+import { PackFields } from "./PackFields";
 import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
@@ -110,7 +111,7 @@ function sectionHelp(id: string, configurable: boolean) {
   if (HIDEABLE.has(id)) return "Turn off to leave it off the invitation.";
   if (id === "rsvp") return "Set the reply date under RSVP.";
   if (id === "ceremony" || id === "when") return "Edit the time and place under Functions.";
-  if (id === "programme") return "Each festivity’s name, time, place and dress is under Functions. Its photograph is under Design.";
+  if (id === "programme" || id === "story" || id === "house" || id === "travel") return "Edit this copy under Functions. Photographs, when this design has them, are under Design.";
   return "Edit the wording under Details.";
 }
 
@@ -413,14 +414,6 @@ export function Editor() {
     notify("Link copied.");
   }
 
-  function guestView() {
-    if (link) {
-      window.open(link, "_blank", "noopener");
-      return;
-    }
-    notify("The preview is what guests will see. Publish to open a shareable link.");
-  }
-
   return (
     <div className={`ed-root${model.motion ? "" : " ed-still"}${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
       <header className="ed-top">
@@ -461,9 +454,7 @@ export function Editor() {
           </div>
         </div>
         <div className="ed-actions">
-          <button type="button" className="ed-guest" onClick={guestView}>
-            Guest view
-          </button>
+          <span className="ed-guest">Guest view</span>
           <button type="button" className="ed-publish" onClick={() => { setError(""); setPublishOpen(true); }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" />
@@ -550,7 +541,7 @@ export function Editor() {
               {usesField(template, "detail") ? (
                 <div className="ed-field">
                   <label className="ed-label" htmlFor="ed-detail">{template.meta.components.find((item) => item.id === "detail")?.label ?? "Detail"}</label>
-                  <input id="ed-detail" className="ed-input" value={draft.detail} onChange={(change) => patchDraft({ detail: change.target.value })} />
+                  <textarea id="ed-detail" className="ed-input" rows={3} value={draft.detail} onChange={(change) => patchDraft({ detail: change.target.value.slice(0, 500) })} />
                 </div>
               ) : null}
               {usesField(template, "date") ? (
@@ -567,9 +558,9 @@ export function Editor() {
               ) : null}
               {usesField(template, "message") ? (
                 <div className="ed-field">
-                  <label className="ed-label" htmlFor="ed-msg">{template.meta.components.find((item) => item.id === "message")?.label ?? "Welcome message"}</label>
-                  <textarea id="ed-msg" rows={3} value={draft.message} onChange={(change) => patchDraft({ message: change.target.value.slice(0, 180) })} />
-                  <span className="ed-count">{Math.min(draft.message.length, 180)}/180</span>
+                  <label className="ed-label" htmlFor="ed-msg">{template.meta.components.find((item) => item.fields.includes("message"))?.label ?? "Welcome message"}</label>
+                  <textarea id="ed-msg" rows={3} value={draft.message} onChange={(change) => patchDraft({ message: change.target.value.slice(0, 500) })} />
+                  <span className="ed-count">{Math.min(draft.message.length, 500)}/500</span>
                 </div>
               ) : null}
               <div className="ed-field">
@@ -642,7 +633,8 @@ export function Editor() {
                   </div>
                 );
               })}
-              {usesField(template, "lines")
+              {usesField(template, "lines") && template.id !== "shaadi" ? <PackFields id={template.id} lines={draft.lines} onChange={(lines) => patchDraft({ lines })} /> : null}
+              {template.id === "shaadi" && usesField(template, "lines")
                 ? festivitiesOf(draft.lines).map((item, index) => (
                     <div className="ed-fn" key={`${SHAADI_SHOTS[SHAADI_STORY_COUNT + index] ?? "festivity"}-${index}`}>
                       <div className="ed-fn-head">

@@ -133,17 +133,12 @@
   color: #fff;
 }
 .ed-guest {
-  min-height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1.5px solid #e8dfd6;
-  background: #fff;
+  padding: 0 4px 0 8px;
   font-size: 14px;
   font-weight: 700;
-  color: #211c1e;
-  cursor: pointer;
+  color: #716a6d;
 }
 .ed-publish {
   min-height: 44px;

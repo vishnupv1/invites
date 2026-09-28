@@ -6,10 +6,10 @@
     "themes": [],
     "defaultTheme": "",
     "shots": [
-      { "label": "Moment 1" },
-      { "label": "Moment 2" },
-      { "label": "Moment 3" },
-      { "label": "Moment 4" }
+      { "label": "The couple" },
+      { "label": "Nikah" },
+      { "label": "Walima" },
+      { "label": "Families" }
     ],
     "rsvp": { "meal": false, "song": false, "maxGuests": 0 },
     "components": [
@@ -37,9 +37,9 @@
     "defaultTheme": "",
     "shots": [
       { "label": "Title photo" },
-      { "label": "Moment 1" },
-      { "label": "Moment 2" },
-      { "label": "Moment 3" }
+      { "label": "Ceremony" },
+      { "label": "Reception" },
+      { "label": "Together" }
     ],
     "rsvp": { "meal": false, "song": false, "maxGuests": 0 },
     "components": [
@@ -86,7 +86,8 @@
       { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
       { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
       { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
-      { "id": "travel", "label": "Where to stay", "configurable": false, "fields": [] },
+      { "id": "story", "label": "Love story", "configurable": true, "fields": ["lines"] },
+      { "id": "travel", "label": "Travel, stay and gifts", "configurable": true, "fields": ["lines"] },
       { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
@@ -113,6 +114,9 @@
       { "id": "hosts", "label": "Parents", "configurable": true, "fields": ["hosts"] },
       { "id": "names", "label": "Child", "configurable": true, "fields": ["names"] },
       { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Relationship", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "Verse", "configurable": true, "fields": ["message"] },
+      { "id": "story", "label": "Godparents and little facts", "configurable": true, "fields": ["lines"] },
       { "id": "when", "label": "Date and time", "configurable": true, "fields": ["date", "time"] },
       { "id": "ceremony", "label": "Holy Baptism", "configurable": true, "fields": ["venue", "address"] },
       { "id": "reception", "label": "Lunch and cake", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
@@ -133,12 +137,12 @@
     ],
     "defaultTheme": "midnight",
     "shots": [
-      { "label": "Moment 1" },
-      { "label": "Moment 2" },
-      { "label": "Moment 3" },
-      { "label": "Moment 4" },
-      { "label": "Moment 5" },
-      { "label": "Moment 6" }
+      { "label": "Pre-wedding 1" },
+      { "label": "Pre-wedding 2" },
+      { "label": "Pre-wedding 3" },
+      { "label": "Pre-wedding 4" },
+      { "label": "Pre-wedding 5" },
+      { "label": "Pre-wedding 6" }
     ],
     "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
     "components": [
@@ -146,6 +150,8 @@
       { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
       { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
       { "id": "line", "label": "Honour line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Moments note", "configurable": true, "fields": ["message"] },
+      { "id": "story", "label": "Love story and sangeet", "configurable": true, "fields": ["lines"] },
       { "id": "when", "label": "Date and time", "configurable": true, "fields": ["date", "time"] },
       { "id": "ceremony", "label": "Muhurtham", "configurable": true, "fields": ["venue", "address"] },
       { "id": "reception", "label": "Reception", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
@@ -179,9 +185,9 @@
       { "id": "when", "label": "Date and time", "configurable": true, "fields": ["date", "time"] },
       { "id": "ceremony", "label": "Sunset vows", "configurable": true, "fields": ["venue", "address"] },
       { "id": "reception", "label": "Beach reception", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
-      { "id": "story", "label": "Story", "configurable": false, "fields": [] },
+      { "id": "story", "label": "How we washed ashore", "configurable": true, "fields": ["lines"] },
       { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
-      { "id": "travel", "label": "Travel and dress", "configurable": false, "fields": [] },
+      { "id": "travel", "label": "Getting there", "configurable": true, "fields": ["message"] },
       { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
       { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
       { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
@@ -204,11 +210,12 @@
       { "id": "opening", "label": "Front door", "configurable": false, "fields": [] },
       { "id": "names", "label": "Family", "configurable": true, "fields": ["names"] },
       { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Paalukachal", "configurable": true, "fields": ["detail"] },
       { "id": "when", "label": "Date and time", "configurable": true, "fields": ["date", "time"] },
       { "id": "ceremony", "label": "Griha Pravesh", "configurable": true, "fields": ["venue", "address"] },
-      { "id": "programme", "label": "Programme", "configurable": false, "fields": [] },
-      { "id": "house", "label": "House tour", "configurable": false, "fields": [] },
-      { "id": "gift", "label": "Gift note", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The day’s programme", "configurable": true, "fields": ["lines"] },
+      { "id": "house", "label": "House tour", "configurable": true, "fields": ["lines"] },
+      { "id": "gift", "label": "Gift note", "configurable": true, "fields": ["message"] },
       { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
       { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
       { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
