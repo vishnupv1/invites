@@ -118,7 +118,7 @@ export function ShaadiInvite({
   const story = SHAADI_SHOTS.slice(0, SHAADI_STORY_COUNT).map((label, index) => ({ src: photos[index] ?? "", label }));
   const festivities = festivitiesOf(fields.lines);
   const days = shaadiDays(festivities);
-  const celebrations = useRef<HTMLElement>(null);
+  const celebrations = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [entered, setEntered] = useState(false);
   const [day, setDay] = useState(0);
@@ -280,7 +280,7 @@ export function ShaadiInvite({
                       </svg>
                     </span>
                   ) : null}
-                  <div>
+                  <div className="sh-person">
                     <b className="sh-foil">{person.full}</b>
                     {parents[index] ? <span>{parents[index]}</span> : null}
                   </div>
