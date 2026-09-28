@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
+import { eventName } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import "./aurelia.css";
 
@@ -50,6 +51,8 @@ export function AureliaInvite({
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
 }) {
   const { first, second } = coupleOf(fields.names);
+  const ceremony = eventName(fields.lines, "ceremonyName", fields.title || "Wedding ceremony");
+  const reception = eventName(fields.lines, "receptionName", "Reception");
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
   const [entered, setEntered] = useState(quiet);
@@ -163,7 +166,7 @@ export function AureliaInvite({
         <h2>Event details</h2>
         <article>
           <small>Ceremony</small>
-          <strong>{fields.title || "Wedding ceremony"}</strong>
+          <strong>{ceremony}</strong>
           <p>{formatLongDate(fields.date)}{fields.time ? ` · ${formatTime(fields.time)}` : ""}</p>
           <p>{fields.venue}</p>
           {fields.address ? <p>{fields.address}</p> : null}
@@ -172,7 +175,7 @@ export function AureliaInvite({
         {fields.receptionVenue ? (
           <article>
             <small>Reception</small>
-            <strong>Reception</strong>
+            <strong>{reception}</strong>
             <p>{fields.receptionTime ? formatTime(fields.receptionTime) : formatLongDate(fields.date)}</p>
             <p>{fields.receptionVenue}</p>
             {fields.receptionAddress ? <p>{fields.receptionAddress}</p> : null}

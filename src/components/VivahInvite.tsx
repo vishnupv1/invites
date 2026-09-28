@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
-import { packOf } from "../data/custom";
+import { eventName, packOf } from "../data/custom";
 import { formatTime } from "../lib/dates";
 import "./vivah.css";
 
@@ -331,7 +331,7 @@ export function VivahInvite({
   const [playing, setPlaying] = useState(false);
   const [name, setName] = useState("");
   const [attend, setAttend] = useState<"yes" | "no">("yes");
-  const [events, setEvents] = useState({ sangeet: true, muhurtham: true, reception: true });
+  const [skipped, setSkipped] = useState<string[]>([]);
   const [guests, setGuests] = useState(2);
   const [wish, setWish] = useState("");
   const [nameError, setNameError] = useState(false);
@@ -344,9 +344,12 @@ export function VivahInvite({
   }, []);
 
   const pack = packOf("vivah", fields.lines);
-  const story = pack.story ?? [];
+  const story = (pack.story ?? []).filter((item) => item.title.trim() || item.text.trim());
   const sangeetTime = pack.sangeetTime || "18:00";
   const sangeetVenue = pack.sangeetVenue || "";
+  const sangeetName = typeof pack.sangeetName === "string" ? pack.sangeetName.trim() : "";
+  const ceremonyName = eventName(fields.lines, "ceremonyName", "Muhurtham");
+  const receptionName = eventName(fields.lines, "receptionName", "Reception");
   const parts = fields.names.split(/\s+&\s+/);
   const first = parts[0] || "";
   const second = parts.slice(1).join(" & ");
@@ -375,9 +378,9 @@ export function VivahInvite({
   const muhurthamWhere = [fields.venue, fields.address].filter(Boolean).join(", ");
   const receptionWhere = [fields.receptionVenue, fields.receptionAddress].filter(Boolean).join(", ");
   const celebrations = [
-    { kind: "music" as const, kicker: "The evening before", name: "Mehendi & Sangeet", when: `${dayLabel(sangeetDate)} · ${formatTime(sangeetTime)}`, venue: sangeetVenue, date: sangeetDate, time: sangeetTime },
-    { kind: "fire" as const, kicker: "The sacred moment", name: "Muhurtham", when: `${dayLabel(fields.date)} · ${timeRange(fields.time || "10:30", addMinutes(fields.time || "10:30", 45))}`, venue: muhurthamWhere, date: fields.date, time: fields.time || "10:30" },
-    { kind: "sparkle" as const, kicker: "Let’s celebrate", name: "Reception", when: `${dayLabel(fields.date)} · ${formatTime(fields.receptionTime || "19:00")} onwards`, venue: receptionWhere, date: fields.date, time: fields.receptionTime || "19:00" },
+    ...(sangeetName ? [{ kind: "music" as const, kicker: "The evening before", name: sangeetName, when: `${dayLabel(sangeetDate)} · ${formatTime(sangeetTime)}`, venue: sangeetVenue, date: sangeetDate, time: sangeetTime }] : []),
+    { kind: "fire" as const, kicker: "The sacred moment", name: ceremonyName, when: `${dayLabel(fields.date)} · ${timeRange(fields.time || "10:30", addMinutes(fields.time || "10:30", 45))}`, venue: muhurthamWhere, date: fields.date, time: fields.time || "10:30" },
+    ...(fields.receptionVenue ? [{ kind: "sparkle" as const, kicker: "Let’s celebrate", name: receptionName, when: `${dayLabel(fields.date)} · ${formatTime(fields.receptionTime || "19:00")} onwards`, venue: receptionWhere, date: fields.date, time: fields.receptionTime || "19:00" }] : []),
   ];
 
   const dress = fields.dress || DRESS;
@@ -390,7 +393,7 @@ export function VivahInvite({
   const rowA = liveWishes.slice(0, half);
   const rowB = liveWishes.slice(half).length ? liveWishes.slice(half) : liveWishes.slice(0, 1);
   const yes = attend === "yes";
-  const picked = (["sangeet", "muhurtham", "reception"] as const).filter((key) => events[key]).map((key) => (key === "sangeet" ? "Sangeet" : key === "muhurtham" ? "Muhurtham" : "Reception"));
+  const picked = celebrations.map((item) => item.name).filter((name) => !skipped.includes(name));
 
   function toggleMusic() {
     const audio = audioRef.current;
@@ -645,15 +648,15 @@ export function VivahInvite({
                         <div className="wd-field">
                           <span>I&apos;ll be at</span>
                           <div className="wd-chips">
-                            {(["sangeet", "muhurtham", "reception"] as const).map((key) => (
+                            {celebrations.map((item) => (
                               <button
-                                key={key}
+                                key={item.name}
                                 type="button"
-                                className={events[key] ? "wd-chip-btn on" : "wd-chip-btn"}
-                                aria-pressed={events[key]}
-                                onClick={() => setEvents((current) => ({ ...current, [key]: !current[key] }))}
+                                className={skipped.includes(item.name) ? "wd-chip-btn" : "wd-chip-btn on"}
+                                aria-pressed={!skipped.includes(item.name)}
+                                onClick={() => setSkipped((current) => (current.includes(item.name) ? current.filter((name) => name !== item.name) : [...current, item.name]))}
                               >
-                                {key === "sangeet" ? "Sangeet" : key === "muhurtham" ? "Muhurtham" : "Reception"}
+                                {item.name}
                               </button>
                             ))}
                           </div>

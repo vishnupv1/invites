@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
-import { packOf } from "../data/custom";
+import { eventName, packOf } from "../data/custom";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import "./anna.css";
 
@@ -107,8 +107,10 @@ export function AnnaInvite({
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
   const pack = packOf("anna", fields.lines);
-  const story = pack.story ?? [];
-  const faqs = pack.faqs ?? [];
+  const ceremony = eventName(fields.lines, "ceremonyName", "Ceremony");
+  const reception = eventName(fields.lines, "receptionName", "Reception & dinner");
+  const story = (pack.story ?? []).filter((item) => item.title.trim() || item.text.trim());
+  const faqs = (pack.faqs ?? []).filter((item) => item.q.trim() || item.a.trim());
   const place = placeName(fields.detail, fields.address);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [picked, setPicked] = useState<Theme>(themeProp ?? "terracotta");
@@ -130,9 +132,9 @@ export function AnnaInvite({
   const [done, setDone] = useState(false);
   const ink = THEMES[theme];
   const venues = [
-    { label: "Ceremony", name: fields.venue, address: fields.address, time: `${formatLongDate(fields.date)} · ${formatTime(fields.time)}` },
+    { label: ceremony, name: fields.venue, address: fields.address, time: `${formatLongDate(fields.date)} · ${formatTime(fields.time)}` },
     ...(fields.receptionVenue
-      ? [{ label: "Reception", name: fields.receptionVenue, address: fields.receptionAddress, time: `${formatLongDate(fields.date)} · ${formatTime(fields.receptionTime)}` }]
+      ? [{ label: reception, name: fields.receptionVenue, address: fields.receptionAddress, time: `${formatLongDate(fields.date)} · ${formatTime(fields.receptionTime)}` }]
       : []),
   ];
   const venue = venues[venueTab] ?? venues[0];
@@ -300,12 +302,12 @@ export function AnnaInvite({
               <h2>Order of the day</h2>
               <div>
                 <b>{formatTime(fields.time)}</b>
-                <div><strong>Ceremony</strong><small>{fields.venue}</small></div>
+                <div><strong>{ceremony}</strong><small>{fields.venue}</small></div>
               </div>
               {fields.receptionVenue ? (
                 <div>
                   <b>{formatTime(fields.receptionTime)}</b>
-                  <div><strong>Reception & dinner</strong><small>{fields.receptionVenue}</small></div>
+                  <div><strong>{reception}</strong><small>{fields.receptionVenue}</small></div>
                 </div>
               ) : null}
             </section>
@@ -358,7 +360,7 @@ export function AnnaInvite({
             </section>
           </div>
 
-          <section id="faq" className="anna-faq">
+          {faqs.length ? <section id="faq" className="anna-faq">
             <h2>Questions, answered</h2>
             <div className="anna-faq-list">
               {faqs.map((item, index) => (
@@ -370,7 +372,7 @@ export function AnnaInvite({
                 </div>
               ))}
             </div>
-          </section>
+          </section> : null}
 
           <section id="anna-rsvp" className="anna-rsvp">
             <div className="anna-rsvp-copy">

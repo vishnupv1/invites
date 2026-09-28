@@ -11,6 +11,7 @@ import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, type ShaadiFunction } from "../components/shaadi";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
+import { eventName, withEventName } from "../data/custom";
 import { PackFields } from "./PackFields";
 import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
@@ -27,7 +28,6 @@ type Section = { id: string; label: string; help: string; on: boolean; configura
 type Model = {
   draft: InviteFields;
   receptionOn: boolean;
-  motion: boolean;
   swatch: string;
   sections: Section[];
 };
@@ -53,6 +53,24 @@ const SWATCHES = [
   { id: "rani", name: "Rani", cover: "#4A0D1F", dot: "#F5D77A" },
   { id: "ivory", name: "Ivory", cover: "#F6EFE4", dot: "#7A1633" },
 ];
+
+function ceremonyLabel(template: Template, draft: InviteFields) {
+  if ((draft.lines ?? "").trim().startsWith("[")) return template.meta.ceremony;
+  const fallback = template.id === "aurelia" ? draft.title || "Wedding ceremony" : template.meta.ceremony;
+  return eventName(draft.lines, "ceremonyName", fallback);
+}
+
+function receptionLabel(template: Template, draft: InviteFields) {
+  if ((draft.lines ?? "").trim().startsWith("[")) return template.meta.reception ?? "";
+  const fallback = template.id === "anna"
+    ? "Reception & dinner"
+    : template.id === "gazal"
+      ? "Walima reception"
+      : template.id === "baptism"
+        ? "Lunch & cake"
+        : template.meta.reception ?? "";
+  return eventName(draft.lines, "receptionName", fallback);
+}
 
 function splitNames(names: string) {
   const parts = names.split(/\s+&\s+/);
@@ -152,7 +170,6 @@ function modelFor(template: Template, eventId: string | undefined): Model {
   return {
     draft,
     receptionOn: Boolean(template.meta.reception && (draft.receptionVenue || draft.receptionTime)),
-    motion: true,
     swatch: template.meta.defaultTheme,
     sections: sectionsFor(template, draft),
   };
@@ -229,6 +246,14 @@ export function Editor() {
   const title = `${draft.names.trim() || template.name} — ${event.label}`;
   const previewFields = shownFields(model);
   const functions: FnKind[] = template.meta.reception && model.receptionOn ? ["main", "reception"] : ["main"];
+  const namedLines = template.id !== "shaadi" && !(draft.lines ?? "").trim().startsWith("[");
+  const photoShots = template.id === "shaadi"
+    ? [
+        ...template.meta.shots.slice(0, SHAADI_STORY_COUNT),
+        ...festivitiesOf(draft.lines).map((item, index) => ({ label: item.name.trim() || `Celebration ${index + 1}` })),
+        template.meta.shots.at(-1) ?? { label: "The palace" },
+      ]
+    : template.meta.shots;
   const themeName = template.meta.themes.find((item) => item.id === model.swatch)?.name ?? "This design";
   const nameLabel = template.meta.names === "child" ? "Child's name" : template.meta.names === "family" ? "Family name" : "Your name";
   const tabs = TABS.filter((item) => {
@@ -251,9 +276,39 @@ export function Editor() {
     setSaving(true);
   }
 
+  function shotLimit(lines: string | undefined) {
+    if (template.id !== "shaadi") return template.meta.shots.length;
+    return SHAADI_STORY_COUNT + festivitiesOf(lines).length + 1;
+  }
+
   function patchFestivity(index: number, patch: Partial<ShaadiFunction>) {
     const next = festivitiesOf(draft.lines).map((item, itemIndex) => (itemIndex === index ? { ...item, ...patch } : item));
     patchDraft({ lines: JSON.stringify(next) });
+  }
+
+  function removeFestivity(index: number) {
+    const current = modelRef.current;
+    if (!current) return;
+    const items = festivitiesOf(current.draft.lines).filter((_, itemIndex) => itemIndex !== index);
+    const photos = [...(current.draft.photos ?? [])];
+    const photoIndex = SHAADI_STORY_COUNT + index;
+    if (photoIndex < photos.length) photos.splice(photoIndex, 1);
+    const name = festivitiesOf(current.draft.lines)[index]?.name || "celebration";
+    patchDraft({ lines: JSON.stringify(items), photos });
+    notify(`${name} removed. Use undo to bring it back.`);
+  }
+
+  function addFestivity() {
+    const current = modelRef.current;
+    if (!current) return;
+    const items = festivitiesOf(current.draft.lines);
+    const photos = [...(current.draft.photos ?? [])];
+    const insertAt = SHAADI_STORY_COUNT + items.length;
+    if (photos.length > insertAt) photos.splice(insertAt, 0, "");
+    patchDraft({
+      lines: JSON.stringify([...items, { day: "", name: "New celebration", hindi: "", when: "", venue: "", dress: "" }]),
+      photos,
+    });
   }
 
   function patchDraft(partial: Partial<InviteFields>) {
@@ -321,9 +376,10 @@ export function Editor() {
       const current = modelRef.current;
       if (!current) return;
       const next = [...(current.draft.photos ?? [])];
-      while (next.length < template.meta.shots.length) next.push("");
+      const limit = shotLimit(current.draft.lines);
+      while (next.length < limit) next.push("");
       next[index] = url;
-      patchDraft({ photos: next.slice(0, template.meta.shots.length) });
+      patchDraft({ photos: next.slice(0, limit) });
       setError("");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not add that photo.");
@@ -415,7 +471,7 @@ export function Editor() {
   }
 
   return (
-    <div className={`ed-root${model.motion ? "" : " ed-still"}${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
+    <div className={`ed-root${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
       <header className="ed-top">
         <div className="ed-brand">
           <Link className="ed-back" to={`/template/${template.id}?event=${draft.event}`} aria-label="Back to template">
@@ -585,7 +641,16 @@ export function Editor() {
                 return (
                   <div className="ed-fn" key={kind}>
                     <div className="ed-fn-head">
-                      <input className="ed-input" readOnly aria-label="Function name" value={isMain ? template.meta.ceremony : template.meta.reception ?? ""} />
+                      <input
+                        className="ed-input"
+                        aria-label="Function name"
+                        readOnly={!namedLines}
+                        value={isMain ? ceremonyLabel(template, draft) : receptionLabel(template, draft)}
+                        onChange={(change) => {
+                          if (!namedLines) return;
+                          patchDraft({ lines: withEventName(draft.lines, isMain ? "ceremonyName" : "receptionName", change.target.value) });
+                        }}
+                      />
                       {isMain ? null : (
                         <button
                           type="button"
@@ -639,6 +704,11 @@ export function Editor() {
                     <div className="ed-fn" key={`${SHAADI_SHOTS[SHAADI_STORY_COUNT + index] ?? "festivity"}-${index}`}>
                       <div className="ed-fn-head">
                         <input className="ed-input" aria-label="Festivity name" value={item.name} onChange={(change) => patchFestivity(index, { name: change.target.value })} />
+                        <button type="button" className="ed-remove" aria-label={`Remove ${item.name || "celebration"}`} onClick={() => removeFestivity(index)}>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C45B63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
+                          </svg>
+                        </button>
                       </div>
                       <input className="ed-input" aria-label="Hindi name" placeholder="Hindi name" value={item.hindi} onChange={(change) => patchFestivity(index, { hindi: change.target.value })} />
                       <input className="ed-input" aria-label="Day" placeholder="Day" value={item.day} onChange={(change) => patchFestivity(index, { day: change.target.value })} />
@@ -647,10 +717,13 @@ export function Editor() {
                         <input className="ed-input" aria-label="Dress" placeholder="Dress" value={item.dress} onChange={(change) => patchFestivity(index, { dress: change.target.value })} />
                       </div>
                       <input className="ed-input" aria-label="Venue" placeholder="Venue" value={item.venue} onChange={(change) => patchFestivity(index, { venue: change.target.value })} />
-                      <p className="ed-lead">Photograph · {SHAADI_SHOTS[SHAADI_STORY_COUNT + index] ?? item.name}, under Design</p>
+                      <p className="ed-lead">Photograph · {item.name || "this celebration"}, under Design</p>
                     </div>
                   ))
                 : null}
+              {template.id === "shaadi" && usesField(template, "lines") ? (
+                <button type="button" className="ed-add" onClick={addFestivity}>+ Add a celebration</button>
+              ) : null}
               {template.meta.reception ? (
                 <button
                   type="button"
@@ -720,7 +793,7 @@ export function Editor() {
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>Design</h2>
-                <p className="ed-lead">Colours and motion this design can change. Layout, type and the opening stay with it.</p>
+                <p className="ed-lead">Colours this design can change. Layout, type, motion and the opening stay with it.</p>
               </div>
               {template.meta.themes.length ? (
                 <div className="ed-field">
@@ -739,11 +812,11 @@ export function Editor() {
               ) : (
                 <p className="ed-lead">This invitation keeps its own colours.</p>
               )}
-              {template.meta.shots.length ? (
+              {photoShots.length ? (
               <div className="ed-field">
                 <span className="ed-label">Photographs</span>
                 <div className="ed-shots">
-                  {template.meta.shots.map((shot, index) => {
+                  {photoShots.map((shot, index) => {
                     const photo = draft.photos[index];
                     return (
                       <div className="ed-shot" key={`${shot.label}-${index}`}>
@@ -785,13 +858,6 @@ export function Editor() {
                 />
               </div>
               ) : null}
-              <label className="ed-check">
-                <span>
-                  <b>Animations</b>
-                  <small>Shimmer, floating details, confetti</small>
-                </span>
-                <input type="checkbox" checked={model.motion} onChange={() => update({ motion: !model.motion })} />
-              </label>
             </div>
           ) : null}
 
@@ -927,11 +993,11 @@ export function Editor() {
                   ) : template.style === "vivah" ? (
                     <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
                   ) : template.style === "beach" ? (
-                    <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} motion={model.motion} />
+                    <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
-                    <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} motion={model.motion} />
+                    <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (
-                    <ShaadiInvite fields={previewFields} theme={shaadiThemeOf(model.swatch)} motion={model.motion} />
+                    <ShaadiInvite fields={previewFields} theme={shaadiThemeOf(model.swatch)} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}

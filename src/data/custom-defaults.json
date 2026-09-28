@@ -5,6 +5,7 @@
       { "year": "2023", "title": "Families meet", "text": "Two families, one sadhya, and a lot of approving nods." },
       { "year": "2026", "title": "The yes", "text": "A houseboat, a sunset on Vembanad, and a ring hidden in payasam." }
     ],
+    "sangeetName": "Mehendi & Sangeet",
     "sangeetTime": "18:00",
     "sangeetVenue": "Poolside lawns, Casino Hotel, Kochi",
     "caption": "Pre-wedding shoot · Alleppey"
@@ -16,7 +17,10 @@
       { "year": "2026", "title": "The proposal", "text": "Written in the sand at Varkala. The tide nearly won." }
     ],
     "travelFrom": "Trivandrum Airport",
-    "travelKm": "50 km"
+    "travelKm": "50 km",
+    "bonfireName": "Bonfire after-party",
+    "bonfireWhen": "Saturday · 10:30 PM onwards",
+    "bonfireVenue": "North Cliff shore"
   },
   "anna": {
     "story": [
@@ -46,6 +50,7 @@
     ]
   },
   "hearth": {
+    "milkTitle": "Paalukachal",
     "programme": [
       { "time": "6:30 AM", "title": "Ganapathi pooja", "text": "Lighting the lamp and a small prayer at the doorway." },
       { "time": "7:15 AM", "title": "Paalukachal", "text": "Boiling milk for the first time in our kitchen." },

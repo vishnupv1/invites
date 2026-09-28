@@ -306,7 +306,7 @@ export function ShaadiInvite({
             </section>
           ) : null}
 
-          <section className="sh-section sh-panel">
+          {days.length ? <section className="sh-section sh-panel">
             <h2 className="sh-foil">The Festivities</h2>
             <div className="sh-days" role="tablist" aria-label="Wedding days">
               {days.map((item, index) => {
@@ -341,7 +341,7 @@ export function ShaadiInvite({
                 );
               })}
             </div>
-          </section>
+          </section> : null}
 
           <section className="sh-section sh-vows">
             <h2 className="sh-foil">Saat Phere · The Seven Vows</h2>
@@ -390,7 +390,7 @@ export function ShaadiInvite({
 
           <section className="sh-section sh-venue">
             <div className="sh-palace">
-              {photos[SHAADI_SHOTS.length - 1] ? <img src={photos[SHAADI_SHOTS.length - 1]} alt="" /> : <Palace />}
+              {photos[SHAADI_STORY_COUNT + festivities.length] ? <img src={photos[SHAADI_STORY_COUNT + festivities.length]} alt="" /> : <Palace />}
             </div>
             <div className="sh-venue-copy">
               <p className="sh-kicker">The venue</p>
@@ -444,7 +444,7 @@ export function ShaadiInvite({
                       <div>
                         <span className="sh-kicker">Joining us for</span>
                         <div className="sh-picks">
-                          {festivities.map((item) => {
+                          {festivities.filter((item) => item.name.trim()).map((item) => {
                             const look = EVENT_LOOK[eventKind(item.name)];
                             return (
                               <button

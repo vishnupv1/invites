@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { assetUrl } from "../api";
-import { packOf } from "../data/custom";
+import { eventName, packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import "./beach.css";
@@ -179,7 +179,7 @@ export function BeachInvite({
   const [now, setNow] = useState(() => Date.now());
   const [name, setName] = useState("");
   const [attend, setAttend] = useState<"yes" | "no">("yes");
-  const [events, setEvents] = useState({ vows: true, reception: true, bonfire: true });
+  const [skipped, setSkipped] = useState<string[]>([]);
   const [guests, setGuests] = useState(2);
   const [wish, setWish] = useState("");
   const [nameError, setNameError] = useState(false);
@@ -199,37 +199,40 @@ export function BeachInvite({
   const tag = first === "Rohan" && second === "Alisha" ? "#RohanAndAlishaAshore" : `#${first.replace(/\s/g, "")}And${second.replace(/\s/g, "")}`;
   const photos = (fields.photos ?? []).map(assetUrl);
   const journey = packOf("beach", fields.lines);
-  const story = (journey.story ?? []).map((item, index) => ({ ...item, color: STORY_COLORS[index] ?? "#F6C08F" }));
+  const story = (journey.story ?? []).filter((item) => item.title.trim() || item.text.trim()).map((item, index) => ({ ...item, color: STORY_COLORS[index] ?? "#F6C08F" }));
+  const ceremonyName = eventName(fields.lines, "ceremonyName", "Sunset vows");
+  const receptionName = eventName(fields.lines, "receptionName", "Beach reception");
+  const bonfireName = typeof journey.bonfireName === "string" ? journey.bonfireName.trim() : "";
   const ceremonyPlace = [fields.venue || "Cliff-top lawn", place].filter(Boolean).join(", ");
-  const receptionPlace = [fields.receptionVenue || "Black Beach, below the cliff", fields.receptionAddress || place].filter(Boolean).join(", ");
+  const receptionPlace = [fields.receptionVenue, fields.receptionAddress || place].filter(Boolean).join(", ");
   const cards = [
     {
       key: "sun",
       kicker: "The ceremony",
-      name: "Sunset vows",
+      name: ceremonyName,
       when: whenLine(fields.date, fields.time || "17:30"),
       venue: ceremonyPlace,
       time: fields.time || "17:30",
       place: ceremonyPlace,
     },
-    {
+    ...(fields.receptionVenue ? [{
       key: "lantern",
       kicker: "Dinner & dancing",
-      name: "Beach reception",
+      name: receptionName,
       when: whenLine(fields.date, fields.receptionTime || "19:30"),
       venue: receptionPlace,
       time: fields.receptionTime || "19:30",
       place: receptionPlace,
-    },
-    {
+    }] : []),
+    ...(bonfireName ? [{
       key: "fire",
       kicker: "Late night",
-      name: "Bonfire after-party",
-      when: "Saturday · 10:30 PM onwards",
-      venue: "North Cliff shore",
+      name: bonfireName,
+      when: journey.bonfireWhen || "",
+      venue: journey.bonfireVenue || "",
       time: "22:30",
-      place: `North Cliff shore, ${place}`,
-    },
+      place: [journey.bonfireVenue, place].filter(Boolean).join(", "),
+    }] : []),
   ];
 
   const countdown = useMemo(() => {
@@ -251,8 +254,7 @@ export function BeachInvite({
   }, [fields.date, fields.time, now]);
 
   const liveWishes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...SAMPLE_WISHES];
-  const picked = (["vows", "reception", "bonfire"] as const).filter((key) => events[key]);
-  const pickedLabels = { vows: "Sunset vows", reception: "Reception", bonfire: "Bonfire" };
+  const picked = cards.map((card) => card.name).filter((name) => !skipped.includes(name));
 
   function toggleMusic() {
     const audio = audioRef.current;
@@ -271,7 +273,7 @@ export function BeachInvite({
       return;
     }
     const attending = attend === "yes";
-    const note = [attending ? `${guests} ${guests === 1 ? "guest" : "guests"}` : "", attending ? picked.map((key) => pickedLabels[key]).join(", ") : "", wish.trim()].filter(Boolean).join(" · ");
+    const note = [attending ? `${guests} ${guests === 1 ? "guest" : "guests"}` : "", attending ? picked.join(", ") : "", wish.trim()].filter(Boolean).join(" · ");
     onReply?.({ name: name.trim(), attending, note });
     if (wish.trim()) setAdded((current) => [{ name: name.trim(), text: wish.trim() }, ...current]);
     setWish("");
@@ -358,7 +360,7 @@ export function BeachInvite({
           </section>
 
           <section className="bw-count" aria-label="Countdown">
-            <span className="bw-section-kicker">Until the sunset vows</span>
+            <span className="bw-section-kicker">Until the {ceremonyName.toLowerCase()}</span>
             <div className="bw-count-row">
               {countdown.map((item) => (
                 <div key={item.label}>
@@ -552,7 +554,7 @@ export function BeachInvite({
                   <h3>{attend === "yes" ? "See you at the shore!" : "We’ll miss you"}</h3>
                   <p>
                     {attend === "yes"
-                      ? `Thank you, ${name.trim()}! ${guests} ${guests === 1 ? "spot" : "spots"}${picked.length ? ` saved for the ${picked.map((key) => pickedLabels[key]).join(", ")}` : " saved"}. Bring your dancing feet.`
+                      ? `Thank you, ${name.trim()}! ${guests} ${guests === 1 ? "spot" : "spots"}${picked.length ? ` saved for the ${picked.join(", ")}` : " saved"}. Bring your dancing feet.`
                       : `Thank you for letting us know, ${name.trim()}. We’ll send you sunset photos!`}
                   </p>
                   <button type="button" className="bw-change" onClick={() => setDone(false)}>
@@ -582,15 +584,9 @@ export function BeachInvite({
                     <>
                       <span>I'll be at</span>
                       <div className="bw-chips">
-                        {(
-                          [
-                            ["vows", "Sunset vows"],
-                            ["reception", "Reception"],
-                            ["bonfire", "Bonfire"],
-                          ] as const
-                        ).map(([key, label]) => (
-                          <button key={key} type="button" className={events[key] ? "on" : undefined} aria-pressed={events[key]} onClick={() => setEvents((current) => ({ ...current, [key]: !current[key] }))}>
-                            {label}
+                        {cards.map((card) => (
+                          <button key={card.key} type="button" className={skipped.includes(card.name) ? undefined : "on"} aria-pressed={!skipped.includes(card.name)} onClick={() => setSkipped((current) => (current.includes(card.name) ? current.filter((name) => name !== card.name) : [...current, card.name]))}>
+                            {card.name}
                           </button>
                         ))}
                       </div>
