@@ -887,3 +887,36 @@
 @media (prefers-reduced-motion: reduce) {
   .ed-root * { animation: none !important; }
 }
+
+.ed-board {
+  height: 100vh;
+  overflow: hidden;
+}
+.ed-board > .ed-root {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+@media (min-width: 721px) {
+  .ed-board {
+    flex-direction: row;
+  }
+  .ed-board .side {
+    width: 264px;
+    height: 100vh;
+    min-height: 0;
+    position: sticky;
+    top: 0;
+  }
+}
+@media (max-width: 720px) {
+  .ed-board .ed-rail { bottom: 82px; }
+  .ed-board .ed-canvas { bottom: 160px; }
+  .ed-board .ed-panel { bottom: 160px; }
+  .ed-board .ed-sheet .ed-canvas { bottom: 630px; }
+  .ed-board .ed-toast { bottom: 174px; }
+}

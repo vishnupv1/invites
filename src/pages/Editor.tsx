@@ -18,6 +18,8 @@ import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templat
 import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { useLibrary } from "../state";
+import { useSession } from "../session";
+import { AppMenu } from "../components/AppMenu";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import "./editor.css";
@@ -196,6 +198,8 @@ export function Editor() {
   const [params] = useSearchParams();
   const template = getTemplate(id);
   const { owns, remember } = useLibrary();
+  const { signedIn, host } = useSession();
+  const hostName = host?.name ?? "";
   const [model, setModel] = useState<Model | null>(() => (template ? modelFor(template, params.get("event") ?? undefined) : null));
   const [past, setPast] = useState<Model[]>([]);
   const [future, setFuture] = useState<Model[]>([]);
@@ -480,8 +484,8 @@ export function Editor() {
     notify("Link copied.");
   }
 
-  return (
-    <div className={`ed-root${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
+  const editor = (
+    <div className={`ed-root${sheet ? " ed-sheet" : ""}${signedIn ? "" : " ed-as-guest"}`}>
       <header className="ed-top">
         <div className="ed-brand">
           <Link className="ed-back" to="/templates" aria-label="Back to templates">
@@ -520,7 +524,7 @@ export function Editor() {
           </div>
         </div>
         <div className="ed-actions">
-          {getToken() ? null : <span className="ed-guest">Guest view</span>}
+          {signedIn ? null : <span className="ed-guest">Guest view</span>}
           <button type="button" className="ed-publish" onClick={() => { setError(""); setPublishOpen(true); }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" />
@@ -538,7 +542,7 @@ export function Editor() {
           { label: template.name },
         ]}
       />
-      {getToken() ? null : <div className="ed-guest-strip">Designing as a guest · draft saved on this phone</div>}
+      {signedIn ? null : <div className="ed-guest-strip">Designing as a guest · draft saved on this phone</div>}
 
       <div className="ed-body">
         <nav className="ed-rail" aria-label="Editor sections">
@@ -1098,6 +1102,13 @@ export function Editor() {
           <button type="button" onClick={() => setToast("")}>OK</button>
         </div>
       ) : null}
+    </div>
+  );
+  if (!signedIn) return editor;
+  return (
+    <div className="board ed-board">
+      <AppMenu current="/templates" name={hostName} signedIn />
+      {editor}
     </div>
   );
 }
