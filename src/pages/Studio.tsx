@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { listGreetings, listTemplates } from "../api";
+import { listGreetings, listTemplates, signOut } from "../api";
+import { DashboardHome, EventSwitcher } from "./DashboardHome";
 import { useSession } from "../session";
 import { getEvent } from "../data/events";
 import { formatPrice } from "../data/templates";
-import { formatShortDate, formatTime } from "../lib/dates";
+import { formatShortDate } from "../lib/dates";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -18,7 +19,7 @@ type Filter = "All" | "Attending" | "Declined";
 const NAV = [
   { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
   { label: "My events", href: "/events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
-  { label: "Guests", href: "/guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6M17 11a3 3 0 1 0 0-6M19 15c1.8.6 2.8 2.5 3 5" },
+  { label: "Guests", href: "/guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c1-4 4-6 7-6s6 2 7 6M17 11a3 3 0 1 0 0-6M22 21c-.5-3-2-5-4-5.5" },
   { label: "Purchases", href: "/purchases", icon: "M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" },
   { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
 ];
@@ -89,6 +90,27 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
   const [eventFilter, setEventFilter] = useState("all");
   const [catalog, setCatalog] = useState<Template[]>([]);
   const [catalogReady, setCatalogReady] = useState(false);
+  const [switchOpen, setSwitchOpen] = useState(false);
+  const [evQuery, setEvQuery] = useState("");
+  const [accountOpen, setAccountOpen] = useState(false);
+
+  useEffect(() => {
+    if (!switchOpen) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setSwitchOpen(false);
+    }
+    function onPointer(event: PointerEvent) {
+      const target = event.target as Node;
+      if ([...document.querySelectorAll(".dv-switch, .dv-bar-switch, .dv-sheet")].some((node) => node.contains(target))) return;
+      setSwitchOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [switchOpen]);
 
   useEffect(() => {
     if (view !== "purchases") return;
@@ -129,15 +151,6 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
     };
   }, [view, signedIn, ready, invites]);
 
-  const guests = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return replies.filter((reply) => {
-      const statusOk = filter === "All" || (filter === "Attending" ? reply.attending : !reply.attending);
-      const textOk = !q || reply.name.toLowerCase().includes(q) || reply.note.toLowerCase().includes(q);
-      return statusOk && textOk;
-    });
-  }, [replies, filter, query]);
-
   const rosterRows = useMemo(() => {
     const q = query.trim().toLowerCase();
     return roster.filter((reply) => {
@@ -148,16 +161,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
     });
   }, [roster, eventFilter, filter, query]);
 
-  const attending = replies.filter((reply) => reply.attending).length;
-  const declined = replies.length - attending;
-  const wishes = replies.filter((reply) => reply.note.trim()).length;
   const first = hostName.trim().split(" ")[0];
-
-  function count(label: Filter) {
-    if (label === "All") return replies.length;
-    if (label === "Attending") return attending;
-    return declined;
-  }
 
   async function share(invite: SavedInvite) {
     const url = `${window.location.origin}/i/${invite.code}`;
@@ -175,8 +179,16 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
   const pageTitle = view === "purchases" ? "Purchases" : view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? `${greetingHour()}, ${first}` : "Your invitations";
   const pageLede = view === "purchases" ? "Templates you've bought, ready to use again." : view === "events" ? "The invitations on your account." : view === "guests" ? "Replies from every invitation." : signedIn ? "Here's how your celebrations are coming along." : "Log in to see the invitations on your account.";
 
+  function pickEvent(id: string) {
+    setSelectedId(id);
+    setFilter("All");
+    setQuery("");
+    setSwitchOpen(false);
+    setEvQuery("");
+  }
+
   return (
-    <div className="board">
+    <div className={view === "dashboard" ? "board dv-board" : "board"}>
       <aside className="side">
         <Link className="brand" to="/">
           <svg width="34" height="34" viewBox="0 0 38 38" fill="none" aria-hidden="true">
@@ -189,6 +201,18 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
             Invites<em>Ready</em>
           </span>
         </Link>
+        {view === "dashboard" && signedIn && invites.length > 0 ? (
+          <EventSwitcher
+            variant="side"
+            invites={invites}
+            selectedId={selected?.id ?? ""}
+            open={switchOpen}
+            query={evQuery}
+            onQuery={setEvQuery}
+            onToggle={() => setSwitchOpen((value) => !value)}
+            onPick={pickEvent}
+          />
+        ) : null}
         <nav aria-label="Main">
           {NAV.map((item) => {
             const current = pathname === item.href;
@@ -196,6 +220,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
               <Link key={item.label} className={current ? "nav-item on" : "nav-item"} to={item.href} aria-current={current ? "page" : undefined}>
                 <Icon d={item.icon} color={current ? "#211C1E" : "#E3D3DC"} />
                 <span>{item.label}</span>
+                {item.label === "Guests" && view === "dashboard" && replies.length > 0 ? <span className="badge">{replies.length}</span> : null}
               </Link>
             );
           })}
@@ -204,23 +229,47 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
           <div className="account">
             <AccountMenu name={hostName} signedIn={signedIn}>{initialsOf(hostName) || "?"}</AccountMenu>
             <div className="who">
-              <strong>{signedIn && hostName ? hostName : "Log in"}</strong>
-              <small>{signedIn ? "Your account" : "Not signed in"}</small>
+              <strong>{signedIn && hostName ? (view === "dashboard" ? hostName.trim().split(" ")[0] : hostName) : "Log in"}</strong>
+              <small>{signedIn ? (view === "dashboard" ? "Account & settings" : "Your account") : "Not signed in"}</small>
             </div>
           </div>
         </div>
       </aside>
 
+      {view === "dashboard" ? (
+        <header className="dv-mobile-bar">
+          {signedIn && invites.length > 0 ? (
+            <EventSwitcher
+              variant="bar"
+              invites={invites}
+              selectedId={selected?.id ?? ""}
+              open={switchOpen}
+              query={evQuery}
+              onQuery={setEvQuery}
+              onToggle={() => setSwitchOpen((value) => !value)}
+              onPick={pickEvent}
+            />
+          ) : (
+            <Link className="brand" to="/">
+              Invites
+            </Link>
+          )}
+          <Link className="dv-plus" to="/templates" aria-label="Create invite">
+            +
+          </Link>
+        </header>
+      ) : null}
+
       <main className="main">
+        {view === "dashboard" ? (
+          <DashboardHome signedIn={signedIn} ready={ready} hostName={hostName} invite={selected} replies={replies} onToast={setToast} />
+        ) : (
+          <>
         <Breadcrumbs
-          items={
-            view === "dashboard"
-              ? [{ label: "Dashboard" }]
-              : [
-                  { label: "Dashboard", to: "/studio" },
-                  { label: view === "purchases" ? "Purchases" : view === "events" ? "My events" : "Guests" },
-                ]
-          }
+          items={[
+            { label: "Dashboard", to: "/studio" },
+            { label: view === "purchases" ? "Purchases" : view === "events" ? "My events" : "Guests" },
+          ]}
         />
         <div className="dash-top">
           <div className="dash-hello">
@@ -245,8 +294,10 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
             </Link>
           </div>
         </div>
+          </>
+        )}
 
-        {!signedIn ? (
+        {view !== "dashboard" && !signedIn ? (
           <section className="panel empty-card">
             <h2>{view === "purchases" ? "Log in to see your purchases." : view === "events" ? "Log in to see your events." : view === "guests" ? "Log in to see your guests." : "Log in to open your dashboard."}</h2>
             <Link className="create" to="/login">
@@ -255,9 +306,9 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
           </section>
         ) : null}
 
-        {signedIn && !ready ? <p className="empty">Loading your invitations…</p> : null}
+        {view !== "dashboard" && signedIn && !ready ? <p className="empty">Loading your invitations…</p> : null}
 
-        {signedIn && ready && invites.length === 0 && view !== "purchases" ? (
+        {view !== "dashboard" && signedIn && ready && invites.length === 0 && view !== "purchases" ? (
           <section className="panel empty-card">
             <h2>Nothing published yet.</h2>
             <p>{view === "events" ? "Create an invitation and it will show up here." : view === "guests" ? "Create an invitation and replies will show up here." : "Create an invitation and the guest replies will show up here."}</p>
@@ -373,131 +424,6 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
           </section>
         ) : null}
 
-        {signedIn && selected && view === "dashboard" ? (
-          <>
-            <div className="dash-chips" id="events">
-              {invites.map((invite) => (
-                <button
-                  key={invite.id}
-                  type="button"
-                  className={invite.id === selected.id ? "on" : ""}
-                  aria-pressed={invite.id === selected.id}
-                  onClick={() => {
-                    setSelectedId(invite.id);
-                    setFilter("All");
-                    setQuery("");
-                  }}
-                >
-                  {invite.names}
-                </button>
-              ))}
-            </div>
-            <div className="events">
-              {invites.map((invite) => {
-                const finished = (daysUntil(invite.date) ?? 0) < 0;
-                return (
-                  <button
-                    key={invite.id}
-                    type="button"
-                    className={invite.id === selected.id ? "event-card on" : "event-card"}
-                    aria-pressed={invite.id === selected.id}
-                    onClick={() => {
-                      setSelectedId(invite.id);
-                      setFilter("All");
-                      setQuery("");
-                    }}
-                  >
-                    <span className="thumb" style={{ background: AVATARS[invites.indexOf(invite) % AVATARS.length] }}>
-                      {initialsOf(invite.names) || "•"}
-                    </span>
-                    <div>
-                      <strong>{invite.names}</strong>
-                      <small>{formatShortDate(invite.date)}</small>
-                    </div>
-                    <span className={`pill ${finished ? "completed" : "live"}`}>{finished ? "Completed" : "Live"}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <InviteDetail invite={selected} replies={replies} attending={attending} declined={declined} wishes={wishes} onShare={() => share(selected)} />
-
-            <div className="columns">
-              <section className="panel guests" id="guests">
-                <div className="guests-head">
-                  <h3>Guest replies</h3>
-                  <div className="search">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#716A6D" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                      <circle cx="11" cy="11" r="7" />
-                      <path d="M20 20l-3.5-3.5" />
-                    </svg>
-                    <label htmlFor="guest-search">Search guests</label>
-                    <input id="guest-search" type="search" placeholder="Search guests" value={query} onChange={(input) => setQuery(input.target.value)} />
-                  </div>
-                </div>
-                <div className="filters">
-                  {(["All", "Attending", "Declined"] as Filter[]).map((label) => (
-                    <button
-                      key={label}
-                      type="button"
-                      className={filter === label ? "filter on" : "filter"}
-                      aria-pressed={filter === label}
-                      onClick={() => setFilter(label)}
-                    >
-                      {label} <span>{count(label)}</span>
-                    </button>
-                  ))}
-                </div>
-                <div>
-                  <div className="table-head">
-                    <span>Guest</span>
-                    <span>Note</span>
-                    <span>Status</span>
-                    <span>When</span>
-                  </div>
-                  {guests.map((guest, index) => (
-                    <div className="row" key={guest.id}>
-                      <div className="who">
-                        <span className="guest-av" style={{ background: AVATARS[index % AVATARS.length] }}>
-                          {initialsOf(guest.name)}
-                        </span>
-                        <strong>{guest.name}</strong>
-                      </div>
-                      <span className="muted">{guest.note || "—"}</span>
-                      <span className={`pill ${guest.attending ? "attending" : "declined"}`}>{guest.attending ? "Attending" : "Declined"}</span>
-                      <span className="muted">{whenLabel(guest.at)}</span>
-                    </div>
-                  ))}
-                  {guests.length === 0 ? <div className="empty">No replies yet.</div> : null}
-                </div>
-                <div className="foot">
-                  <span>
-                    Showing {guests.length} of {replies.length} replies
-                  </span>
-                </div>
-              </section>
-
-              <div className="rail">
-                <section className="panel">
-                  <h3>Recent replies</h3>
-                  {replies.length === 0 ? <p className="empty">No replies yet.</p> : null}
-                  {replies.slice(0, 6).map((reply) => (
-                    <div className="activity" key={reply.id}>
-                      <i style={{ background: reply.attending ? "#6F8B74" : "#C45B63" }} />
-                      <div>
-                        <p>
-                          {reply.name} {reply.attending ? "is attending" : "declined"}
-                          {reply.note ? ` — ${reply.note}` : ""}
-                        </p>
-                        <small>{whenLabel(reply.at)}</small>
-                      </div>
-                    </div>
-                  ))}
-                </section>
-              </div>
-            </div>
-          </>
-        ) : null}
 
         {signedIn && ready && view === "purchases" ? (
           !catalogReady ? (
@@ -533,8 +459,53 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
         ) : null}
       </main>
 
-      <nav className="dash-nav" aria-label="Main">
-        <Link to="/studio" aria-current={view === "dashboard" ? "page" : undefined}>
+      {view === "dashboard" ? (
+        <nav className="dv-tabbar" aria-label="Main">
+          <Link to="/studio" aria-current="page">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 11l9-8 9 8v10H3z" />
+            </svg>
+            Home
+          </Link>
+          <Link to="/events">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" />
+            </svg>
+            Events
+          </Link>
+          <Link to="/guests">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c1-4 4-6 7-6s6 2 7 6" />
+            </svg>
+            Guests
+          </Link>
+          <button type="button" className={accountOpen ? "on" : ""} onClick={() => setAccountOpen((value) => !value)}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM3 22c1-5 5-7 9-7s8 2 9 7" />
+            </svg>
+            Account
+          </button>
+        </nav>
+      ) : null}
+      {accountOpen && view === "dashboard" ? (
+        <div className="dv-account">
+          <strong>{signedIn && hostName ? hostName : "Not signed in"}</strong>
+          {signedIn ? (
+            <button
+              type="button"
+              onClick={() => {
+                void signOut().finally(() => window.location.assign("/"));
+              }}
+            >
+              Log out
+            </button>
+          ) : (
+            <Link to="/login">Log in</Link>
+          )}
+        </div>
+      ) : null}
+      {view === "dashboard" ? null : <nav className="dash-nav" aria-label="Main">
+        <Link to="/studio">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M3 11l9-7 9 7v9H3z" />
             <path d="M9 20v-6h6v6" />
@@ -564,106 +535,16 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
           </svg>
           Purchases
         </Link>
-      </nav>
+      </nav>}
 
       {toast ? (
         <div className="toast" role="status">
           <span>{toast}</span>
           <button type="button" onClick={() => setToast("")}>
-            Dismiss
+            OK
           </button>
         </div>
       ) : null}
     </div>
-  );
-}
-
-function InviteDetail({
-  invite,
-  replies,
-  attending,
-  declined,
-  wishes,
-  onShare,
-}: {
-  invite: SavedInvite;
-  replies: Greeting[];
-  attending: number;
-  declined: number;
-  wishes: number;
-  onShare: () => void;
-}) {
-  const finished = (daysUntil(invite.date) ?? 0) < 0;
-  const event = invite.event ? getEvent(invite.event) : undefined;
-  const functions = [
-    invite.time || invite.venue
-      ? { name: event && invite.event ? event.label : "Celebration", when: [formatShortDate(invite.date), formatTime(invite.time ?? "")].filter(Boolean).join(" · "), place: invite.venue }
-      : null,
-    invite.receptionTime || invite.receptionVenue
-      ? { name: "Reception", when: formatTime(invite.receptionTime ?? ""), place: invite.receptionVenue }
-      : null,
-  ].filter((item): item is { name: string; when: string; place: string | undefined } => Boolean(item));
-
-  return (
-    <>
-      <section className="event-head">
-        <div>
-          <div className="title-row">
-            <h2>{invite.names}</h2>
-            <span className={`pill ${finished ? "completed" : "live"}`}>{finished ? "Completed" : "Live"}</span>
-          </div>
-          <div className="meta-row">
-            <span>{formatShortDate(invite.date)}</span>
-            {invite.venue ? <span>{invite.venue}</span> : null}
-            {countdown(invite.date) ? <span className="countdown">{countdown(invite.date)}</span> : null}
-          </div>
-        </div>
-        <div className="head-actions">
-          <a className="dash-wa" href={`https://wa.me/?text=${encodeURIComponent(`${invite.names} ${window.location.origin}/i/${invite.code}`)}`} target="_blank" rel="noreferrer">
-            Share on WhatsApp
-          </a>
-          <Link className="line" to={`/i/${invite.code}`}>
-            View page
-          </Link>
-          <button type="button" className="whatsapp" onClick={onShare}>
-            Copy link
-          </button>
-        </div>
-      </section>
-
-      <div className="stats">
-        <article className="stat">
-          <em>Replies</em>
-          <strong>{replies.length}</strong>
-        </article>
-        <article className="stat on">
-          <em>Attending</em>
-          <strong>{attending}</strong>
-        </article>
-        <article className="stat">
-          <em>Declined</em>
-          <strong>{declined}</strong>
-        </article>
-        <article className="stat">
-          <em>Notes</em>
-          <strong>{wishes}</strong>
-        </article>
-      </div>
-
-      {functions.length > 0 ? (
-        <section className="panel fn-list">
-          <h3>On the invitation</h3>
-          {functions.map((item) => (
-            <div className="fn" key={item.name}>
-              <div className="fn-top">
-                <strong>{item.name}</strong>
-                <span>{item.when}</span>
-              </div>
-              {item.place ? <small>{item.place}</small> : null}
-            </div>
-          ))}
-        </section>
-      ) : null}
-    </>
   );
 }

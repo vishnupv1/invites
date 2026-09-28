@@ -5,7 +5,7 @@ import "./landing.css";
 const WORDS = ["Invitations", "your", "guests", "open,", "answer", "and"];
 const OCCASIONS = ["Weddings", "Nikah", "Engagements", "Baptisms", "Birthdays", "Housewarmings", "Anniversaries", "Receptions", "Naming ceremonies", "Festivals"];
 const PETAL_COLORS = ["#E8A0A8", "#F2C6CB", "#C89B5B", "#EADCE4"];
-const REPLIES = ["The Menon family · 4 guests", "Priya & Vivek · 2 guests", "Joseph Mathew · 3 guests", "Fathima & Arif · 2 guests"];
+const REPLIES = ["Vishnu's family · 4 guests", "Priya & Vivek · 2 guests", "Joseph Mathew · 3 guests", "Fathima & Arif · 2 guests"];
 const QR = [1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1];
 const CONFETTI = ["#C89B5B", "#F2DDB0", "#E8A0A8", "#FFFFFF", "#9FD3C4"];
 
@@ -94,7 +94,7 @@ const HOW_CARDS = [
 ];
 
 const RSVPS = [
-  ["MF", "The Menon family", "Attending", "#6B3A5B"],
+  ["MF", "Vishnu's family", "Attending", "#6B3A5B"],
   ["PV", "Priya & Vivek", "Attending", "#C89B5B"],
   ["JM", "Joseph Mathew", "Pending", "#6F8B74"],
   ["DT", "Design team", "Attending", "#4A263E"],

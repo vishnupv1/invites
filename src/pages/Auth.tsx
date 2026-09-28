@@ -119,7 +119,7 @@ export function Auth() {
               </span>
               <div>
                 <strong>New RSVP</strong>
-                <em>The Menon family · 4 guests</em>
+                <em>Vishnu's family · 4 guests</em>
               </div>
             </div>
             <div className="auth-float count">
