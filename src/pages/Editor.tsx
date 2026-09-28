@@ -7,6 +7,8 @@ import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
 import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
+import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
+import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, type ShaadiFunction } from "../components/shaadi";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
 import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
@@ -47,6 +49,8 @@ const SWATCHES = [
   { id: "sky", name: "Sky blue", cover: "#DCEBF7", dot: "#2F5E8A" },
   { id: "rose", name: "Rose blush", cover: "#F6DCE2", dot: "#9B4A5E" },
   { id: "midnight", name: "Midnight", cover: "#1B2433", dot: "#D9B26A" },
+  { id: "rani", name: "Rani", cover: "#4A0D1F", dot: "#F5D77A" },
+  { id: "ivory", name: "Ivory", cover: "#F6EFE4", dot: "#7A1633" },
 ];
 
 function splitNames(names: string) {
@@ -83,6 +87,12 @@ function vivahThemeOf(swatch: string): VivahTheme {
   return "midnight";
 }
 
+function shaadiThemeOf(swatch: string): ShaadiTheme {
+  if (swatch === "emerald") return "emerald";
+  if (swatch === "ivory") return "ivory";
+  return "rani";
+}
+
 function baptismThemeOf(swatch: string): BaptismTheme {
   if (swatch === "rose") return "blush";
   if (swatch === "emerald") return "sage";
@@ -100,6 +110,7 @@ function sectionHelp(id: string, configurable: boolean) {
   if (HIDEABLE.has(id)) return "Turn off to leave it off the invitation.";
   if (id === "rsvp") return "Set the reply date under RSVP.";
   if (id === "ceremony" || id === "when") return "Edit the time and place under Functions.";
+  if (id === "programme") return "Each festivity’s name, time, place and dress is under Functions. Its photograph is under Design.";
   return "Edit the wording under Details.";
 }
 
@@ -237,6 +248,11 @@ export function Editor() {
     setFuture([]);
     setModel({ ...current, ...patch });
     setSaving(true);
+  }
+
+  function patchFestivity(index: number, patch: Partial<ShaadiFunction>) {
+    const next = festivitiesOf(draft.lines).map((item, itemIndex) => (itemIndex === index ? { ...item, ...patch } : item));
+    patchDraft({ lines: JSON.stringify(next) });
   }
 
   function patchDraft(partial: Partial<InviteFields>) {
@@ -626,6 +642,23 @@ export function Editor() {
                   </div>
                 );
               })}
+              {usesField(template, "lines")
+                ? festivitiesOf(draft.lines).map((item, index) => (
+                    <div className="ed-fn" key={`${SHAADI_SHOTS[SHAADI_STORY_COUNT + index] ?? "festivity"}-${index}`}>
+                      <div className="ed-fn-head">
+                        <input className="ed-input" aria-label="Festivity name" value={item.name} onChange={(change) => patchFestivity(index, { name: change.target.value })} />
+                      </div>
+                      <input className="ed-input" aria-label="Hindi name" placeholder="Hindi name" value={item.hindi} onChange={(change) => patchFestivity(index, { hindi: change.target.value })} />
+                      <input className="ed-input" aria-label="Day" placeholder="Day" value={item.day} onChange={(change) => patchFestivity(index, { day: change.target.value })} />
+                      <div className="ed-grid-2">
+                        <input className="ed-input" aria-label="When" placeholder="When" value={item.when} onChange={(change) => patchFestivity(index, { when: change.target.value })} />
+                        <input className="ed-input" aria-label="Dress" placeholder="Dress" value={item.dress} onChange={(change) => patchFestivity(index, { dress: change.target.value })} />
+                      </div>
+                      <input className="ed-input" aria-label="Venue" placeholder="Venue" value={item.venue} onChange={(change) => patchFestivity(index, { venue: change.target.value })} />
+                      <p className="ed-lead">Photograph · {SHAADI_SHOTS[SHAADI_STORY_COUNT + index] ?? item.name}, under Design</p>
+                    </div>
+                  ))
+                : null}
               {template.meta.reception ? (
                 <button
                   type="button"
@@ -905,6 +938,8 @@ export function Editor() {
                     <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} motion={model.motion} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} motion={model.motion} />
+                  ) : template.style === "shaadi" ? (
+                    <ShaadiInvite fields={previewFields} theme={shaadiThemeOf(model.swatch)} motion={model.motion} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}
