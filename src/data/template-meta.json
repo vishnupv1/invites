@@ -262,5 +262,41 @@
       { "id": "wishes", "label": "Blessings", "configurable": false, "fields": [] },
       { "id": "music", "label": "Shehnai and sitar", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "thiruvizha": {
+    "names": "couple",
+    "ceremony": "Muhurtham",
+    "reception": "Virundhu",
+    "themes": [
+      { "id": "rani", "name": "Temple" },
+      { "id": "ivory", "name": "Jasmine" },
+      { "id": "emerald", "name": "Banana leaf" }
+    ],
+    "defaultTheme": "rani",
+    "shots": [
+      { "label": "The couple" },
+      { "label": "Muhurtham" },
+      { "label": "Oonjal" },
+      { "label": "Virundhu" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 8 },
+    "components": [
+      { "id": "opening", "label": "Kolam gate", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "English invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Tamil names", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "English blessing", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Muhurtham day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Muhurtham", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "reception", "label": "Virundhu", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
+      { "id": "programme", "label": "Rituals, in English and Tamil", "configurable": true, "fields": ["lines"] },
+      { "id": "dress", "label": "Attire", "configurable": true, "fields": ["dress"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Blessings", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Nadaswaram", "configurable": true, "fields": ["audio"] }
+    ]
   }
 }

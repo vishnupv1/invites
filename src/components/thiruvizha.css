@@ -1,0 +1,473 @@
+.tv {
+  --bg: #3a0c16;
+  --bg2: #5c1424;
+  --ink: #fff6e4;
+  --muted: #f0d7b0;
+  --gold: #f0c14a;
+  --deep: #2a0810;
+  --panel: rgba(74, 16, 28, 0.88);
+  --door: #4a1020;
+  --leaf: #2f8f55;
+  --line: rgba(240, 193, 74, 0.45);
+  container-type: inline-size;
+  container-name: thiru;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(240, 193, 74, 0.18), transparent 42%),
+    linear-gradient(180deg, var(--bg2), var(--bg) 28%, var(--deep));
+  color: var(--ink);
+  font-family: Cinzel, "Playfair Display", "Noto Sans Tamil", serif;
+  overflow: clip;
+}
+
+.tv[data-theme="ivory"] {
+  --bg: #fff8ee;
+  --bg2: #f6e7c8;
+  --ink: #3a1218;
+  --muted: #6a4030;
+  --gold: #9a6412;
+  --deep: #fffdf8;
+  --panel: rgba(255, 248, 238, 0.92);
+  --door: #7a1830;
+  --line: rgba(122, 24, 48, 0.28);
+}
+
+.tv[data-theme="emerald"] {
+  --bg: #0e2a1c;
+  --bg2: #164832;
+  --ink: #f6f1e4;
+  --muted: #d7e7c8;
+  --gold: #e6c36a;
+  --deep: #082016;
+  --panel: rgba(16, 48, 34, 0.9);
+  --door: #0c3a28;
+  --line: rgba(230, 195, 106, 0.4);
+}
+
+.tv:not(.is-entered) { height: 100dvh; overflow: hidden; }
+.tv button, .tv input, .tv textarea { font-family: inherit; color: inherit; }
+.tv a { color: var(--gold); }
+.tv button:focus-visible, .tv a:focus-visible, .tv input:focus-visible, .tv textarea:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.tv-pair { display: flex; flex-direction: column; gap: 4px; }
+.tv [lang="ta"] { letter-spacing: 0; text-transform: none; font-family: "Noto Serif Tamil", "Noto Sans Tamil", serif; }
+.tv-audio { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.tv-petals, .tv-thoranam { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.tv-petals span {
+  position: absolute;
+  top: -20px;
+  animation: tv-fall linear infinite;
+}
+.tv-petals i {
+  display: block;
+  border-radius: 50% 0 50% 50%;
+  transform: rotate(20deg);
+  animation: tv-spin 3.2s linear infinite;
+}
+.tv-thoranam {
+  height: 54px;
+  inset: auto 0 auto 0;
+  display: flex;
+  justify-content: space-between;
+  z-index: 4;
+}
+.tv-thoranam i {
+  width: 22px;
+  height: 36px;
+  background: var(--leaf);
+  border-radius: 0 70% 0 70%;
+  transform-origin: top center;
+  animation: tv-sway 2.8s ease-in-out infinite;
+  box-shadow: inset -6px 0 #1d5c38;
+}
+
+.tv-kolam { width: 180px; height: 180px; color: var(--gold); }
+.tv-kolam * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tv-draw 2.8s ease forwards;
+}
+.tv-kolam { animation: tv-spin 48s linear infinite; }
+
+.tv-gopuram { width: min(118px, 40%); height: auto; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35)); animation: tv-rise 1.2s ease both; }
+.tv-window { animation: tv-glow 1.8s ease-in-out infinite; }
+.tv-window:nth-child(even) { animation-delay: 0.4s; }
+
+.tv-lamp { position: relative; width: 36px; height: 58px; display: inline-block; }
+.tv-lamp svg { width: 36px; height: 54px; display: block; }
+.tv-flame {
+  position: absolute;
+  left: 13px;
+  top: 0;
+  width: 10px;
+  height: 16px;
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(circle at 50% 70%, #fff6c8, #ffb020 45%, #e23d28);
+  animation: tv-flicker 0.45s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.tv-bells { display: flex; gap: 28px; }
+.tv-bells i {
+  width: 18px;
+  height: 22px;
+  border-radius: 0 0 12px 12px;
+  background: var(--gold);
+  transform-origin: top center;
+  animation: tv-bell 1.6s ease-in-out infinite;
+}
+.tv-bells i:last-child { animation-delay: 0.35s; }
+
+.tv-langs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tv-langs button {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.tv-langs button[aria-pressed="true"] { background: var(--gold); color: #2a0810; border-color: var(--gold); }
+
+.tv-music {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+.tv-music b, .tv-music small { display: block; text-align: left; }
+.tv-music b { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+.tv-music small { font-family: "Noto Serif Tamil", "Noto Sans Tamil", serif; font-size: 12px; color: var(--muted); }
+.tv-eq { display: flex; align-items: flex-end; gap: 3px; height: 16px; }
+.tv-eq i { width: 3px; height: 16px; border-radius: 2px; background: var(--gold); transform: scaleY(0.35); transform-origin: bottom; }
+.tv-music.on .tv-eq i { animation: tv-eq 0.7s ease-in-out infinite; }
+.tv-music.on .tv-eq i:nth-child(2) { animation-duration: 0.85s; }
+.tv-music.on .tv-eq i:nth-child(3) { animation-duration: 0.6s; }
+.tv-music.on .tv-eq i:nth-child(4) { animation-duration: 0.95s; }
+
+.tv-gate {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 52px 16px 16px;
+  text-align: center;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.tv-doors { position: absolute; inset: 0; display: flex; z-index: 1; }
+.tv-doors span {
+  flex: 1;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(240, 193, 74, 0.28), transparent 36%),
+    repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(240, 193, 74, 0.08) 19px),
+    var(--door);
+  border: 1px solid var(--gold);
+  transition: transform 1.15s cubic-bezier(0.7, 0.05, 0.2, 1);
+}
+.tv-doors .left { transform-origin: left center; }
+.tv-doors .right { transform-origin: right center; }
+.tv-gate.is-open .tv-doors .left { transform: perspective(1400px) rotateY(-78deg); }
+.tv-gate.is-open .tv-doors .right { transform: perspective(1400px) rotateY(78deg); }
+.tv-gate-art, .tv-gate-copy { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: opacity 0.45s ease; }
+.tv-gate-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+.tv-gate.is-open .tv-gate-art, .tv-gate.is-open .tv-gate-copy { opacity: 0; }
+.tv-gopuram { position: relative; z-index: 1; }
+.tv-gate-art .tv-kolam {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 280px;
+  height: 280px;
+  margin: -140px 0 0 -140px;
+  opacity: 0.55;
+}
+
+.tv-kicker { margin: 0; letter-spacing: 0.22em; text-transform: uppercase; font-size: 12px; color: var(--gold); }
+.tv-hosts { margin: 0; font-family: "Noto Sans Tamil", Cinzel, serif; font-size: 14px; color: var(--muted); }
+.tv-names { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.tv-names span { display: contents; }
+.tv-names b {
+  font-size: clamp(36px, 11vw, 56px);
+  font-weight: 600;
+  line-height: 0.95;
+  background: linear-gradient(100deg, var(--gold), #fff6d0, var(--gold), #c9882a);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: tv-shimmer 4.5s linear infinite, tv-up 0.8s ease both;
+}
+.tv-names i { font-style: normal; color: var(--gold); font-size: 22px; }
+.tv-names-ta { margin: 0; font-family: "Noto Serif Tamil", serif; font-size: 22px; color: var(--muted); }
+.tv-invite { margin: 0; max-width: 34ch; font-family: "Noto Serif Tamil", "Playfair Display", serif; font-size: 18px; line-height: 1.45; }
+.tv-gate .tv-invite { display: none; }
+.tv-when { margin: 0; color: var(--gold); font-size: 14px; }
+.tv-enter {
+  min-height: 54px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #2a0810;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  animation: tv-pulse 2.2s ease-in-out infinite;
+}
+.tv-enter .tv-pair { align-items: center; }
+
+.tv-world { position: relative; z-index: 1; animation: tv-up 0.8s ease both; }
+.tv-nav { display: none; }
+.tv-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg);
+  backdrop-filter: blur(8px);
+}
+.tv-bar .tv-langs button { min-height: 34px; padding: 0 10px; font-size: 12px; }
+.tv-bar .tv-music { width: 44px; height: 44px; padding: 0; justify-content: center; }
+.tv-bar .tv-music > span:last-child { display: none; }
+
+.tv-hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 72px 22px 48px;
+  overflow: hidden;
+}
+.tv-hero .tv-kolam { position: absolute; width: min(520px, 140%); height: auto; opacity: 0.22; }
+.tv-lamps { display: flex; gap: 18px; margin-top: 8px; }
+
+.tv-day, .tv-rites, .tv-frames, .tv-reply, .tv-wishes, .tv-blessing, .tv-dress, .tv-count {
+  position: relative;
+  padding: 28px 18px;
+  scroll-margin-top: 96px;
+}
+.tv-day { display: grid; gap: 14px; }
+.tv-day article, .tv-rites article, .tv-dress, .tv-blessing, .tv-reply form, .tv-wishes li {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 18px;
+}
+.tv-day p, .tv-dress p:first-child { margin: 0 0 6px; letter-spacing: 0.16em; text-transform: uppercase; font-size: 12px; color: var(--gold); }
+.tv-day h2, .tv-rites h2, .tv-frames h2, .tv-reply h2, .tv-wishes h2 { margin: 0 0 8px; font-size: 32px; }
+.tv-day strong, .tv-day span { display: block; }
+.tv-day span { margin-top: 8px; color: var(--muted); }
+.tv-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.tv-links a { text-decoration: none; border-bottom: 1px solid var(--gold); }
+
+.tv-blessing { display: flex; gap: 14px; align-items: flex-start; margin: 0 18px; font-family: "Noto Serif Tamil", "Playfair Display", serif; font-size: 20px; line-height: 1.5; }
+.tv-dress { margin: 0 18px 8px; white-space: pre-line; }
+.tv-dress p:last-child { margin: 0; font-family: "Noto Sans Tamil", "Playfair Display", serif; line-height: 1.5; }
+
+.tv-rites h2, .tv-frames h2 { padding: 0 4px 12px; }
+.tv-rites > div, .tv-frames > div { display: grid; gap: 12px; }
+.tv-rites article { animation: none; }
+.tv-rites em { color: var(--gold); font-style: normal; letter-spacing: 0.14em; }
+.tv-rites h3 { margin: 6px 0; font-size: 22px; line-height: 1.25; }
+.tv-rites h3 [lang="ta"] { font-size: 0.86em; }
+.tv-rites time { color: var(--gold); font-size: 13px; }
+.tv-rites p { margin: 8px 0 0; font-family: "Noto Sans Tamil", "Playfair Display", serif; color: var(--muted); line-height: 1.45; }
+
+.tv-frames figure { margin: 0; position: relative; overflow: hidden; border-radius: 18px; min-height: 220px; background: #2a0810; }
+.tv-frames img { width: 100%; height: 100%; object-fit: cover; min-height: 220px; display: block; }
+.tv-frames figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(42, 8, 16, 0.72);
+  color: #fff6e4;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.tv-count { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+.tv-count div { padding: 12px 4px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.tv-count strong {
+  display: block;
+  font-size: clamp(28px, 8vw, 42px);
+  color: var(--gold);
+  animation: tv-pulse 2.4s ease-in-out infinite;
+}
+.tv-count span { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.tv-reply { display: grid; gap: 16px; }
+.tv-reply form, .tv-thanks { display: grid; gap: 12px; }
+.tv-reply label { display: grid; gap: 6px; font-size: 13px; letter-spacing: 0.06em; }
+.tv-reply input, .tv-reply textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  padding: 12px;
+  font-size: 16px;
+}
+.tv-choice, .tv-guests { display: flex; gap: 8px; align-items: center; }
+.tv-choice button, .tv-guests button, .tv-send {
+  min-height: 46px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+}
+.tv-choice button { flex: 1; padding: 8px; }
+.tv-choice button[aria-pressed="true"], .tv-send { background: var(--gold); color: #2a0810; border-color: var(--gold); }
+.tv-guests button { width: 40px; }
+.tv-send { padding: 0 18px; font-size: 15px; }
+.tv-thanks { font-size: 22px; }
+
+.tv-wishes ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tv-wishes q { display: block; font-family: "Playfair Display", serif; font-style: italic; quotes: none; }
+.tv-wishes span { display: block; margin-top: 8px; color: var(--gold); font-size: 13px; }
+
+.tv-marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.tv-marquee > div { display: flex; gap: 28px; width: max-content; padding: 14px 0; animation: tv-marq 28s linear infinite; }
+.tv-marquee span { display: flex; gap: 10px; align-items: baseline; white-space: nowrap; }
+.tv-marquee i { font-style: normal; font-family: "Noto Serif Tamil", serif; color: var(--gold); }
+
+.tv-foot { display: grid; justify-items: center; gap: 6px; padding: 36px 16px 48px; text-align: center; }
+.tv-foot .tv-kolam { width: 120px; height: 120px; }
+.tv-foot p { margin: 0; }
+.tv-foot small { letter-spacing: 0.24em; color: var(--gold); font-family: "Noto Serif Tamil", serif; }
+
+.tv-reveal { animation: tv-up 0.8s ease both; }
+
+.tv[data-motion="off"] *,
+.tv[data-motion="off"] *::before,
+.tv[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+.tv[data-motion="off"] .tv-reveal { animation: none; }
+
+@keyframes tv-draw { to { stroke-dashoffset: 0; } }
+@keyframes tv-spin { to { transform: rotate(360deg); } }
+@keyframes tv-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(240deg); opacity: 0.2; }
+}
+@keyframes tv-sway { 50% { transform: rotate(8deg); } }
+@keyframes tv-flicker {
+  50% { transform: scaleY(1.25) scaleX(0.85); filter: brightness(1.2); }
+}
+@keyframes tv-bell { 50% { transform: rotate(14deg); } }
+@keyframes tv-glow { 50% { opacity: 0.45; } }
+@keyframes tv-rise { from { transform: translateY(24px); opacity: 0; } }
+@keyframes tv-up { from { transform: translateY(16px); opacity: 0; } }
+@keyframes tv-shimmer { to { background-position: -220% 0; } }
+@keyframes tv-pulse { 50% { transform: scale(1.04); } }
+@keyframes tv-eq { 50% { transform: scaleY(1); } }
+@keyframes tv-marq { to { transform: translateX(-50%); } }
+
+@container thiru (min-width: 760px) {
+  .tv-bar { display: none; }
+  .tv-nav {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 36px;
+    background: var(--bg);
+    backdrop-filter: blur(10px);
+  }
+  .tv-brand {
+    border: none;
+    background: transparent;
+    color: var(--gold);
+    font-family: "Noto Serif Tamil", serif;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .tv-nav nav { display: flex; gap: 22px; }
+  .tv-nav nav button {
+    border: none;
+    background: transparent;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .tv-nav-end { display: flex; align-items: center; gap: 12px; }
+
+  .tv-gate {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    padding: 0 48px;
+    text-align: left;
+  }
+  .tv-gate-copy { align-items: flex-start; max-width: 560px; gap: 12px; }
+  .tv-gate-tools { justify-content: flex-start; }
+  .tv-gate-copy .tv-pair,
+  .tv-gate-copy .tv-names { align-items: flex-start; }
+  .tv-gate-art { min-height: 520px; justify-content: center; }
+  .tv-gopuram { width: min(240px, 70%); }
+  .tv-names b { font-size: clamp(64px, 6vw, 92px); }
+  .tv-gate .tv-invite { display: block; font-size: 22px; }
+
+  .tv-hero {
+    min-height: 100vh;
+    padding: 80px 64px;
+  }
+  .tv-hero .tv-names b { font-size: 96px; }
+  .tv-day, .tv-rites, .tv-frames, .tv-reply, .tv-blessing, .tv-dress, .tv-count, .tv-wishes {
+    width: min(1080px, calc(100% - 96px));
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tv-day:has(article + article) { grid-template-columns: 1fr 1fr; gap: 22px; }
+  .tv-day article { padding: 28px; }
+  .tv-day h2 { font-size: 44px; }
+  .tv-blessing { font-size: 28px; padding: 10px 8px 20px; }
+  .tv-rites > div { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .tv-rites h3 { font-size: 26px; }
+  .tv-frames > div { grid-template-columns: 1.4fr 1fr 1fr; grid-auto-rows: 240px; }
+  .tv-frames figure:first-child { grid-row: span 2; min-height: 100%; }
+  .tv-frames figure:first-child img { min-height: 100%; height: 100%; }
+  .tv-count strong { font-size: 56px; }
+  .tv-reply { grid-template-columns: 0.8fr 1.2fr; align-items: start; gap: 36px; padding-top: 48px; }
+  .tv-reply h2 { font-size: 52px; }
+  .tv-wishes ul { grid-template-columns: 1fr 1fr; }
+  .tv-foot { padding-bottom: 64px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv *, .tv *::before, .tv *::after { animation: none !important; transition: none !important; }
+  .tv-reveal { animation: none; }
+}

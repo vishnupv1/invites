@@ -101,6 +101,9 @@
 .pv-music { min-height: 44px; border: 1.5px solid #e8dfd6; background: #fff; color: #211c1e; }
 .pv-music[aria-pressed="true"] { background: #6b3a5b; color: #fff; border-color: #6b3a5b; }
 .pv-canvas { flex-grow: 1; display: flex; align-items: center; justify-content: center; width: 100%; overflow: auto; }
+.pv-live { width: 100%; max-height: min(820px, 78vh); overflow: auto; border-radius: 18px; box-shadow: 0 24px 50px rgba(33, 28, 30, 0.16); }
+.pv-live.phone, .pv-live.card { width: min(390px, 100%); }
+.pv-live.desk { width: min(1040px, 100%); }
 .pv-note { margin: 0; font-size: 13px; color: #716a6d; align-self: flex-start; }
 
 .pv-card {

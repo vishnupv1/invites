@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getHost, getToken, listGreetings, listTemplates, signOut } from "../api";
+import { getHost, getToken, listGreetings, listTemplates } from "../api";
 import { getEvent } from "../data/events";
 import { formatPrice } from "../data/templates";
 import { formatShortDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
+import { AccountMenu } from "../components/AccountMenu";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { SavedInvite, Template } from "../types";
 import "./studio.css";
@@ -207,34 +208,11 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
         </nav>
         <div className="side-foot">
           <div className="account">
-            <div className="avatar">{initialsOf(hostName) || "?"}</div>
+            <AccountMenu name={hostName} signedIn={signedIn}>{initialsOf(hostName) || "?"}</AccountMenu>
             <div className="who">
               <strong>{signedIn && hostName ? hostName : "Log in"}</strong>
               <small>{signedIn ? "Your account" : "Not signed in"}</small>
             </div>
-            {signedIn ? (
-              <button
-                type="button"
-                className="logout"
-                aria-label="Log out"
-                onClick={() => {
-                  signOut();
-                  window.location.assign("/");
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#CDB8C5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
-                  <path d="M10 17l-5-5 5-5M5 12h11" />
-                </svg>
-              </button>
-            ) : (
-              <Link className="logout" to="/login" aria-label="Log in">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#CDB8C5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
-                  <path d="M10 17l5-5-5-5M15 12H4" />
-                </svg>
-              </Link>
-            )}
           </div>
         </div>
       </aside>
@@ -252,30 +230,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
         />
         <div className="dash-top">
           <div className="dash-hello">
-            <div className="avatar">{initialsOf(hostName) || "?"}</div>
-            {signedIn ? (
-              <button
-                type="button"
-                className="dash-logout"
-                aria-label="Log out"
-                onClick={() => {
-                  signOut();
-                  window.location.assign("/");
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
-                  <path d="M10 17l-5-5 5-5M5 12h11" />
-                </svg>
-              </button>
-            ) : (
-              <Link className="dash-logout" to="/login" aria-label="Log in">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
-                  <path d="M10 17l5-5-5-5M15 12H4" />
-                </svg>
-              </Link>
-            )}
+            <AccountMenu name={hostName} signedIn={signedIn}>{initialsOf(hostName) || "?"}</AccountMenu>
             <div>
               <div className="dash-greet">{signedIn ? greetingHour() : "Your invitations"}</div>
               <div className="dash-name">{view === "purchases" ? "Purchases" : view === "events" ? "My events" : view === "guests" ? "Guests" : signedIn && first ? first : "Log in"}</div>

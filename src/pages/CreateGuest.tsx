@@ -8,6 +8,7 @@ import { Checkout } from "../components/Checkout";
 import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { InviteSite } from "../components/InviteSite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
+import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, usesField, withCatalogMeta } from "../data/templates";
 import { formatLongDate, formatTime } from "../lib/dates";
@@ -101,13 +102,20 @@ function vivahTheme(swatch: string): VivahTheme {
   return "midnight";
 }
 
+function thiruTheme(swatch: string): ThiruvizhaTheme {
+  if (swatch === "ivory") return "ivory";
+  if (swatch === "emerald") return "emerald";
+  return "rani";
+}
+
 function baptismTheme(swatch: string) {
   if (swatch === "rose") return "blush" as const;
   if (swatch === "emerald") return "sage" as const;
   return "sky" as const;
 }
 
-function GuestPreview({ template, fields, swatch }: { template: Template; fields: InviteFields; swatch: string }) {
+function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang?: ThiruvizhaLang }) {
+  if (template.style === "thiruvizha") return <ThiruvizhaInvite fields={fields} theme={thiruTheme(swatch)} lang={lang ?? "both"} />;
   if (template.style === "anna") return <AnnaInvite fields={fields} theme={annaTheme(swatch)} />;
   if (template.style === "baptism") return <BaptismInvite fields={fields} theme={baptismTheme(swatch)} />;
   if (template.style === "vivah") return <VivahInvite fields={fields} theme={vivahTheme(swatch)} guest="friend" />;
@@ -160,6 +168,7 @@ export function CreateGuest() {
   const [showQr, setShowQr] = useState(false);
   const [checkout, setCheckout] = useState(false);
   const [toast, setToast] = useState("");
+  const [inviteLang, setInviteLang] = useState<ThiruvizhaLang>("both");
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => undefined);
@@ -592,15 +601,25 @@ export function CreateGuest() {
               <div className="cg-field">
                 Language
                 <div className="cg-langs">
-                  <button type="button" className="cg-lang on" aria-pressed="true">
-                    English
-                  </button>
-                  <button type="button" className="cg-lang" aria-pressed="false" onClick={() => setToast("English is the language available right now.")}>
-                    മലയാളം
-                  </button>
-                  <button type="button" className="cg-lang" aria-pressed="false" onClick={() => setToast("English is the language available right now.")}>
-                    Bilingual
-                  </button>
+                  {template?.id === "thiruvizha" ? (
+                    <>
+                      <button type="button" className={inviteLang === "en" ? "cg-lang on" : "cg-lang"} aria-pressed={inviteLang === "en"} onClick={() => setInviteLang("en")}>English</button>
+                      <button type="button" className={inviteLang === "ta" ? "cg-lang on" : "cg-lang"} aria-pressed={inviteLang === "ta"} onClick={() => setInviteLang("ta")}>தமிழ்</button>
+                      <button type="button" className={inviteLang === "both" ? "cg-lang on" : "cg-lang"} aria-pressed={inviteLang === "both"} onClick={() => setInviteLang("both")}>Bilingual</button>
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" className="cg-lang on" aria-pressed="true">
+                        English
+                      </button>
+                      <button type="button" className="cg-lang" aria-pressed="false" onClick={() => setToast("English is the language available right now.")}>
+                        മലയാളം
+                      </button>
+                      <button type="button" className="cg-lang" aria-pressed="false" onClick={() => setToast("English is the language available right now.")}>
+                        Bilingual
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </aside>
@@ -615,7 +634,7 @@ export function CreateGuest() {
               </div>
               <div className={device === "phone" ? "cg-frame phone" : "cg-frame desk"}>
                 <div className="cg-screen">
-                  <GuestPreview template={template} fields={fields} swatch={swatch} />
+                  <GuestPreview template={template} fields={fields} swatch={swatch} lang={inviteLang} />
                 </div>
               </div>
             </section>
