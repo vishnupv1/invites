@@ -304,7 +304,8 @@ export function DashboardHome({
     { id: "attending", label: "Attending", count: attending },
     { id: "declined", label: "Declined", count: declined },
   ];
-  const editTo = `/create/${invite.templateId}?event=${invite.event || "marriage"}`;
+  const draftMode = invite.status === "draft";
+  const editTo = `/create/${invite.templateId}?invite=${invite.id}`;
 
   async function copyLink() {
     try {
@@ -346,7 +347,7 @@ export function DashboardHome({
           <h1>{invite.names}</h1>
         </div>
         <div className="dv-head-actions">
-          <Link to={`/i/${invite.code}`}>View invite</Link>
+          {draftMode ? null : <Link to={`/i/${invite.code}`}>View invite</Link>}
           <Link to={editTo}>Edit</Link>
           <Link className="go" to="/templates">
             + Create invite
@@ -365,7 +366,7 @@ export function DashboardHome({
         )}
         <div className="dv-hero-copy">
           <div className="dv-hero-line">
-            <span className={finished ? "dv-status done" : "dv-status"}>{finished ? "Completed" : "Live"}</span>
+            <span className={draftMode ? "dv-status draft" : finished ? "dv-status done" : "dv-status"}>{draftMode ? "Draft" : finished ? "Completed" : "Live"}</span>
             <span className="dv-template">{template?.name || "Invitation"} template</span>
             <strong className="dv-mobile-name">{invite.names}</strong>
           </div>
@@ -374,13 +375,26 @@ export function DashboardHome({
             {invite.venue ? <span>{invite.venue}</span> : null}
             {daysLabel(invite.date) ? <b>{daysLabel(invite.date)}</b> : null}
           </div>
-          <div className="dv-link">
-            <span>{path}</span>
-            <button type="button" onClick={() => void copyLink()}>
-              Copy
-            </button>
-          </div>
+          {draftMode ? (
+            <div className="dv-link">
+              <span>Draft · publish once to share it</span>
+            </div>
+          ) : (
+            <div className="dv-link">
+              <span>{path}</span>
+              <button type="button" onClick={() => void copyLink()}>
+                Copy
+              </button>
+            </div>
+          )}
         </div>
+        {draftMode ? (
+          <div className="dv-hero-actions">
+            <Link className="view" to={editTo}>
+              Edit invitation
+            </Link>
+          </div>
+        ) : (
         <div className="dv-hero-actions">
           <button type="button" className="wa" onClick={shareWhatsApp}>
             <span className="wide">Share on WhatsApp</span>
@@ -393,6 +407,7 @@ export function DashboardHome({
             View invite
           </Link>
         </div>
+        )}
       </section>
 
       {replies.length > 0 ? (

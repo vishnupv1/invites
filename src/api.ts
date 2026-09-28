@@ -153,6 +153,36 @@ export function createInvite(templateId: string, fields: InviteFields) {
   });
 }
 
+export type EditorState = {
+  swatch?: string;
+  receptionOn?: boolean;
+  sections?: { id: string; on: boolean }[];
+};
+
+export type InviteRecord = SavedInvite & { fields: InviteFields; editor?: EditorState | null };
+
+export function saveDraft(templateId: string, fields: InviteFields, editor?: EditorState) {
+  return request<SavedInvite>("/api/invites/draft", {
+    method: "POST",
+    body: JSON.stringify({ templateId, fields, editor }),
+  });
+}
+
+export function updateInvite(id: string, templateId: string, fields: InviteFields, editor?: EditorState) {
+  return request<SavedInvite>(`/api/invites/record/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ templateId, fields, editor }),
+  });
+}
+
+export function publishSaved(id: string) {
+  return request<SavedInvite>(`/api/invites/record/${id}/publish`, { method: "POST" });
+}
+
+export function getInviteRecord(id: string) {
+  return request<InviteRecord>(`/api/invites/record/${id}`);
+}
+
 export function getPublicInvite(slug: string) {
   return request<{ slug: string; templateId: string; fields: InviteFields; greetings?: { name: string; note: string }[] }>(`/api/invites/${slug}`);
 }

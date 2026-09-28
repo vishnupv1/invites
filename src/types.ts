@@ -133,6 +133,7 @@ export type SavedInvite = {
   id: string;
   templateId: string;
   code: string;
+  status?: "draft" | "live";
   names: string;
   title: string;
   date: string;
