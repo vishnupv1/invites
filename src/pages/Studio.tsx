@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getHost, getToken, listGreetings, listTemplates } from "../api";
+import { listGreetings, listTemplates } from "../api";
+import { useSession } from "../session";
 import { getEvent } from "../data/events";
 import { formatPrice } from "../data/templates";
 import { formatShortDate, formatTime } from "../lib/dates";
@@ -76,8 +77,8 @@ function Icon({ d, color }: { d: string; color: string }) {
 export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" | "guests" | "purchases" }) {
   const { pathname } = useLocation();
   const { invites, ready, owned } = useLibrary();
-  const signedIn = Boolean(getToken());
-  const [hostName, setHostName] = useState("");
+  const { signedIn, host } = useSession();
+  const hostName = host?.name ?? "";
   const [selectedId, setSelectedId] = useState("");
   const [filter, setFilter] = useState<Filter>("All");
   const [query, setQuery] = useState("");
@@ -88,13 +89,6 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
   const [eventFilter, setEventFilter] = useState("all");
   const [catalog, setCatalog] = useState<Template[]>([]);
   const [catalogReady, setCatalogReady] = useState(false);
-
-  useEffect(() => {
-    if (!signedIn) return;
-    getHost()
-      .then((host) => setHostName(host.name))
-      .catch(() => setHostName(""));
-  }, [signedIn]);
 
   useEffect(() => {
     if (view !== "purchases") return;

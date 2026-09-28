@@ -116,7 +116,7 @@ export function Admin() {
   }
 
   function leave() {
-    signOut();
+    void signOut();
     setData(null);
     setUnlocked(false);
   }
