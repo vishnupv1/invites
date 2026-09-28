@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
+import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import "./anna.css";
 
@@ -14,17 +15,6 @@ const THEMES: Record<Theme, { accent: string; text: string; leaf: string; soft: 
   dusk: { accent: "#3F5670", text: "#3A506A", leaf: "#C9A27E", soft: "#D8E0E8" },
 };
 
-const STORY = [
-  { year: "2016", title: "First day of college", text: "Assigned the same lab bench in first-year chemistry. One broken beaker, and a laugh that stayed." },
-  { year: "2022", title: "A monsoon road trip", text: "Munnar in the rain, one flat tyre and a lot of chai. That was when they knew." },
-  { year: "2026", title: "The question", text: "A proposal on the Kumarakom backwaters at sunset. The answer came before the question finished." },
-];
-
-const FAQS = [
-  ["Can I bring a plus-one?", "Your invite shows how many seats are reserved. Please say if that changes."],
-  ["Are children welcome?", "Yes. There is a children's corner at the reception."],
-  ["Is there parking?", "Yes, at both venues, with people to guide you in."],
-];
 
 const PALETTE = [
   ["#A44B32", "Rust"],
@@ -116,6 +106,9 @@ export function AnnaInvite({
   const when = dateParts(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
+  const pack = packOf("anna", fields.lines);
+  const story = pack.story ?? [];
+  const faqs = pack.faqs ?? [];
   const place = placeName(fields.detail, fields.address);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [picked, setPicked] = useState<Theme>(themeProp ?? "terracotta");
@@ -288,7 +281,7 @@ export function AnnaInvite({
             <span>01 — Our story</span>
             <h2>{fields.message || "From classmates to forever."}</h2>
             <div className="anna-stories">
-              {STORY.map((item) => (
+              {story.map((item) => (
                 <div key={item.year} className="anna-story">
                   <i />
                   <div>
@@ -360,20 +353,20 @@ export function AnnaInvite({
             <section className="anna-block anna-stay">
               <span>05 — Travel & stay</span>
               <h2>Coming from afar?</h2>
-              <div className="anna-note"><strong>Nearest airport</strong><p>Cochin International — about 1.5 hours by road. Shuttles will run on the day.</p></div>
-              <div className="anna-note"><strong>Where to stay</strong><p>Rooms are held at two hotels near the church. Mention {fields.names} when booking.</p></div>
+              <div className="anna-note"><strong>Nearest airport</strong><p>{pack.airport}</p></div>
+              <div className="anna-note"><strong>Where to stay</strong><p>{pack.stay}</p></div>
             </section>
           </div>
 
           <section id="faq" className="anna-faq">
             <h2>Questions, answered</h2>
             <div className="anna-faq-list">
-              {FAQS.map(([question, answer], index) => (
-                <div key={question}>
+              {faqs.map((item, index) => (
+                <div key={item.q}>
                   <button type="button" aria-expanded={faq === index} onClick={() => setFaq(faq === index ? -1 : index)}>
-                    {question}<span className={faq === index ? "open" : ""}>+</span>
+                    {item.q}<span className={faq === index ? "open" : ""}>+</span>
                   </button>
-                  {faq === index ? <p>{answer}</p> : null}
+                  {faq === index ? <p>{item.a}</p> : null}
                 </div>
               ))}
             </div>
@@ -427,7 +420,7 @@ export function AnnaInvite({
             </div>
             <div className="anna-gifts">
               <strong>A note on gifts</strong>
-              <p>Your presence is the greatest gift. If you'd like to bless them further, a card at the reception is more than enough.</p>
+              <p>{pack.gift}</p>
             </div>
           </section>
           <footer className="anna-foot">

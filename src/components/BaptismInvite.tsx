@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
+import { packOf } from "../data/custom";
 import { calendarUrl, formatTime } from "../lib/dates";
 import "./baptism.css";
 
@@ -21,17 +22,11 @@ const HERO_D = [[60, 150], [1360, 130], [560, 110], [880, 90], [40, 480], [1390,
 const DARK_M = [[24, 30], [350, 50], [40, 200], [340, 260], [180, 14], [300, 140]];
 const DARK_D = [[40, 40], [1380, 60], [80, 420], [1360, 460], [700, 24], [560, 500], [1000, 30], [300, 200], [1200, 250], [900, 520]];
 
-const GODPARENTS = [
-  { name: "Tony Mathew", role: "Godfather", initials: "TM" },
-  { name: "Anita George", role: "Godmother", initials: "AG" },
-];
+const FACT_EMOJI = ["👶", "🍼", "😊", "🧸"];
 
-const FACTS = [
-  { emoji: "👶", label: "Born", value: "2 November 2026" },
-  { emoji: "🍼", label: "Loves", value: "Milk & long naps" },
-  { emoji: "😊", label: "First smile", value: "Christmas Eve" },
-  { emoji: "🧸", label: "Best friend", value: "Bruno the bear" },
-];
+function initialsOf(name: string) {
+  return name.split(/\s+/).map((part) => part[0] ?? "").join("").slice(0, 2).toUpperCase();
+}
 
 const SAMPLE_WISHES = [
   { name: "Grandma Annamma", text: "May God hold you close always, my little angel." },
@@ -186,6 +181,9 @@ export function BaptismInvite({
   theme?: Theme;
 }) {
   const child = firstName(fields.names);
+  const pack = packOf("baptism", fields.lines);
+  const godparents = (pack.people ?? []).map((person) => ({ ...person, initials: initialsOf(person.name) }));
+  const facts = (pack.facts ?? []).map((fact, index) => ({ ...fact, emoji: FACT_EMOJI[index] ?? "✦" }));
   const when = whenOf(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
@@ -306,9 +304,9 @@ export function BaptismInvite({
             <Sparks points={HERO_D} variant="d" size="intro" />
             <div className="bp-hero-copy">
               <span className="bp-kicker">In the name of the Father, the Son & the Holy Spirit</span>
-              <span className="bp-invite-line">Please join us for the Holy Baptism of</span>
+              <span className="bp-invite-line">{fields.title || "Please join us for the Holy Baptism of"}</span>
               <span className="bp-shine">{fields.names}</span>
-              {fields.hosts ? <span className="bp-parents">beloved son of <strong>{fields.hosts}</strong></span> : null}
+              {fields.hosts ? <span className="bp-parents">{fields.detail || "beloved son of"} <strong>{fields.hosts}</strong></span> : null}
               <div className="bp-chips">
                 <span>{when.chip}</span>
                 {fields.time ? <span>{formatTime(fields.time)}</span> : null}
@@ -333,7 +331,7 @@ export function BaptismInvite({
             <div className="bp-verse-frame">
               <div className="bp-verse-in">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#B8893B" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M12 3v18M7 8h10" /></svg>
-                <p>“Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God.”</p>
+                <p>“{fields.message || "Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God."}”</p>
                 <span>MARK 10:14</span>
               </div>
             </div>
@@ -386,7 +384,7 @@ export function BaptismInvite({
             <section id="godparents" className="bp-people">
               <h2>Godparents</h2>
               <div className="bp-cards">
-                {GODPARENTS.map((person, index) => (
+                {godparents.map((person, index) => (
                   <div key={person.name} className="bp-person" style={{ animationDelay: `${0.2 + index * 0.25}s` }}>
                     <i>{person.initials}</i>
                     <strong>{person.name}</strong>
@@ -398,7 +396,7 @@ export function BaptismInvite({
             <section className="bp-facts">
               <h2>All about {child}</h2>
               <div className="bp-facts-grid">
-                {FACTS.map((fact, index) => (
+                {facts.map((fact, index) => (
                   <div key={fact.label} className="bp-fact" style={{ animationDelay: `${0.2 + index * 0.12}s` }}>
                     <em>{fact.emoji}</em>
                     <small>{fact.label}</small>

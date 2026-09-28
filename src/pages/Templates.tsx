@@ -230,7 +230,7 @@ export function Templates() {
               const label = events.find((item) => item.id === event)?.label ?? "";
               return (
                 <article className={bought ? "tpl-card bought" : "tpl-card"} key={template.id}>
-                  <div style={{ position: "relative" }}>
+                  <div className="tpl-cover">
                     <button type="button" className="tpl-shot" aria-label={`Preview ${template.name}`} onClick={() => navigate(`/preview/${template.id}`)}>
                       <img src={`/covers/${template.id}.jpg`} alt="" />
                     </button>

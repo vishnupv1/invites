@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { assetUrl } from "../api";
+import { packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import "./beach.css";
@@ -8,11 +9,7 @@ export type BeachTheme = "sunset" | "tropical" | "dusk";
 
 type Reply = { name: string; note: string; attending: boolean };
 
-const STORY = [
-  { year: "2020", title: "Surf school, day one", text: "Both wiped out on the same wave in Kovalam.", color: "#F6C08F" },
-  { year: "2023", title: "Island hopping", text: "Lakshadweep, a leaky kayak and zero regrets.", color: "#9ED3D6" },
-  { year: "2026", title: "The proposal", text: "Written in the sand at Varkala. The tide nearly won.", color: "#F7A77F" },
-];
+const STORY_COLORS = ["#F6C08F", "#9ED3D6", "#F7A77F"];
 
 const FILM = ["#F6C08F", "#9ED3D6", "#F7A77F", "#BFE3E6", "#F4E4CC"];
 
@@ -201,6 +198,8 @@ export function BeachInvite({
   const dateLine = dotted(fields.date, place);
   const tag = first === "Rohan" && second === "Alisha" ? "#RohanAndAlishaAshore" : `#${first.replace(/\s/g, "")}And${second.replace(/\s/g, "")}`;
   const photos = (fields.photos ?? []).map(assetUrl);
+  const journey = packOf("beach", fields.lines);
+  const story = (journey.story ?? []).map((item, index) => ({ ...item, color: STORY_COLORS[index] ?? "#F6C08F" }));
   const ceremonyPlace = [fields.venue || "Cliff-top lawn", place].filter(Boolean).join(", ");
   const receptionPlace = [fields.receptionVenue || "Black Beach, below the cliff", fields.receptionAddress || place].filter(Boolean).join(", ");
   const cards = [
@@ -382,7 +381,7 @@ export function BeachInvite({
               <svg className="bw-rope" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M0 10Q500 70 1000 10" stroke="#B7834F" strokeWidth="2" fill="none" />
               </svg>
-              {STORY.map((item, index) => (
+              {story.map((item, index) => (
                 <div key={item.year} className={index === 1 ? "bw-drop shift" : "bw-drop"} style={{ animationDelay: `${0.3 + index * 0.35}s` }}>
                   <div className="bw-pola" style={{ animationDuration: `${3.4 + index * 0.5}s`, animationDelay: `${index * -1.2}s` }}>
                     <span className="bw-pin" aria-hidden="true" />
@@ -495,11 +494,11 @@ export function BeachInvite({
                 <span className="bw-plane" aria-hidden="true">
                   ✈
                 </span>
-                <span className="bw-from">Trivandrum Airport</span>
-                <span className="bw-to">{place} Cliff · 50 km</span>
+                <span className="bw-from">{journey.travelFrom || "Trivandrum Airport"}</span>
+                <span className="bw-to">{place} Cliff · {journey.travelKm || "50 km"}</span>
               </div>
               <p>
-                Shuttles from the airport on Friday afternoon. Rooms are held at two cliff-top resorts — mention “{first} &amp; {second}” when booking.
+                {fields.message || `Shuttles from the airport on Friday afternoon. Rooms are held at two cliff-top resorts — mention “${first} & ${second}” when booking.`}
               </p>
             </div>
             <div className="bw-col side">

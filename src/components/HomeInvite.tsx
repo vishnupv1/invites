@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { assetUrl } from "../api";
+import { packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import "./home.css";
@@ -12,18 +13,18 @@ const FLAGS = ["#C8553D", "#F2B544", "#4F7A4B", "#8FB7C9", "#F28BA8"];
 const NOTE_COLORS = ["#FFF3A6", "#FDD5C8", "#D4ECD0", "#D6E6F5", "#F9E0F0", "#FFE4B3"];
 const ROTATIONS = [-4, 3, -2, 5, -3, 2];
 
-const PROGRAMME = [
-  { key: "diya", time: "6:30 AM", title: "Ganapathi pooja", text: "Lighting the lamp and a small prayer at the doorway.", bg: "#FDEFD9" },
-  { key: "milk", time: "7:15 AM", title: "Paalukachal", text: "Boiling milk for the first time in our kitchen.", bg: "#FFFFFF" },
-  { key: "food", time: "12:00 PM", title: "Sadya lunch", text: "A full banana-leaf feast. Come hungry!", bg: "#E4F0DD" },
-  { key: "lights", time: "6:00 PM", title: "Evening get-together", text: "Tea, snacks, music and fairy lights on the terrace.", bg: "#2E2A25" },
+const PROGRAMME_LOOK = [
+  { key: "diya", bg: "#FDEFD9" },
+  { key: "milk", bg: "#FFFFFF" },
+  { key: "food", bg: "#E4F0DD" },
+  { key: "lights", bg: "#2E2A25" },
 ];
 
-const ROOMS = [
-  { label: "Living room", name: "The living room", text: "Big windows, a swing (yes, indoors!) and a wall waiting for family photos.", note: "Aadi’s favourite spot", icons: ["🛋️", "🪴", "🖼️", "🪑"], bg: "#FDEFD9" },
-  { label: "Kitchen", name: "The kitchen", text: "Where the paalukachal happens — and where Deepa promises unlimited filter coffee.", note: "Coffee always on", icons: ["☕", "🍳", "🥥", "🫖"], bg: "#E4F0DD" },
-  { label: "Kids’ room", name: "Aadi’s room", text: "Glow-in-the-dark stars on the ceiling and a reading nook full of picture books.", note: "Toys everywhere, sorry!", icons: ["🧸", "🚂", "⭐", "📚"], bg: "#E3EEF6" },
-  { label: "Balcony", name: "The balcony garden", text: "Curry leaves, tulsi, and a view of the evening sky over the paddy fields.", note: "Best seat for sunsets", icons: ["🌿", "🌼", "🪺", "☀️"], bg: "#FCE3CC" },
+const ROOM_LOOK = [
+  { icons: ["🛋️", "🪴", "🖼️", "🪑"], bg: "#FDEFD9" },
+  { icons: ["☕", "🍳", "🥥", "🫖"], bg: "#E4F0DD" },
+  { icons: ["🧸", "🚂", "⭐", "📚"], bg: "#E3EEF6" },
+  { icons: ["🌿", "🌼", "🪺", "☀️"], bg: "#FCE3CC" },
 ];
 
 const SAMPLE_NOTES = [
@@ -228,7 +229,10 @@ export function HomeInvite({
   const venue = [fields.venue || "Flat 4B, Green Meadows Villas", place].filter(Boolean).join(", ");
   const sign = signDate(fields.date);
   const tag = family.includes("Aadi") ? "#HomeSweetKakkanad" : `#${family.split(",")[0]?.replace(/\s/g, "") || "Home"}`;
-  const current = ROOMS[room];
+  const home = packOf("hearth", fields.lines);
+  const programme = (home.programme ?? []).map((item, index) => ({ ...PROGRAMME_LOOK[index], ...item, key: PROGRAMME_LOOK[index]?.key ?? `item-${index}` }));
+  const rooms = (home.rooms ?? []).map((item, index) => ({ ...ROOM_LOOK[index], ...item, icons: ROOM_LOOK[index]?.icons ?? [], bg: ROOM_LOOK[index]?.bg ?? "#FDEFD9" }));
+  const current = rooms[room] ?? rooms[0] ?? { icons: [] as string[], bg: "#FDEFD9", label: "", name: "", text: "", note: "" };
 
   const countdown = useMemo(() => {
     let diff = Math.max(0, Math.floor((targetTime(fields.date, fields.time) - now) / 1000));
@@ -391,14 +395,14 @@ export function HomeInvite({
             <div className="hw-milk-text">
               <span className="hw-section-kicker">The first moment in our home</span>
               <h2 className="hw-h2 left">Paalukachal</h2>
-              <p>As tradition goes, we'll boil milk in our new kitchen and let it overflow — a wish for a home that always brims with abundance, warmth and happiness. We'd love for you to be there when it bubbles over!</p>
+              <p>{fields.detail || "As tradition goes, we'll boil milk in our new kitchen and let it overflow — a wish for a home that always brims with abundance, warmth and happiness. We'd love for you to be there when it bubbles over!"}</p>
             </div>
           </section>
 
           <section className="hw-prog" id="programme">
             <h2 className="hw-h2">The day's programme</h2>
             <div className="hw-prog-grid">
-              {PROGRAMME.map((item, index) => (
+              {programme.map((item, index) => (
                 <article key={item.key} className="hw-prog-card" style={{ animationDelay: `${index * 0.15}s` }}>
                   <div className="hw-icon" style={{ background: item.bg }} aria-hidden="true">
                     {item.key === "diya" ? (
@@ -432,7 +436,7 @@ export function HomeInvite({
           <section className="hw-tour" id="tour">
             <h2 className="hw-h2">A little house tour</h2>
             <div className="hw-tabs" role="tablist" aria-label="Rooms">
-              {ROOMS.map((item, index) => (
+              {rooms.map((item, index) => (
                 <button key={item.label} type="button" role="tab" className={room === index ? "on" : undefined} aria-selected={room === index} onClick={() => setRoom(index)}>
                   {item.label}
                 </button>
@@ -489,7 +493,7 @@ export function HomeInvite({
             </div>
             <div>
               <strong>Your presence is our present</strong>
-              <p>No gifts please — just bring your blessings, your appetite and your best stories.</p>
+              <p>{fields.message || "No gifts please — just bring your blessings, your appetite and your best stories."}</p>
             </div>
           </section>
 

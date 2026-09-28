@@ -64,7 +64,8 @@
 .pv-icon, .pv-share { border: 1.5px solid #e8dfd6; background: #fff; color: #211c1e; }
 .pv-icon { width: 46px; padding: 0; }
 .pv-share { padding: 0 18px; }
-.pv-use { padding: 0 24px; background: #6b3a5b; color: #fff; font-size: 15px; }
+.pv a.pv-use,
+.pv a.pv-use:hover { padding: 0 24px; background: #6b3a5b; color: #fff; font-size: 15px; }
 
 .pv-body { padding: 32px 40px 64px; display: flex; flex-direction: column; gap: 44px; }
 .pv-split { display: flex; gap: 28px; align-items: stretch; }
@@ -231,7 +232,8 @@
 .pv-facts strong { font-weight: 600; text-align: right; }
 .pv-lock { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: #f6ecdd; }
 .pv-lock span { font-size: 13px; line-height: 1.5; color: #5e451c; }
-.pv-customise {
+.pv a.pv-customise,
+.pv a.pv-customise:hover {
   min-height: 52px;
   box-sizing: border-box;
   display: flex;
@@ -341,7 +343,8 @@
   }
   .pv-dock-k { font-size: 12px; color: #716a6d; }
   .pv-dock-v { font-size: 14px; font-weight: 700; }
-  .pv-dock a {
+  .pv .pv-dock a,
+  .pv .pv-dock a:hover {
     flex-grow: 1;
     min-height: 54px;
     display: flex;

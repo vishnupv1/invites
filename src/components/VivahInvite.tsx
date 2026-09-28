@@ -1,18 +1,13 @@
 import { useEffect, useId, useRef, useState } from "react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
+import { packOf } from "../data/custom";
 import { formatTime } from "../lib/dates";
 import "./vivah.css";
 
 export type VivahTheme = "midnight" | "royal" | "emerald";
 
 type Wish = { name: string; text: string };
-
-const STORY = [
-  { year: "2019", title: "A wrong train", text: "Both missed the Chennai Mail — and shared a very long wait at Ernakulam." },
-  { year: "2023", title: "Families meet", text: "Two families, one sadhya, and a lot of approving nods." },
-  { year: "2026", title: "The yes", text: "A houseboat, a sunset on Vembanad, and a ring hidden in payasam." },
-];
 
 const SAMPLE_WISHES: Wish[] = [
   { name: "Ammamma", text: "Deergha sumangali bhava — may you shine together always." },
@@ -27,7 +22,6 @@ const PALETTE = ["#D9B26A", "#9B2242", "#1F4D6B", "#2F6B4F", "#E8A0A8"];
 const GALLERY = ["#2B3B5C", "#5C3B4F", "#3B4F46", "#5A4A2C", "#3F3560", "#2C4A5A"];
 const PETAL_COLORS = ["#E8A0A8", "#F2C6CB", "#D9B26A", "#F6E8C8"];
 const DRESS = "Kasavu, silks and jewel tones for the Muhurtham. Go bold and festive for the Sangeet.";
-const SANGEET = "Poolside lawns, Casino Hotel, Kochi";
 const MANDALA = "M100 4c12 30 12 62 0 96-12-34-12-66 0-96zM196 100c-30 12-62 12-96 0 34-12 66-12 96 0zM100 196c-12-30-12-62 0-96 12 34 12 66 0 96zM4 100c30-12 62-12 96 0-34 12-66 12-96 0zM168 32c-8 30-30 52-68 68 16-38 38-60 68-68zM168 168c-30-8-52-30-68-68 38 16 60 38 68 68zM32 168c8-30 30-52 68-68-16 38-38 60-68 68zM32 32c30 8 52 30 68 68-38-16-60-38-68-68z";
 
 function nums(count: number) {
@@ -349,6 +343,10 @@ export function VivahInvite({
     return () => window.clearInterval(timer);
   }, []);
 
+  const pack = packOf("vivah", fields.lines);
+  const story = pack.story ?? [];
+  const sangeetTime = pack.sangeetTime || "18:00";
+  const sangeetVenue = pack.sangeetVenue || "";
   const parts = fields.names.split(/\s+&\s+/);
   const first = parts[0] || "";
   const second = parts.slice(1).join(" & ");
@@ -377,7 +375,7 @@ export function VivahInvite({
   const muhurthamWhere = [fields.venue, fields.address].filter(Boolean).join(", ");
   const receptionWhere = [fields.receptionVenue, fields.receptionAddress].filter(Boolean).join(", ");
   const celebrations = [
-    { kind: "music" as const, kicker: "The evening before", name: "Mehendi & Sangeet", when: `${dayLabel(sangeetDate)} · ${formatTime("18:00")}`, venue: SANGEET, date: sangeetDate, time: "18:00" },
+    { kind: "music" as const, kicker: "The evening before", name: "Mehendi & Sangeet", when: `${dayLabel(sangeetDate)} · ${formatTime(sangeetTime)}`, venue: sangeetVenue, date: sangeetDate, time: sangeetTime },
     { kind: "fire" as const, kicker: "The sacred moment", name: "Muhurtham", when: `${dayLabel(fields.date)} · ${timeRange(fields.time || "10:30", addMinutes(fields.time || "10:30", 45))}`, venue: muhurthamWhere, date: fields.date, time: fields.time || "10:30" },
     { kind: "sparkle" as const, kicker: "Let’s celebrate", name: "Reception", when: `${dayLabel(fields.date)} · ${formatTime(fields.receptionTime || "19:00")} onwards`, venue: receptionWhere, date: fields.date, time: fields.receptionTime || "19:00" },
   ];
@@ -502,7 +500,7 @@ export function VivahInvite({
               <svg className="wd-story-line" viewBox="0 0 2 600" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M1 0v600" stroke="#D9B26A" strokeWidth="2" />
               </svg>
-              {STORY.map((beat, index) => (
+              {story.map((beat, index) => (
                 <div key={beat.year} className={index % 2 === 0 ? "wd-story-row left" : "wd-story-row right"}>
                   <div className="wd-story-card" style={{ animationDelay: `${0.4 + index * 0.5}s` }}>
                     <div className="year">{beat.year}</div>
@@ -517,7 +515,7 @@ export function VivahInvite({
               <svg className="wd-story-curve" viewBox="0 0 1200 30" fill="none" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M0 15C200 0 400 30 600 15s400-30 600 0" stroke="#D9B26A" strokeWidth="2" />
               </svg>
-              {STORY.map((beat, index) => (
+              {story.map((beat, index) => (
                 <article key={beat.year} style={{ animationDelay: `${0.4 + index * 0.4}s, ${index * -2}s` }}>
                   <span className="wd-heart" style={{ animationDelay: `${index * 0.4}s` }} aria-hidden="true">♥</span>
                   <div className="year">{beat.year}</div>
@@ -555,7 +553,7 @@ export function VivahInvite({
           <section className="wd-moments" id="moments">
             <div className="wd-moments-copy">
               <h2 className="wd-h">Moments</h2>
-              <p>From our pre-wedding shoot on the backwaters of Alleppey — a few favourite frames before the big day.</p>
+              <p>{fields.message || "From our pre-wedding shoot on the backwaters of Alleppey — a few favourite frames before the big day."}</p>
               <span>Six photos · always turning</span>
             </div>
             <div className="wd-stage">
@@ -574,7 +572,7 @@ export function VivahInvite({
                 })}
               </div>
             </div>
-            <span className="wd-moments-note">Pre-wedding shoot · Alleppey</span>
+            <span className="wd-moments-note">{pack.caption || "Pre-wedding shoot · Alleppey"}</span>
           </section>
 
           {dress ? (
