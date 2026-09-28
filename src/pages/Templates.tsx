@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getHost, getToken, listEvents, listTemplates, type CatalogEvent } from "../api";
+import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { formatPrice } from "../data/templates";
+import { useSession } from "../session";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -33,9 +34,9 @@ function readFavs() {
 }
 
 export function Templates() {
-  const signedIn = Boolean(getToken());
+  const { signedIn, host } = useSession();
+  const hostName = host?.name ?? "";
   const { owned } = useLibrary();
-  const [hostName, setHostName] = useState("");
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>([]);
   const [catalog, setCatalog] = useState<Template[]>([]);
@@ -45,13 +46,6 @@ export function Templates() {
   const [sort, setSort] = useState("name");
   const [favs, setFavs] = useState<string[]>(readFavs);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!signedIn) return;
-    getHost()
-      .then((host) => setHostName(host.name))
-      .catch(() => setHostName(""));
-  }, [signedIn]);
 
   useEffect(() => {
     localStorage.setItem(FAVS, JSON.stringify(favs));

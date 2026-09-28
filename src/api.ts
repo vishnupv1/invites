@@ -1,6 +1,21 @@
 import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
 const TOKEN = "vellum.token.v1";
+const STALE_SESSION = "That session is no longer valid.";
+const listeners = new Set<() => void>();
+
+export type Host = { id: string; email: string; name: string };
+
+export function onSessionChange(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function notifySession() {
+  listeners.forEach((listener) => listener());
+}
 export const API_URL = (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "" : "https://invites-be.vercel.app")).replace(/\/$/, "");
 
 export function assetUrl(url: string) {
@@ -21,12 +36,19 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   }
   const response = await fetch(`${API_URL}${path}`, { ...init, headers });
   const payload = (await response.json().catch(() => ({}))) as { error?: string };
-  if (!response.ok) throw new Error(payload.error || "Request failed.");
+  if (!response.ok) {
+    if (response.status === 401 && token && payload.error === STALE_SESSION) {
+      localStorage.removeItem(TOKEN);
+      notifySession();
+    }
+    throw new Error(payload.error || "Request failed.");
+  }
   return payload as T;
 }
 
 function storeToken(token: string) {
   localStorage.setItem(TOKEN, token);
+  notifySession();
 }
 
 export async function signUp(name: string, email: string, password: string) {
@@ -54,8 +76,16 @@ export async function ensureSession(email: string, name: string) {
   return session.token;
 }
 
-export function signOut() {
+export async function signOut() {
+  const token = getToken();
+  if (token) {
+    await fetch(`${API_URL}/api/session`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }).catch(() => undefined);
+  }
   localStorage.removeItem(TOKEN);
+  notifySession();
 }
 
 export type AdminSummary = {
@@ -70,7 +100,7 @@ export function adminSummary() {
 }
 
 export function getHost() {
-  return request<{ id: string; email: string; name: string }>("/api/session");
+  return request<Host>("/api/session");
 }
 
 export type CatalogEvent = {

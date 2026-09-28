@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { getHost, getToken } from "../api";
+import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
@@ -104,8 +104,8 @@ export function TemplatePage() {
   );
   const [swatchFor, setSwatchFor] = useState<{ id: string; swatch: string } | null>(null);
   const [lang, setLang] = useState<ThiruvizhaLang>("both");
-  const signedIn = Boolean(getToken());
-  const [hostName, setHostName] = useState("");
+  const { signedIn, host } = useSession();
+  const hostName = host?.name ?? "";
   const requested = params.get("event") as EventId | null;
   const [picked, setPicked] = useState<EventId | null>(null);
   const event =
@@ -114,13 +114,6 @@ export function TemplatePage() {
       : template && requested && template.events.includes(requested)
         ? requested
         : template?.events[0];
-
-  useEffect(() => {
-    if (!signedIn) return;
-    getHost()
-      .then((host) => setHostName(host.name))
-      .catch(() => setHostName(""));
-  }, [signedIn]);
 
   if (!template || !event) return <Navigate to="/templates" replace />;
   const owned = owns(template.id, template.free);

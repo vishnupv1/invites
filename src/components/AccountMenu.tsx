@@ -44,8 +44,7 @@ export function AccountMenu({ name, signedIn, children }: { name: string; signed
               type="button"
               role="menuitem"
               onClick={() => {
-                signOut();
-                window.location.assign("/");
+                void signOut().finally(() => window.location.assign("/"));
               }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

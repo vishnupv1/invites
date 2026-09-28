@@ -9,7 +9,8 @@ import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ShaadiInvite } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite } from "../components/ThiruvizhaInvite";
-import { getHost, getTemplateRecord, getToken, listEvents, listTemplates, type CatalogEvent } from "../api";
+import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
+import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
 import { eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { useLibrary } from "../state";
@@ -109,8 +110,8 @@ export function TemplatePreview() {
   const [venue, setVenue] = useState("");
   const [favs, setFavs] = useState<string[]>(readFavs);
   const [toast, setToast] = useState("");
-  const signedIn = Boolean(getToken());
-  const [hostName, setHostName] = useState("");
+  const { signedIn, host } = useSession();
+  const hostName = host?.name ?? "";
 
   useEffect(() => {
     if (!id) return;
@@ -134,13 +135,6 @@ export function TemplatePreview() {
   useEffect(() => {
     localStorage.setItem(FAVS, JSON.stringify(favs));
   }, [favs]);
-
-  useEffect(() => {
-    if (!signedIn) return;
-    getHost()
-      .then((host) => setHostName(host.name))
-      .catch(() => setHostName(""));
-  }, [signedIn]);
 
   const colour = VARIANTS[variant];
   const showEn = lang !== "ml";

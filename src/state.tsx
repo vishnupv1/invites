@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { getToken, listInvites, listPurchases, purchaseTemplate } from "./api";
+import { listInvites, listPurchases, purchaseTemplate } from "./api";
+import { useSession } from "./session";
 import type { SavedInvite } from "./types";
 
 type Library = {
@@ -14,23 +15,35 @@ type Library = {
 const LibraryContext = createContext<Library | null>(null);
 
 export function LibraryProvider({ children }: { children: ReactNode }) {
+  const { ready: sessionReady, signedIn, host } = useSession();
   const [owned, setOwned] = useState<string[]>([]);
   const [invites, setInvites] = useState<SavedInvite[]>([]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!getToken()) {
+    if (!sessionReady) return;
+    if (!signedIn) {
+      setOwned([]);
+      setInvites([]);
       setReady(true);
       return;
     }
+    let cancel = false;
+    setReady(false);
     Promise.all([listPurchases(), listInvites()])
       .then(([purchased, published]) => {
+        if (cancel) return;
         setOwned(purchased);
         setInvites(published);
       })
       .catch(() => undefined)
-      .finally(() => setReady(true));
-  }, []);
+      .finally(() => {
+        if (!cancel) setReady(true);
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [sessionReady, signedIn, host?.id]);
 
   const library = useMemo<Library>(
     () => ({
