@@ -71,6 +71,15 @@ export const EVENT_LOOK: Record<ShaadiEventKind, { c1: string; c2: string; ink: 
   other: { c1: "#C9982E", c2: "#3A2A08", ink: "#2A1A00" },
 };
 
+export function shaadiPhotoShots(lines: string | undefined, shots: { label: string; text?: string }[]): { label: string; text?: string }[] {
+  const festivities = festivitiesOf(lines);
+  return [
+    ...shots.slice(0, SHAADI_STORY_COUNT),
+    ...festivities.map((item, index) => ({ label: item.name.trim() || `Celebration ${index + 1}` })),
+    shots.at(-1) ?? { label: "The palace" },
+  ];
+}
+
 export function festivitiesOf(lines: string | undefined): ShaadiFunction[] {
   if (!lines?.trim()) return SHAADI_FUNCTIONS.map((item) => ({ ...item }));
   try {

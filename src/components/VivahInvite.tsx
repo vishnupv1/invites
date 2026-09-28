@@ -2,6 +2,8 @@ import { useEffect, useId, useRef, useState } from "react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { formatTime } from "../lib/dates";
 import "./vivah.css";
 
@@ -344,6 +346,7 @@ export function VivahInvite({
   }, []);
 
   const pack = packOf("vivah", fields.lines);
+  const captions = photoNotes(fields.notes, catalogMeta.vivah.shots);
   const story = (pack.story ?? []).filter((item) => item.title.trim() || item.text.trim());
   const sangeetTime = pack.sangeetTime || "18:00";
   const sangeetVenue = pack.sangeetVenue || "";
@@ -563,13 +566,15 @@ export function VivahInvite({
               <div className="wd-ring">
                 {GALLERY.map((color, index) => {
                   const photo = fields.photos[index];
+                  const caption = captions[index];
                   return (
                     <div
                       key={color}
                       className="wd-photo"
                       style={{ ["--i" as string]: index, backgroundColor: color, backgroundImage: photo ? `url(${assetUrl(photo)})` : undefined }}
                     >
-                      {photo ? "" : `Photo ${index + 1}`}
+                      <span>{caption?.title || `Photo ${index + 1}`}</span>
+                      {caption?.text ? <small>{caption.text}</small> : null}
                     </div>
                   );
                 })}

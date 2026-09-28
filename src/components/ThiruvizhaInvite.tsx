@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import "./thiruvizha.css";
 
@@ -10,7 +12,6 @@ export type ThiruvizhaLang = "en" | "ta" | "both";
 
 type Wish = { name: string; note: string };
 
-const SHOTS = ["The couple", "Muhurtham", "Oonjal", "Virundhu"];
 const PETALS = [
   { left: "4%", delay: "0s", dur: "11s", color: "#fff6e4", size: 7 },
   { left: "12%", delay: "1.4s", dur: "13s", color: "#f0c14a", size: 9 },
@@ -269,7 +270,8 @@ export function ThiruvizhaInvite({
   const pack = packOf("thiruvizha", fields.lines);
   const people = peopleOf(fields.names);
   const tamilPeople = peopleOf(fields.detail);
-  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : "")).filter(Boolean);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
+  const captions = photoNotes(fields.notes, catalogMeta.thiruvizha.shots);
   const rites = (pack.programme ?? []).filter((item) => item.title.trim() || item.tamil?.trim());
   const clock = useCountdown(fields.date, fields.time);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -389,7 +391,7 @@ export function ThiruvizhaInvite({
           <nav>
             <button type="button" onClick={() => jump("tv-day")}>Muhurtham</button>
             <button type="button" onClick={() => jump("tv-rites")}>Rituals</button>
-            {photos.length ? <button type="button" onClick={() => jump("tv-frames")}>Frames</button> : null}
+            {photos.some(Boolean) ? <button type="button" onClick={() => jump("tv-frames")}>Frames</button> : null}
             <button type="button" onClick={() => jump("tv-reply")}>Reply</button>
           </nav>
           <div className="tv-nav-end">
@@ -472,16 +474,19 @@ export function ThiruvizhaInvite({
           </section>
         ) : null}
 
-        {photos.length ? (
+        {photos.some(Boolean) ? (
           <section className="tv-frames tv-reveal" id="tv-frames">
             <h2><Line en="Frames from the day" ta="விழாவின் காட்சிகள்" lang={lang} /></h2>
             <div>
-              {photos.map((src, index) => (
-                <figure key={src} style={{ animationDelay: `${index * 0.15}s` }}>
+              {photos.map((src, index) => src ? (
+                <figure key={`${src}-${index}`} style={{ animationDelay: `${index * 0.15}s` }}>
                   <img src={src} alt="" />
-                  <figcaption>{SHOTS[index] ?? "Photograph"}</figcaption>
+                  <figcaption>
+                    <b>{captions[index]?.title || "Photograph"}</b>
+                    {captions[index]?.text ? <small>{captions[index].text}</small> : null}
+                  </figcaption>
                 </figure>
-              ))}
+              ) : null)}
             </div>
           </section>
         ) : null}

@@ -264,7 +264,8 @@
 .bp-fact small { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
 .bp-fact strong { font-family: Lora, Georgia, serif; font-size: 18px; font-weight: 600; }
 .bp-gallery { padding: 0 20px 40px; display: flex; flex-direction: column; gap: 10px; }
-.bp-shot { overflow: hidden; border-radius: 22px; background: #e3eaf1; }
+.bp-shot { position: relative; overflow: hidden; border-radius: 22px; background: #e3eaf1; }
+.bp-shot-note, .bp-portrait-note { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 6px 8px; border-radius: 10px; background: rgba(255, 255, 255, 0.88); color: #2f4558; font-size: 12px; line-height: 1.35; font-weight: 600; }
 .bp-shot.tall { height: 220px; }
 .bp-shot.short { height: 150px; }
 .bp-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }

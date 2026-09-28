@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import "./anna.css";
 
@@ -106,6 +108,7 @@ export function AnnaInvite({
   const when = dateParts(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
+  const captions = photoNotes(fields.notes, catalogMeta.anna.shots);
   const pack = packOf("anna", fields.lines);
   const ceremony = eventName(fields.lines, "ceremonyName", "Ceremony");
   const reception = eventName(fields.lines, "receptionName", "Reception & dinner");
@@ -263,7 +266,15 @@ export function AnnaInvite({
                 {place ? <div className="anna-place"><small>In</small><strong>{place}</strong></div> : null}
               </div>
             </div>
-            <div className="anna-portrait">{photos[0] ? <img src={photos[0]} alt="" /> : null}</div>
+            <div className="anna-portrait">
+              {photos[0] ? <img src={photos[0]} alt="" /> : null}
+              {captions[0]?.title || captions[0]?.text ? (
+                <figcaption>
+                  {captions[0]?.title ? <strong>{captions[0].title}</strong> : null}
+                  {captions[0]?.text ? <span>{captions[0].text}</span> : null}
+                </figcaption>
+              ) : null}
+            </div>
           </section>
 
           <section className="anna-count">
@@ -324,7 +335,15 @@ export function AnnaInvite({
                   ))}
                 </div>
                 <div className="anna-venue">
-                  <div className="anna-venue-shot">{venuePhoto ? <img src={venuePhoto} alt="" /> : null}</div>
+                  <div className="anna-venue-shot">
+                    {venuePhoto ? <img src={venuePhoto} alt="" /> : null}
+                    {captions[venueTab + 1]?.title || captions[venueTab + 1]?.text ? (
+                      <figcaption>
+                        {captions[venueTab + 1]?.title ? <strong>{captions[venueTab + 1].title}</strong> : null}
+                        {captions[venueTab + 1]?.text ? <span>{captions[venueTab + 1].text}</span> : null}
+                      </figcaption>
+                    ) : null}
+                  </div>
                   <div className="anna-venue-body">
                     <strong>{venue.name}</strong>
                     {venue.address ? <p>{venue.address}</p> : null}

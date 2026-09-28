@@ -12,6 +12,7 @@ import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { InviteView } from "../components/InviteView";
 import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
+import { PeaceInvite, type PeaceTheme } from "../components/PeaceInvite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
@@ -29,6 +30,9 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   midnight: { cover: "#1B2433", dot: "#D9B26A" },
   rani: { cover: "#4A0D1F", dot: "#F5D77A" },
   ivory: { cover: "#F6EFE4", dot: "#7A1633" },
+  blush: { cover: "#F8E6E4", dot: "#C27A78" },
+  noir: { cover: "#1C1718", dot: "#E8C987" },
+  sage: { cover: "#E4EBE3", dot: "#6E8A72" },
 };
 
 function annaThemeOf(swatch: string): AnnaTheme {
@@ -55,6 +59,11 @@ function shaadiThemeOf(swatch: string): ShaadiTheme {
   if (swatch === "emerald") return "emerald";
   if (swatch === "ivory") return "ivory";
   return "rani";
+}
+function peaceThemeOf(swatch: string): PeaceTheme {
+  if (swatch === "noir") return "noir";
+  if (swatch === "sage") return "sage";
+  return "blush";
 }
 function thiruThemeOf(swatch: string): ThiruvizhaTheme {
   if (swatch === "ivory") return "ivory";
@@ -87,6 +96,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <ShaadiInvite fields={fields} theme={shaadiThemeOf(swatch)} />;
     case "thiruvizha":
       return <ThiruvizhaInvite fields={fields} theme={thiruThemeOf(swatch)} lang={lang} />;
+    case "peace":
+      return <PeaceInvite fields={fields} theme={peaceThemeOf(swatch)} />;
     default:
       return <InviteView template={template} fields={fields} />;
   }

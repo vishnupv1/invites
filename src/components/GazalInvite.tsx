@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
 import "./gazal.css";
 
@@ -85,6 +87,7 @@ export function GazalInvite({
   const [done, setDone] = useState(false);
   const [localWishes, setLocalWishes] = useState<GazalWish[]>([]);
   const photos = (fields.photos ?? []).map(assetUrl);
+  const captions = photoNotes(fields.notes, catalogMeta.gazal.shots);
   const shown = [...localWishes, ...wishes.filter((wish) => wish.note.trim())];
 
   function begin() {
@@ -237,9 +240,15 @@ export function GazalInvite({
         <Reveal className="gazal-photos">
           <h2>Moments</h2>
           <div>
-            {photos.filter(Boolean).map((src) => (
-              <img key={src} src={src} alt="" />
-            ))}
+            {photos.map((src, index) => src ? (
+              <figure key={`${src}-${index}`}>
+                <img src={src} alt="" />
+                <figcaption>
+                  {captions[index]?.title ? <strong>{captions[index].title}</strong> : null}
+                  {captions[index]?.text ? <span>{captions[index].text}</span> : null}
+                </figcaption>
+              </figure>
+            ) : null)}
           </div>
         </Reveal>
       ) : null}

@@ -2,7 +2,9 @@ import { Fragment, useEffect, useRef, useState, type FormEvent, type ReactNode }
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { calendarUrl, formatLongDate } from "../lib/dates";
-import { EVENT_LOOK, SHAADI_SHOTS, SHAADI_STORY_COUNT, SHAADI_VOWS, eventKind, festivitiesOf, shaadiDays, type ShaadiTheme } from "./shaadi";
+import { EVENT_LOOK, SHAADI_STORY_COUNT, SHAADI_VOWS, eventKind, festivitiesOf, shaadiDays, shaadiPhotoShots, type ShaadiTheme } from "./shaadi";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { Arch, Diyas, Elephant, EventMark, Flourish, Havan, Mandala, Palace, Petals, Rangoli, Stars, Toran } from "./shaadi-art";
 import "./shaadi.css";
 
@@ -86,12 +88,12 @@ function Names({ people }: { people: Person[] }) {
   );
 }
 
-function Frame({ src, label, tint }: { src: string; label: string; tint: string }) {
+function Frame({ src, label, text, tint }: { src: string; label: string; text?: string; tint: string }) {
   return (
     <div className="sh-frame">
       <div className="sh-frame-in" style={{ background: tint }}>
         {src ? <img src={src} alt="" /> : null}
-        <span>{label}</span>
+        <span>{label}{text ? <small>{text}</small> : null}</span>
       </div>
     </div>
   );
@@ -115,7 +117,8 @@ export function ShaadiInvite({
   const families = familiesOf(fields.hosts);
   const parents = parentsOf(fields.detail);
   const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
-  const story = SHAADI_SHOTS.slice(0, SHAADI_STORY_COUNT).map((label, index) => ({ src: photos[index] ?? "", label }));
+  const captions = photoNotes(fields.notes, shaadiPhotoShots(fields.lines, catalogMeta.shaadi.shots));
+  const story = captions.slice(0, SHAADI_STORY_COUNT).map((note, index) => ({ src: photos[index] ?? "", label: note.title, text: note.text }));
   const festivities = festivitiesOf(fields.lines);
   const days = shaadiDays(festivities);
   const celebrations = useRef<HTMLDivElement>(null);
@@ -382,7 +385,7 @@ export function ShaadiInvite({
             <div className="sh-marquee">
               <div>
                 {storyLoop.map((frame, index) => (
-                  <Frame key={`${frame.label}-${index}`} src={frame.src} label={frame.label} tint={FRAME_COLORS[index % FRAME_COLORS.length]} />
+                  <Frame key={`${frame.label}-${index}`} src={frame.src} label={frame.label} text={frame.text} tint={FRAME_COLORS[index % FRAME_COLORS.length]} />
                 ))}
               </div>
             </div>

@@ -7,6 +7,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ThiruvizhaInvite } from "../components/ThiruvizhaInvite";
+import { PeaceInvite } from "../components/PeaceInvite";
 import { getTemplate, sampleFor } from "../data/templates";
 import "./open-invite.css";
 
@@ -29,6 +30,7 @@ export function OpenInvite() {
       {template.style === "beach" ? <BeachInvite fields={fields} /> : null}
       {template.style === "home" ? <HomeInvite fields={fields} /> : null}
       {template.style === "thiruvizha" ? <ThiruvizhaInvite fields={fields} /> : null}
+      {template.style === "peace" ? <PeaceInvite fields={fields} /> : null}
     </div>
   );
 }

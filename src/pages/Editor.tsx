@@ -9,7 +9,9 @@ import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
-import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, type ShaadiFunction } from "../components/shaadi";
+import { PeaceInvite, type PeaceTheme } from "../components/PeaceInvite";
+import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
+import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
 import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
@@ -56,6 +58,9 @@ const SWATCHES = [
   { id: "midnight", name: "Midnight", cover: "#1B2433", dot: "#D9B26A" },
   { id: "rani", name: "Rani", cover: "#4A0D1F", dot: "#F5D77A" },
   { id: "ivory", name: "Ivory", cover: "#F6EFE4", dot: "#7A1633" },
+  { id: "blush", name: "Blush", cover: "#F8E6E4", dot: "#C27A78" },
+  { id: "noir", name: "Noir", cover: "#1C1718", dot: "#E8C987" },
+  { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
 ];
 
 function ceremonyLabel(template: Template, draft: InviteFields) {
@@ -114,6 +119,12 @@ function shaadiThemeOf(swatch: string): ShaadiTheme {
   if (swatch === "emerald") return "emerald";
   if (swatch === "ivory") return "ivory";
   return "rani";
+}
+
+function peaceThemeOf(swatch: string): PeaceTheme {
+  if (swatch === "noir") return "noir";
+  if (swatch === "sage") return "sage";
+  return "blush";
 }
 
 function thiruThemeOf(swatch: string): ThiruvizhaTheme {
@@ -260,13 +271,8 @@ export function Editor() {
   const previewFields = shownFields(model);
   const functions: FnKind[] = template.meta.reception && model.receptionOn ? ["main", "reception"] : ["main"];
   const namedLines = template.id !== "shaadi" && !(draft.lines ?? "").trim().startsWith("[");
-  const photoShots = template.id === "shaadi"
-    ? [
-        ...template.meta.shots.slice(0, SHAADI_STORY_COUNT),
-        ...festivitiesOf(draft.lines).map((item, index) => ({ label: item.name.trim() || `Celebration ${index + 1}` })),
-        template.meta.shots.at(-1) ?? { label: "The palace" },
-      ]
-    : template.meta.shots;
+  const photoShots = template.id === "shaadi" ? shaadiPhotoShots(draft.lines, template.meta.shots) : template.meta.shots;
+  const captions = photoNotes(draft.notes, photoShots);
   const themeName = template.meta.themes.find((item) => item.id === model.swatch)?.name ?? "This design";
   const nameLabel = template.meta.names === "child" ? "Child's name" : template.meta.names === "family" ? "Family name" : "Your name";
   const tabs = TABS.filter((item) => {
@@ -302,26 +308,29 @@ export function Editor() {
 
   function removeFestivity(index: number) {
     const current = modelRef.current;
-    if (!current) return;
+    if (!current || !template) return;
     const items = festivitiesOf(current.draft.lines).filter((_, itemIndex) => itemIndex !== index);
     const photos = [...(current.draft.photos ?? [])];
     const photoIndex = SHAADI_STORY_COUNT + index;
     if (photoIndex < photos.length) photos.splice(photoIndex, 1);
     const name = festivitiesOf(current.draft.lines)[index]?.name || "celebration";
-    patchDraft({ lines: JSON.stringify(items), photos });
+    const notes = spliceNotes(current.draft.notes, shaadiPhotoShots(current.draft.lines, template.meta.shots), photoIndex, 1);
+    patchDraft({ lines: JSON.stringify(items), photos, notes });
     notify(`${name} removed. Use undo to bring it back.`);
   }
 
   function addFestivity() {
     const current = modelRef.current;
-    if (!current) return;
+    if (!current || !template) return;
     const items = festivitiesOf(current.draft.lines);
     const photos = [...(current.draft.photos ?? [])];
     const insertAt = SHAADI_STORY_COUNT + items.length;
     if (photos.length > insertAt) photos.splice(insertAt, 0, "");
+    const notes = spliceNotes(current.draft.notes, shaadiPhotoShots(current.draft.lines, template.meta.shots), insertAt, 0, { title: "New celebration", text: "" });
     patchDraft({
       lines: JSON.stringify([...items, { day: "", name: "New celebration", hindi: "", when: "", venue: "", dress: "" }]),
       photos,
+      notes,
     });
   }
 
@@ -369,6 +378,7 @@ export function Editor() {
         lat: current.draft.lat,
         lng: current.draft.lng,
         photos: current.draft.photos,
+        notes: current.draft.notes,
         audio: current.draft.audio,
       },
       receptionOn: Boolean(fresh.receptionVenue || fresh.receptionTime),
@@ -399,6 +409,16 @@ export function Editor() {
       setError(reason instanceof Error ? reason.message : "Could not add that photo.");
       setPublishOpen(true);
     }
+  }
+
+  function patchNote(index: number, patch: Partial<PhotoNote>) {
+    const current = modelRef.current;
+    if (!current || !template) return;
+    const shots = template.id === "shaadi" ? shaadiPhotoShots(current.draft.lines, template.meta.shots) : template.meta.shots;
+    const next = photoNotes(current.draft.notes, shots).map((item, itemIndex) =>
+      itemIndex === index ? { title: patch.title ?? item.title, text: patch.text ?? item.text } : { title: item.title, text: item.text },
+    );
+    patchDraft({ notes: notesJson(next) });
   }
 
   function clearPhoto(index: number) {
@@ -850,11 +870,19 @@ export function Editor() {
                 <div className="ed-shots">
                   {photoShots.map((shot, index) => {
                     const photo = draft.photos[index];
+                    const caption = captions[index] ?? { title: shot.label, text: "" };
                     return (
                       <div className="ed-shot" key={`${shot.label}-${index}`}>
                         {photo ? <img src={assetUrl(photo)} alt="" /> : <span className="ed-shot-empty" aria-hidden="true" />}
-                        <div>
-                          <b>{shot.label}</b>
+                        <div className="ed-shot-copy">
+                          <label>
+                            <span>Title</span>
+                            <input className="ed-input" aria-label={`Title for ${shot.label}`} value={caption.title} onChange={(event) => patchNote(index, { title: event.target.value })} />
+                          </label>
+                          <label>
+                            <span>Description</span>
+                            <input className="ed-input" aria-label={`Description for ${shot.label}`} value={caption.text} placeholder="A line about this photograph" onChange={(event) => patchNote(index, { text: event.target.value })} />
+                          </label>
                           <div className="ed-shot-actions">
                             <button
                               type="button"
@@ -1032,6 +1060,8 @@ export function Editor() {
                     <ShaadiInvite fields={previewFields} theme={shaadiThemeOf(model.swatch)} />
                   ) : template.style === "thiruvizha" ? (
                     <ThiruvizhaInvite fields={previewFields} theme={thiruThemeOf(model.swatch)} lang={inviteLang} allowMusic={model.sections.find((item) => item.id === "music")?.on !== false} />
+                  ) : template.style === "peace" ? (
+                    <PeaceInvite fields={previewFields} theme={peaceThemeOf(model.swatch)} allowMusic={model.sections.find((item) => item.id === "music")?.on !== false} />
                   ) : (
                     <InviteView template={template} fields={previewFields} />
                   )}

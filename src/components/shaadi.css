@@ -849,6 +849,7 @@
   object-fit: cover;
 }
 .sh-frame-in span { position: relative; z-index: 1; text-align: center; padding: 0 10px 0; }
+.sh-frame-in small { display: block; margin-top: 4px; font-size: 11px; letter-spacing: 0; line-height: 1.35; font-weight: 500; }
 
 .sh-venue {
   display: flex;

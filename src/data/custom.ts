@@ -1,7 +1,7 @@
 import defaults from "./custom-defaults.json" with { type: "json" };
 
 export type StoryBeat = { year: string; title: string; text: string };
-export type ProgrammeItem = { time: string; title: string; text: string; tamil?: string };
+export type ProgrammeItem = { time: string; title: string; text: string; tamil?: string; kick?: string; note?: string };
 export type RoomItem = { label: string; name: string; text: string; note: string };
 export type PersonItem = { name: string; role: string };
 export type FactItem = { label: string; value: string };

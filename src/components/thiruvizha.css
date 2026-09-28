@@ -306,14 +306,22 @@
 .tv-frames figcaption {
   position: absolute;
   left: 12px;
+  right: 12px;
   bottom: 12px;
-  padding: 4px 10px;
-  border-radius: 999px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  padding: 6px 10px;
+  border-radius: 14px;
   background: rgba(42, 8, 16, 0.72);
   color: #fff6e4;
   font-size: 12px;
   letter-spacing: 0.08em;
 }
+.tv-frames figcaption b { font-weight: 600; }
+.tv-frames figcaption small { font-size: 11px; letter-spacing: 0; line-height: 1.35; color: #f3e6d4; }
 
 .tv-count { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
 .tv-count div { padding: 12px 4px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }

@@ -9,6 +9,7 @@ import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
 import { InviteSite } from "../components/InviteSite";
 import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
 import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
+import { PeaceInvite, type PeaceTheme } from "../components/PeaceInvite";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, usesField, withCatalogMeta } from "../data/templates";
 import { formatLongDate, formatTime } from "../lib/dates";
@@ -44,6 +45,9 @@ const SWATCHES = [
   { id: "sky", name: "Sky blue", cover: "#DCEBF7", dot: "#2F5E8A" },
   { id: "rose", name: "Rose blush", cover: "#F6DCE2", dot: "#9B4A5E" },
   { id: "midnight", name: "Midnight", cover: "#1B2433", dot: "#D9B26A" },
+  { id: "blush", name: "Blush", cover: "#F8E6E4", dot: "#C27A78" },
+  { id: "noir", name: "Noir", cover: "#1C1718", dot: "#E8C987" },
+  { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
 ];
 
 type PriceFilter = "All" | "Free" | "Premium";
@@ -102,6 +106,12 @@ function vivahTheme(swatch: string): VivahTheme {
   return "midnight";
 }
 
+function peaceTheme(swatch: string): PeaceTheme {
+  if (swatch === "noir") return "noir";
+  if (swatch === "sage") return "sage";
+  return "blush";
+}
+
 function thiruTheme(swatch: string): ThiruvizhaTheme {
   if (swatch === "ivory") return "ivory";
   if (swatch === "emerald") return "emerald";
@@ -116,6 +126,7 @@ function baptismTheme(swatch: string) {
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang?: ThiruvizhaLang }) {
   if (template.style === "thiruvizha") return <ThiruvizhaInvite fields={fields} theme={thiruTheme(swatch)} lang={lang ?? "both"} />;
+  if (template.style === "peace") return <PeaceInvite fields={fields} theme={peaceTheme(swatch)} />;
   if (template.style === "anna") return <AnnaInvite fields={fields} theme={annaTheme(swatch)} />;
   if (template.style === "baptism") return <BaptismInvite fields={fields} theme={baptismTheme(swatch)} />;
   if (template.style === "vivah") return <VivahInvite fields={fields} theme={vivahTheme(swatch)} guest="friend" />;

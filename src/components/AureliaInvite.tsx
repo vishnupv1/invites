@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName } from "../data/custom";
+import { photoNotes } from "../data/photos";
+import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
 import "./aurelia.css";
 
@@ -55,6 +57,7 @@ export function AureliaInvite({
   const reception = eventName(fields.lines, "receptionName", "Reception");
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
+  const captions = photoNotes(fields.notes, catalogMeta.aurelia.shots);
   const [entered, setEntered] = useState(quiet);
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
@@ -188,9 +191,15 @@ export function AureliaInvite({
         <section className="au-gallery">
           <h2>Moments</h2>
           <div>
-            {photos.slice(1).filter(Boolean).map((src) => (
-              <img key={src} src={src} alt="" />
-            ))}
+            {photos.slice(1).map((src, index) => src ? (
+              <figure key={`${src}-${index}`}>
+                <img src={src} alt="" />
+                <figcaption>
+                  {captions[index + 1]?.title ? <strong>{captions[index + 1].title}</strong> : null}
+                  {captions[index + 1]?.text ? <span>{captions[index + 1].text}</span> : null}
+                </figcaption>
+              </figure>
+            ) : null)}
           </div>
         </section>
       ) : null}

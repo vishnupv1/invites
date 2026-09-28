@@ -25,6 +25,8 @@ export type InviteFields = {
   receptionVenue: string;
   receptionAddress: string;
   photos: string[];
+  /** JSON list of { title, text }, one per photograph, in the same order as photos. */
+  notes?: string;
   audio: string;
   lat: string;
   lng: string;
@@ -74,6 +76,7 @@ export type TemplateTheme = {
 
 export type TemplateShot = {
   label: string;
+  text?: string;
 };
 
 export type NameShape = "couple" | "child" | "family";
@@ -109,7 +112,8 @@ export type TemplateStyle =
   | "beach"
   | "home"
   | "shaadi"
-  | "thiruvizha";
+  | "thiruvizha"
+  | "peace";
 
 export type Template = {
   id: string;
