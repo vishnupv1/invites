@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getHost, getToken, listEvents, listTemplates, signOut, type CatalogEvent } from "../api";
 import { formatPrice } from "../data/templates";
+import { useLibrary } from "../state";
 import type { Template } from "../types";
 import "./studio.css";
 import "./templates.css";
@@ -12,6 +13,7 @@ const NAV = [
   { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
   { label: "My events", href: "/events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
   { label: "Guests", href: "/guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" },
+  { label: "Purchases", href: "/purchases", icon: "M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" },
   { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
 ];
 
@@ -30,6 +32,7 @@ function readFavs() {
 
 export function Templates() {
   const signedIn = Boolean(getToken());
+  const { owned } = useLibrary();
   const [hostName, setHostName] = useState("");
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>([]);
@@ -223,13 +226,15 @@ export function Templates() {
             {items.map((template) => {
               const event = template.events[0];
               const liked = favs.includes(template.id);
+              const bought = owned.includes(template.id);
               const label = events.find((item) => item.id === event)?.label ?? "";
               return (
-                <article className="tpl-card" key={template.id}>
+                <article className={bought ? "tpl-card bought" : "tpl-card"} key={template.id}>
                   <div style={{ position: "relative" }}>
                     <button type="button" className="tpl-shot" aria-label={`Preview ${template.name}`} onClick={() => navigate(`/preview/${template.id}`)}>
                       <img src={`/covers/${template.id}.jpg`} alt="" />
                     </button>
+                    {bought ? <span className="tpl-owned">Purchased</span> : null}
                     <button type="button" className="tpl-heart" aria-label={liked ? `Remove ${template.name} from favourites` : `Save ${template.name}`} aria-pressed={liked} onClick={() => toggleFav(template.id)}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill={liked ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
                         <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
@@ -240,7 +245,7 @@ export function Templates() {
                     <div>
                       <strong>{template.name}</strong>
                       <span>
-                        {label} · {formatPrice(template)}
+                        {label} · {bought ? "Purchased" : formatPrice(template)}
                       </span>
                     </div>
                     <button type="button" onClick={() => navigate(`/preview/${template.id}`)}>
@@ -278,6 +283,12 @@ export function Templates() {
             <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" />
           </svg>
           Guests
+        </Link>
+        <Link to="/purchases">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" />
+          </svg>
+          Purchases
         </Link>
         {signedIn ? (
           <button

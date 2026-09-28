@@ -277,6 +277,42 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.purchase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+.purchase-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e8dfd6;
+}
+.purchase-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  background: #f6ecdd;
+}
+.purchase-card strong {
+  display: block;
+  font-size: 16px;
+}
+.purchase-card small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  color: #716a6d;
+}
+.purchase-card .line {
+  margin-top: auto;
+}
 .my-events {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
