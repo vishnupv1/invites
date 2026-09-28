@@ -1,3 +1,16 @@
+.buy-board > .buy {
+  flex: 1;
+  min-width: 0;
+}
+@media (min-width: 1101px) {
+  .buy-board .side {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 0;
+  }
+}
+.buy-board .modal-back { z-index: 20; }
 .buy {
   min-height: 100vh;
   background: #faf7f2;
@@ -72,7 +85,7 @@
 
 .buy-body { padding: 28px 40px 72px; display: flex; flex-direction: column; gap: 36px; }
 .buy-split { display: grid; grid-template-columns: 1fr; gap: 28px; align-items: start; }
-@media (min-width: 1320px) {
+@media (min-width: 1680px) {
   .buy-split { grid-template-columns: minmax(0, 1fr) 380px; }
   .buy-panel { position: sticky; top: 20px; }
 }
@@ -272,4 +285,6 @@
   .buy-dock-k { display: block; font-size: 12px; color: #716a6d; }
   .buy-dock-v { font-family: Fraunces, Georgia, serif; font-size: 20px; font-weight: 600; }
   .buy-dock .buy-solid { flex: 1; min-height: 52px; font-size: 16px; }
+  .buy-board .buy-dock { bottom: 82px; }
+  .buy-board .buy-body { padding-bottom: 200px; }
 }

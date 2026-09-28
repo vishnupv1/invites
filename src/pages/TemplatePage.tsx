@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { getHost, getToken } from "../api";
+import { AppMenu } from "../components/AppMenu";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
@@ -102,6 +104,8 @@ export function TemplatePage() {
   );
   const [swatchFor, setSwatchFor] = useState<{ id: string; swatch: string } | null>(null);
   const [lang, setLang] = useState<ThiruvizhaLang>("both");
+  const signedIn = Boolean(getToken());
+  const [hostName, setHostName] = useState("");
   const requested = params.get("event") as EventId | null;
   const [picked, setPicked] = useState<EventId | null>(null);
   const event =
@@ -110,6 +114,13 @@ export function TemplatePage() {
       : template && requested && template.events.includes(requested)
         ? requested
         : template?.events[0];
+
+  useEffect(() => {
+    if (!signedIn) return;
+    getHost()
+      .then((host) => setHostName(host.name))
+      .catch(() => setHostName(""));
+  }, [signedIn]);
 
   if (!template || !event) return <Navigate to="/templates" replace />;
   const owned = owns(template.id, template.free);
@@ -123,6 +134,8 @@ export function TemplatePage() {
   const tamil = template.style === "thiruvizha";
 
   return (
+    <div className="board buy-board">
+      <AppMenu current="/templates" name={hostName} signedIn={signedIn} />
     <div className="buy">
       <header className="buy-head">
         <div className="buy-id">
@@ -148,7 +161,7 @@ export function TemplatePage() {
       </header>
       <Breadcrumbs
         className="buy-crumbs"
-        items={[{ label: "Home", to: "/" }, { label: "Templates", to: "/templates" }, { label: template.name }]}
+        items={[{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]}
       />
 
       <div className="buy-body">
@@ -332,6 +345,7 @@ export function TemplatePage() {
           }}
         />
       ) : null}
+    </div>
     </div>
   );
 }
