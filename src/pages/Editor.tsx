@@ -278,6 +278,7 @@ export function Editor() {
   }
 
   function shotLimit(lines: string | undefined) {
+    if (!template) return 0;
     if (template.id !== "shaadi") return template.meta.shots.length;
     return SHAADI_STORY_COUNT + festivitiesOf(lines).length + 1;
   }
