@@ -162,8 +162,20 @@ export function sendGreeting(slug: string, body: { name: string; note: string; a
 }
 
 export async function uploadMedia(file: File) {
+  if (!file.size) throw new Error("That file is empty. Choose it again.");
+  if (file.size > 4_500_000) throw new Error("That file is larger than 4.5 MB. Choose a smaller one.");
+  if (!file.type.startsWith("image/") && !file.type.startsWith("audio/")) {
+    throw new Error("Upload a photo or an audio file.");
+  }
   const body = new FormData();
   body.append("file", file);
-  const saved = await request<{ url: string }>("/api/media", { method: "POST", body });
-  return saved.url;
+  try {
+    const saved = await request<{ url: string }>("/api/media", { method: "POST", body });
+    if (!saved.url) throw new Error("Could not upload that file. Try again.");
+    return saved.url;
+  } catch (reason) {
+    if (reason instanceof TypeError) throw new Error("Could not reach the server. Check your connection and try again.");
+    if (reason instanceof Error && reason.message !== "Request failed.") throw reason;
+    throw new Error("Could not upload that file. Try again.");
+  }
 }

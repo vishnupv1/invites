@@ -222,6 +222,7 @@ export function Editor() {
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
+  const [toastTone, setToastTone] = useState<"ok" | "bad">("ok");
   const [showQr, setShowQr] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [placeQuery, setPlaceQuery] = useState("");
@@ -244,6 +245,12 @@ export function Editor() {
     const timer = window.setTimeout(() => setSaving(false), 900);
     return () => window.clearTimeout(timer);
   }, [saving, model]);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(""), 5200);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -282,7 +289,8 @@ export function Editor() {
     return true;
   });
 
-  function notify(message: string) {
+  function notify(message: string, tone: "ok" | "bad" = "ok") {
+    setToastTone(tone);
     setToast(message);
   }
 
@@ -406,8 +414,7 @@ export function Editor() {
       patchDraft({ photos: next.slice(0, limit) });
       setError("");
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Could not add that photo.");
-      setPublishOpen(true);
+      notify(reason instanceof Error ? reason.message : "Could not add that photo.", "bad");
     }
   }
 
@@ -436,7 +443,7 @@ export function Editor() {
       setPlaying(false);
       setError("");
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Could not add that audio.");
+      notify(reason instanceof Error ? reason.message : "Could not add that audio.", "bad");
     }
   }
 
@@ -1127,7 +1134,7 @@ export function Editor() {
       ) : null}
 
       {toast ? (
-        <div className="ed-toast" role="status">
+        <div className={toastTone === "bad" ? "ed-toast bad" : "ed-toast"} role={toastTone === "bad" ? "alert" : "status"}>
           <span>{toast}</span>
           <button type="button" onClick={() => setToast("")}>OK</button>
         </div>
