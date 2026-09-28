@@ -4,18 +4,15 @@ import { logIn, signUp } from "../api";
 import "./auth.css";
 
 type Mode = "login" | "signup";
-type Method = "email" | "phone";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function Auth() {
-  const [mode, setMode] = useState<Mode>("signup");
-  const [method, setMethod] = useState<Method>("email");
+  const [mode, setMode] = useState<Mode>("login");
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [notice, setNotice] = useState("");
@@ -36,12 +33,6 @@ export function Auth() {
     setNotice("");
     const next: Record<string, string> = {};
     if (!login && !name.trim()) next.name = "Please enter your name.";
-    if (method === "phone") {
-      setNotice("Mobile codes aren’t available yet. Use your email to continue.");
-      if (phone.replace(/\D/g, "").length !== 10) next.phone = "Enter a 10-digit mobile number.";
-      setErrors(next);
-      return;
-    }
     if (!emailPattern.test(email.trim())) next.email = "Enter a valid email address.";
     if (!login && password.length < 8) next.password = "Password must be at least 8 characters.";
     if (login && !password) next.password = "Please enter your password.";
@@ -187,27 +178,6 @@ export function Auth() {
                 <h2>{login ? "Welcome back" : "Create your account"}</h2>
                 <p>{login ? "Log in to manage your invites and replies." : "Your first invite is free. No card needed."}</p>
               </div>
-              <button
-                type="button"
-                className="google"
-                onClick={() => setNotice("Google sign-in isn’t available yet. Use your email to continue.")}
-              >
-                <Google />
-                Continue with Google
-              </button>
-              <div className="or">
-                <i />
-                or use
-                <i />
-              </div>
-              <div className="methods">
-                <button type="button" className={method === "phone" ? "on" : ""} aria-pressed={method === "phone"} onClick={() => { setMethod("phone"); setNotice(""); }}>
-                  Mobile number
-                </button>
-                <button type="button" className={method === "email" ? "on" : ""} aria-pressed={method === "email"} onClick={() => { setMethod("email"); setNotice(""); }}>
-                  Email
-                </button>
-              </div>
               {!login ? (
                 <label>
                   Full name
@@ -215,48 +185,35 @@ export function Auth() {
                   {errors.name ? <small>{errors.name}</small> : null}
                 </label>
               ) : null}
-              {method === "email" ? (
-                <>
-                  <label>
-                    Email address
-                    <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" />
-                    {errors.email ? <small>{errors.email}</small> : null}
-                  </label>
-                  <label>
-                    <span className="label-row">
-                      Password
-                      {login ? (
-                        <button type="button" className="forgot" onClick={() => setNotice("Password reset isn’t available yet.")}>
-                          Forgot password?
-                        </button>
-                      ) : null}
-                    </span>
-                    <span className="pw">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        placeholder={login ? "Your password" : "Create a password"}
-                        autoComplete={login ? "current-password" : "new-password"}
-                      />
-                      <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword((value) => !value)}>
-                        {showPassword ? <EyeOff /> : <Eye />}
-                      </button>
-                    </span>
-                    {errors.password ? <small>{errors.password}</small> : null}
-                    {!login && !errors.password ? <em>At least 8 characters.</em> : null}
-                  </label>
-                </>
-              ) : (
-                <label>
-                  Mobile number
-                  <span className="auth-dial">
-                    <b>+91</b>
-                    <input inputMode="numeric" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="98765 43210" />
-                  </span>
-                  {errors.phone ? <small>{errors.phone}</small> : <em>A code by SMS isn’t available yet. Use email to sign in.</em>}
-                </label>
-              )}
+              <label>
+                Email address
+                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" />
+                {errors.email ? <small>{errors.email}</small> : null}
+              </label>
+              <label>
+                <span className="label-row">
+                  Password
+                  {login ? (
+                    <button type="button" className="forgot" onClick={() => setNotice("Password reset isn’t available yet.")}>
+                      Forgot password?
+                    </button>
+                  ) : null}
+                </span>
+                <span className="pw">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder={login ? "Your password" : "Create a password"}
+                    autoComplete={login ? "current-password" : "new-password"}
+                  />
+                  <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword((value) => !value)}>
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </button>
+                </span>
+                {errors.password ? <small>{errors.password}</small> : null}
+                {!login && !errors.password ? <em>At least 8 characters.</em> : null}
+              </label>
               {!login ? (
                 <label className="agree">
                   <input type="checkbox" checked={agreed} onChange={(event) => setAgreed(event.target.checked)} />
@@ -267,7 +224,7 @@ export function Auth() {
               {errors.form ? <small className="form-note">{errors.form}</small> : null}
               {notice ? <small className="form-note">{notice}</small> : null}
               <button className="submit" type="submit" disabled={busy}>
-                {busy ? "Please wait…" : method === "phone" ? "Send OTP" : login ? "Log in" : "Create account"}
+                {busy ? "Please wait…" : login ? "Log in" : "Create account"}
               </button>
               <p className="switch">
                 {login ? "New to InvitesReady?" : "Already have an account?"}{" "}
@@ -302,17 +259,6 @@ function Check() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M5 12l4 4L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function Google() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" fill="#4285F4" />
-      <path d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z" fill="#34A853" />
-      <path d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2L6.4 14z" fill="#FBBC05" />
-      <path d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10c.8-2.3 3-4.1 5.6-4.1z" fill="#EA4335" />
     </svg>
   );
 }

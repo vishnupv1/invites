@@ -152,8 +152,6 @@ export function CreateGuest() {
   const [authName, setAuthName] = useState("");
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [authNote, setAuthNote] = useState("");
   const [authError, setAuthError] = useState("");
   const [busy, setBusy] = useState(false);
   const [justLoggedIn, setJustLoggedIn] = useState(false);
@@ -250,7 +248,6 @@ export function CreateGuest() {
     }
     setAuthMode(mode);
     setAuthDone(false);
-    setAuthNote("");
     setAuthError("");
     setAuthOpen(true);
   }
@@ -787,30 +784,6 @@ export function CreateGuest() {
                   <div>
                     <h2>{authMode === "publish" ? "Log in to publish" : authMode === "save" ? "Save your draft to an account" : "Log in to InvitesReady"}</h2>
                     <p>Use email. Your design stays as it is.</p>
-                  </div>
-                  <button type="button" className="cg-google" onClick={() => setAuthNote("Google sign-in isn't available. Use email.")}>
-                    Continue with Google
-                  </button>
-                  <div className="cg-or">
-                    <i />
-                    or with your mobile
-                    <i />
-                  </div>
-                  <label className="cg-field">
-                    Mobile number
-                    <div className="cg-phone">
-                      <b>+91</b>
-                      <input value={phone} inputMode="numeric" placeholder="98765 43210" onChange={(input) => setPhone(input.target.value.replace(/[^\d ]/g, ""))} />
-                    </div>
-                  </label>
-                  <button type="button" className="cg-otp" onClick={() => setAuthNote("Phone codes aren't available. Use email.")}>
-                    Send OTP
-                  </button>
-                  {authNote ? <p className="cg-unavailable">{authNote}</p> : null}
-                  <div className="cg-or">
-                    <i />
-                    or with email
-                    <i />
                   </div>
                   <label className="cg-field">
                     Name
