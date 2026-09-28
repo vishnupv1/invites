@@ -137,6 +137,7 @@ export function TemplatePage() {
     <div className="board buy-board">
       <AppMenu current="/templates" name={hostName} signedIn={signedIn} />
     <div className="buy">
+      <div className="buy-bar">
       <header className="buy-head">
         <div className="buy-id">
           <Link className="buy-back" to="/templates">
@@ -163,6 +164,7 @@ export function TemplatePage() {
         className="buy-crumbs"
         items={[{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]}
       />
+      </div>
 
       <div className="buy-body">
         <div className="buy-split">
