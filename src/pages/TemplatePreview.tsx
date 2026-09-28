@@ -11,6 +11,7 @@ import { ShaadiInvite } from "../components/ShaadiInvite";
 import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
 import { eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { useLibrary } from "../state";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, Template } from "../types";
 import "./preview.css";
 
@@ -193,9 +194,6 @@ export function TemplatePreview() {
             All templates
           </Link>
           <div>
-            <div className="pv-crumb">
-              <Link to="/templates">Templates</Link> / {occasion.label}
-            </div>
             <div className="pv-title">
               <h1>{template.name}</h1>
               <span className={template.free ? "pv-badge free" : "pv-badge gold"}>{template.free ? "Free" : "Premium"}</span>
@@ -225,6 +223,14 @@ export function TemplatePreview() {
           </Link>
         </div>
       </header>
+      <Breadcrumbs
+        className="pv-crumbs"
+        items={[
+          { label: "Dashboard", to: "/studio" },
+          { label: "Templates", to: "/templates" },
+          { label: template.name },
+        ]}
+      />
 
       <div className="pv-body">
         <div className="pv-split">

@@ -5,6 +5,7 @@ import { InviteView } from "../components/InviteView";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor } from "../data/templates";
 import { useLibrary } from "../state";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId } from "../types";
 
 export function TemplatePage() {
@@ -23,9 +24,10 @@ export function TemplatePage() {
         ? requested
         : template?.events[0];
 
-  if (!template || !event) return <Navigate to="/" replace />;
+  if (!template || !event) return <Navigate to="/templates" replace />;
   const owned = owns(template.id, template.free);
   const createTo = `/create/${template.id}?event=${event}`;
+  if (owned) return <Navigate to="/templates" replace />;
 
   return (
     <section className="detail">
@@ -33,9 +35,7 @@ export function TemplatePage() {
         <InviteView template={template} fields={sampleFor(template, event)} />
       </div>
       <div>
-        <Link className="back" to={`/#shop`}>
-          All templates
-        </Link>
+        <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Templates", to: "/templates" }, { label: template.name }]} />
         <p className="eyebrow">{template.free ? "Free demo" : "One-time purchase"}</p>
         <h1>{template.name}</h1>
         <p className="lede">{template.description}</p>
