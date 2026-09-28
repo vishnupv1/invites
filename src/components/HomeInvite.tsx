@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { assetUrl } from "../api";
-import { packOf } from "../data/custom";
+import { eventName, packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import "./home.css";
@@ -34,19 +34,14 @@ const SAMPLE_NOTES = [
   { name: "The Nairs next door", text: "Welcome to the neighbourhood!" },
 ];
 
-const SLOTS = [
-  ["puja", "Morning pooja"],
-  ["lunch", "Sadya lunch"],
-  ["evening", "Evening"],
-] as const;
-
-function whenLine(iso: string, place: string) {
+function whenLine(iso: string, place: string, ceremony: string) {
+  const title = ceremony || "Griha Pravesh";
   const date = new Date(`${iso || "2027-01-17"}T12:00:00`);
-  if (Number.isNaN(date.getTime())) return `Griha Pravesh · ${place}`;
+  if (Number.isNaN(date.getTime())) return `${title} · ${place}`;
   const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
   const day = date.getDate();
   const month = date.toLocaleDateString("en-US", { month: "short" });
-  return `Griha Pravesh · ${weekday}, ${day} ${month} ${date.getFullYear()}${place ? ` · ${place}` : ""}`;
+  return `${title} · ${weekday}, ${day} ${month} ${date.getFullYear()}${place ? ` · ${place}` : ""}`;
 }
 
 function signDate(iso: string) {
@@ -211,7 +206,7 @@ export function HomeInvite({
   const [room, setRoom] = useState(0);
   const [name, setName] = useState("");
   const [attend, setAttend] = useState<"yes" | "no">("yes");
-  const [slots, setSlots] = useState({ puja: true, lunch: true, evening: false });
+  const [skipped, setSkipped] = useState<string[]>([]);
   const [guests, setGuests] = useState(3);
   const [wish, setWish] = useState("");
   const [nameError, setNameError] = useState(false);
@@ -230,8 +225,10 @@ export function HomeInvite({
   const sign = signDate(fields.date);
   const tag = family.includes("Aadi") ? "#HomeSweetKakkanad" : `#${family.split(",")[0]?.replace(/\s/g, "") || "Home"}`;
   const home = packOf("hearth", fields.lines);
-  const programme = (home.programme ?? []).map((item, index) => ({ ...PROGRAMME_LOOK[index], ...item, key: PROGRAMME_LOOK[index]?.key ?? `item-${index}` }));
-  const rooms = (home.rooms ?? []).map((item, index) => ({ ...ROOM_LOOK[index], ...item, icons: ROOM_LOOK[index]?.icons ?? [], bg: ROOM_LOOK[index]?.bg ?? "#FDEFD9" }));
+  const ceremony = eventName(fields.lines, "ceremonyName", "Griha Pravesh");
+  const milkTitle = typeof home.milkTitle === "string" ? home.milkTitle.trim() : "";
+  const programme = (home.programme ?? []).filter((item) => item.title.trim()).map((item, index) => ({ ...PROGRAMME_LOOK[index], ...item, key: PROGRAMME_LOOK[index]?.key ?? `item-${index}` }));
+  const rooms = (home.rooms ?? []).filter((item) => item.name.trim() || item.label.trim()).map((item, index) => ({ ...ROOM_LOOK[index], ...item, icons: ROOM_LOOK[index]?.icons ?? [], bg: ROOM_LOOK[index]?.bg ?? "#FDEFD9" }));
   const current = rooms[room] ?? rooms[0] ?? { icons: [] as string[], bg: "#FDEFD9", label: "", name: "", text: "", note: "" };
 
   const countdown = useMemo(() => {
@@ -251,7 +248,7 @@ export function HomeInvite({
   }, [fields.date, fields.time, now]);
 
   const notes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...SAMPLE_NOTES];
-  const picked = SLOTS.filter(([key]) => slots[key]).map(([, label]) => label.toLowerCase());
+  const picked = programme.map((item) => item.title).filter((title) => !skipped.includes(title)).map((title) => title.toLowerCase());
 
   function toggleMusic() {
     const audio = audioRef.current;
@@ -297,7 +294,7 @@ export function HomeInvite({
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                 <div className="hw-welcome">Welcome to our new home!</div>
                 <div className="hw-family">{family}</div>
-                <div className="hw-date">{whenLine(fields.date, place)}</div>
+                <div className="hw-date">{whenLine(fields.date, place, ceremony)}</div>
                 <button type="button" className="hw-cta" onClick={() => setStage("page")}>
                   Come on in
                 </button>
@@ -333,7 +330,7 @@ export function HomeInvite({
             <div className="hw-ground" />
             <div className="hw-hero-inner">
               <div className="hw-hero-text">
-                <span className="hw-kicker" style={{ animationDelay: "0.3s" }}>Griha Pravesh &amp; Housewarming</span>
+                <span className="hw-kicker" style={{ animationDelay: "0.3s" }}>{ceremony} &amp; Housewarming</span>
                 <h1 className="hw-title">We've found our<br />happy place!</h1>
                 <span className="hw-family">{family}</span>
                 <span className="hw-sub">{fields.title || "invite you to bless our new home"}</span>
@@ -368,7 +365,7 @@ export function HomeInvite({
             </div>
           </section>
 
-          <section className="hw-milk">
+          {milkTitle ? <section className="hw-milk">
             <div className="hw-pot" aria-hidden="true">
               <div className="hw-pot-in">
                 <div style={{ position: "absolute", left: 25, top: 20, width: 100, height: 40, overflow: "hidden" }}>
@@ -394,12 +391,12 @@ export function HomeInvite({
             </div>
             <div className="hw-milk-text">
               <span className="hw-section-kicker">The first moment in our home</span>
-              <h2 className="hw-h2 left">Paalukachal</h2>
-              <p>{fields.detail || "As tradition goes, we'll boil milk in our new kitchen and let it overflow — a wish for a home that always brims with abundance, warmth and happiness. We'd love for you to be there when it bubbles over!"}</p>
+              <h2 className="hw-h2 left">{milkTitle}</h2>
+              {fields.detail ? <p>{fields.detail}</p> : null}
             </div>
-          </section>
+          </section> : null}
 
-          <section className="hw-prog" id="programme">
+          {programme.length ? <section className="hw-prog" id="programme">
             <h2 className="hw-h2">The day's programme</h2>
             <div className="hw-prog-grid">
               {programme.map((item, index) => (
@@ -431,9 +428,9 @@ export function HomeInvite({
                 </article>
               ))}
             </div>
-          </section>
+          </section> : null}
 
-          <section className="hw-tour" id="tour">
+          {rooms.length ? <section className="hw-tour" id="tour">
             <h2 className="hw-h2">A little house tour</h2>
             <div className="hw-tabs" role="tablist" aria-label="Rooms">
               {rooms.map((item, index) => (
@@ -454,7 +451,7 @@ export function HomeInvite({
                 <em>{current.note}</em>
               </div>
             </div>
-          </section>
+          </section> : null}
 
           <section className="hw-find" id="find">
             <div>
@@ -534,8 +531,8 @@ export function HomeInvite({
                   <>
                     <span className="lab">Joining for</span>
                     <div className="hw-chips">
-                      {SLOTS.map(([key, label]) => (
-                        <button key={key} type="button" className={slots[key] ? "on" : undefined} aria-pressed={slots[key]} onClick={() => setSlots((currentSlots) => ({ ...currentSlots, [key]: !currentSlots[key] }))}>{label}</button>
+                      {programme.map((item) => (
+                        <button key={item.title} type="button" className={skipped.includes(item.title) ? undefined : "on"} aria-pressed={!skipped.includes(item.title)} onClick={() => setSkipped((current) => (current.includes(item.title) ? current.filter((title) => title !== item.title) : [...current, item.title]))}>{item.title}</button>
                       ))}
                     </div>
                     <div className="hw-step">

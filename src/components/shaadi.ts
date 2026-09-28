@@ -76,16 +76,15 @@ export function festivitiesOf(lines: string | undefined): ShaadiFunction[] {
   try {
     const parsed = JSON.parse(lines) as unknown;
     if (!Array.isArray(parsed)) return SHAADI_FUNCTIONS.map((item) => ({ ...item }));
-    return parsed.map((item, index) => {
-      const fallback = SHAADI_FUNCTIONS[index];
+    return parsed.map((item) => {
       const row = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
       return {
-        day: String(row.day ?? fallback?.day ?? ""),
-        name: String(row.name ?? fallback?.name ?? ""),
-        hindi: String(row.hindi ?? fallback?.hindi ?? ""),
-        when: String(row.when ?? fallback?.when ?? ""),
-        venue: String(row.venue ?? fallback?.venue ?? ""),
-        dress: String(row.dress ?? fallback?.dress ?? ""),
+        day: String(row.day ?? ""),
+        name: String(row.name ?? ""),
+        hindi: String(row.hindi ?? ""),
+        when: String(row.when ?? ""),
+        venue: String(row.venue ?? ""),
+        dress: String(row.dress ?? ""),
       };
     });
   } catch {
@@ -96,6 +95,7 @@ export function festivitiesOf(lines: string | undefined): ShaadiFunction[] {
 export function shaadiDays(items: ShaadiFunction[]) {
   const days: { label: string; items: { item: ShaadiFunction; index: number }[] }[] = [];
   items.forEach((item, index) => {
+    if (!item.name.trim()) return;
     const label = item.day || "Celebrations";
     const found = days.find((day) => day.label === label);
     if (found) found.items.push({ item, index });

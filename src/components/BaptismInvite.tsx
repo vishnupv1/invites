@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
-import { packOf } from "../data/custom";
+import { eventName, packOf } from "../data/custom";
 import { calendarUrl, formatTime } from "../lib/dates";
 import "./baptism.css";
 
@@ -182,8 +182,10 @@ export function BaptismInvite({
 }) {
   const child = firstName(fields.names);
   const pack = packOf("baptism", fields.lines);
-  const godparents = (pack.people ?? []).map((person) => ({ ...person, initials: initialsOf(person.name) }));
-  const facts = (pack.facts ?? []).map((fact, index) => ({ ...fact, emoji: FACT_EMOJI[index] ?? "✦" }));
+  const ceremony = eventName(fields.lines, "ceremonyName", "Holy Baptism");
+  const reception = eventName(fields.lines, "receptionName", "Lunch & cake");
+  const godparents = (pack.people ?? []).filter((person) => person.name.trim()).map((person) => ({ ...person, initials: initialsOf(person.name) }));
+  const facts = (pack.facts ?? []).filter((fact) => fact.label.trim() || fact.value.trim()).map((fact, index) => ({ ...fact, emoji: FACT_EMOJI[index] ?? "✦" }));
   const when = whenOf(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
@@ -353,7 +355,7 @@ export function BaptismInvite({
                   </div>
                   <div>
                     <div className="bp-event-kicker">The sacrament</div>
-                    <div className="bp-event-title">Holy Baptism</div>
+                    <div className="bp-event-title">{ceremony}</div>
                   </div>
                 </div>
                 <p><strong>{when.long}{fields.time ? ` · ${formatTime(fields.time)}` : ""}</strong><br />{place}</p>
@@ -370,7 +372,7 @@ export function BaptismInvite({
                     </div>
                     <div>
                       <div className="bp-event-kicker">Followed by</div>
-                      <div className="bp-event-title">Lunch & cake</div>
+                      <div className="bp-event-title">{reception}</div>
                     </div>
                   </div>
                   <p><strong>{fields.receptionTime ? `${formatTime(fields.receptionTime)} onwards` : "Afterwards"}</strong><br />{fields.receptionVenue}{fields.receptionAddress ? `, ${fields.receptionAddress}` : ""}</p>
@@ -380,8 +382,8 @@ export function BaptismInvite({
             </div>
           </section>
 
-          <div className="bp-split">
-            <section id="godparents" className="bp-people">
+          {godparents.length || facts.length ? <div className="bp-split">
+            {godparents.length ? <section id="godparents" className="bp-people">
               <h2>Godparents</h2>
               <div className="bp-cards">
                 {godparents.map((person, index) => (
@@ -392,8 +394,8 @@ export function BaptismInvite({
                   </div>
                 ))}
               </div>
-            </section>
-            <section className="bp-facts">
+            </section> : null}
+            {facts.length ? <section className="bp-facts">
               <h2>All about {child}</h2>
               <div className="bp-facts-grid">
                 {facts.map((fact, index) => (
@@ -404,8 +406,8 @@ export function BaptismInvite({
                   </div>
                 ))}
               </div>
-            </section>
-          </div>
+            </section> : null}
+          </div> : null}
 
           <section className="bp-gallery">
             <Shot className="tall" label="Family photo" src={photos[1]} />

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
+import { eventName } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import "./gazal.css";
 
@@ -72,6 +73,8 @@ export function GazalInvite({
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
 }) {
   const { first, second } = coupleOf(fields.names);
+  const ceremony = eventName(fields.lines, "ceremonyName", "Nikah");
+  const reception = eventName(fields.lines, "receptionName", "Walima reception");
   const count = useCountdown(fields.date, fields.time);
   const [open, setOpen] = useState(false);
   const [lifting, setLifting] = useState(false);
@@ -104,7 +107,7 @@ export function GazalInvite({
       <div className="gazal-letter">
         <span>Assalamu alaikum</span>
         {fields.hosts ? <strong>{fields.hosts}</strong> : null}
-        <small>You are invited to the Nikah of</small>
+        <small>You are invited to the {ceremony} of</small>
         <em>{short || fields.names}</em>
       </div>
     </>
@@ -181,7 +184,7 @@ export function GazalInvite({
       </section>
 
       <Reveal className="gazal-count">
-        <span>Counting down to the Nikah</span>
+        <span>Counting down to the {ceremony}</span>
         <div>
           {[
             [count.days, "Days"],
@@ -201,7 +204,7 @@ export function GazalInvite({
         <h2>Wedding events</h2>
         <EventCard
           kicker="The ceremony"
-          name="Nikah"
+          name={ceremony}
           when={`${formatLongDate(fields.date)} · ${formatTime(fields.time)}`}
           venue={fields.venue}
           address={fields.address}
@@ -211,7 +214,7 @@ export function GazalInvite({
         {fields.receptionVenue ? (
           <EventCard
             kicker="The celebration"
-            name="Walima reception"
+            name={reception}
             when={formatTime(fields.receptionTime)}
             venue={fields.receptionVenue}
             address={fields.receptionAddress}

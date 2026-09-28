@@ -409,21 +409,6 @@
   font-weight: 700;
   cursor: pointer;
 }
-.ed-check {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  min-height: 48px;
-  padding: 0 14px;
-  border: 1px solid #e8dfd6;
-  border-radius: 14px;
-  cursor: pointer;
-  background: #fff;
-}
-.ed-check b { display: block; font-size: 14px; }
-.ed-check small { display: block; font-size: 12px; color: #716a6d; font-weight: 500; }
-.ed-check input { width: 22px; height: 22px; accent-color: #6b3a5b; flex-shrink: 0; }
 .ed-row {
   display: flex;
   align-items: center;
@@ -550,7 +535,6 @@
 }
 .ed-frame.ed-phone .ed-screen { border-radius: 36px; }
 .ed-zoom { width: 100%; transform-origin: top left; }
-.ed-still .ed-screen * { animation: none !important; }
 .ed-caption {
   display: flex;
   align-items: center;

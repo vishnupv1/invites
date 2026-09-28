@@ -14,9 +14,16 @@ export type CustomPack = {
   people?: PersonItem[];
   facts?: FactItem[];
   faqs?: FaqItem[];
+  sangeetName?: string | null;
   sangeetTime?: string;
   sangeetVenue?: string;
   caption?: string;
+  bonfireName?: string | null;
+  bonfireWhen?: string;
+  bonfireVenue?: string;
+  milkTitle?: string | null;
+  ceremonyName?: string;
+  receptionName?: string;
   travelFrom?: string;
   travelKm?: string;
   airport?: string;
@@ -27,9 +34,39 @@ export type CustomPack = {
 const DEFAULTS = defaults as Record<string, CustomPack>;
 
 function mergeList<T extends object>(fallback: T[] | undefined, incoming: unknown): T[] | undefined {
-  if (!fallback) return undefined;
-  if (!Array.isArray(incoming)) return fallback.map((item) => ({ ...item }));
-  return incoming.map((item, index) => ({ ...(fallback[index] ?? {}), ...(item && typeof item === "object" ? item : {}) })) as T[];
+  if (!Array.isArray(incoming)) return fallback?.map((item) => ({ ...item }));
+  const shape = fallback?.[0];
+  return incoming.map((item) => {
+    const row = item && typeof item === "object" ? (item as Partial<T>) : {};
+    const empty = shape
+      ? (Object.fromEntries(Object.keys(shape).map((key) => [key, ""])) as T)
+      : ({} as T);
+    return { ...empty, ...row };
+  });
+}
+
+export function eventName(lines: string | undefined, key: "ceremonyName" | "receptionName", fallback: string) {
+  if (!lines?.trim() || lines.trim().startsWith("[")) return fallback;
+  try {
+    const parsed = JSON.parse(lines) as Record<string, unknown>;
+    const value = parsed?.[key];
+    return typeof value === "string" && value.trim() ? value.trim() : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function withEventName(lines: string | undefined, key: "ceremonyName" | "receptionName", value: string) {
+  let parsed: Record<string, unknown> = {};
+  if (lines?.trim() && !lines.trim().startsWith("[")) {
+    try {
+      const current = JSON.parse(lines) as unknown;
+      if (current && typeof current === "object" && !Array.isArray(current)) parsed = current as Record<string, unknown>;
+    } catch {
+      parsed = {};
+    }
+  }
+  return JSON.stringify({ ...parsed, [key]: value });
 }
 
 export function packOf(id: string, lines: string | undefined): CustomPack {
