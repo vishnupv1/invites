@@ -48,14 +48,7 @@ export default function App() {
           </Shell>
         }
       />
-      <Route
-        path="/template/:id"
-        element={
-          <Shell>
-            <TemplatePage />
-          </Shell>
-        }
-      />
+      <Route path="/template/:id" element={<TemplatePage />} />
       <Route path="/create" element={<CreateGuest />} />
       <Route path="/create/:id" element={<Editor />} />
       <Route path="/studio" element={<Studio view="dashboard" />} />

@@ -9,7 +9,8 @@ import { AureliaInvite } from "../components/AureliaInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ShaadiInvite } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite } from "../components/ThiruvizhaInvite";
-import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
+import { getHost, getTemplateRecord, getToken, listEvents, listTemplates, type CatalogEvent } from "../api";
+import { AppMenu } from "../components/AppMenu";
 import { eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -108,6 +109,8 @@ export function TemplatePreview() {
   const [venue, setVenue] = useState("");
   const [favs, setFavs] = useState<string[]>(readFavs);
   const [toast, setToast] = useState("");
+  const signedIn = Boolean(getToken());
+  const [hostName, setHostName] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -132,6 +135,13 @@ export function TemplatePreview() {
     localStorage.setItem(FAVS, JSON.stringify(favs));
   }, [favs]);
 
+  useEffect(() => {
+    if (!signedIn) return;
+    getHost()
+      .then((host) => setHostName(host.name))
+      .catch(() => setHostName(""));
+  }, [signedIn]);
+
   const colour = VARIANTS[variant];
   const showEn = lang !== "ml";
   const showMl = lang !== "en";
@@ -151,8 +161,16 @@ export function TemplatePreview() {
     return catalog.filter((item) => item.id !== template.id && item.events.some((eventId) => template.events.includes(eventId))).slice(0, 4);
   }, [catalog, template]);
 
+  const menu = <AppMenu current="/templates" name={hostName} signedIn={signedIn} />;
   if (missing) return <Navigate to="/templates" replace />;
-  if (!template || !sample) return <div className="pv" />;
+  if (!template || !sample) {
+    return (
+      <div className="board pv-board">
+        {menu}
+        <div className="pv" />
+      </div>
+    );
+  }
 
   const functions = [
     { title: occasion.cardLabel, when: `${clock(sample.time)} · ${venueText}` },
@@ -185,6 +203,8 @@ export function TemplatePreview() {
   }
 
   return (
+    <div className="board pv-board">
+      {menu}
     <div className="pv">
       <header className="pv-head">
         <div className="pv-id">
@@ -558,6 +578,7 @@ export function TemplatePreview() {
           <button type="button" onClick={() => setToast("")}>Dismiss</button>
         </div>
       ) : null}
+    </div>
     </div>
   );
 }

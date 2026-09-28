@@ -1,3 +1,15 @@
+.pv-board > .pv {
+  flex: 1;
+  min-width: 0;
+}
+@media (min-width: 1101px) {
+  .pv-board .side {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 0;
+  }
+}
 .pv {
   min-height: 100vh;
   background: #faf7f2;
@@ -363,4 +375,7 @@
     text-decoration: none;
   }
   .pv-toast { bottom: 104px; left: 16px; right: 16px; transform: none; }
+  .pv-board .pv-dock { bottom: 82px; }
+  .pv-board .pv-body { padding-bottom: 200px; }
+  .pv-board .pv-toast { bottom: 186px; }
 }
