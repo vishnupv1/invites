@@ -28,6 +28,8 @@ export type InviteFields = {
   audio: string;
   lat: string;
   lng: string;
+  /** JSON list of festivities: day, name, hindi, when, venue, dress. */
+  lines?: string;
 };
 
 export type TemplateAsks = {
@@ -105,7 +107,8 @@ export type TemplateStyle =
   | "baptism"
   | "vivah"
   | "beach"
-  | "home";
+  | "home"
+  | "shaadi";
 
 export type Template = {
   id: string;

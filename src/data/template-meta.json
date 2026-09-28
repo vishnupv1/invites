@@ -214,5 +214,46 @@
       { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "shaadi": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [
+      { "id": "rani", "name": "Rani" },
+      { "id": "emerald", "name": "Emerald" },
+      { "id": "ivory", "name": "Ivory" }
+    ],
+    "defaultTheme": "rani",
+    "shots": [
+      { "label": "First meeting" },
+      { "label": "Roka" },
+      { "label": "Engagement" },
+      { "label": "Pre-wedding" },
+      { "label": "Family" },
+      { "label": "Haldi" },
+      { "label": "Mehendi" },
+      { "label": "Sangeet" },
+      { "label": "Baraat" },
+      { "label": "Pheras" },
+      { "label": "Reception" },
+      { "label": "The palace" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "Veil", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Both families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Hindi line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Parents", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "Blessing", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Palace", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "programme", "label": "Festivities", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Story in frames", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Blessings", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Shehnai and sitar", "configurable": true, "fields": ["audio"] }
+    ]
   }
 }

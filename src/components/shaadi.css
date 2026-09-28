@@ -1,0 +1,385 @@
+.sh {
+  --ink: #fff4e0;
+  --deep: #4a0d1f;
+  --mid: #7a1633;
+  --gold: #f5d77a;
+  --gold-deep: #c9982e;
+  --paper: #2a0814;
+  container-type: inline-size;
+  width: 100%;
+  background: var(--deep);
+  color: var(--ink);
+  font-family: Jost, sans-serif;
+  min-height: 100%;
+}
+
+.sh[data-theme="emerald"] {
+  --deep: #0e2a22;
+  --mid: #1d4a3a;
+  --paper: #071612;
+  --gold: #f0d78c;
+  --gold-deep: #c6a15a;
+}
+
+.sh[data-theme="ivory"] {
+  --ink: #3a2418;
+  --deep: #f6efe4;
+  --mid: #efe4d4;
+  --paper: #fffaf3;
+  --gold: #8a6a2f;
+  --gold-deep: #6d5018;
+}
+
+.sh section {
+  padding: 48px 28px;
+  text-align: center;
+}
+
+.sh-kicker,
+.sh-hindi {
+  font-family: "Tiro Devanagari Hindi", serif;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin: 0 0 12px;
+}
+
+.sh-script,
+.sh h2 i,
+.sh-names i {
+  font-family: "Great Vibes", cursive;
+  font-style: normal;
+  color: var(--gold);
+  font-size: 1.6rem;
+}
+
+.sh-mono,
+.sh h1,
+.sh h2 b,
+.sh-names b,
+.sh h3 {
+  font-family: Cinzel, serif;
+  font-weight: 500;
+}
+
+.sh-mono {
+  font-size: 2.4rem;
+  letter-spacing: 0.18em;
+  margin: 12px 0;
+}
+
+.sh h1,
+.sh h2 {
+  font-size: 2.6rem;
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 8px 0 16px;
+}
+
+.sh h2 span,
+.sh-names span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sh-when,
+.sh-place,
+.sh p {
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.sh-veil {
+  min-height: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 42%),
+    var(--deep);
+  border-bottom: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+}
+
+.sh-enter,
+.sh-rsvp button[type="submit"] {
+  margin-top: 22px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-family: Cinzel, serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 22px;
+  cursor: pointer;
+}
+
+.sh-hero {
+  background: var(--paper);
+}
+
+.sh-families {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+
+.sh-families span {
+  display: block;
+  font-family: Cinzel, serif;
+}
+
+.sh-message {
+  max-width: 36rem;
+  margin: 18px auto;
+}
+
+.sh-couple {
+  display: grid;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.sh-couple b {
+  display: block;
+  font-family: Cinzel, serif;
+  font-size: 1.3rem;
+}
+
+.sh-couple span,
+.sh-pill {
+  color: var(--gold);
+  font-size: 0.92rem;
+}
+
+.sh-count ol {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0 0;
+}
+
+.sh-count b {
+  display: block;
+  font-family: Cinzel, serif;
+  font-size: 1.8rem;
+}
+
+.sh-count span {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.sh-days,
+.sh-choice,
+.sh-picks,
+.sh-dots,
+.sh-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sh-days button,
+.sh-choice button,
+.sh-picks button,
+.sh-links a {
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sh-days button[aria-selected="true"],
+.sh-choice button[aria-pressed="true"],
+.sh-picks button[aria-pressed="true"],
+.sh-dots button[aria-pressed="true"] {
+  background: var(--gold);
+  color: var(--deep);
+}
+
+.sh-cards {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+  text-align: left;
+}
+
+.sh-cards article {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  align-items: center;
+  background: color-mix(in srgb, var(--mid) 72%, transparent);
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
+}
+
+.sh-frame {
+  margin: 0;
+}
+
+.sh-frame img,
+.sh-frame-empty {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 80px 80px 12px 12px;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--gold) 35%, transparent), transparent 60%),
+    var(--mid);
+  color: var(--gold);
+  font-family: Cinzel, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: 8px;
+  text-align: center;
+}
+
+.sh-frame figcaption {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.sh-cards .sh-frame figcaption {
+  display: none;
+}
+
+.sh-pill {
+  display: inline-block;
+  margin-top: 8px;
+  border: 1px solid var(--gold-deep);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.sh-vow h3 {
+  font-size: 1.8rem;
+  margin: 8px 0;
+}
+
+.sh-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 0;
+  background: color-mix(in srgb, var(--gold) 35%, transparent);
+  padding: 0;
+}
+
+.sh-marquee {
+  overflow: hidden;
+  margin-top: 18px;
+}
+
+.sh-marquee > div {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: sh-slide 36s linear infinite;
+}
+
+.sh-marquee .sh-frame {
+  width: 160px;
+}
+
+.sh-venue {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+
+.sh-venue .sh-frame {
+  width: min(100%, 280px);
+}
+
+.sh-rsvp form,
+.sh-wishes {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.sh-rsvp input,
+.sh-rsvp textarea,
+.sh-rsvp label {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  box-sizing: border-box;
+}
+
+.sh-rsvp input,
+.sh-rsvp textarea {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  padding: 12px;
+  font: inherit;
+}
+
+.sh-rsvp label input {
+  margin-top: 6px;
+}
+
+.sh-wishes {
+  overflow: hidden;
+}
+
+.sh-wishes > div {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+  animation: sh-slide 28s linear infinite;
+}
+
+.sh-wishes p {
+  white-space: nowrap;
+}
+
+.sh-music {
+  position: sticky;
+  bottom: 16px;
+  margin: 0 auto 20px;
+  display: block;
+  border: 1px solid var(--gold);
+  background: var(--deep);
+  color: var(--gold);
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.sh-still .sh-marquee > div,
+.sh-still .sh-wishes > div {
+  animation: none;
+}
+
+@keyframes sh-slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@container (min-width: 800px) {
+  .sh h1,
+  .sh h2 { font-size: 4.2rem; }
+  .sh-veil { min-height: 880px; }
+  .sh-couple,
+  .sh-venue { grid-template-columns: 1fr 1fr; align-items: center; text-align: left; }
+  .sh-cards { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .sh-cards article { grid-template-columns: 1fr; text-align: center; }
+  .sh section { padding: 72px 64px; }
+}

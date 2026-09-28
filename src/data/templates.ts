@@ -1,4 +1,5 @@
 import type { EventId, InviteFields, Template, TemplateMeta } from "../types";
+import { SHAADI_LINES } from "../components/shaadi";
 import { getEvent } from "./events";
 import catalogMeta from "./template-meta.json" with { type: "json" };
 
@@ -6,8 +7,8 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 function sample(
   event: EventId,
-  fields: Omit<InviteFields, "event" | "hostEmail" | "receptionTime" | "receptionVenue" | "receptionAddress" | "photos" | "audio" | "lat" | "lng"> &
-    Partial<Pick<InviteFields, "hostEmail" | "receptionTime" | "receptionVenue" | "receptionAddress" | "photos" | "audio" | "lat" | "lng">>,
+  fields: Omit<InviteFields, "event" | "hostEmail" | "receptionTime" | "receptionVenue" | "receptionAddress" | "photos" | "audio" | "lat" | "lng" | "lines"> &
+    Partial<Pick<InviteFields, "hostEmail" | "receptionTime" | "receptionVenue" | "receptionAddress" | "photos" | "audio" | "lat" | "lng" | "lines">>,
 ): InviteFields {
   return {
     event,
@@ -19,6 +20,7 @@ function sample(
     audio: "",
     lat: "",
     lng: "",
+    lines: "",
     ...fields,
   };
 }
@@ -228,6 +230,34 @@ export const TEMPLATES: Template[] = [
         message: "",
         dress: "",
         rsvpBy: "2027-01-10",
+      }),
+    },
+  },
+  {
+    id: "shaadi",
+    name: "Shaadi",
+    style: "shaadi",
+    price: 1500,
+    free: false,
+    events: ["marriage"],
+    tagline: "Shaadi",
+    description: "A palace wedding. The veil lifts onto six festivities, a photograph for every frame, and a reply.",
+    asks: { photos: 12, audio: true, location: true },
+    meta: META.shaadi,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Mrs. & Mr. Rajiv Sharma and Mrs. & Mr. Anil Malhotra",
+        names: "Aarav Sharma & Ishita Malhotra",
+        title: "शुभ विवाह",
+        detail: "son of Meera & Rajiv Sharma · daughter of Nisha & Anil Malhotra",
+        date: "2027-11-24",
+        time: "20:30",
+        venue: "The Aravalli Palace",
+        address: "Lakeside, Udaipur",
+        message: "With the blessings of both families, we invite you to the wedding of Aarav and Ishita.",
+        dress: "",
+        rsvpBy: "2027-10-25",
+        lines: SHAADI_LINES,
       }),
     },
   },
