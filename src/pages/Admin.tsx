@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { AdminLogin } from "./AdminLogin";
 import { adminSummary, getToken, signOut, type AdminSummary } from "../api";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import { EVENTS } from "../data/events";
 import { TEMPLATES } from "../data/templates";
 import { formatShortDate } from "../lib/dates";
@@ -184,6 +185,12 @@ export function Admin() {
       </aside>
       <main className="console-main">
         <div>
+          <Breadcrumbs
+            items={[
+              { label: "Admin", onClick: () => setSection("Overview") },
+              { label: section },
+            ]}
+          />
           <h1>{section}</h1>
           <p className="sub">{SUBS[section]}</p>
         </div>

@@ -34,6 +34,7 @@
   outline-offset: 2px;
 }
 
+.ed-crumbs { margin: 0; padding: 8px 20px; background: #fff; border-bottom: 1px solid #e8dfd6; }
 .ed-top {
   height: 68px;
   flex-shrink: 0;

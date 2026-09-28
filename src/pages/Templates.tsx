@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getHost, getToken, listEvents, listTemplates, signOut, type CatalogEvent } from "../api";
 import { formatPrice } from "../data/templates";
 import { useLibrary } from "../state";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { Template } from "../types";
 import "./studio.css";
 import "./templates.css";
@@ -126,7 +127,26 @@ export function Templates() {
       </aside>
 
       <main className="tpl-main">
+        <Breadcrumbs items={[{ label: "Dashboard", to: "/studio" }, { label: "Templates" }]} />
         <div className="tpl-mobile-title">
+          <div className="tpl-who">
+            <div className="avatar">{initialsOf(hostName) || "?"}</div>
+            {signedIn ? (
+              <button type="button" className="dash-logout" aria-label="Log out" onClick={() => { signOut(); window.location.assign("/"); }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
+                  <path d="M10 17l-5-5 5-5M5 12h11" />
+                </svg>
+              </button>
+            ) : (
+              <Link className="dash-logout" to="/login" aria-label="Log in">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
+                  <path d="M10 17l5-5-5-5M15 12H4" />
+                </svg>
+              </Link>
+            )}
+          </div>
           <h1>Templates</h1>
           <button type="button" className={favsOnly ? "tpl-fav on" : "tpl-fav"} aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill={favsOnly ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
@@ -290,29 +310,6 @@ export function Templates() {
           </svg>
           Purchases
         </Link>
-        {signedIn ? (
-          <button
-            type="button"
-            onClick={() => {
-              signOut();
-              window.location.assign("/");
-            }}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 21c1-4 4-6 8-6s7 2 8 6" />
-            </svg>
-            Log out
-          </button>
-        ) : (
-          <Link to="/login">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 21c1-4 4-6 8-6s7 2 8 6" />
-            </svg>
-            Log in
-          </Link>
-        )}
       </nav>
     </div>
   );

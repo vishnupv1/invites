@@ -4,6 +4,7 @@ import { PreviewModal } from "../components/PreviewModal";
 import { getEvent } from "../data/events";
 import { formatPrice, getTemplate, templatesFor } from "../data/templates";
 import { useLibrary } from "../state";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId } from "../types";
 
 export function Category() {
@@ -18,9 +19,7 @@ export function Category() {
 
   return (
     <section className="shop">
-      <Link className="back" to="/#categories">
-        All celebrations
-      </Link>
+      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Celebrations", to: "/#occasions" }, { label: event.label }]} />
       <div className="section-head">
         <h1>{event.label}</h1>
         <p>Styles made for this celebration. Preview one before you use it.</p>
@@ -49,7 +48,7 @@ export function Category() {
                   <button type="button" className="ghost" onClick={() => setPreviewId(template.id)}>
                     Preview
                   </button>
-                  <Link className="solid" to={`/template/${template.id}?event=${id}`}>
+                  <Link className="solid" to={owned ? `/create/${template.id}?event=${id}` : `/template/${template.id}?event=${id}`}>
                     {owned ? "Use" : "Details"}
                   </Link>
                 </div>

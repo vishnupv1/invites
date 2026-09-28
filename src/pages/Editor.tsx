@@ -17,6 +17,7 @@ import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templat
 import { assetUrl, createInvite, ensureSession, getToken, uploadMedia } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { useLibrary } from "../state";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import "./editor.css";
 
@@ -474,7 +475,7 @@ export function Editor() {
     <div className={`ed-root${sheet ? " ed-sheet" : ""}${getToken() ? "" : " ed-as-guest"}`}>
       <header className="ed-top">
         <div className="ed-brand">
-          <Link className="ed-back" to={`/template/${template.id}?event=${draft.event}`} aria-label="Back to template">
+          <Link className="ed-back" to="/templates" aria-label="Back to templates">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
@@ -510,7 +511,7 @@ export function Editor() {
           </div>
         </div>
         <div className="ed-actions">
-          <span className="ed-guest">Guest view</span>
+          {getToken() ? null : <span className="ed-guest">Guest view</span>}
           <button type="button" className="ed-publish" onClick={() => { setError(""); setPublishOpen(true); }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" />
@@ -520,6 +521,14 @@ export function Editor() {
           </button>
         </div>
       </header>
+      <Breadcrumbs
+        className="ed-crumbs"
+        items={[
+          { label: "Dashboard", to: "/studio" },
+          { label: "Templates", to: "/templates" },
+          { label: template.name },
+        ]}
+      />
       {getToken() ? null : <div className="ed-guest-strip">Designing as a guest · draft saved on this phone</div>}
 
       <div className="ed-body">

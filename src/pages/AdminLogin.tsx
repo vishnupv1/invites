@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { adminSummary, logIn } from "../api";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./admin.css";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,6 +56,7 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
         <span className="admin-chip">Admin</span>
       </Link>
       <div className="admin-card">
+        <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Admin" }]} />
         {step === "creds" ? (
           <form onSubmit={continueLogin} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div className="shield">

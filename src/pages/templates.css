@@ -160,7 +160,20 @@
   .side { display: none; }
   .tpl-main { padding: 16px 16px 110px; gap: 16px; }
   .tpl-head { flex-direction: row; align-items: center; justify-content: space-between; }
-  .tpl-mobile-title { display: flex; justify-content: space-between; align-items: center; }
+  .tpl-mobile-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .tpl-who { display: flex; align-items: center; gap: 4px; }
+  .tpl-who .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #c89b5b;
+    color: #211c1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
   .tpl-mobile-title h1 { margin: 0; font-family: Fraunces, Georgia, serif; font-size: 30px; font-weight: 600; }
   .tpl-title,
   .tpl-fav-mobile,

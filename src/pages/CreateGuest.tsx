@@ -12,6 +12,7 @@ import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, usesField, withCatalogMeta } from "../data/templates";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import "./create-guest.css";
 
@@ -383,6 +384,7 @@ export function CreateGuest() {
           )}
         </div>
       </header>
+      <Breadcrumbs className="cg-trail" items={[{ label: "Home", to: "/" }, { label: "Create invite" }]} />
 
       {!host && step < 4 ? (
         <div className="cg-banner">

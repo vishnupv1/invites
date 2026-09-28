@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { logIn, signUp } from "../api";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./auth.css";
 
 type Mode = "login" | "signup";
@@ -146,6 +147,7 @@ export function Auth() {
 
       <main>
         <div className="auth-card-form">
+          <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: login ? "Log in" : "Sign up" }]} />
           {done ? (
             <div className="auth-done">
               <span>

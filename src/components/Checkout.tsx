@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { ensureSession } from "../api";
+import { ensureSession, getToken } from "../api";
 import { formatPrice } from "../data/templates";
 import type { Template } from "../types";
 
@@ -36,7 +36,7 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
     if (!/^\d{2}\/\d{2}$/.test(expiry)) return setError("Use an expiry like 08/28.");
     if (!/^\d{3,4}$/.test(cvc)) return setError("Enter the 3-digit security code.");
     try {
-      await ensureSession(email, name);
+      if (!getToken()) await ensureSession(email, name);
       await onPurchased();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not save the purchase.");
