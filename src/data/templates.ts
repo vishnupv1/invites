@@ -181,7 +181,7 @@ export const TEMPLATES: Template[] = [
     id: "beach",
     name: "Beach",
     style: "beach",
-    price: 2000,
+    price: 10,
     free: false,
     events: ["marriage"],
     tagline: "Wedding",
