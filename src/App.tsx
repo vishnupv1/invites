@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { useEffect, type ReactNode } from "react";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
 import { Category } from "./pages/Category";
@@ -7,11 +7,24 @@ import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
+import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
 import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
 import { Templates } from "./pages/Templates";
+
+function Analytics() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(
+      `${location.pathname}${location.search}${location.hash}`,
+    );
+  }, [location]);
+
+  return null;
+}
 
 function Shell({ children }: { children: ReactNode }) {
   return (
@@ -33,29 +46,32 @@ function Shell({ children }: { children: ReactNode }) {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Auth />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/templates" element={<Templates />} />
-      <Route path="/preview/:id" element={<TemplatePreview />} />
-      <Route path="/open/:id" element={<OpenInvite />} />
-      <Route
-        path="/c/:id"
-        element={
-          <Shell>
-            <Category />
-          </Shell>
-        }
-      />
-      <Route path="/template/:id" element={<TemplatePage />} />
-      <Route path="/create" element={<CreateGuest />} />
-      <Route path="/create/:id" element={<Editor />} />
-      <Route path="/studio" element={<Studio view="dashboard" />} />
-      <Route path="/events" element={<Studio view="events" />} />
-      <Route path="/guests" element={<Studio view="guests" />} />
-      <Route path="/purchases" element={<Studio view="purchases" />} />
-      <Route path="/i/:code" element={<InvitePage />} />
-    </Routes>
+    <>
+      <Analytics />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/templates" element={<Templates />} />
+        <Route path="/preview/:id" element={<TemplatePreview />} />
+        <Route path="/open/:id" element={<OpenInvite />} />
+        <Route
+          path="/c/:id"
+          element={
+            <Shell>
+              <Category />
+            </Shell>
+          }
+        />
+        <Route path="/template/:id" element={<TemplatePage />} />
+        <Route path="/create" element={<CreateGuest />} />
+        <Route path="/create/:id" element={<Editor />} />
+        <Route path="/studio" element={<Studio view="dashboard" />} />
+        <Route path="/events" element={<Studio view="events" />} />
+        <Route path="/guests" element={<Studio view="guests" />} />
+        <Route path="/purchases" element={<Studio view="purchases" />} />
+        <Route path="/i/:code" element={<InvitePage />} />
+      </Routes>
+    </>
   );
 }
