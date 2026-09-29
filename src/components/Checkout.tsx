@@ -1,36 +1,60 @@
 import { useState, type FormEvent } from "react";
-import { ensureSession, getToken, verifyCoupon } from "../api";
+import { createPaymentOrder, ensureSession, getToken, verifyCoupon, type RazorpayPayment } from "../api";
 import { formatPrice } from "../data/templates";
 import { useSession } from "../session";
 import type { Template } from "../types";
 
+type RazorpayCheckout = { open: () => void };
+type RazorpayOptions = {
+  key: string;
+  amount: number;
+  currency: string;
+  order_id: string;
+  name: string;
+  description: string;
+  prefill: { name: string; email: string };
+  theme: { color: string };
+  handler: (payment: RazorpayPayment) => void;
+  modal: { ondismiss: () => void };
+};
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: RazorpayOptions) => RazorpayCheckout;
+  }
+}
+
+let razorpayScript: Promise<void> | null = null;
+
+function loadRazorpay() {
+  if (window.Razorpay) return Promise.resolve();
+  if (!razorpayScript) {
+    razorpayScript = new Promise<void>((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Could not load Razorpay. Check your connection and try again."));
+      document.head.appendChild(script);
+    });
+  }
+  return razorpayScript;
+}
+
 type Props = {
   template: Template;
   onClose: () => void;
-  onPurchased: (coupon?: string) => Promise<void>;
+  onPurchased: (coupon?: string, payment?: RazorpayPayment) => Promise<void>;
 };
 
 export function Checkout({ template, onClose, onPurchased }: Props) {
-  const { signedIn } = useSession();
+  const { host, signedIn } = useSession();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [card, setCard] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvc, setCvc] = useState("");
   const [coupon, setCoupon] = useState("");
   const [applied, setApplied] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-
-  function onCard(value: string) {
-    const digits = value.replace(/\D/g, "").slice(0, 16);
-    setCard(digits.replace(/(\d{4})(?=\d)/g, "$1 ").trim());
-  }
-
-  function onExpiry(value: string) {
-    const digits = value.replace(/\D/g, "").slice(0, 4);
-    setExpiry(digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits);
-  }
 
   async function applyCoupon() {
     const code = coupon.trim();
@@ -55,22 +79,45 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (!applied) {
-      const digits = card.replace(/\s/g, "");
-      if (name.trim().length < 2) return setError("Add the name on the card.");
-      if (!email.includes("@")) return setError("Add a valid email for the receipt.");
-      if (digits.length !== 16) return setError("Enter a 16-digit card number.");
-      if (!/^\d{2}\/\d{2}$/.test(expiry)) return setError("Use an expiry like 08/28.");
-      if (!/^\d{3,4}$/.test(cvc)) return setError("Enter the 3-digit security code.");
-    } else if (!signedIn && !getToken()) {
+    if (!signedIn && !getToken()) {
       if (name.trim().length < 2) return setError("Add your name.");
       if (!email.includes("@")) return setError("Add a valid email.");
     }
+    setSubmitting(true);
+    setError("");
     try {
       if (!getToken()) await ensureSession(email, name);
-      await onPurchased(applied ? coupon.trim() : undefined);
+      if (applied) {
+        await onPurchased(coupon.trim());
+        return;
+      }
+      const order = await createPaymentOrder(template.id);
+      await loadRazorpay();
+      if (!window.Razorpay) throw new Error("Could not open Razorpay. Try again.");
+      const payment = await new Promise<RazorpayPayment>((resolve, reject) => {
+        const checkout = new window.Razorpay!({
+          key: order.keyId,
+          amount: order.amount,
+          currency: order.currency,
+          order_id: order.orderId,
+          name: "InvitesReady",
+          description: `Unlock ${template.name}`,
+          prefill: {
+            name: name.trim() || host?.name || "",
+            email: email.trim() || host?.email || "",
+          },
+          theme: { color: "#7c4d3a" },
+          handler: resolve,
+          modal: { ondismiss: () => reject(new Error("")) },
+        });
+        checkout.open();
+      });
+      await onPurchased(undefined, payment);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Could not save the purchase.");
+      const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
+      if (message) setError(message);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -82,7 +129,7 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
         <p className="lede">
           {applied
             ? "Coupon applied. This template is yours with no payment."
-            : `Pay ${formatPrice(template)} once. The design stays yours for every function after this. Demo checkout — nothing is charged.`}
+            : `Pay ${formatPrice(template)} once. Razorpay will open a secure test checkout; no real money is charged.`}
         </p>
         <label>
           Coupon code
@@ -102,11 +149,11 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
           </span>
         </label>
         {applied ? <p className="coupon-ok">{coupon} applied</p> : null}
-        {applied && (signedIn || getToken()) ? null : (
+        {signedIn || getToken() ? null : (
           <>
             <label>
-              {applied ? "Your name" : "Name on card"}
-              <input value={name} onChange={(event) => setName(event.target.value)} autoComplete={applied ? "name" : "cc-name"} />
+              Your name
+              <input value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" />
             </label>
             <label>
               Email
@@ -114,48 +161,14 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
             </label>
           </>
         )}
-        {applied ? null : (
-          <>
-            <label>
-              Card number
-              <input
-                value={card}
-                onChange={(event) => onCard(event.target.value)}
-                inputMode="numeric"
-                placeholder="4242 4242 4242 4242"
-                autoComplete="cc-number"
-              />
-            </label>
-            <div className="split">
-              <label>
-                Expiry
-                <input
-                  value={expiry}
-                  onChange={(event) => onExpiry(event.target.value)}
-                  placeholder="MM/YY"
-                  inputMode="numeric"
-                  autoComplete="cc-exp"
-                />
-              </label>
-              <label>
-                CVC
-                <input
-                  value={cvc}
-                  onChange={(event) => setCvc(event.target.value.replace(/\D/g, "").slice(0, 4))}
-                  inputMode="numeric"
-                  autoComplete="cc-csc"
-                />
-              </label>
-            </div>
-          </>
-        )}
+        {!applied ? <p className="checkout-note">Cards, UPI, netbanking, and wallets are handled by Razorpay.</p> : null}
         {error ? <p className="form-error">{error}</p> : null}
         <div className="modal-actions">
-          <button type="button" className="ghost" onClick={onClose}>
+          <button type="button" className="ghost" onClick={onClose} disabled={submitting}>
             Cancel
           </button>
-          <button type="submit" className="solid">
-            {applied ? "Unlock template" : `Pay ${formatPrice(template)} once`}
+          <button type="submit" className="solid" disabled={submitting}>
+            {submitting ? "Please wait…" : applied ? "Unlock template" : `Pay ${formatPrice(template)} with Razorpay`}
           </button>
         </div>
       </form>

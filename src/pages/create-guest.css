@@ -524,6 +524,32 @@
   height: calc(100vh - 76px - 42px - 76px);
 }
 
+.cg-root:has(.cg-step3-editor) {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cg-main:has(.cg-step3-editor) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cg-step3-editor {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  display: block;
+  overflow: hidden;
+}
+
+.cg-step3-editor > .ed-root {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 .cg-form {
   width: 440px;
   flex-shrink: 0;
@@ -1185,6 +1211,33 @@
   background: #f6ecdd;
   border-radius: 10px;
   padding: 10px 12px;
+}
+
+.cg-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: #f3ece6;
+}
+
+.cg-tabs button {
+  flex: 1;
+  min-height: 40px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #716a6d;
+  cursor: pointer;
+}
+
+.cg-tabs button.on {
+  background: #fff;
+  color: #211c1e;
+  box-shadow: 0 1px 4px rgba(33, 28, 30, 0.08);
 }
 
 .cg-auth-actions {

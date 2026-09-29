@@ -240,20 +240,38 @@ function Icon({ d, stroke = "currentColor" }: { d: string; stroke?: string }) {
   );
 }
 
-export function Editor() {
-  const { id } = useParams();
+export function Editor({
+  embedded = false,
+  templateId: templateIdProp,
+  eventId: eventIdProp,
+  onInvite,
+  onSummary,
+}: {
+  embedded?: boolean;
+  templateId?: string;
+  eventId?: string;
+  onInvite?: (id: string) => void;
+  onSummary?: (summary: { names: string; date: string; time: string; venue: string }) => void;
+} = {}) {
+  const { id: routeId } = useParams();
+  const id = templateIdProp || routeId;
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const template = getTemplate(id);
-  const inviteQuery = params.get("invite") ?? "";
+  const inviteQuery = embedded ? "" : (params.get("invite") ?? "");
+  const eventQuery = eventIdProp || params.get("event") || undefined;
   const { owns, remember, invites, ready: libraryReady } = useLibrary();
+  const onInviteRef = useRef(onInvite);
+  const onSummaryRef = useRef(onSummary);
+  onInviteRef.current = onInvite;
+  onSummaryRef.current = onSummary;
   const { signedIn, host } = useSession();
   const hostName = host?.name ?? "";
   const [model, setModel] = useState<Model | null>(() => {
     if (!template || inviteQuery) return null;
     const local = readLocal(template.id);
     if (local?.fields) return modelFromSaved(template, local.fields, local.editor);
-    return modelFor(template, params.get("event") ?? undefined);
+    return modelFor(template, eventQuery);
   });
   const [past, setPast] = useState<Model[]>([]);
   const [future, setFuture] = useState<Model[]>([]);
@@ -299,7 +317,7 @@ export function Editor() {
       .then((record) => {
         if (cancel) return;
         if (record.templateId !== template.id) {
-          navigate(`/create/${record.templateId}?invite=${record.id}`, { replace: true });
+          if (!embedded) navigate(`/create/${record.templateId}?invite=${record.id}`, { replace: true });
           return;
         }
         inviteIdRef.current = record.id;
@@ -313,7 +331,7 @@ export function Editor() {
       .catch(() => {
         if (cancel) return;
         setSaveLabel("Could not open that invitation");
-        if (!modelRef.current) setModel(modelFor(template, params.get("event") ?? undefined));
+        if (!modelRef.current) setModel(modelFor(template, eventQuery));
       });
     return () => {
       cancel = true;
@@ -329,9 +347,18 @@ export function Editor() {
       inviteIdRef.current = existing.id;
       codeRef.current = existing.code;
       statusRef.current = "draft";
+      onInviteRef.current?.(existing.id);
       if (dirtyRef.current || local?.fields) {
         dirtyRef.current = true;
         void persistRef.current();
+      } else if (embedded) {
+        getInviteRecord(existing.id)
+          .then((record) => {
+            if (record.templateId !== template.id) return;
+            setModel(modelFromSaved(template, record.fields, record.editor));
+            setSaveLabel("Draft saved");
+          })
+          .catch(() => undefined);
       } else {
         navigate(`/create/${template.id}?invite=${existing.id}`, { replace: true });
       }
@@ -358,6 +385,16 @@ export function Editor() {
     window.addEventListener("pagehide", flush);
     return () => window.removeEventListener("pagehide", flush);
   }, []);
+
+  useEffect(() => {
+    if (!embedded || !model) return;
+    onSummaryRef.current?.({
+      names: model.draft.names,
+      date: model.draft.date,
+      time: model.draft.time,
+      venue: model.draft.venue,
+    });
+  }, [embedded, model]);
 
   useEffect(() => {
     if (!toast) return;
@@ -401,7 +438,8 @@ export function Editor() {
             statusRef.current = saved.status === "live" ? "live" : "draft";
             remember(saved);
             localStorage.removeItem(localDraftKey(template.id));
-            navigate(`/create/${template.id}?invite=${saved.id}`, { replace: true });
+            onInviteRef.current?.(saved.id);
+            if (!embedded) navigate(`/create/${template.id}?invite=${saved.id}`, { replace: true });
           });
         }
         await creatingRef.current;
@@ -423,8 +461,8 @@ export function Editor() {
     }
   };
 
-  if (!template) return <Navigate to="/" replace />;
-  if (!owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
+  if (!template) return embedded ? null : <Navigate to="/" replace />;
+  if (!embedded && !owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
   if (!model) return <div className="ed-root"><p className="ed-save">Opening your invitation…</p></div>;
 
   const draft = model.draft;
@@ -684,14 +722,16 @@ export function Editor() {
   }
 
   const editor = (
-    <div className={`ed-root${sheet ? " ed-sheet" : ""}${signedIn ? "" : " ed-as-guest"}`}>
+    <div className={`ed-root${embedded ? " ed-embedded" : ""}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}`}>
       <header className="ed-top">
         <div className="ed-brand">
+          {embedded ? null : (
           <Link className="ed-back" to="/templates" aria-label="Back to templates">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
           </Link>
+          )}
           <div>
             <div className="ed-title">{title}</div>
             <div className="ed-save">
@@ -723,7 +763,8 @@ export function Editor() {
           </div>
         </div>
         <div className="ed-actions">
-          {signedIn ? null : <span className="ed-guest">Guest view</span>}
+          {signedIn || embedded ? null : <span className="ed-guest">Guest view</span>}
+          {embedded ? null : (
           <button type="button" className="ed-publish" onClick={() => {
             setError("");
             if (statusRef.current === "live" && codeRef.current) setLink(`${window.location.origin}/i/${codeRef.current}`);
@@ -741,17 +782,22 @@ export function Editor() {
               </>
             )}
           </button>
+          )}
         </div>
       </header>
-      <Breadcrumbs
-        className="ed-crumbs"
-        items={[
-          { label: "Dashboard", to: "/studio" },
-          { label: "Templates", to: "/templates" },
-          { label: template.name },
-        ]}
-      />
-      {signedIn ? null : <div className="ed-guest-strip">Designing as a guest · {saveLabel === "Draft" ? "your changes save on this phone" : saveLabel.toLowerCase()}</div>}
+      {embedded ? null : (
+        <>
+          <Breadcrumbs
+            className="ed-crumbs"
+            items={[
+              { label: "Dashboard", to: "/studio" },
+              { label: "Templates", to: "/templates" },
+              { label: template.name },
+            ]}
+          />
+          {signedIn ? null : <div className="ed-guest-strip">Designing as a guest · {saveLabel === "Draft" ? "your changes save on this phone" : saveLabel.toLowerCase()}</div>}
+        </>
+      )}
 
       <div className="ed-body">
         <nav className="ed-rail" aria-label="Editor sections">
@@ -1323,7 +1369,7 @@ export function Editor() {
       ) : null}
     </div>
   );
-  if (!signedIn) return editor;
+  if (embedded || !signedIn) return editor;
   return (
     <div className="board ed-board">
       <AppMenu current="/templates" name={hostName} signedIn />

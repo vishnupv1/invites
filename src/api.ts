@@ -136,10 +136,23 @@ export function verifyCoupon(code: string) {
   });
 }
 
-export function purchaseTemplate(templateId: string, coupon?: string) {
+export type RazorpayPayment = {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+};
+
+export function createPaymentOrder(templateId: string) {
+  return request<{ keyId: string; orderId: string; amount: number; currency: string }>("/api/payments/order", {
+    method: "POST",
+    body: JSON.stringify({ templateId }),
+  });
+}
+
+export function purchaseTemplate(templateId: string, coupon?: string, payment?: RazorpayPayment) {
   return request<{ templateId: string }>("/api/purchases", {
     method: "POST",
-    body: JSON.stringify({ templateId, coupon: coupon || undefined }),
+    body: JSON.stringify({ templateId, coupon: coupon || undefined, payment }),
   });
 }
 
