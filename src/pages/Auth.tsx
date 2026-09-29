@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { logIn, signUp } from "../api";
+import { trackEvent } from "../lib/analytics";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./auth.css";
 
@@ -49,6 +50,7 @@ export function Auth() {
         return;
       }
       await signUp(name.trim(), email.trim(), password);
+      trackEvent("sign_up", { method: "email" });
       setDone(true);
     } catch (error) {
       setErrors({ form: error instanceof Error ? error.message : "Could not sign you in." });
@@ -219,7 +221,9 @@ export function Auth() {
               {!login ? (
                 <label className="agree">
                   <input type="checkbox" checked={agreed} onChange={(event) => setAgreed(event.target.checked)} />
-                  <span>I agree to keep this account for my invitations and guest replies.</span>
+                  <span>
+                    I agree to the <Link to="/terms">Terms</Link> and <Link to="/privacy">Privacy policy</Link>.
+                  </span>
                   {errors.agree ? <small>{errors.agree}</small> : null}
                 </label>
               ) : null}

@@ -7,12 +7,14 @@ import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
+import { PageMeta } from "./lib/seo";
 import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
 import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
 import { Templates } from "./pages/Templates";
+import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 
 function Analytics() {
   const location = useLocation();
@@ -48,9 +50,14 @@ export default function App() {
   return (
     <>
       <Analytics />
+      <PageMeta />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Auth />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/refunds" element={<Refunds />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/templates" element={<Templates />} />
         <Route path="/preview/:id" element={<TemplatePreview />} />

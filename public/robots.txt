@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /studio
+Disallow: /create
+Disallow: /login
+Disallow: /events
+Disallow: /guests
+Disallow: /purchases
+Disallow: /i/
+Disallow: /api/
+
+Sitemap: https://invitesready.com/sitemap.xml

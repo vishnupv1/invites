@@ -725,11 +725,10 @@ export function Home() {
         <nav aria-label="Footer">
           <Link to="/templates">Templates</Link>
           <a href="#pricing">Pricing</a>
-          <a href="#faq">Help</a>
-          <a href="#faq">Privacy</a>
-          <a className="desk-link" href="#faq">
-            Terms
-          </a>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
+          <Link to="/refunds">Refunds</Link>
+          <Link to="/contact">Contact</Link>
         </nav>
         <small>© 2026 InvitesReady.com</small>
       </footer>
