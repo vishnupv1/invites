@@ -697,6 +697,9 @@
 }
 @media (max-width: 860px) {
   .ed-root { background: #f1ece5; }
+  .ed-embedded .ed-top {
+    display: none;
+  }
   .ed-top {
     position: absolute;
     left: 0;
@@ -753,6 +756,9 @@
     justify-content: flex-start;
     background: transparent;
     transition: bottom 0.3s ease;
+  }
+  .ed-embedded .ed-canvas {
+    top: 0;
   }
   .ed-as-guest .ed-canvas { top: 92px; }
   .ed-sheet .ed-canvas { bottom: 548px; }
