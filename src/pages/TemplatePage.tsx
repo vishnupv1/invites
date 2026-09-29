@@ -292,7 +292,7 @@ export function TemplatePage() {
                 <rect x="4" y="10" width="16" height="11" rx="2" />
                 <path d="M8 10V7a4 4 0 0 1 8 0v3" />
               </svg>
-              <span>Pay {formatPrice(template)} once, then add your names, photos and wording. Demo checkout — nothing is charged.</span>
+              <span>Pay {formatPrice(template)} once, then add your names, photos and wording. Razorpay collects the payment.</span>
             </div>
 
             <div className="buy-actions">

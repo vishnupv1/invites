@@ -1,6 +1,8 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { formatPrice } from "../data/templates";
+import { trackEvent } from "../lib/analytics";
 import { useSession } from "../session";
 import type { Template } from "../types";
 
@@ -60,6 +62,14 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    trackEvent("begin_checkout", {
+      currency: "INR",
+      value: template.free ? 0 : template.price,
+      item_id: template.id,
+    });
+  }, [template.free, template.id, template.price]);
+
   async function applyCoupon() {
     const code = coupon.trim();
     if (!code) {
@@ -93,6 +103,7 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
       if (!getToken()) await ensureSession(email, name);
       if (applied) {
         await onPurchased(coupon.trim());
+        trackEvent("purchase", { currency: "INR", value: 0, item_id: template.id });
         return;
       }
       const order = await createPaymentOrder(template.id);
@@ -121,6 +132,12 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
       });
       await verifyPayment(payment);
       await onPurchased(undefined, payment);
+      trackEvent("purchase", {
+        currency: "INR",
+        value: template.price,
+        transaction_id: payment.razorpay_payment_id,
+        item_id: template.id,
+      });
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
       if (message) setError(message);
@@ -137,7 +154,7 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
         <p className="lede">
           {applied
             ? "Coupon applied. This template is yours with no payment."
-            : `Pay ${formatPrice(template)} once. Razorpay will open a secure test checkout; no real money is charged.`}
+            : `Pay ${formatPrice(template)} once. Razorpay collects the payment, and the design stays yours after that.`}
         </p>
         <label>
           Coupon code
@@ -169,7 +186,11 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
             </label>
           </>
         )}
-        {!applied ? <p className="checkout-note">Cards, UPI, netbanking, and wallets are handled by Razorpay.</p> : null}
+        {!applied ? (
+          <p className="checkout-note">
+            Cards, UPI, netbanking, and wallets are handled by Razorpay. <Link to="/refunds">Refunds</Link>
+          </p>
+        ) : null}
         {error ? <p className="form-error">{error}</p> : null}
         <div className="modal-actions">
           <button type="button" className="ghost" onClick={onClose} disabled={submitting}>

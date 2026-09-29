@@ -580,7 +580,7 @@ export function CreateGuest() {
                         ? "Free for this event, with a small Made with InvitesReady credit on the page."
                         : ownsTemplate
                           ? "This design is already yours. Publishing does not charge you again."
-                          : `One-time ${formatPrice(template)} for this design. Checkout is a demo — nothing is charged.`}
+                          : `One-time ${formatPrice(template)} for this design. You pay once at checkout, then you can publish.`}
                     </p>
                   </div>
                   <button type="button" className="cg-publish" disabled={busy} onClick={() => void publish()}>

@@ -28,6 +28,11 @@ function initialize() {
   initialized = true;
 }
 
+export function trackEvent(name: string, params?: Record<string, string | number>) {
+  initialize();
+  window.gtag("event", name, params);
+}
+
 export function trackPageView(page: string) {
   if (lastPage === page) return;
 
