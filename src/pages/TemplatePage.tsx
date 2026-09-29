@@ -345,8 +345,8 @@ export function TemplatePage() {
         <Checkout
           template={template}
           onClose={() => setOpen(false)}
-          onPurchased={async () => {
-            await purchase(template.id);
+          onPurchased={async (coupon) => {
+            await purchase(template.id, coupon);
             navigate(createTo);
           }}
         />
