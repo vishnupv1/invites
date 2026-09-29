@@ -213,6 +213,7 @@ input::placeholder, textarea::placeholder { color: #9a9396; }
 .coupon-row input { flex: 1; }
 .coupon-row button { white-space: nowrap; }
 .coupon-ok { margin: 0; color: #3f5a45; font-weight: 700; }
+.checkout-note { margin: 16px 0 0; color: var(--muted); font-size: 0.88rem; }
 
 .public { min-height: 100vh; display: grid; justify-items: center; align-content: center; gap: 18px; padding: 32px 16px 48px; }
 .rsvp { width: min(440px, 100%); padding: 18px; }

@@ -1,21 +1,14 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { createInvite, getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
-import { AnnaInvite } from "../components/AnnaInvite";
-import { BaptismInvite } from "../components/BaptismInvite";
-import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
 import { Checkout } from "../components/Checkout";
-import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
-import { InviteSite } from "../components/InviteSite";
-import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
-import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
-import { PeaceInvite, type PeaceTheme } from "../components/PeaceInvite";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, formatPrice, sampleFor, usesField, withCatalogMeta } from "../data/templates";
+import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
+import { Editor } from "./Editor";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
-import type { EventId, InviteFields, Template } from "../types";
+import type { EventId, InviteFields } from "../types";
 import "./create-guest.css";
 
 const DRAFT_KEY = "vellum.guest-draft.v1";
@@ -38,18 +31,6 @@ const EMOJI: Record<string, string> = {
   anniversary: "🥂",
   reception: "✨",
 };
-const SWATCHES = [
-  { id: "terracotta", name: "Terracotta", cover: "#F6F0E6", dot: "#A44B32" },
-  { id: "plum", name: "Plum & gold", cover: "#4A263E", dot: "#D9B26A" },
-  { id: "emerald", name: "Emerald & gold", cover: "#12352B", dot: "#D9B26A" },
-  { id: "sky", name: "Sky blue", cover: "#DCEBF7", dot: "#2F5E8A" },
-  { id: "rose", name: "Rose blush", cover: "#F6DCE2", dot: "#9B4A5E" },
-  { id: "midnight", name: "Midnight", cover: "#1B2433", dot: "#D9B26A" },
-  { id: "blush", name: "Blush", cover: "#F8E6E4", dot: "#C27A78" },
-  { id: "noir", name: "Noir", cover: "#1C1718", dot: "#E8C987" },
-  { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
-];
-
 type PriceFilter = "All" | "Free" | "Premium";
 type AuthMode = "publish" | "save" | "login";
 
@@ -83,59 +64,6 @@ function palettesFor(template: { meta?: { themes: { id: string }[]; defaultTheme
   return template.meta?.themes.map((item) => item.id) ?? [];
 }
 
-function annaTheme(swatch: string) {
-  if (swatch === "emerald") return "sage" as const;
-  if (swatch === "midnight") return "dusk" as const;
-  return "terracotta" as const;
-}
-
-function homeTheme(swatch: string): HomeTheme {
-  if (swatch === "rose") return "sunset";
-  if (swatch === "midnight") return "night";
-  return "day";
-}
-
-function beachTheme(swatch: string): BeachTheme {
-  if (swatch === "sky") return "tropical";
-  if (swatch === "plum") return "dusk";
-  return "sunset";
-}
-
-function vivahTheme(swatch: string): VivahTheme {
-  if (swatch === "emerald") return "emerald";
-  if (swatch === "plum") return "royal";
-  return "midnight";
-}
-
-function peaceTheme(swatch: string): PeaceTheme {
-  if (swatch === "noir") return "noir";
-  if (swatch === "sage") return "sage";
-  return "blush";
-}
-
-function thiruTheme(swatch: string): ThiruvizhaTheme {
-  if (swatch === "ivory") return "ivory";
-  if (swatch === "emerald") return "emerald";
-  return "rani";
-}
-
-function baptismTheme(swatch: string) {
-  if (swatch === "rose") return "blush" as const;
-  if (swatch === "emerald") return "sage" as const;
-  return "sky" as const;
-}
-
-function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang?: ThiruvizhaLang }) {
-  if (template.style === "thiruvizha") return <ThiruvizhaInvite fields={fields} theme={thiruTheme(swatch)} lang={lang ?? "both"} />;
-  if (template.style === "peace") return <PeaceInvite fields={fields} theme={peaceTheme(swatch)} />;
-  if (template.style === "anna") return <AnnaInvite fields={fields} theme={annaTheme(swatch)} />;
-  if (template.style === "baptism") return <BaptismInvite fields={fields} theme={baptismTheme(swatch)} />;
-  if (template.style === "vivah") return <VivahInvite fields={fields} theme={vivahTheme(swatch)} guest="friend" />;
-  if (template.style === "beach") return <BeachInvite fields={fields} theme={beachTheme(swatch)} />;
-  if (template.style === "home") return <HomeInvite fields={fields} theme={homeTheme(swatch)} />;
-  return <InviteSite template={template} fields={fields} />;
-}
-
 function Mark() {
   return (
     <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true">
@@ -156,19 +84,19 @@ export function CreateGuest() {
   const [templateId, setTemplateId] = useState(saved.templateId || "gazal");
   const [price, setPrice] = useState<PriceFilter>(saved.price || "All");
   const [swatch, setSwatch] = useState(saved.swatch || "terracotta");
-  const [device, setDevice] = useState<"phone" | "desk">(saved.device || "phone");
-  const [name1, setName1] = useState(saved.name1 || "");
-  const [name2, setName2] = useState(saved.name2 || "");
-  const [date, setDate] = useState(saved.date || "");
-  const [time, setTime] = useState(saved.time || "");
-  const [venue, setVenue] = useState(saved.venue || "");
-  const [message, setMessage] = useState(saved.message || "");
-  const [receptionOn, setReceptionOn] = useState(saved.receptionOn !== false);
+  const [device] = useState<"phone" | "desk">(saved.device || "phone");
+  const [name1] = useState(saved.name1 || "");
+  const [name2] = useState(saved.name2 || "");
+  const [date] = useState(saved.date || "");
+  const [time] = useState(saved.time || "");
+  const [venue] = useState(saved.venue || "");
+  const [message] = useState(saved.message || "");
+  const [receptionOn] = useState(saved.receptionOn !== false);
   const [host, setHost] = useState<{ name: string; email: string } | null>(null);
   const [owned, setOwned] = useState<string[]>([]);
-  const [saving, setSaving] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("publish");
+  const [authTab, setAuthTab] = useState<"login" | "signup">("login");
   const [authDone, setAuthDone] = useState(false);
   const [authName, setAuthName] = useState("");
   const [authEmail, setAuthEmail] = useState("");
@@ -180,10 +108,21 @@ export function CreateGuest() {
   const [showQr, setShowQr] = useState(false);
   const [checkout, setCheckout] = useState(false);
   const [toast, setToast] = useState("");
-  const [inviteLang, setInviteLang] = useState<ThiruvizhaLang>("both");
+  const [editorSummary, setEditorSummary] = useState({ names: "", date: "", time: "", venue: "" });
   const inviteIdRef = useRef(saved.inviteId || "");
   const creatingRef = useRef<Promise<string> | null>(null);
   const liveRef = useRef(false);
+
+  const onEditorInvite = useCallback((id: string) => {
+    inviteIdRef.current = id;
+  }, []);
+  const onEditorSummary = useCallback((summary: { names: string; date: string; time: string; venue: string }) => {
+    setEditorSummary((current) =>
+      current.names === summary.names && current.date === summary.date && current.time === summary.time && current.venue === summary.venue
+        ? current
+        : summary,
+    );
+  }, []);
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => undefined);
@@ -249,7 +188,7 @@ export function CreateGuest() {
     : null;
 
   useEffect(() => {
-    if (liveRef.current || !getToken() || !template || !fields) return;
+    if (step >= 3 || liveRef.current || !getToken() || !template || !fields) return;
     if (!name1.trim() && !date && !venue.trim() && !message.trim()) return;
     const templateIdNow = template.id;
     const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
@@ -282,18 +221,16 @@ export function CreateGuest() {
       });
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [name1, name2, date, time, venue, message, receptionOn, swatch, templateId, eventId, host]);
+  }, [step, name1, name2, date, time, venue, message, receptionOn, swatch, templateId, eventId, host]);
 
   const previewNames = typedNames || "Your names";
   const previewWhen = date ? `${formatLongDate(date)}${time ? ` · ${formatTime(time)}` : ""}` : "Date and time";
-  const palettes = template ? palettesFor(template) : [];
+  const shownNames = editorSummary.names.trim() || previewNames;
+  const shownWhen = editorSummary.date
+    ? `${formatLongDate(editorSummary.date)}${editorSummary.time ? ` · ${formatTime(editorSummary.time)}` : ""}`
+    : previewWhen;
   const ownsTemplate = Boolean(template && (template.free || owned.includes(template.id) || library.owns(template.id, template.free)));
   const link = liveCode ? `${window.location.origin}/i/${liveCode}` : "";
-
-  function touch() {
-    setSaving(true);
-    window.setTimeout(() => setSaving(false), 800);
-  }
 
   function pickEvent(id: EventId) {
     const next = templates.find((item) => item.events.includes(id));
@@ -310,6 +247,7 @@ export function CreateGuest() {
       return;
     }
     setAuthMode(mode);
+    setAuthTab("login");
     setAuthDone(false);
     setAuthError("");
     setAuthOpen(true);
@@ -350,20 +288,35 @@ export function CreateGuest() {
   }
 
   async function publishNow() {
-    if (!template || !fields) return;
-    if (!name1.trim() || (two && !name2.trim())) return setToast("Add the names before you publish.");
-    if (!date) return setToast("Add the date before you publish.");
+    if (!template) return;
+    const summaryNames = editorSummary.names.trim();
+    const summaryDate = editorSummary.date;
+    if (!summaryNames && (!name1.trim() || (two && !name2.trim()))) return setToast("Add the names before you publish.");
+    if (!summaryDate && !date) return setToast("Add the date before you publish.");
     setBusy(true);
     try {
-      const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
       if (creatingRef.current) inviteIdRef.current = await creatingRef.current;
       let savedInvite;
       if (inviteIdRef.current) {
-        await updateInvite(inviteIdRef.current, template.id, payload, { swatch, receptionOn });
         savedInvite = await publishSaved(inviteIdRef.current);
       } else {
-        savedInvite = await createInvite(template.id, payload);
-        inviteIdRef.current = savedInvite.id;
+        const localKey = `vellum.editor-draft.v1.${template.id}`;
+        const localRaw = localStorage.getItem(localKey);
+        const local = localRaw ? (JSON.parse(localRaw) as { fields?: InviteFields; editor?: { swatch: string; receptionOn: boolean; sections: { id: string; on: boolean }[] } }) : null;
+        if (local?.fields) {
+          const drafted = await saveDraft(template.id, local.fields, local.editor);
+          inviteIdRef.current = drafted.id;
+          library.remember(drafted);
+          localStorage.removeItem(localKey);
+          savedInvite = await publishSaved(drafted.id);
+        } else if (fields) {
+          const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
+          savedInvite = await createInvite(template.id, payload);
+          inviteIdRef.current = savedInvite.id;
+        } else {
+          setToast("Add the names and a date before you publish.");
+          return;
+        }
       }
       liveRef.current = true;
       library.remember(savedInvite);
@@ -387,6 +340,7 @@ export function CreateGuest() {
 
   function onAuth(event: FormEvent) {
     event.preventDefault();
+    void submitAuth(authTab);
   }
 
   const initials = (host?.name || "Y")
@@ -439,9 +393,9 @@ export function CreateGuest() {
             </>
           ) : (
             <>
-              <span className={saving ? "cg-save busy" : "cg-save"}>
+              <span className="cg-save">
                 <i />
-                {saving ? "Saving draft…" : "Draft saved on this device"}
+                Draft saved on this device
               </span>
               <button type="button" className="cg-text" onClick={() => openAuth("login")}>
                 Log in
@@ -567,134 +521,16 @@ export function CreateGuest() {
           </div>
         ) : null}
 
-        {step === 3 && template && fields ? (
-          <div className="cg-step3">
-            <aside className="cg-form">
-              <div className="cg-form-top">
-                <button type="button" className="cg-back" onClick={() => setStep(2)}>
-                  ← Change template
-                </button>
-                <span className={template.free ? "cg-tier" : "cg-tier premium"}>
-                  {template.name} · {formatPrice(template)}
-                </span>
-              </div>
-              <div>
-                <h2>Make it yours</h2>
-                <p>Changes appear on the preview. Sample names stay until you type yours.</p>
-              </div>
-              <div className={two ? "cg-fields two" : "cg-fields"}>
-                <label className="cg-field">
-                  {two ? "Your name" : template.meta.names === "child" ? "Child's name" : template.meta.names === "family" ? "Family name" : "Name"}
-                  <input value={name1} onChange={(input) => { setName1(input.target.value); touch(); }} />
-                </label>
-                {two ? (
-                  <label className="cg-field">
-                    Partner's name
-                    <input value={name2} onChange={(input) => { setName2(input.target.value); touch(); }} />
-                  </label>
-                ) : null}
-              </div>
-              <div className="cg-fields date">
-                <label className="cg-field">
-                  Date
-                  <input type="date" value={date} onChange={(input) => { setDate(input.target.value); touch(); }} />
-                </label>
-                <label className="cg-field">
-                  Time
-                  <input type="time" value={time} onChange={(input) => { setTime(input.target.value); touch(); }} />
-                </label>
-              </div>
-              <label className="cg-field">
-                Venue
-                <input value={venue} onChange={(input) => { setVenue(input.target.value); touch(); }} />
-              </label>
-              {usesField(template, "message") ? (
-                <label className="cg-field">
-                  Message to guests
-                  <textarea rows={3} value={message} onChange={(input) => { setMessage(input.target.value); touch(); }} />
-                </label>
-              ) : null}
-              <div className="cg-field">
-                Functions
-                <label className="cg-fn">
-                  <input type="checkbox" checked readOnly onChange={() => setToast("This design always includes that section.")} />
-                  {template.meta.ceremony}
-                  <span>{time ? formatTime(time) : "Time"}</span>
-                </label>
-                {template.meta.reception ? (
-                  <label className="cg-fn">
-                    <input type="checkbox" checked={receptionOn} onChange={() => { setReceptionOn((on) => !on); touch(); }} />
-                    {template.meta.reception}
-                    <span>{sample?.receptionTime ? formatTime(sample.receptionTime) : "Evening"}</span>
-                  </label>
-                ) : null}
-              </div>
-              <div className="cg-field">
-                Colour
-                {palettes.length ? (
-                  <div className="cg-swatches">
-                    {palettes.map((id) => {
-                      const tone = SWATCHES.find((item) => item.id === id);
-                      if (!tone) return null;
-                      return (
-                        <button
-                          key={id}
-                          type="button"
-                          className={swatch === id ? "cg-swatch on" : "cg-swatch"}
-                          style={{ background: tone.cover }}
-                          aria-label={template.meta.themes.find((theme) => theme.id === id)?.name ?? tone.name}
-                          aria-pressed={swatch === id}
-                          onClick={() => setSwatch(id)}
-                        >
-                          <i style={{ background: tone.dot }} />
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="cg-muted">This invitation keeps its own colours.</p>
-                )}
-              </div>
-              <div className="cg-field">
-                Language
-                <div className="cg-langs">
-                  {template?.id === "thiruvizha" ? (
-                    <>
-                      <button type="button" className={inviteLang === "en" ? "cg-lang on" : "cg-lang"} aria-pressed={inviteLang === "en"} onClick={() => setInviteLang("en")}>English</button>
-                      <button type="button" className={inviteLang === "ta" ? "cg-lang on" : "cg-lang"} aria-pressed={inviteLang === "ta"} onClick={() => setInviteLang("ta")}>தமிழ்</button>
-                      <button type="button" className={inviteLang === "both" ? "cg-lang on" : "cg-lang"} aria-pressed={inviteLang === "both"} onClick={() => setInviteLang("both")}>Bilingual</button>
-                    </>
-                  ) : (
-                    <>
-                      <button type="button" className="cg-lang on" aria-pressed="true">
-                        English
-                      </button>
-                      <button type="button" className="cg-lang" aria-pressed="false" onClick={() => setToast("English is the language available right now.")}>
-                        മലയാളം
-                      </button>
-                      <button type="button" className="cg-lang" aria-pressed="false" onClick={() => setToast("English is the language available right now.")}>
-                        Bilingual
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </aside>
-            <section className="cg-stage">
-              <div className="cg-pills" role="group" aria-label="Preview device">
-                <button type="button" className={device === "phone" ? "cg-pill on" : "cg-pill"} aria-pressed={device === "phone"} onClick={() => setDevice("phone")}>
-                  Mobile
-                </button>
-                <button type="button" className={device === "desk" ? "cg-pill on" : "cg-pill"} aria-pressed={device === "desk"} onClick={() => setDevice("desk")}>
-                  Desktop
-                </button>
-              </div>
-              <div className={device === "phone" ? "cg-frame phone" : "cg-frame desk"}>
-                <div className="cg-screen">
-                  <GuestPreview template={template} fields={fields} swatch={swatch} lang={inviteLang} />
-                </div>
-              </div>
-            </section>
+        {step === 3 && template ? (
+          <div className="cg-step3 cg-step3-editor">
+            <Editor
+              key={`${template.id}:${eventId}`}
+              embedded
+              templateId={template.id}
+              eventId={eventId}
+              onInvite={onEditorInvite}
+              onSummary={onEditorSummary}
+            />
           </div>
         ) : null}
 
@@ -704,11 +540,11 @@ export function CreateGuest() {
               <div className="cg-proof-card">
                 <img src={`/covers/${template.id}.jpg`} alt="" />
                 <div>
-                  <strong>{previewNames}</strong>
-                  <span>{previewWhen}</span>
+                  <strong>{shownNames}</strong>
+                  <span>{shownWhen}</span>
                 </div>
               </div>
-              <button type="button" className="cg-back" onClick={() => { setLiveCode(""); setStep(3); }}>
+              <button type="button" className="cg-back" onClick={() => setStep(3)}>
                 ← Keep editing
               </button>
             </div>
@@ -794,7 +630,7 @@ export function CreateGuest() {
           <div className="cg-bar-id">
             {template ? <img src={`/covers/${template.id}.jpg`} alt="" /> : <i />}
             <div>
-              <strong>{step === 2 ? `${template?.name ?? "Template"} selected` : previewNames}</strong>
+              <strong>{step === 2 ? `${template?.name ?? "Template"} selected` : shownNames}</strong>
               <span>
                 {step === 2
                   ? `${event.label} · ${template?.free ? "Free to publish" : `${template ? formatPrice(template) : ""} when you publish`}`
@@ -861,28 +697,47 @@ export function CreateGuest() {
               ) : (
                 <>
                   <div>
-                    <h2>{authMode === "publish" ? "Log in to publish" : authMode === "save" ? "Save your draft to an account" : "Log in to InvitesReady"}</h2>
+                    <h2>
+                      {authTab === "signup"
+                        ? authMode === "publish"
+                          ? "Create an account to publish"
+                          : authMode === "save"
+                            ? "Create an account to save"
+                            : "Create an account"
+                        : authMode === "publish"
+                          ? "Log in to publish"
+                          : authMode === "save"
+                            ? "Log in to save your draft"
+                            : "Log in to InvitesReady"}
+                    </h2>
                     <p>Use email. Your design stays as it is.</p>
                   </div>
-                  <label className="cg-field">
-                    Name
-                    <input value={authName} onChange={(input) => setAuthName(input.target.value)} autoComplete="name" />
-                  </label>
+                  <div className="cg-tabs" role="tablist" aria-label="Account">
+                    <button type="button" role="tab" aria-selected={authTab === "login"} className={authTab === "login" ? "on" : ""} onClick={() => { setAuthTab("login"); setAuthError(""); }}>
+                      Log in
+                    </button>
+                    <button type="button" role="tab" aria-selected={authTab === "signup"} className={authTab === "signup" ? "on" : ""} onClick={() => { setAuthTab("signup"); setAuthError(""); }}>
+                      Create account
+                    </button>
+                  </div>
+                  {authTab === "signup" ? (
+                    <label className="cg-field">
+                      Name
+                      <input value={authName} onChange={(input) => setAuthName(input.target.value)} autoComplete="name" />
+                    </label>
+                  ) : null}
                   <label className="cg-field">
                     Email
                     <input type="email" value={authEmail} onChange={(input) => setAuthEmail(input.target.value)} autoComplete="email" />
                   </label>
                   <label className="cg-field">
                     Password
-                    <input type="password" value={authPassword} onChange={(input) => setAuthPassword(input.target.value)} autoComplete="current-password" />
+                    <input type="password" value={authPassword} onChange={(input) => setAuthPassword(input.target.value)} autoComplete={authTab === "signup" ? "new-password" : "current-password"} />
                   </label>
                   {authError ? <p className="cg-error">{authError}</p> : null}
                   <div className="cg-auth-actions">
-                    <button type="button" className="fill" disabled={busy} onClick={() => void submitAuth("login")}>
-                      Log in
-                    </button>
-                    <button type="button" className="line" disabled={busy} onClick={() => void submitAuth("signup")}>
-                      Create account
+                    <button type="submit" className="fill" disabled={busy}>
+                      {busy ? "Please wait…" : authTab === "signup" ? "Create account" : "Log in"}
                     </button>
                   </div>
                 </>
@@ -896,8 +751,8 @@ export function CreateGuest() {
         <Checkout
           template={template}
           onClose={() => setCheckout(false)}
-          onPurchased={async (coupon) => {
-            await library.purchase(template.id, coupon);
+          onPurchased={async (coupon, payment) => {
+            await library.purchase(template.id, coupon, payment);
             setOwned((current) => (current.includes(template.id) ? current : [...current, template.id]));
             await refreshHost();
             setCheckout(false);

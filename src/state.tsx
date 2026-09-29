@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { listInvites, listPurchases, purchaseTemplate } from "./api";
+import { listInvites, listPurchases, purchaseTemplate, type RazorpayPayment } from "./api";
 import { useSession } from "./session";
 import type { SavedInvite } from "./types";
 
@@ -8,7 +8,7 @@ type Library = {
   invites: SavedInvite[];
   ready: boolean;
   owns: (id: string, free: boolean) => boolean;
-  purchase: (id: string, coupon?: string) => Promise<void>;
+  purchase: (id: string, coupon?: string, payment?: RazorpayPayment) => Promise<void>;
   remember: (invite: SavedInvite) => void;
 };
 
@@ -51,8 +51,8 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       invites,
       ready,
       owns: (id, free) => free || owned.includes(id),
-      purchase: async (id, coupon) => {
-        await purchaseTemplate(id, coupon);
+      purchase: async (id, coupon, payment) => {
+        await purchaseTemplate(id, coupon, payment);
         setOwned((current) => (current.includes(id) ? current : [...current, id]));
       },
       remember: (invite) => {

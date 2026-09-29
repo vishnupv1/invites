@@ -20,7 +20,7 @@
 }
 
 .lp-nav {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -31,6 +31,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: rgba(250, 247, 242, 0.9);
+  border-bottom: 1px solid rgba(232, 223, 214, 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 .lp-logo {
   display: flex;
@@ -1110,10 +1114,11 @@
   }
   .lp-menu {
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 84px;
     left: 12px;
     right: 12px;
+    z-index: 19;
     z-index: 19;
     border-radius: 22px;
     background: #fff;
