@@ -47,7 +47,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       void load();
     });
     function onStorage(event: StorageEvent) {
-      if (event.key === "vellum.token.v1") void load();
+      if (event.key === "invitesready.token.v1") void load();
     }
     window.addEventListener("storage", onStorage);
     return () => {

@@ -1,6 +1,6 @@
 import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
-const TOKEN = "vellum.token.v1";
+const TOKEN = "invitesready.token.v1";
 const STALE_SESSION = "That session is no longer valid.";
 const listeners = new Set<() => void>();
 
@@ -143,9 +143,16 @@ export type RazorpayPayment = {
 };
 
 export function createPaymentOrder(templateId: string) {
-  return request<{ keyId: string; orderId: string; amount: number; currency: string }>("/api/payments/order", {
+  return request<{ keyId: string; orderId: string; amount: number; currency: string }>("/api/create-order", {
     method: "POST",
     body: JSON.stringify({ templateId }),
+  });
+}
+
+export function verifyPayment(payment: RazorpayPayment) {
+  return request<{ success: true }>("/api/verify-payment", {
+    method: "POST",
+    body: JSON.stringify(payment),
   });
 }
 

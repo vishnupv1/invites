@@ -11,7 +11,7 @@ import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields } from "../types";
 import "./create-guest.css";
 
-const DRAFT_KEY = "vellum.guest-draft.v1";
+const DRAFT_KEY = "invitesready.guest-draft.v1";
 const STEPS = ["Occasion", "Template", "Customise", "Publish"] as const;
 const BLURB: Record<string, string> = {
   marriage: "The wedding day",
@@ -300,7 +300,7 @@ export function CreateGuest() {
       if (inviteIdRef.current) {
         savedInvite = await publishSaved(inviteIdRef.current);
       } else {
-        const localKey = `vellum.editor-draft.v1.${template.id}`;
+        const localKey = `invitesready.editor-draft.v1.${template.id}`;
         const localRaw = localStorage.getItem(localKey);
         const local = localRaw ? (JSON.parse(localRaw) as { fields?: InviteFields; editor?: { swatch: string; receptionOn: boolean; sections: { id: string; on: boolean }[] } }) : null;
         if (local?.fields) {

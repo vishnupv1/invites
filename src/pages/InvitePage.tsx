@@ -30,7 +30,7 @@ export function InvitePage() {
     return (
       <main className="public missing">
         <h1>This invitation link is incomplete.</h1>
-        <Link to="/">Back to Vellum</Link>
+        <Link to="/">Back to invitesready</Link>
       </main>
     );
   }

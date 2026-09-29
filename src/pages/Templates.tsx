@@ -10,7 +10,7 @@ import type { Template } from "../types";
 import "./studio.css";
 import "./templates.css";
 
-const FAVS = "vellum.template-favs.v1";
+const FAVS = "invitesready.template-favs.v1";
 
 const NAV = [
   { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },

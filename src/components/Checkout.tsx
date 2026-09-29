@@ -1,10 +1,14 @@
 import { useState, type FormEvent } from "react";
-import { createPaymentOrder, ensureSession, getToken, verifyCoupon, type RazorpayPayment } from "../api";
+import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { formatPrice } from "../data/templates";
 import { useSession } from "../session";
 import type { Template } from "../types";
 
-type RazorpayCheckout = { open: () => void };
+type RazorpayFailure = { error?: { description?: string } };
+type RazorpayCheckout = {
+  open: () => void;
+  on: (event: "payment.failed", handler: (response: RazorpayFailure) => void) => void;
+};
 type RazorpayOptions = {
   key: string;
   amount: number;
@@ -108,10 +112,14 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
           },
           theme: { color: "#7c4d3a" },
           handler: resolve,
-          modal: { ondismiss: () => reject(new Error("")) },
+          modal: { ondismiss: () => reject(new Error("Payment was cancelled.")) },
+        });
+        checkout.on("payment.failed", (response) => {
+          reject(new Error(response.error?.description || "Payment failed. Please try again."));
         });
         checkout.open();
       });
+      await verifyPayment(payment);
       await onPurchased(undefined, payment);
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";

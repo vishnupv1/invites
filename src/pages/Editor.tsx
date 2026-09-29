@@ -207,7 +207,7 @@ function modelFromSaved(template: Template, fields: InviteFields, editor?: Edito
 }
 
 function localDraftKey(templateId: string) {
-  return `vellum.editor-draft.v1.${templateId}`;
+  return `invitesready.editor-draft.v1.${templateId}`;
 }
 
 function readLocal(templateId: string) {
@@ -591,7 +591,7 @@ export function Editor({
   async function ensureHost() {
     const current = modelRef.current?.draft;
     if (!current || getToken()) return;
-    const email = current.hostEmail.includes("@") ? current.hostEmail : `host-${crypto.randomUUID()}@vellum.local`;
+    const email = current.hostEmail.includes("@") ? current.hostEmail : `host-${crypto.randomUUID()}@invitesready.local`;
     await ensureSession(email, current.hosts || current.names || "Host");
   }
 
