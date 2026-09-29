@@ -1395,6 +1395,17 @@
 }
 
 @media (max-width: 720px) {
+  .cg-root:has(.cg-step3-editor) {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-header,
+  .cg-root:has(.cg-step3-editor) .cg-trail,
+  .cg-root:has(.cg-step3-editor) .cg-banner {
+    display: none;
+  }
+
   .cg-header {
     height: auto;
     min-height: 64px;
@@ -1475,6 +1486,45 @@
   }
 
   .cg-bar-actions button { width: 100%; }
+
+  .cg-root:has(.cg-step3-editor) .cg-bar {
+    position: relative;
+    min-height: 0;
+    padding: 10px 12px max(10px, env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-bar-id {
+    min-width: 0;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-bar-id > div {
+    min-width: 0;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-bar-id strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-bar-id span {
+    display: none;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-bar-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+    gap: 8px;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-ghost,
+  .cg-root:has(.cg-step3-editor) .cg-bar-btn {
+    min-height: 48px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
   .cg-dialog { border-radius: 20px; }
   .cg-side { padding: 20px; }
   .cg-auth { padding: 22px 18px; }
