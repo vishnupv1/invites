@@ -1293,7 +1293,7 @@ export function Editor() {
                 </div>
                 <div className="ed-shares">
                   <button type="button" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`You're invited: ${link}`)}`, "_blank", "noopener")}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4E6853" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" /></svg>
+                    <img src="/whatsapp.png" alt="" width={22} height={22} />
                     WhatsApp
                   </button>
                   <button type="button" onClick={() => void copyLink()}>

@@ -397,6 +397,7 @@ export function DashboardHome({
         ) : (
         <div className="dv-hero-actions">
           <button type="button" className="wa" onClick={shareWhatsApp}>
+            <img src="/whatsapp.png" alt="" width={18} height={18} />
             <span className="wide">Share on WhatsApp</span>
             <span className="short">WhatsApp</span>
           </button>

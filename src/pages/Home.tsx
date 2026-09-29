@@ -101,12 +101,12 @@ const RSVPS = [
 ] as const;
 
 const TEMPLATES = [
-  { name: "Royal Night", tag: "Animated", bg: "#0B1424", fg: "#F6E8C8", accent: "#D9B26A", font: '"Parisienne", cursive', sample: "Karthik & Nandana", kicker: "Shubh Vivah", fx: "stars", to: "/templates" },
-  { name: "Sunset Shore", tag: "Animated", bg: "#F7B38A", fg: "#1E3A44", accent: "#1F6F78", font: '"Allura", cursive', sample: "Rohan & Alisha", kicker: "One shore", fx: "wave", to: "/preview/beach" },
-  { name: "Happy Home", tag: "Animated", bg: "#DDEFE8", fg: "#2E2A25", accent: "#C8553D", font: '"Caveat", cursive', sample: "Our new home!", kicker: "Griha Pravesh", fx: "home", to: "/preview/hearth" },
-  { name: "Heavenly Halo", tag: "Animated", bg: "#DCEBF7", fg: "#2F5E8A", accent: "#D9B26A", font: '"Great Vibes", cursive', sample: "Ethan", kicker: "Baptism", fx: "dove", to: "/preview/baptism" },
-  { name: "Emerald Nikah", tag: "Premium", bg: "#12352B", fg: "#FFFFFF", accent: "#C89B5B", font: '"Cormorant Garamond", serif', sample: "Imran & Safa", kicker: "Nikah", fx: "stars", to: "/preview/gazal" },
-  { name: "Garden Editorial", tag: "Free", bg: "#F6F0E6", fg: "#A44B32", accent: "#8A9A7B", font: '"Pinyon Script", cursive', sample: "Anna & Joel", kicker: "Save the date", fx: "leaf", to: "/preview/anna" },
+  { name: "Royal Night", tag: "Animated", bg: "#0B1424", fg: "#F6E8C8", accent: "#D9B26A", font: '"Parisienne", cursive', sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/templates" },
+  { name: "Sunset Shore", tag: "Animated", bg: "#F7B38A", fg: "#1E3A44", accent: "#1F6F78", font: '"Allura", cursive', sample: "Rohan & Alisha", kicker: "One shore", to: "/preview/beach" },
+  { name: "Happy Home", tag: "Animated", bg: "#DDEFE8", fg: "#2E2A25", accent: "#C8553D", font: '"Caveat", cursive', sample: "Our new home!", kicker: "Griha Pravesh", to: "/preview/hearth" },
+  { name: "Heavenly Halo", tag: "Animated", bg: "#DCEBF7", fg: "#2F5E8A", accent: "#D9B26A", font: '"Great Vibes", cursive', sample: "Ethan", kicker: "Baptism", to: "/preview/baptism" },
+  { name: "Emerald Nikah", tag: "Premium", bg: "#12352B", fg: "#FFFFFF", accent: "#C89B5B", font: '"Cormorant Garamond", serif', sample: "Imran & Safa", kicker: "Nikah", to: "/preview/gazal" },
+  { name: "Garden Editorial", tag: "Free", bg: "#F6F0E6", fg: "#A44B32", accent: "#8A9A7B", font: '"Pinyon Script", cursive', sample: "Anna & Joel", kicker: "Save the date", to: "/preview/anna" },
 ];
 
 const BARS = [
@@ -117,8 +117,8 @@ const BARS = [
 
 const PLANS = [
   { id: "free", name: "Free", sub: "For simple get-togethers", price: "₹0", items: ["Free templates", "1 function", "RSVP up to 50 guests", "Small InvitesReady credit"], cta: "Start free", featured: false },
-  { id: "wedding", name: "Wedding", sub: "For multi-day celebrations", price: "[PRICE]", items: ["All animated & premium templates", "Unlimited functions & groups", "Reminders, QR check-in, photo wall", "No branding"], cta: "Plan my wedding", featured: true },
-  { id: "premium", name: "Premium", sub: "Birthdays & family functions", price: "[PRICE]", items: ["All premium templates", "Up to 3 functions", "RSVP up to 300 guests", "No branding"], cta: "Go premium", featured: false },
+  { id: "wedding", name: "Wedding", sub: "For multi-day celebrations", price: "", items: ["All animated & premium templates", "Unlimited functions & groups", "Reminders, QR check-in, photo wall", "No branding"], cta: "Plan my wedding", featured: true },
+  { id: "premium", name: "Premium", sub: "Birthdays & family functions", price: "", items: ["All premium templates", "Up to 3 functions", "RSVP up to 300 guests", "No branding"], cta: "Go premium", featured: false },
 ];
 
 const FAQS = [
@@ -153,34 +153,6 @@ function Logo({ light = false }: { light?: boolean }) {
       <span>invitesready.com</span>
     </Link>
   );
-}
-
-function effects(kind: string) {
-  if (kind === "stars") {
-    return [0, 1, 2, 3].map((i) => ({
-      ch: "✦",
-      style: { left: 24 + i * 60, top: 30 + (i % 2) * 40, color: "#F6E8C8", fontSize: 12, animation: `lp-twinkle ${1.6 + i * 0.3}s ease-in-out infinite` },
-    }));
-  }
-  if (kind === "wave") {
-    return [
-      { ch: "🌊", style: { left: 20, bottom: 16, fontSize: 22, animation: "lp-sway 3s ease-in-out infinite" } },
-      { ch: "☀️", style: { right: 24, top: 20, fontSize: 22, animation: "lp-float 4s ease-in-out infinite" } },
-    ];
-  }
-  if (kind === "home") {
-    return [
-      { ch: "🏡", style: { right: 20, top: 20, fontSize: 24, animation: "lp-float 3s ease-in-out infinite" } },
-      { ch: "🎈", style: { left: 20, bottom: 20, fontSize: 20, animation: "lp-float-r 3.4s ease-in-out infinite" } },
-    ];
-  }
-  if (kind === "dove") {
-    return [
-      { ch: "🕊️", style: { right: 20, top: 20, fontSize: 24, animation: "lp-float 3s ease-in-out infinite" } },
-      { ch: "✦", style: { left: 30, top: 40, color: "#D9B26A", animation: "lp-twinkle 2s ease-in-out infinite" } },
-    ];
-  }
-  return [{ ch: "🌿", style: { right: 18, top: 18, fontSize: 22, animation: "lp-float-r 4s ease-in-out infinite" } }];
 }
 
 export function Home() {
@@ -416,7 +388,7 @@ export function Home() {
               <i style={{ width: `${pct}%` }} />
             </div>
           </div>
-          <div className="lp-wa">💬 Shared on WhatsApp</div>
+          <div className="lp-wa"><img src="/whatsapp.png" alt="" width={16} height={16} /> Shared on WhatsApp</div>
           <div className="lp-dots" aria-hidden="true">
             {PHONES.map((item) => (
               <i key={item.names} style={{ width: item.names === phone.names ? 28 : 8, background: item.names === phone.names ? "#6B3A5B" : "#D8CCBF" }} />
@@ -554,11 +526,6 @@ export function Home() {
           <div className="lp-tpl-track">
             {cards.map((template, index) => (
               <Link className="lp-tpl" to={template.to} key={`${template.name}-${index}`} style={{ background: template.bg, color: template.fg }}>
-                {effects(template.fx).map((item) => (
-                  <span key={item.ch + String(item.style.left ?? item.style.right)} className="lp-fx" style={item.style} aria-hidden="true">
-                    {item.ch}
-                  </span>
-                ))}
                 <div className="lp-tpl-frame" style={{ borderColor: template.accent }}>
                   <small>{template.kicker}</small>
                   <strong style={{ fontFamily: template.font }}>{template.sample}</strong>
@@ -665,7 +632,7 @@ export function Home() {
                 {plan.featured ? <b>Most loved</b> : null}
                 <h3>{plan.name}</h3>
                 <span>{plan.sub}</span>
-                <strong>{plan.price}</strong>
+                {plan.price ? <strong>{plan.price}</strong> : null}
                 <ul>
                   {plan.items.map((item) => (
                     <li key={item}>✓ {item}</li>

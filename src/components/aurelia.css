@@ -73,6 +73,8 @@
 .au-gallery figcaption strong { font-size: 13px; }
 .au-gallery figcaption span { font-size: 12px; line-height: 1.4; opacity: 0.75; }
 .au-share div, .au-wishes form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.au-share a { gap: 8px; }
+.au-share img { width: 18px; height: 18px; object-fit: contain; }
 .au-wishes form { flex-direction: column; align-items: stretch; }
 .au-wishes label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
 .au-wishes input, .au-wishes textarea { width: 100%; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(230, 200, 147, 0.3); background: #0b1020; color: #fff; padding: 12px; font: inherit; }

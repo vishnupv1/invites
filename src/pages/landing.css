@@ -419,6 +419,9 @@
   position: absolute;
   right: 30px;
   top: 60px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 14px;
   border-radius: 14px;
   background: #4e6853;
@@ -428,6 +431,11 @@
   box-shadow: 0 16px 30px rgba(78, 104, 83, 0.3);
   animation: lp-pop 0.6s ease both, lp-float-r 6s ease-in-out infinite;
   animation-delay: 2.2s, 2.8s;
+}
+.lp-wa img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 .lp-dots {
   position: absolute;
@@ -783,8 +791,6 @@
   font-weight: 800;
   color: #fff;
 }
-.lp-fx { position: absolute; pointer-events: none; }
-
 .lp-features { padding: 100px 8vw; display: flex; flex-direction: column; gap: 40px; }
 .lp-features-intro { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
 .lp-bento {

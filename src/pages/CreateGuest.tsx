@@ -760,6 +760,7 @@ export function CreateGuest() {
                   <div className="cg-linkbox">{link.replace(/^https?:\/\//, "")}</div>
                   <div className="cg-shares">
                     <button type="button" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`You're invited: ${link}`)}`, "_blank", "noopener")}>
+                      <img src="/whatsapp.png" alt="" width={22} height={22} />
                       WhatsApp
                     </button>
                     <button

@@ -1478,11 +1478,17 @@ button.avatar {
 }
 .dv-hero-actions { display: flex; flex-direction: column; gap: 8px; width: 200px; flex-shrink: 0; }
 .dv-hero-actions .wa {
+  gap: 8px;
   border: none;
   border-radius: 12px;
   background: #4e6853;
   color: #fff;
   font-weight: 800;
+}
+.dv-hero-actions .wa img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 .dv-hero-actions .qr { border-radius: 12px; }
 .dv-hero-actions .short,

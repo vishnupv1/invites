@@ -209,7 +209,7 @@ export function AureliaInvite({
       <section className="au-share">
         <h2>Share the invitation</h2>
         <div>
-          <a href={`https://wa.me/?text=${encodeURIComponent(`${fields.names} ${shareUrl}`)}`} target="_blank" rel="noreferrer">WhatsApp</a>
+          <a href={`https://wa.me/?text=${encodeURIComponent(`${fields.names} ${shareUrl}`)}`} target="_blank" rel="noreferrer"><img src="/whatsapp.png" alt="" width={18} height={18} /> WhatsApp</a>
           <button type="button" onClick={copyLink}>{copied ? "Link copied" : "Copy link"}</button>
         </div>
       </section>
