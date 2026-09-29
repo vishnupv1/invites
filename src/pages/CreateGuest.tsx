@@ -896,8 +896,8 @@ export function CreateGuest() {
         <Checkout
           template={template}
           onClose={() => setCheckout(false)}
-          onPurchased={async () => {
-            await library.purchase(template.id);
+          onPurchased={async (coupon) => {
+            await library.purchase(template.id, coupon);
             setOwned((current) => (current.includes(template.id) ? current : [...current, template.id]));
             await refreshHost();
             setCheckout(false);

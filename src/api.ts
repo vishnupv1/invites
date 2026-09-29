@@ -129,10 +129,17 @@ export function listPurchases() {
   return request<string[]>("/api/purchases");
 }
 
-export function purchaseTemplate(templateId: string) {
+export function verifyCoupon(code: string) {
+  return request<{ valid: boolean; code: string }>("/api/coupons/verify", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+}
+
+export function purchaseTemplate(templateId: string, coupon?: string) {
   return request<{ templateId: string }>("/api/purchases", {
     method: "POST",
-    body: JSON.stringify({ templateId }),
+    body: JSON.stringify({ templateId, coupon: coupon || undefined }),
   });
 }
 

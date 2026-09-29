@@ -8,7 +8,7 @@ type Library = {
   invites: SavedInvite[];
   ready: boolean;
   owns: (id: string, free: boolean) => boolean;
-  purchase: (id: string) => Promise<void>;
+  purchase: (id: string, coupon?: string) => Promise<void>;
   remember: (invite: SavedInvite) => void;
 };
 
@@ -51,8 +51,8 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       invites,
       ready,
       owns: (id, free) => free || owned.includes(id),
-      purchase: async (id) => {
-        await purchaseTemplate(id);
+      purchase: async (id, coupon) => {
+        await purchaseTemplate(id, coupon);
         setOwned((current) => (current.includes(id) ? current : [...current, id]));
       },
       remember: (invite) => {
