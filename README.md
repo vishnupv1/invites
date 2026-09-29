@@ -1,4 +1,4 @@
-# Vellum
+# invitesready
 
 React app for one-time invite templates and shareable invite links. The API is in [invites-be](https://github.com/vishnupv1/invites-be).
 

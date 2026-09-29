@@ -389,7 +389,7 @@ export function InviteSite({
         <WishForm names={fields.names} onReply={onReply} />
       </section>
       <footer className="site-foot">
-        Made with <Link to="/">Vellum</Link>
+        Made with <Link to="/">invitesready</Link>
       </footer>
     </div>
   );

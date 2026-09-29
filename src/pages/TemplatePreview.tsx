@@ -19,7 +19,7 @@ import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, Template } from "../types";
 import "./preview.css";
 
-const FAVS = "vellum.template-favs.v1";
+const FAVS = "invitesready.template-favs.v1";
 
 const VARIANTS = [
   { name: "Ivory & gold", bg: "#FAF7F2", fg: "#4A263E", accent: "#C89B5B" },
