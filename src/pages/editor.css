@@ -626,6 +626,11 @@
   justify-content: center;
   gap: 6px;
 }
+.ed-shares img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
 .ed-qr {
   width: 180px;
   height: 180px;
