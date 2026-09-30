@@ -537,8 +537,6 @@
   overflow: auto;
   background: #faf7f2;
   transform: translateZ(0);
-  container-type: size;
-  container-name: preview;
 }
 .ed-frame.ed-phone .ed-screen { border-radius: 36px; }
 .ed-zoom { width: 100%; transform-origin: top left; }
