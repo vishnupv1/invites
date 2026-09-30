@@ -558,7 +558,7 @@ export function TemplatePreview() {
           <section className="pv-similar">
             <div className="pv-similar-head">
               <h2>You might also like</h2>
-              <Link to="/templates">See all templates</Link>
+              <Link to="/browse">See all templates</Link>
             </div>
             <div className="pv-like">
               {similar.map((item) => (

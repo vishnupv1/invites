@@ -13,6 +13,7 @@ import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
 import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
+import { AllTemplates } from "./pages/AllTemplates";
 import { Templates } from "./pages/Templates";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 
@@ -37,7 +38,7 @@ function Shell({ children }: { children: ReactNode }) {
         </Link>
         <nav>
           <Link to="/#occasions">Celebrations</Link>
-          <Link to="/templates">Templates</Link>
+          <Link to="/browse">Templates</Link>
           <Link to="/studio">Dashboard</Link>
         </nav>
       </header>
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/browse" element={<AllTemplates />} />
         <Route path="/templates" element={<Templates />} />
         <Route path="/preview/:id" element={<TemplatePreview />} />
         <Route path="/open/:id" element={<OpenInvite />} />

@@ -101,7 +101,7 @@ const RSVPS = [
 ] as const;
 
 const TEMPLATES = [
-  { name: "Royal Night", tag: "Animated", bg: "#0B1424", fg: "#F6E8C8", accent: "#D9B26A", font: '"Parisienne", cursive', sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/templates" },
+  { name: "Royal Night", tag: "Animated", bg: "#0B1424", fg: "#F6E8C8", accent: "#D9B26A", font: '"Parisienne", cursive', sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/preview/vivah" },
   { name: "Sunset Shore", tag: "Animated", bg: "#F7B38A", fg: "#1E3A44", accent: "#1F6F78", font: '"Allura", cursive', sample: "Rohan & Alisha", kicker: "One shore", to: "/preview/beach" },
   { name: "Happy Home", tag: "Animated", bg: "#DDEFE8", fg: "#2E2A25", accent: "#C8553D", font: '"Caveat", cursive', sample: "Our new home!", kicker: "Griha Pravesh", to: "/preview/hearth" },
   { name: "Heavenly Halo", tag: "Animated", bg: "#DCEBF7", fg: "#2F5E8A", accent: "#D9B26A", font: '"Great Vibes", cursive', sample: "Ethan", kicker: "Baptism", to: "/preview/baptism" },
@@ -299,7 +299,7 @@ export function Home() {
             <Link className="lp-cta lp-btn" to="/create">
               Create your invitation — free <span aria-hidden="true">→</span>
             </Link>
-            <Link className="lp-cta-line lp-btn" to="/templates">
+            <Link className="lp-cta-line lp-btn" to="/browse">
               Browse templates
             </Link>
           </div>
@@ -518,7 +518,7 @@ export function Home() {
             </h2>
             <p>{narrow ? "Palace doors, sunsets and houses that build themselves." : "Palace doors that open, sunsets that set, houses that build themselves. Hover to peek."}</p>
           </div>
-          <Link className="lp-gold-link lp-btn" to="/templates">
+          <Link className="lp-gold-link lp-btn" to="/browse">
             See all templates
           </Link>
         </div>
@@ -537,7 +537,7 @@ export function Home() {
           </div>
         </div>
         <div className="lp-tpl-more">
-          <Link to="/templates">See all templates</Link>
+          <Link to="/browse">See all templates</Link>
         </div>
       </section>
 
@@ -723,7 +723,7 @@ export function Home() {
       <footer className="lp-foot">
         <Logo light />
         <nav aria-label="Footer">
-          <Link to="/templates">Templates</Link>
+          <Link to="/browse">Templates</Link>
           <a href="#pricing">Pricing</a>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
