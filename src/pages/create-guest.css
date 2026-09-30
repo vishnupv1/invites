@@ -1400,10 +1400,58 @@
     min-height: 100dvh;
   }
 
-  .cg-root:has(.cg-step3-editor) .cg-header,
   .cg-root:has(.cg-step3-editor) .cg-trail,
-  .cg-root:has(.cg-step3-editor) .cg-banner {
+  .cg-root:has(.cg-step3-editor) .cg-banner,
+  .cg-root:has(.cg-step3-editor) .cg-brand,
+  .cg-root:has(.cg-step3-editor) .cg-account {
     display: none;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-header {
+    display: flex;
+    flex-shrink: 0;
+    height: auto;
+    min-height: 0;
+    padding: 8px 8px 6px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-steps {
+    order: 0;
+    width: 100%;
+    max-width: 100%;
+    justify-content: space-between;
+    gap: 0;
+    overflow: visible;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-steps li {
+    gap: 0;
+    min-width: 0;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-step {
+    min-height: 0;
+    padding: 2px 2px 0;
+    gap: 4px;
+    flex-direction: column;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-step-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: nowrap;
+  }
+
+  .cg-root:has(.cg-step3-editor) .cg-rule {
+    width: 14px;
+    margin-bottom: 14px;
   }
 
   .cg-header {
