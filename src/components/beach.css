@@ -155,6 +155,9 @@
 .bw-feet i.odd { top: 18px; }
 
 .bw-open { position: relative; min-height: 100vh; min-height: 100dvh; overflow: hidden; background: var(--wash); }
+@container preview (min-height: 200px) {
+  .bw-open { height: 100cqh; min-height: 100cqh; }
+}
 .bw-ring circle:last-child { transition: stroke-dashoffset 0.6s ease; }
 .bw-open .bw-sun { top: calc(64% - 91px); }
 .bw-open .bw-sea { top: 64%; }
