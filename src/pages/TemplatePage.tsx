@@ -310,7 +310,7 @@ export function TemplatePage() {
           <section className="buy-more">
             <div className="buy-more-head">
               <h2>More for {getEvent(event).label.toLowerCase()}</h2>
-              <Link to="/templates">See all templates</Link>
+              <Link to="/browse">See all templates</Link>
             </div>
             <div className="buy-like">
               {others.map((item) => (

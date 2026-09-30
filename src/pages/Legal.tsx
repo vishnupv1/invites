@@ -23,7 +23,7 @@ function Frame({ title, lede, children }: { title: string; lede: string; childre
       </main>
       <footer>
         <nav aria-label="Footer">
-          <Link to="/templates">Templates</Link>
+          <Link to="/browse">Templates</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
           <Link to="/refunds">Refunds</Link>
