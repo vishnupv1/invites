@@ -249,6 +249,7 @@ export function CreateGuest() {
       setTemplateId(next.id);
       setSwatch(next.meta.defaultTheme || palettesFor(next)[0] || "");
     }
+    setStep(2);
   }
 
   function openAuth(mode: AuthMode) {
@@ -473,9 +474,6 @@ export function CreateGuest() {
                 );
               })}
             </div>
-            <button type="button" className="cg-next" onClick={() => setStep(2)}>
-              Choose a template →
-            </button>
           </div>
         ) : null}
 
