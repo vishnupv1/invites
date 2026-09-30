@@ -232,6 +232,7 @@ export function Editor({
   const [tab, setTab] = useState<Tab>("Details");
   const [sheet, setSheet] = useState(true);
   const [device, setDevice] = useState<"phone" | "desktop">("phone");
+  const [expanded, setExpanded] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
@@ -357,6 +358,15 @@ export function Editor({
     const timer = window.setTimeout(() => setToast(""), 5200);
     return () => window.clearTimeout(timer);
   }, [toast]);
+
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setExpanded(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [expanded]);
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -692,7 +702,7 @@ export function Editor({
   }
 
   const editor = (
-    <div className={`ed-root${embedded ? " ed-embedded" : ""}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}`}>
+    <div className={`ed-root${embedded ? " ed-embedded" : ""}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}${expanded ? " is-expanded" : ""}`}>
       <header className="ed-top">
         <div className="ed-brand">
           {embedded ? null : (
@@ -1245,6 +1255,23 @@ export function Editor({
         <main className="ed-canvas">
           <div className="ed-stage">
             <div className={device === "phone" ? "ed-frame ed-phone" : "ed-frame ed-desk"} ref={frameRef}>
+              <button
+                type="button"
+                className="ed-expand"
+                aria-pressed={expanded}
+                aria-label={expanded ? "Leave full screen" : "View full screen"}
+                onClick={() => setExpanded((open) => !open)}
+              >
+                {expanded ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" />
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                  </svg>
+                )}
+              </button>
               <div className="ed-screen" style={device === "desktop" ? { height: innerHeight * scale } : undefined}>
                 <div ref={innerRef} className="ed-zoom" style={device === "desktop" ? { width: 1040, transform: `scale(${scale})` } : undefined}>
                   {template.style === "gazal" ? (
