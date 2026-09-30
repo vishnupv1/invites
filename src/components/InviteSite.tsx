@@ -7,6 +7,7 @@ import "./invite-site.css";
 import { AnnaInvite } from "./AnnaInvite";
 import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
+import { BotanicaInvite } from "./BotanicaInvite";
 import { HomeInvite } from "./HomeInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -15,7 +16,7 @@ import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 
 type Reply = { name: string; note: string; attending: boolean };
 
@@ -335,6 +336,9 @@ export function InviteSite({
   }
   if (template.style === "beach") {
     return <BeachInvite fields={fields} wishes={wishes} onReply={onReply} theme={beachThemeOf(swatch)} />;
+  }
+  if (template.style === "botanica") {
+    return <BotanicaInvite fields={fields} wishes={wishes} onReply={onReply} theme={botanicaThemeOf(swatch)} />;
   }
   if (template.style === "home") {
     return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} />;

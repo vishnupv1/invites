@@ -17,6 +17,7 @@ const FALLBACK: Record<string, string> = {
   shaadi: "#4A0D1F",
   thiruvizha: "#7A1633",
   peace: "#F8E6E4",
+  botanica: "#F3E3D6",
 };
 
 function Logo({ light = false }: { light?: boolean }) {
@@ -186,7 +187,7 @@ export function AllTemplates() {
             {items.map((template) => {
               const event = template.events[0];
               const tone = FALLBACK[template.id] ?? "#F6F0E6";
-              const ink = tone === "#F6F0E6" || tone === "#DCEBF7" || tone === "#DDEFE8" || tone === "#F7B38A" || tone === "#F8E6E4" ? "#211C1E" : "#F6E8C8";
+              const ink = tone === "#F6F0E6" || tone === "#DCEBF7" || tone === "#DDEFE8" || tone === "#F7B38A" || tone === "#F8E6E4" || tone === "#F3E3D6" ? "#211C1E" : "#F6E8C8";
               return (
                 <article className="cat-card" key={template.id}>
                   <Link className="cat-shot" to={`/preview/${template.id}`} style={{ background: tone, color: ink }}>

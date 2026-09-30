@@ -94,5 +94,17 @@
     "stay": "Rooms are held at two hotels nearby. Mention the couple when booking.",
     "airport": "Valet parking on site, and cabs from the airport take about 50 minutes.",
     "caption": "#MayaMeetsDev"
+  },
+  "botanica": {
+    "story": [
+      { "year": "2019", "title": "Where it began", "text": "Two strangers, one rainy book fair and a shared umbrella." },
+      { "year": "2022", "title": "Salt & sunsets", "text": "A spontaneous road trip to the coast that changed everything." },
+      { "year": "2026", "title": "She said yes", "text": "A quiet garden, a handwritten note and two very happy hearts." }
+    ],
+    "programme": [
+      { "kick": "The ceremony", "title": "Vows in the garden", "time": "Sat, 6 March · 5:00 PM", "text": "The Rose Lawn" },
+      { "kick": "Evening", "title": "Dinner & toasts", "time": "Sat, 6 March · 7:00 PM", "text": "The Glass Conservatory" },
+      { "kick": "Late night", "title": "Dancing under the stars", "time": "Sat, 6 March · 9:30 PM", "text": "The Terrace" }
+    ]
   }
 }

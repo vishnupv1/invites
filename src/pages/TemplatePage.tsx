@@ -6,6 +6,7 @@ import { AnnaInvite } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
+import { BotanicaInvite } from "../components/BotanicaInvite";
 import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
 import { HomeInvite } from "../components/HomeInvite";
@@ -17,7 +18,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import "./purchase.css";
@@ -50,6 +51,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <VivahInvite fields={fields} quiet theme={vivahThemeOf(swatch)} />;
     case "beach":
       return <BeachInvite fields={fields} quiet theme={beachThemeOf(swatch)} />;
+    case "botanica":
+      return <BotanicaInvite fields={fields} quiet theme={botanicaThemeOf(swatch)} />;
     case "home":
       return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} />;
     case "shaadi":

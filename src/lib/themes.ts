@@ -1,6 +1,7 @@
 import type { AnnaTheme } from "../components/AnnaInvite";
 import type { BaptismTheme } from "../components/BaptismInvite";
 import type { BeachTheme } from "../components/BeachInvite";
+import type { BotanicaTheme } from "../components/BotanicaInvite";
 import type { HomeTheme } from "../components/HomeInvite";
 import type { PeaceTheme } from "../components/PeaceInvite";
 import type { ShaadiTheme } from "../components/ShaadiInvite";
@@ -17,6 +18,12 @@ export function homeThemeOf(swatch: string): HomeTheme {
   if (swatch === "rose") return "sunset";
   if (swatch === "midnight") return "night";
   return "day";
+}
+
+export function botanicaThemeOf(swatch: string): BotanicaTheme {
+  if (swatch === "sage") return "sage";
+  if (swatch === "midnight") return "midnight";
+  return "blush";
 }
 
 export function beachThemeOf(swatch: string): BeachTheme {

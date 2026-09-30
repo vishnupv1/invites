@@ -336,5 +336,41 @@
       { "id": "wishes", "label": "Love notes", "configurable": false, "fields": [] },
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "botanica": {
+    "names": "couple",
+    "ceremony": "The ceremony",
+    "themes": [
+      { "id": "blush", "name": "Blush" },
+      { "id": "sage", "name": "Sage" },
+      { "id": "midnight", "name": "Midnight" }
+    ],
+    "defaultTheme": "blush",
+    "shots": [
+      { "label": "Where it began" },
+      { "label": "Salt & sunsets" },
+      { "label": "She said yes" },
+      { "label": "Bridal bouquet" },
+      { "label": "A toast" },
+      { "label": "Golden hour" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 8 },
+    "components": [
+      { "id": "opening", "label": "Loader and wreath", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Family line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Note to guests", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Place", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "programme", "label": "The celebration", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
   }
 }
