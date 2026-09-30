@@ -6,6 +6,7 @@ import { eventName, packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatTime } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 import "./baptism.css";
 
 export type BaptismTheme = "sky" | "blush" | "sage";
@@ -524,6 +525,7 @@ export function BaptismInvite({
             <em>{fields.names}</em>
             <span>With love, {fields.hosts || "the family"} <span className="bp-heart">♥</span></span>
             <Link to="/">Made with InvitesReady</Link>
+            <InstagramLink />
           </footer>
         </article>
       )}

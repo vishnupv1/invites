@@ -5,6 +5,7 @@ import { eventName, packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { formatTime } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 import "./vivah.css";
 
 export type VivahTheme = "midnight" | "royal" | "emerald";
@@ -721,6 +722,7 @@ export function VivahInvite({
             </div>
             <span className="wd-foot-love">With love, {fields.hosts}</span>
             <a className="wd-made" href="/">Made with InvitesReady</a>
+            <InstagramLink />
           </footer>
         </div>
       ) : (

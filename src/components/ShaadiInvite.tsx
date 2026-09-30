@@ -6,6 +6,7 @@ import { EVENT_LOOK, SHAADI_STORY_COUNT, SHAADI_VOWS, eventKind, festivitiesOf, 
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { Arch, Diyas, Elephant, EventMark, Flourish, Havan, Mandala, Palace, Petals, Rangoli, Stars, Toran } from "./shaadi-art";
+import { InstagramLink } from "./InstagramLink";
 import "./shaadi.css";
 
 export type { ShaadiTheme };
@@ -510,6 +511,7 @@ export function ShaadiInvite({
             <p className="sh-hindi">आपकी उपस्थिति हमारा सौभाग्य</p>
             <p className="sh-tag">{[hash, fields.date ? dotted(fields.date) : ""].filter(Boolean).join(" · ")}</p>
             <a href="/">Made with InvitesReady</a>
+            <InstagramLink />
           </footer>
           {playing && fields.audio ? <audio src={assetUrl(fields.audio)} autoPlay loop /> : null}
         </div>

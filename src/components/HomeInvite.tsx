@@ -3,6 +3,7 @@ import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
+import { InstagramLink } from "./InstagramLink";
 import "./home.css";
 
 export type HomeTheme = "day" | "sunset" | "night";
@@ -576,6 +577,7 @@ export function HomeInvite({
             <em>See you at home!</em>
             <small>With love, {family} · {tag}</small>
             <a href="/">Made with InvitesReady</a>
+            <InstagramLink />
           </footer>
         </article>
       )}

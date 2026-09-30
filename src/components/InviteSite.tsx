@@ -14,6 +14,7 @@ import { GazalInvite, type GazalWish } from "./GazalInvite";
 import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PeaceInvite } from "./PeaceInvite";
+import { InstagramLink } from "./InstagramLink";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 
 type Reply = { name: string; note: string; attending: boolean };
@@ -392,7 +393,8 @@ export function InviteSite({
         <WishForm names={fields.names} onReply={onReply} />
       </section>
       <footer className="site-foot">
-        Made with <Link to="/">invitesready</Link>
+        <span>Made with <Link to="/">invitesready</Link></span>
+        <InstagramLink />
       </footer>
     </div>
   );

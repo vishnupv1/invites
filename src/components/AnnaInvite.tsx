@@ -6,6 +6,7 @@ import { eventName, packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 import "./anna.css";
 
 export type AnnaTheme = "terracotta" | "sage" | "dusk";
@@ -448,6 +449,7 @@ export function AnnaInvite({
             <em>{first}{second ? " & " : ""}{second}</em>
             <span className="anna-hash">{meetTag(first, second)}</span>
             <Link to="/">Made with InvitesReady</Link>
+            <InstagramLink />
           </footer>
         </article>
       )}
