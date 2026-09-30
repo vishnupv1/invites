@@ -1258,7 +1258,7 @@ export function Editor({
                   ) : template.style === "vivah" ? (
                     <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
                   ) : template.style === "beach" ? (
-                    <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} preview />
+                    <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (
