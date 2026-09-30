@@ -168,6 +168,7 @@ export function BeachInvite({
   theme = "sunset",
   quiet = false,
   motion = true,
+  preview = false,
   wishes = [],
   onReply,
 }: {
@@ -175,12 +176,14 @@ export function BeachInvite({
   theme?: BeachTheme;
   quiet?: boolean;
   motion?: boolean;
+  preview?: boolean;
   wishes?: { name: string; note: string }[];
   onReply?: (reply: Reply) => void;
 }) {
   const nameId = useId();
   const wishId = useId();
   const audioRef = useRef<HTMLAudioElement>(null);
+  const pageRef = useRef<HTMLElement>(null);
   const [stage, setStage] = useState<"bottle" | "scroll" | "page">(quiet ? "bottle" : "bottle");
   const [playing, setPlaying] = useState(false);
   const [now, setNow] = useState(() => Date.now());
@@ -194,10 +197,10 @@ export function BeachInvite({
   const [added, setAdded] = useState<{ name: string; text: string }[]>([]);
 
   useEffect(() => {
-    if (stage !== "page") return;
+    if (!preview && stage !== "page") return;
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
-  }, [stage]);
+  }, [preview, stage]);
 
   const { first, second } = splitNames(fields.names || "Rohan & Alisha");
   const place = fields.address || "Varkala";
@@ -291,11 +294,21 @@ export function BeachInvite({
 
   return (
     <div className={`beach ${theme}`} data-motion={motion ? "on" : "off"}>
-      {stage !== "page" ? (
+      {preview || stage !== "page" ? (
         <section className="bw-open" aria-label="Invitation in a bottle">
           <Shore />
           {stage === "bottle" ? (
-            <button type="button" className="bw-bottle" onClick={() => { if (!quiet) setStage("scroll"); }}>
+            <button
+              type="button"
+              className="bw-bottle"
+              onClick={() => {
+                if (preview) {
+                  pageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  return;
+                }
+                if (!quiet) setStage("scroll");
+              }}
+            >
               <span className="bw-bob">
                 <Bottle />
               </span>
@@ -324,8 +337,9 @@ export function BeachInvite({
             </>
           )}
         </section>
-      ) : (
-        <article className="bw-page">
+      ) : null}
+      {preview || stage === "page" ? (
+        <article className="bw-page" ref={pageRef}>
           {fields.audio ? <audio ref={audioRef} src={assetUrl(fields.audio)} onEnded={() => setPlaying(false)} /> : null}
           <button type="button" className={playing ? "bw-music on" : "bw-music"} aria-label={playing ? "Pause music" : "Play music"} aria-pressed={playing} onClick={toggleMusic}>
             {[0, 1, 2, 3].map((index) => (
@@ -664,7 +678,7 @@ export function BeachInvite({
             </div>
           </footer>
         </article>
-      )}
+      ) : null}
     </div>
   );
 }
