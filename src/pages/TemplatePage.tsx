@@ -2,21 +2,22 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
-import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
+import { AnnaInvite } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
-import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
-import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
+import { BaptismInvite } from "../components/BaptismInvite";
+import { BeachInvite } from "../components/BeachInvite";
 import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
-import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
+import { HomeInvite } from "../components/HomeInvite";
 import { InviteView } from "../components/InviteView";
-import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
-import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
-import { PeaceInvite, type PeaceTheme } from "../components/PeaceInvite";
-import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
+import { ShaadiInvite } from "../components/ShaadiInvite";
+import { ThiruvizhaInvite, type ThiruvizhaLang } from "../components/ThiruvizhaInvite";
+import { PeaceInvite } from "../components/PeaceInvite";
+import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import "./purchase.css";
@@ -34,47 +35,6 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   noir: { cover: "#1C1718", dot: "#E8C987" },
   sage: { cover: "#E4EBE3", dot: "#6E8A72" },
 };
-
-function annaThemeOf(swatch: string): AnnaTheme {
-  if (swatch === "emerald") return "sage";
-  if (swatch === "midnight") return "dusk";
-  return "terracotta";
-}
-function homeThemeOf(swatch: string): HomeTheme {
-  if (swatch === "rose") return "sunset";
-  if (swatch === "midnight") return "night";
-  return "day";
-}
-function beachThemeOf(swatch: string): BeachTheme {
-  if (swatch === "sky") return "tropical";
-  if (swatch === "plum") return "dusk";
-  return "sunset";
-}
-function vivahThemeOf(swatch: string): VivahTheme {
-  if (swatch === "emerald") return "emerald";
-  if (swatch === "plum") return "royal";
-  return "midnight";
-}
-function shaadiThemeOf(swatch: string): ShaadiTheme {
-  if (swatch === "emerald") return "emerald";
-  if (swatch === "ivory") return "ivory";
-  return "rani";
-}
-function peaceThemeOf(swatch: string): PeaceTheme {
-  if (swatch === "noir") return "noir";
-  if (swatch === "sage") return "sage";
-  return "blush";
-}
-function thiruThemeOf(swatch: string): ThiruvizhaTheme {
-  if (swatch === "ivory") return "ivory";
-  if (swatch === "emerald") return "emerald";
-  return "rani";
-}
-function baptismThemeOf(swatch: string): BaptismTheme {
-  if (swatch === "rose") return "blush";
-  if (swatch === "emerald") return "sage";
-  return "sky";
-}
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
   switch (template.style) {

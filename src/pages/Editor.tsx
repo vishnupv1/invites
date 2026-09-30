@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
-import { BaptismInvite, type BaptismTheme } from "../components/BaptismInvite";
-import { BeachInvite, type BeachTheme } from "../components/BeachInvite";
-import { HomeInvite, type HomeTheme } from "../components/HomeInvite";
-import { VivahInvite, type VivahTheme } from "../components/VivahInvite";
+import { BaptismInvite } from "../components/BaptismInvite";
+import { BeachInvite } from "../components/BeachInvite";
+import { HomeInvite } from "../components/HomeInvite";
+import { VivahInvite } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
-import { ShaadiInvite, type ShaadiTheme } from "../components/ShaadiInvite";
-import { ThiruvizhaInvite, type ThiruvizhaLang, type ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
-import { PeaceInvite, type PeaceTheme } from "../components/PeaceInvite";
+import { ShaadiInvite } from "../components/ShaadiInvite";
+import { ThiruvizhaInvite, type ThiruvizhaLang } from "../components/ThiruvizhaInvite";
+import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
 import { InviteView } from "../components/InviteView";
@@ -19,6 +19,7 @@ import { PackFields } from "./PackFields";
 import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
@@ -89,54 +90,6 @@ function splitNames(names: string) {
 function joinNames(first: string, second: string, couple: boolean) {
   if (!couple || !second) return first;
   return `${first} & ${second}`;
-}
-
-function annaThemeOf(swatch: string): AnnaTheme {
-  if (swatch === "emerald") return "sage";
-  if (swatch === "midnight") return "dusk";
-  return "terracotta";
-}
-
-function homeThemeOf(swatch: string): HomeTheme {
-  if (swatch === "rose") return "sunset";
-  if (swatch === "midnight") return "night";
-  return "day";
-}
-
-function beachThemeOf(swatch: string): BeachTheme {
-  if (swatch === "sky") return "tropical";
-  if (swatch === "plum") return "dusk";
-  return "sunset";
-}
-
-function vivahThemeOf(swatch: string): VivahTheme {
-  if (swatch === "emerald") return "emerald";
-  if (swatch === "plum") return "royal";
-  return "midnight";
-}
-
-function shaadiThemeOf(swatch: string): ShaadiTheme {
-  if (swatch === "emerald") return "emerald";
-  if (swatch === "ivory") return "ivory";
-  return "rani";
-}
-
-function peaceThemeOf(swatch: string): PeaceTheme {
-  if (swatch === "noir") return "noir";
-  if (swatch === "sage") return "sage";
-  return "blush";
-}
-
-function thiruThemeOf(swatch: string): ThiruvizhaTheme {
-  if (swatch === "ivory") return "ivory";
-  if (swatch === "emerald") return "emerald";
-  return "rani";
-}
-
-function baptismThemeOf(swatch: string): BaptismTheme {
-  if (swatch === "rose") return "blush";
-  if (swatch === "emerald") return "sage";
-  return "sky";
 }
 
 function swatchForAnna(theme: AnnaTheme) {
@@ -383,7 +336,10 @@ export function Editor({
       if (dirtyRef.current) void persistRef.current();
     };
     window.addEventListener("pagehide", flush);
-    return () => window.removeEventListener("pagehide", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      flush();
+    };
   }, []);
 
   useEffect(() => {
@@ -447,9 +403,23 @@ export function Editor({
       }
       const latest = modelRef.current;
       if (inviteIdRef.current && latest) {
-        const saved = await updateInvite(inviteIdRef.current, template.id, shownFields(latest), editorState(latest));
-        remember(saved);
-        localStorage.removeItem(localDraftKey(template.id));
+        const nextFields = shownFields(latest);
+        const nextEditor = editorState(latest);
+        try {
+          const saved = await updateInvite(inviteIdRef.current, template.id, nextFields, nextEditor);
+          remember(saved);
+          localStorage.removeItem(localDraftKey(template.id));
+        } catch (reason) {
+          if (!(reason instanceof Error) || reason.message !== "Invitation not found.") throw reason;
+          inviteIdRef.current = "";
+          const saved = await saveDraft(template.id, nextFields, nextEditor);
+          inviteIdRef.current = saved.id;
+          codeRef.current = saved.code;
+          statusRef.current = saved.status === "live" ? "live" : "draft";
+          remember(saved);
+          localStorage.removeItem(localDraftKey(template.id));
+          onInviteRef.current?.(saved.id);
+        }
       }
       setSaveLabel(statusRef.current === "live" ? "Saved" : "Draft saved");
     } catch (reason) {

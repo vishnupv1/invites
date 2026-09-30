@@ -9,8 +9,8 @@ import type { InviteFields, Template } from "../types";
 export function InvitePage() {
   const { code = "" } = useParams();
   const legacy = useMemo(() => decodeInvite(code), [code]);
-  const [loaded, setLoaded] = useState<{ template: Template; fields: InviteFields; greetings: { name: string; note: string }[] } | null>(
-    legacy && getTemplate(legacy.t) ? { template: getTemplate(legacy.t)!, fields: legacy.f, greetings: [] } : null,
+  const [loaded, setLoaded] = useState<{ template: Template; fields: InviteFields; swatch: string; greetings: { name: string; note: string }[] } | null>(
+    legacy && getTemplate(legacy.t) ? { template: getTemplate(legacy.t)!, fields: legacy.f, swatch: "", greetings: [] } : null,
   );
   const [missing, setMissing] = useState(false);
 
@@ -20,7 +20,7 @@ export function InvitePage() {
       .then((invite) => {
         const template = getTemplate(invite.templateId);
         if (!template) setMissing(true);
-        else setLoaded({ template, fields: invite.fields, greetings: invite.greetings ?? [] });
+        else setLoaded({ template, fields: invite.fields, swatch: invite.swatch ?? "", greetings: invite.greetings ?? [] });
       })
       .catch(() => setMissing(true));
   }, [code, legacy]);
@@ -41,6 +41,7 @@ export function InvitePage() {
     <InviteSite
       template={loaded.template}
       fields={loaded.fields}
+      swatch={loaded.swatch}
       wishes={loaded.greetings}
       onReply={legacy ? undefined : (reply) => sendGreeting(code, reply)}
     />

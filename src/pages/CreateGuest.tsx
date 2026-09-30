@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { createInvite, getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
+import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
@@ -48,7 +48,6 @@ type Draft = {
   venue: string;
   message: string;
   receptionOn: boolean;
-  inviteId?: string;
 };
 
 function loadDraft(): Partial<Draft> {
@@ -109,7 +108,7 @@ export function CreateGuest() {
   const [checkout, setCheckout] = useState(false);
   const [toast, setToast] = useState("");
   const [editorSummary, setEditorSummary] = useState({ names: "", date: "", time: "", venue: "" });
-  const inviteIdRef = useRef(saved.inviteId || "");
+  const inviteIdRef = useRef("");
   const creatingRef = useRef<Promise<string> | null>(null);
   const liveRef = useRef(false);
 
@@ -151,7 +150,6 @@ export function CreateGuest() {
       venue,
       message,
       receptionOn,
-      inviteId: inviteIdRef.current || undefined,
     };
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
   }, [step, eventId, templateId, price, swatch, device, name1, name2, date, time, venue, message, receptionOn]);
@@ -270,6 +268,7 @@ export function CreateGuest() {
     try {
       if (kind === "signup") await signUp(authName.trim(), authEmail.trim(), authPassword);
       else await logIn(authEmail.trim(), authPassword);
+      inviteIdRef.current = "";
       await refreshHost();
       setAuthPassword("");
       setAuthDone(true);
@@ -287,6 +286,29 @@ export function CreateGuest() {
     else setToast(getToken() ? "Draft saved to your events. You can pick it up anytime." : "Draft kept on this device.");
   }
 
+  async function draftOnThisAccount() {
+    if (!template) return "";
+    const localKey = `invitesready.editor-draft.v1.${template.id}`;
+    const localRaw = localStorage.getItem(localKey);
+    const local = localRaw
+      ? (JSON.parse(localRaw) as { fields?: InviteFields; editor?: { swatch: string; receptionOn: boolean; sections: { id: string; on: boolean }[] } })
+      : null;
+    const source = local?.fields ?? fields;
+    if (!source) return "";
+    const payload: InviteFields = {
+      ...source,
+      names: editorSummary.names.trim() || source.names,
+      date: editorSummary.date || source.date,
+      time: editorSummary.time || source.time,
+      venue: editorSummary.venue || source.venue,
+    };
+    const drafted = await saveDraft(template.id, payload, local?.editor ?? { swatch, receptionOn });
+    inviteIdRef.current = drafted.id;
+    library.remember(drafted);
+    localStorage.removeItem(localKey);
+    return drafted.id;
+  }
+
   async function publishNow() {
     if (!template) return;
     const summaryNames = editorSummary.names.trim();
@@ -298,25 +320,20 @@ export function CreateGuest() {
       if (creatingRef.current) inviteIdRef.current = await creatingRef.current;
       let savedInvite;
       if (inviteIdRef.current) {
-        savedInvite = await publishSaved(inviteIdRef.current);
-      } else {
-        const localKey = `invitesready.editor-draft.v1.${template.id}`;
-        const localRaw = localStorage.getItem(localKey);
-        const local = localRaw ? (JSON.parse(localRaw) as { fields?: InviteFields; editor?: { swatch: string; receptionOn: boolean; sections: { id: string; on: boolean }[] } }) : null;
-        if (local?.fields) {
-          const drafted = await saveDraft(template.id, local.fields, local.editor);
-          inviteIdRef.current = drafted.id;
-          library.remember(drafted);
-          localStorage.removeItem(localKey);
-          savedInvite = await publishSaved(drafted.id);
-        } else if (fields) {
-          const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
-          savedInvite = await createInvite(template.id, payload);
-          inviteIdRef.current = savedInvite.id;
-        } else {
+        try {
+          savedInvite = await publishSaved(inviteIdRef.current);
+        } catch (reason) {
+          if (!(reason instanceof Error) || reason.message !== "Invitation not found.") throw reason;
+          inviteIdRef.current = "";
+        }
+      }
+      if (!savedInvite) {
+        const id = await draftOnThisAccount();
+        if (!id) {
           setToast("Add the names and a date before you publish.");
           return;
         }
+        savedInvite = await publishSaved(id);
       }
       liveRef.current = true;
       library.remember(savedInvite);

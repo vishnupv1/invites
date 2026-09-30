@@ -249,10 +249,10 @@ export function BeachInvite({
     const secs = diff - mins * 60;
     const ring = 276.5;
     return [
-      { label: "Days", value: String(days), color: "#E8795A", offset: ring - ring * Math.min(1, days / 365) },
-      { label: "Hours", value: String(hours).padStart(2, "0"), color: "#F6B48F", offset: ring - ring * Math.min(1, hours / 24) },
-      { label: "Mins", value: String(mins).padStart(2, "0"), color: "#3E8E97", offset: ring - ring * Math.min(1, mins / 60) },
-      { label: "Secs", value: String(secs).padStart(2, "0"), color: "#1F6F78", offset: ring - ring * Math.min(1, secs / 60) },
+      { label: "Days", value: String(days), color: "var(--accent)", offset: ring - ring * Math.min(1, days / 365) },
+      { label: "Hours", value: String(hours).padStart(2, "0"), color: "var(--accent-soft)", offset: ring - ring * Math.min(1, hours / 24) },
+      { label: "Mins", value: String(mins).padStart(2, "0"), color: "var(--sea-1)", offset: ring - ring * Math.min(1, mins / 60) },
+      { label: "Secs", value: String(secs).padStart(2, "0"), color: "var(--ink)", offset: ring - ring * Math.min(1, secs / 60) },
     ];
   }, [fields.date, fields.time, now]);
 
@@ -487,14 +487,14 @@ export function BeachInvite({
               <h2 className="bw-h2 left">Getting to {place}</h2>
               <div className="bw-map">
                 <svg className="route bw-map-m" viewBox="0 0 350 170" fill="none" aria-hidden="true">
-                  <path d="M24 140C110 30 240 30 320 110" stroke="#1F6F78" strokeWidth="2.5" strokeDasharray="8 8" />
-                  <circle cx="24" cy="140" r="7" fill="#1F6F78" />
-                  <circle cx="320" cy="110" r="9" fill="#E8795A" />
+                  <path d="M24 140C110 30 240 30 320 110" stroke="var(--ink)" strokeWidth="2.5" strokeDasharray="8 8" />
+                  <circle cx="24" cy="140" r="7" fill="var(--ink)" />
+                  <circle cx="320" cy="110" r="9" fill="var(--accent)" />
                 </svg>
                 <svg className="route bw-map-d" viewBox="0 0 520 240" fill="none" aria-hidden="true">
-                  <path d="M40 200C160 40 360 40 480 150" stroke="#1F6F78" strokeWidth="2.5" strokeDasharray="8 8" />
-                  <circle cx="40" cy="200" r="7" fill="#1F6F78" />
-                  <circle cx="480" cy="150" r="9" fill="#E8795A" />
+                  <path d="M40 200C160 40 360 40 480 150" stroke="var(--ink)" strokeWidth="2.5" strokeDasharray="8 8" />
+                  <circle cx="40" cy="200" r="7" fill="var(--ink)" />
+                  <circle cx="480" cy="150" r="9" fill="var(--accent)" />
                 </svg>
                 <span className="bw-plane" aria-hidden="true">
                   ✈
@@ -506,7 +506,7 @@ export function BeachInvite({
                 {fields.message || `Shuttles from the airport on Friday afternoon. Rooms are held at two cliff-top resorts — mention “${first} & ${second}” when booking.`}
               </p>
             </div>
-            <div className="bw-col side">
+            <div className="bw-col bw-side">
               <h2 className="bw-h2 left">Beach formal</h2>
               <p>{fields.dress || "Light linens, flowing sarees and breezy dresses. Leave the heels at home — we'll be on sand!"}</p>
               <div className="bw-dress-row">
