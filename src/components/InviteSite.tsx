@@ -14,6 +14,7 @@ import { GazalInvite, type GazalWish } from "./GazalInvite";
 import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PeaceInvite } from "./PeaceInvite";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 
 type Reply = { name: string; note: string; attending: boolean };
 
@@ -308,11 +309,13 @@ export function InviteSite({
   fields,
   onReply,
   wishes = [],
+  swatch = "",
 }: {
   template: Template;
   fields: InviteFields;
   onReply?: (reply: Reply) => void;
   wishes?: GazalWish[];
+  swatch?: string;
 }) {
   if (template.style === "gazal") {
     return <GazalInvite fields={fields} wishes={wishes} onReply={onReply} />;
@@ -321,28 +324,28 @@ export function InviteSite({
     return <AureliaInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "anna") {
-    return <AnnaInvite fields={fields} onReply={onReply} />;
+    return <AnnaInvite fields={fields} onReply={onReply} theme={annaThemeOf(swatch)} />;
   }
   if (template.style === "baptism") {
-    return <BaptismInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <BaptismInvite fields={fields} wishes={wishes} onReply={onReply} theme={baptismThemeOf(swatch)} />;
   }
   if (template.style === "vivah") {
-    return <VivahInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <VivahInvite fields={fields} wishes={wishes} onReply={onReply} theme={vivahThemeOf(swatch)} />;
   }
   if (template.style === "beach") {
-    return <BeachInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <BeachInvite fields={fields} wishes={wishes} onReply={onReply} theme={beachThemeOf(swatch)} />;
   }
   if (template.style === "home") {
-    return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} />;
   }
   if (template.style === "shaadi") {
-    return <ShaadiInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <ShaadiInvite fields={fields} wishes={wishes} onReply={onReply} theme={shaadiThemeOf(swatch)} />;
   }
   if (template.style === "thiruvizha") {
-    return <ThiruvizhaInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <ThiruvizhaInvite fields={fields} wishes={wishes} onReply={onReply} theme={thiruThemeOf(swatch)} />;
   }
   if (template.style === "peace") {
-    return <PeaceInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <PeaceInvite fields={fields} wishes={wishes} onReply={onReply} theme={peaceThemeOf(swatch)} />;
   }
   let body: ReactNode;
   switch (template.style) {
