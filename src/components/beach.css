@@ -542,6 +542,7 @@
 }
 
 .bw-wishes { padding: 48px 18px; display: flex; flex-direction: column; gap: 22px; }
+.bw-wish-empty { margin: 0; text-align: center; color: #5e7479; font-size: 15px; }
 .bw-wish-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .bw-wish {
   box-sizing: border-box;
