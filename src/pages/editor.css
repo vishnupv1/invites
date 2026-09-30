@@ -761,7 +761,8 @@
     top: 0;
   }
   .ed-as-guest .ed-canvas { top: 92px; }
-  .ed-sheet .ed-canvas { bottom: 548px; }
+  .ed-sheet .ed-canvas { bottom: min(548px, 100%); }
+  .ed-sheet .ed-panel { max-height: min(470px, calc(100% - 78px)); }
   .ed-stage {
     position: absolute;
     inset: 0;
@@ -958,7 +959,8 @@
   .ed-board .ed-rail { bottom: 82px; }
   .ed-board .ed-canvas { bottom: 160px; }
   .ed-board .ed-panel { bottom: 160px; }
-  .ed-board .ed-sheet .ed-canvas { bottom: 630px; }
+  .ed-board .ed-sheet .ed-canvas { bottom: min(630px, 100%); }
+  .ed-board .ed-sheet .ed-panel { max-height: min(470px, calc(100% - 160px)); }
   .ed-board .ed-toast { bottom: 174px; }
 }
 
