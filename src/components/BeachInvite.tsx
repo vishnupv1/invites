@@ -90,7 +90,7 @@ function calendarLink(title: string, iso: string, time: string, place: string) {
 
 function Palm() {
   return (
-    <svg viewBox="0 0 200 400" fill="none" aria-hidden="true">
+    <svg viewBox="-16 -20 232 436" fill="none" aria-hidden="true">
       <path d="M110 400C104 300 96 200 112 110" stroke="#3A2A33" strokeWidth="10" strokeLinecap="round" />
       <g fill="#2E3B33">
         <path d="M112 110C80 80 40 80 6 104c36-8 70-2 106 6z" />
@@ -105,7 +105,7 @@ function Palm() {
 
 function Bottle() {
   return (
-    <svg viewBox="0 0 60 150" aria-hidden="true">
+    <svg viewBox="-6 -4 72 162" aria-hidden="true">
       <rect x="22" y="2" width="16" height="16" rx="3" fill="#B7834F" />
       <path d="M24 18h12v18c10 8 18 20 18 36v62a14 14 0 0 1-14 14H20a14 14 0 0 1-14-14V72c0-16 8-28 18-36z" fill="#BFE3E6" fillOpacity="0.75" stroke="#FFFFFF" strokeWidth="2" />
       <rect x="16" y="70" width="28" height="56" rx="4" fill="#F4E4CC" transform="rotate(-6 30 98)" />
@@ -122,14 +122,14 @@ function Shore() {
       <div className="bw-sun" />
       {[0, 1, 2, 3].map((index) => (
         <div key={index} className={`bw-cloud c${index}`} aria-hidden="true">
-          <svg width="100%" height="100%" viewBox="0 0 150 60">
+          <svg width="100%" height="100%" viewBox="-4 -6 160 72">
             <path d="M30 55a22 22 0 0 1 4-43 30 30 0 0 1 56-2 24 24 0 0 1 36 23 16 16 0 0 1-6 22z" fill="#FFF3E6" fillOpacity="0.85" />
           </svg>
         </div>
       ))}
       {[0, 1, 2, 3].map((index) => (
         <div key={index} className={`bw-gull g${index}`} aria-hidden="true">
-          <svg width={index % 2 ? 36 : 26} height={index % 2 ? 36 : 26} viewBox="0 0 40 20">
+          <svg width={index % 2 ? 36 : 26} height={index % 2 ? 36 : 26} viewBox="-3 -4 46 28">
             <g>
               <path d="M2 12C8 4 14 4 20 12C26 4 32 4 38 12" stroke="#3A2A33" strokeWidth="2.4" fill="none" strokeLinecap="round" />
             </g>
@@ -374,7 +374,7 @@ export function BeachInvite({
               {countdown.map((item) => (
                 <div key={item.label}>
                   <div className="bw-ring">
-                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                    <svg viewBox="-6 -6 112 112" aria-hidden="true">
                       <circle cx="50" cy="50" r="44" stroke="#F4E4CC" strokeWidth="7" fill="none" />
                       <circle cx="50" cy="50" r="44" stroke={item.color} strokeWidth="7" fill="none" strokeLinecap="round" strokeDasharray="276.5" strokeDashoffset={item.offset} />
                     </svg>
@@ -389,7 +389,7 @@ export function BeachInvite({
           <section className="bw-story" id="story">
             <h2 className="bw-h2">How we washed ashore</h2>
             <div className="bw-polas">
-              <svg className="bw-rope" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+              <svg className="bw-rope" viewBox="-2 -4 1004 84" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M0 10Q500 70 1000 10" stroke="#B7834F" strokeWidth="2" fill="none" />
               </svg>
               {story.map((item, index) => (
@@ -422,7 +422,7 @@ export function BeachInvite({
                       </>
                     ) : null}
                     {item.key === "lantern" ? (
-                      <svg className="bw-lantern" width="40" height="50" viewBox="0 0 24 32">
+                      <svg className="bw-lantern" width="40" height="50" viewBox="-2 -2 28 38">
                         <path d="M12 0v4" stroke="#FFF6E0" strokeWidth="1.5" />
                         <path d="M5 6h14l2 18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z" fill="#F7A77F" />
                         <ellipse cx="12" cy="20" rx="4" ry="3" fill="#FFF3C4" />
@@ -430,7 +430,7 @@ export function BeachInvite({
                     ) : null}
                     {item.key === "fire" ? (
                       <>
-                        <svg width="40" height="48" viewBox="0 0 30 36">
+                        <svg width="40" height="48" viewBox="-2 -2 34 42">
                           <g className="bw-flame">
                             <path d="M15 2c4 8 11 12 11 21a11 11 0 0 1-22 0c0-6 4-9 6-13 1 4 3 6 5 6-2-5-2-9 0-14z" fill="#F7A77F" />
                             <path d="M15 14c2 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-5 3-7 1 2 2 3 3 3-1-2-1-4 0-7z" fill="#FFE08A" />

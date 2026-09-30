@@ -43,6 +43,7 @@
   --ink: #3c4e86;
   --warm: #8a5478;
 }
+.beach svg { overflow: visible; }
 .beach button,
 .beach input {
   font-family: inherit;
@@ -72,7 +73,7 @@
 @keyframes bw-flap { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(-0.5); } }
 @keyframes bw-glint { 0%, 100% { opacity: 0; transform: scaleX(0.4); } 50% { opacity: 1; transform: scaleX(1); } }
 @keyframes bw-palm { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
-@keyframes bw-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes bw-wipe { from { clip-path: inset(-0.6em 120% -0.5em -0.9em); } to { clip-path: inset(-0.6em -0.9em -0.5em -0.9em); } }
 @keyframes bw-stamp {
   0% { transform: scale(2.6) rotate(-30deg); opacity: 0; }
   60% { transform: scale(0.92) rotate(-8deg); opacity: 1; }
@@ -97,7 +98,7 @@
 @keyframes bw-sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 @keyframes bw-foot { 0% { opacity: 0; } 8% { opacity: 0.9; } 70% { opacity: 0.9; } 100% { opacity: 0; } }
 @keyframes bw-pop { 0% { opacity: 0; transform: scale(0.4); } 70% { transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
-@keyframes bw-unroll { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes bw-unroll { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(-8% -6% -4% -6%); } }
 @keyframes bw-cork { 0% { transform: translate(0, 0) rotate(0); opacity: 1; } 100% { transform: translate(60px, -170px) rotate(260deg); opacity: 0; } }
 @keyframes bw-shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 @keyframes bw-eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
@@ -210,16 +211,18 @@
 .bw-dear { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--warm); animation: bw-up 0.7s ease both; animation-delay: 0.9s; }
 .bw-tide { font-family: "Playfair Display", serif; font-style: italic; font-size: 16px; color: #5b4a40; animation: bw-up 0.7s ease both; animation-delay: 1.1s; }
 .bw-script {
+  display: block;
   font-family: Allura, cursive;
   font-size: 72px;
-  line-height: 1;
+  line-height: 0.85;
+  padding: 0.2em 0.7em 0.08em;
   color: var(--ink);
   animation: bw-wipe 1.1s ease-out both;
 }
 .bw-script.one { animation-delay: 1.3s; }
 .bw-script.two { animation-delay: 2.2s; }
 .bw-amp { font-family: "Playfair Display", serif; font-size: 28px; color: var(--accent); animation: bw-pop 0.5s ease both; animation-delay: 2.1s; }
-.bw-when { font-size: 14px; font-weight: 700; letter-spacing: 3px; color: var(--ink); animation: bw-up 0.7s ease both; animation-delay: 3.1s; }
+.bw-when { max-width: 100%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; line-height: 1.45; color: var(--ink); animation: bw-up 0.7s ease both; animation-delay: 3.1s; }
 .bw-enter {
   margin-top: 8px;
   min-height: 54px;
@@ -287,12 +290,13 @@
 .bw-kicker { font-size: 12px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #7a3e2c; animation: bw-up 0.8s ease both; animation-delay: 0.2s; }
 .bw-names { display: flex; flex-direction: column; align-items: center; }
 .bw-name {
+  display: block;
   font-family: Allura, cursive;
   font-size: 84px;
-  line-height: 1;
+  line-height: 0.85;
   color: #1e3a44;
   animation: bw-wipe 1.2s ease-out both;
-  padding: 0 10px;
+  padding: 0.16em 0.55em 0.06em;
 }
 .bw-name.one { animation-delay: 0.5s; }
 .bw-name.two { animation-delay: 1.6s; }
@@ -329,11 +333,11 @@
 .bw-ring strong { position: relative; font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; }
 .bw-ring-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #5e7479; }
 
-.bw-h2 { margin: 0; text-align: center; font-family: Allura, cursive; font-size: 52px; font-weight: 400; color: var(--ink); line-height: 1; }
+.bw-h2 { margin: 0; text-align: center; font-family: Allura, cursive; font-size: 52px; font-weight: 400; color: var(--ink); line-height: 1.15; padding: 0.06em 0.2em 0.12em; }
 .bw-h2.light { color: #fff8ee; }
 .bw-h2.left { text-align: left; font-size: 46px; }
 .bw-story { padding: 48px 20px; display: flex; flex-direction: column; gap: 30px; }
-.bw-rope { position: absolute; left: 0; top: 0; width: 100%; height: 60px; }
+.bw-rope { position: absolute; left: 0; top: 0; width: 100%; height: 72px; }
 .bw-polas { position: relative; padding-top: 30px; display: flex; flex-direction: column; gap: 36px; }
 .bw-drop { animation: bw-drop 0.9s cubic-bezier(0.2, 0.8, 0.2, 1.2) both; }
 .bw-drop.shift { align-self: flex-end; }
@@ -353,7 +357,7 @@
 .bw-pin { position: absolute; left: 50%; top: -18px; margin-left: -8px; width: 16px; height: 22px; border-radius: 4px; background: var(--accent); }
 .bw-photo { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: rgba(30, 58, 68, 0.6); margin-bottom: 6px; overflow: hidden; }
 .bw-photo img { width: 100%; height: 100%; object-fit: cover; }
-.bw-year { font-family: Allura, cursive; font-size: 30px; color: var(--ink); line-height: 1; }
+.bw-year { font-family: Allura, cursive; font-size: 30px; color: var(--ink); line-height: 1.2; padding: 0 0.15em; }
 .bw-pola small { font-size: 12px; line-height: 1.5; color: #5e7479; }
 
 .bw-events { padding: 48px 18px; background: var(--deep); display: flex; flex-direction: column; gap: 22px; }
@@ -526,7 +530,7 @@
   gap: 12px;
   text-align: center;
 }
-.bw-done h3 { position: relative; margin: 0; font-family: Allura, cursive; font-size: 56px; font-weight: 400; color: var(--ink); animation: bw-up 0.7s ease both; animation-delay: 0.3s; }
+.bw-done h3 { position: relative; margin: 0; font-family: Allura, cursive; font-size: 56px; font-weight: 400; color: var(--ink); line-height: 1.15; padding: 0 0.15em; animation: bw-up 0.7s ease both; animation-delay: 0.3s; }
 .bw-done p { position: relative; margin: 0; font-size: 15px; line-height: 1.6; color: #5e7479; animation: bw-up 0.7s ease both; animation-delay: 0.5s; }
 .bw-shell { position: absolute; top: 0; color: var(--accent); animation: bw-shell ease-in both; }
 .bw-change {
@@ -572,7 +576,7 @@
 }
 .bw-feet { position: relative; width: 380px; max-width: 100%; height: 40px; margin-bottom: 10px; }
 .bw-feet i { position: absolute; font-style: normal; font-size: 20px; opacity: 0; transform: rotate(90deg); animation: bw-foot 5s linear infinite; }
-.bw-foot em { font-family: Allura, cursive; font-style: normal; font-size: 58px; color: var(--ink); line-height: 1; }
+.bw-foot em { font-family: Allura, cursive; font-style: normal; font-size: 58px; color: var(--ink); line-height: 1.15; padding: 0 0.2em; }
 .bw-foot small { font-size: 13px; letter-spacing: 3px; color: #5e7479; }
 .bw-foot a { font-size: 12px; color: #8fa3a8; }
 .bw-foot-wave { position: absolute; left: 0; right: 0; bottom: 0; height: 60px; overflow: hidden; }
