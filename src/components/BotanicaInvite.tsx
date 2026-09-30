@@ -219,12 +219,14 @@ export function BotanicaInvite({
   useEffect(() => {
     if (!ready || stage !== "load") return;
     const fade = window.setTimeout(() => setStage("fade"), 700);
-    const open = window.setTimeout(() => setStage("open"), 1500);
-    return () => {
-      window.clearTimeout(fade);
-      window.clearTimeout(open);
-    };
+    return () => window.clearTimeout(fade);
   }, [ready, stage]);
+
+  useEffect(() => {
+    if (stage !== "fade") return;
+    const open = window.setTimeout(() => setStage("open"), 800);
+    return () => window.clearTimeout(open);
+  }, [stage]);
 
   useEffect(() => {
     if (stage !== "page") return;
