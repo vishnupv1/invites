@@ -13,6 +13,7 @@ type Section = "guests" | "schedule" | "activity";
 const AVATARS = ["#6B3A5B", "#C89B5B", "#6F8B74", "#8A5A7A", "#4A263E"];
 const THUMBS: Record<string, { bg: string; fg: string }> = {
   beach: { bg: "#F7B38A", fg: "#1E3A44" },
+  botanica: { bg: "#F3E3D6", fg: "#3A2E2A" },
   shaadi: { bg: "#4A0D1F", fg: "#F5D77A" },
   hearth: { bg: "#DDEFE8", fg: "#2E2A25" },
   home: { bg: "#DDEFE8", fg: "#2E2A25" },

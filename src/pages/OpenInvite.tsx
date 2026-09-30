@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
+import { BotanicaInvite } from "../components/BotanicaInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
@@ -28,6 +29,7 @@ export function OpenInvite() {
       {template.style === "baptism" ? <BaptismInvite fields={fields} /> : null}
       {template.style === "vivah" ? <VivahInvite fields={fields} /> : null}
       {template.style === "beach" ? <BeachInvite fields={fields} /> : null}
+      {template.style === "botanica" ? <BotanicaInvite fields={fields} /> : null}
       {template.style === "home" ? <HomeInvite fields={fields} /> : null}
       {template.style === "thiruvizha" ? <ThiruvizhaInvite fields={fields} /> : null}
       {template.style === "peace" ? <PeaceInvite fields={fields} /> : null}
