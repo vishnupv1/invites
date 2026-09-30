@@ -5,6 +5,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
+import { InstagramLink } from "./InstagramLink";
 import "./beach.css";
 
 export type BeachTheme = "sunset" | "tropical" | "dusk";
@@ -655,6 +656,7 @@ export function BeachInvite({
               {dateLine} · {tag}
             </small>
             <a href="/">Made with InvitesReady</a>
+            <InstagramLink />
             <div className="bw-foot-wave" aria-hidden="true">
               <div className="bw-wave" style={{ height: 60, animationDuration: "10s" }}>
                 <svg viewBox="0 0 1600 60" preserveAspectRatio="none">

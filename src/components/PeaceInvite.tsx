@@ -5,6 +5,7 @@ import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 import "./peace.css";
 
 export type PeaceTheme = "blush" | "noir" | "sage";
@@ -588,6 +589,7 @@ export function PeaceInvite({
             {fields.message ? <span className="pc-script pc-foil">{fields.message}</span> : null}
             <small>{when.dots}{pack.caption ? ` · ${pack.caption}` : ""}</small>
             <a href="/">Made with InvitesReady</a>
+            <InstagramLink />
           </footer>
         </>
       ) : null}

@@ -5,6 +5,7 @@ import { packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 import "./thiruvizha.css";
 
 export type ThiruvizhaTheme = "rani" | "ivory" | "emerald";
@@ -558,6 +559,7 @@ export function ThiruvizhaInvite({
           <p>{people.join(" & ") || fields.names}</p>
           {tamilPeople.length ? <p lang="ta">{tamilPeople.join(" & ")}</p> : null}
           <small>திருவிழா</small>
+          <InstagramLink />
         </footer>
       </div>
     );

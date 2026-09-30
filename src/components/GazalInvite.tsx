@@ -6,6 +6,7 @@ import { eventName } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 import "./gazal.css";
 
 export type GazalWish = { name: string; note: string };
@@ -316,6 +317,7 @@ export function GazalInvite({
         </strong>
         <span>{formatLongDate(fields.date)}</span>
         <Link to="/">Made with InvitesReady</Link>
+        <InstagramLink />
       </footer>
     </article>
   );

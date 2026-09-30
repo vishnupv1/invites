@@ -11,6 +11,7 @@ import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite } from "./GazalInvite";
 import { getEvent } from "../data/events";
 import { formatLongDate, formatTime } from "../lib/dates";
+import { InstagramLink } from "./InstagramLink";
 
 function Occasion({ fields, script }: { fields: InviteFields; script?: boolean }) {
   const event = getEvent(fields.event);
@@ -71,6 +72,7 @@ function Garden({ fields }: { fields: InviteFields }) {
       <footer>
         {fields.dress ? <span>{fields.dress}</span> : null}
         {fields.rsvpBy ? <span>Reply by {formatLongDate(fields.rsvpBy)}</span> : null}
+      <InstagramLink />
       </footer>
     </article>
   );
@@ -87,6 +89,7 @@ function Midnight({ fields }: { fields: InviteFields }) {
       <footer>
         {fields.dress ? <span>{fields.dress}</span> : null}
         {fields.rsvpBy ? <span>RSVP {formatLongDate(fields.rsvpBy)}</span> : null}
+      <InstagramLink />
       </footer>
     </article>
   );
@@ -104,7 +107,8 @@ function Marigold({ fields }: { fields: InviteFields }) {
         <footer>
           {fields.dress ? <span>{fields.dress}</span> : null}
           {fields.rsvpBy ? <span>Kindly reply by {formatLongDate(fields.rsvpBy)}</span> : null}
-        </footer>
+        <InstagramLink />
+      </footer>
       </div>
     </article>
   );
@@ -128,6 +132,7 @@ function Confetti({ fields }: { fields: InviteFields }) {
       <footer>
         {fields.dress ? <span>{fields.dress}</span> : null}
         {fields.rsvpBy ? <span>Tell us by {formatLongDate(fields.rsvpBy)}</span> : null}
+      <InstagramLink />
       </footer>
     </article>
   );
@@ -153,7 +158,8 @@ function Table({ fields }: { fields: InviteFields }) {
         <footer>
           {fields.dress ? <span>{fields.dress}</span> : null}
           {fields.rsvpBy ? <span>Reply by {formatLongDate(fields.rsvpBy)}</span> : null}
-        </footer>
+        <InstagramLink />
+      </footer>
       </div>
     </article>
   );
@@ -169,6 +175,7 @@ function Palette({ fields, tone }: { fields: InviteFields; tone: string }) {
       <footer>
         {fields.dress ? <span>{fields.dress}</span> : null}
         {fields.rsvpBy ? <span>Reply by {formatLongDate(fields.rsvpBy)}</span> : null}
+      <InstagramLink />
       </footer>
     </article>
   );
