@@ -14,8 +14,10 @@ function initialize() {
   if (initialized) return;
 
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = (...args: unknown[]) => {
-    window.dataLayer.push(args);
+  window.gtag = function gtag() {
+    // Google's script only accepts the special arguments object, not a normal array.
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments);
   };
 
   const script = document.createElement("script");
