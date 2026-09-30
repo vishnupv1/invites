@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./landing.css";
 
@@ -157,6 +157,8 @@ function Logo({ light = false }: { light?: boolean }) {
 
 export function Home() {
   const narrow = useNarrow();
+  const tplRow = useRef<HTMLDivElement>(null);
+  const tplDragged = useRef(false);
   const [tick, setTick] = useState(0);
   const [how, setHow] = useState(0);
   const [howT, setHowT] = useState(0);
@@ -187,6 +189,129 @@ export function Home() {
   const reply = REPLIES[Math.floor(tick / 5) % REPLIES.length];
   const loop = [...OCCASIONS, ...OCCASIONS];
   const cards = [...TEMPLATES, ...TEMPLATES];
+
+  useEffect(() => {
+    const row = tplRow.current;
+    if (!row) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let paused = false;
+    let idle = 0;
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+    let wrapping = false;
+
+    const pause = () => {
+      paused = true;
+      window.clearTimeout(idle);
+    };
+    const resume = () => {
+      window.clearTimeout(idle);
+      idle = window.setTimeout(() => {
+        paused = false;
+      }, 900);
+    };
+    const span = () => row.scrollWidth / 2;
+    const wrap = (value: number) => {
+      const width = span();
+      if (width < 1) return value;
+      return ((value % width) + width) % width;
+    };
+
+    const step = () => {
+      if (!paused && !dragging && !media.matches && !document.hidden) {
+        const width = span();
+        if (width > 1) row.scrollLeft += width / (50 * 60);
+      }
+      frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      pause();
+      if (event.pointerType !== "mouse") return;
+      dragging = true;
+      moved = false;
+      startX = event.clientX;
+      startScroll = row.scrollLeft;
+      row.classList.add("is-dragging");
+      row.setPointerCapture(event.pointerId);
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      if (!dragging) return;
+      const dx = event.clientX - startX;
+      if (Math.abs(dx) > 5) moved = true;
+      row.scrollLeft = wrap(startScroll - dx);
+    };
+    const onPointerUp = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") {
+        resume();
+        return;
+      }
+      if (!dragging) return;
+      dragging = false;
+      row.classList.remove("is-dragging");
+      if (row.hasPointerCapture(event.pointerId)) row.releasePointerCapture(event.pointerId);
+      tplDragged.current = moved;
+      resume();
+    };
+    const onClick = (event: MouseEvent) => {
+      if (!tplDragged.current) return;
+      event.preventDefault();
+      event.stopPropagation();
+      tplDragged.current = false;
+    };
+    const onWheel = (event: WheelEvent) => {
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      if (!delta) return;
+      event.preventDefault();
+      pause();
+      row.scrollLeft = wrap(row.scrollLeft + delta);
+      resume();
+    };
+    const onScroll = () => {
+      if (wrapping) return;
+      const width = span();
+      if (width > 1 && row.scrollLeft >= width) {
+        wrapping = true;
+        row.scrollLeft -= width;
+        wrapping = false;
+      }
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      event.preventDefault();
+      pause();
+      row.scrollLeft = wrap(row.scrollLeft + (event.key === "ArrowRight" ? 304 : -304));
+      resume();
+    };
+
+    row.addEventListener("pointerdown", onPointerDown);
+    row.addEventListener("pointermove", onPointerMove);
+    row.addEventListener("pointerup", onPointerUp);
+    row.addEventListener("pointercancel", onPointerUp);
+    row.addEventListener("click", onClick, true);
+    row.addEventListener("wheel", onWheel, { passive: false });
+    row.addEventListener("scroll", onScroll);
+    row.addEventListener("keydown", onKey);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(idle);
+      row.classList.remove("is-dragging");
+      row.removeEventListener("pointerdown", onPointerDown);
+      row.removeEventListener("pointermove", onPointerMove);
+      row.removeEventListener("pointerup", onPointerUp);
+      row.removeEventListener("pointercancel", onPointerUp);
+      row.removeEventListener("click", onClick, true);
+      row.removeEventListener("wheel", onWheel);
+      row.removeEventListener("scroll", onScroll);
+      row.removeEventListener("keydown", onKey);
+    };
+  }, []);
 
   function closeMenu() {
     setMenu(false);
@@ -522,10 +647,10 @@ export function Home() {
             See all templates
           </Link>
         </div>
-        <div className="lp-tpl-row">
+        <div className="lp-tpl-row" ref={tplRow} tabIndex={0} role="region" aria-label="Invitation templates">
           <div className="lp-tpl-track">
             {cards.map((template, index) => (
-              <Link className="lp-tpl" to={template.to} key={`${template.name}-${index}`} style={{ background: template.bg, color: template.fg }}>
+              <Link draggable={false} className="lp-tpl" to={template.to} key={`${template.name}-${index}`} style={{ background: template.bg, color: template.fg }}>
                 <div className="lp-tpl-frame" style={{ borderColor: template.accent }}>
                   <small>{template.kicker}</small>
                   <strong style={{ fontFamily: template.font }}>{template.sample}</strong>

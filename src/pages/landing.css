@@ -465,10 +465,10 @@
 .lp-tpl-track {
   display: flex;
   width: max-content;
-  animation: lp-marq linear infinite;
 }
 .lp-marquee-track {
   gap: 40px;
+  animation: lp-marq linear infinite;
   animation-duration: 30s;
   font-family: Fraunces, Georgia, serif;
   font-size: 34px;
@@ -738,8 +738,20 @@
   font-weight: 700;
   flex-shrink: 0;
 }
-.lp-tpl-row { padding: 20px 0 30px; }
-.lp-tpl-track { gap: 24px; animation-duration: 50s; }
+.lp-tpl-row {
+  padding: 20px 0 30px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.lp-tpl-row::-webkit-scrollbar { display: none; }
+.lp-tpl-row:focus-visible { outline: 3px solid #c89b5b; outline-offset: -3px; }
+.lp-tpl-row.is-dragging { cursor: grabbing; user-select: none; }
+.lp-tpl-row.is-dragging .lp-tpl { pointer-events: none; }
+.lp-templates .lp-tpl-track { gap: 24px; animation: none; }
+.lp-tpl-row { overscroll-behavior-x: contain; touch-action: pan-x pan-y; }
 .lp-tpl {
   position: relative;
   flex-shrink: 0;
@@ -1246,7 +1258,7 @@
     font-size: 15px;
     font-weight: 700;
   }
-  .lp-tpl-track { animation-duration: 40s; gap: 16px; }
+  .lp-tpl-track { gap: 16px; }
 
   .lp-features { padding: 56px 16px; gap: 22px; }
   .lp-features h2 { font-size: 36px; }
