@@ -15,13 +15,6 @@ const STORY_COLORS = ["#F6C08F", "#9ED3D6", "#F7A77F"];
 
 const FILM = ["#F6C08F", "#9ED3D6", "#F7A77F", "#BFE3E6", "#F4E4CC"];
 
-const SAMPLE_WISHES = [
-  { name: "Aunty Leena", text: "May your love be as endless as the sea." },
-  { name: "Kabir", text: "Sunsets, sand and my two favourite people. Can’t wait!" },
-  { name: "The D’Souza family", text: "Wishing you calm seas and a lifetime of adventure." },
-  { name: "Nisha", text: "Save me a spot by the bonfire!" },
-];
-
 const DRESS = [
   ["👡", "Flat sandals"],
   ["👒", "Sun hats"],
@@ -65,6 +58,18 @@ function targetTime(iso: string, time: string) {
   if (!iso) return 0;
   const [hour = "17", minute = "30"] = (time || "17:30").split(":");
   return new Date(`${iso}T${hour.padStart(2, "0")}:${minute.padStart(2, "0")}:00+05:30`).getTime();
+}
+
+function wishFromReply(note: string, events: string[]) {
+  const known = new Set(events);
+  return note
+    .split(" · ")
+    .map((part) => part.trim())
+    .filter((part) => {
+      if (!part || /^\d+ guests?$/.test(part)) return false;
+      return !part.split(",").every((bit) => known.has(bit.trim()));
+    })
+    .join(" · ");
 }
 
 function mapsUrl(place: string) {
@@ -256,7 +261,8 @@ export function BeachInvite({
     ];
   }, [fields.date, fields.time, now]);
 
-  const liveWishes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...SAMPLE_WISHES];
+  const eventNames = cards.map((card) => card.name);
+  const liveWishes = [...added, ...wishes.map((item) => ({ name: item.name, text: wishFromReply(item.note, eventNames) }))].filter((item, index, all) => item.text && all.findIndex((other) => other.name === item.name && other.text === item.text) === index);
   const picked = cards.map((card) => card.name).filter((name) => !skipped.includes(name));
 
   function toggleMusic() {
@@ -619,15 +625,19 @@ export function BeachInvite({
 
           <section className="bw-wishes">
             <h2 className="bw-h2">Messages in bottles</h2>
-            <div className="bw-wish-grid">
-              {liveWishes.map((item, index) => (
-                <article key={`${item.name}-${index}`} className="bw-wish" style={{ animationDuration: `${4 + (index % 3)}s`, animationDelay: `${index * -0.8}s` }}>
-                  <span aria-hidden="true">🍾</span>
-                  <p>{item.text}</p>
-                  <span>— {item.name}</span>
-                </article>
-              ))}
-            </div>
+            {liveWishes.length ? (
+              <div className="bw-wish-grid">
+                {liveWishes.map((item, index) => (
+                  <article key={`${item.name}-${index}`} className="bw-wish" style={{ animationDuration: `${4 + (index % 3)}s`, animationDelay: `${index * -0.8}s` }}>
+                    <span aria-hidden="true">🍾</span>
+                    <p>{item.text}</p>
+                    <span>— {item.name}</span>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="bw-wish-empty">No messages yet.</p>
+            )}
           </section>
 
           <footer className="bw-foot">
