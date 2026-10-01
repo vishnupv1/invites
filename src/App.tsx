@@ -8,6 +8,7 @@ import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
 import { Brand } from "./components/Brand";
+import { Spinner } from "./components/Loader";
 import { PageMeta } from "./lib/seo";
 import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
@@ -35,7 +36,7 @@ function Analytics() {
 function RequireAccount({ children }: { children: ReactNode }) {
   const { ready, signedIn } = useSession();
   const location = useLocation();
-  if (!ready) return <div className="acct-wait" aria-busy="true" />;
+  if (!ready) return <div className="acct-wait" aria-busy="true" aria-label="Loading"><Spinner size="md" /></div>;
   if (!signedIn) {
     return <Navigate to="/unauthorized" replace state={{ from: `${location.pathname}${location.search}` }} />;
   }

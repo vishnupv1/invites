@@ -9,6 +9,7 @@ import { formatShortDate } from "../lib/dates";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
 import { SkeletonGrid } from "../components/CardSkeleton";
+import { Spinner } from "../components/Loader";
 import { Brand } from "../components/Brand";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { SavedInvite, Template } from "../types";
@@ -388,7 +389,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
                 );
               })}
             </div>
-            {!rosterReady ? <p className="empty">Loading replies…</p> : null}
+            {!rosterReady ? <p className="empty wait-line" aria-busy="true"><Spinner size="md" /> Loading replies…</p> : null}
             {rosterReady ? (
               <div className="guest-table">
                 <div className="table-head">

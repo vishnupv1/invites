@@ -651,6 +651,7 @@
   text-decoration: none;
 }
 .ed-go {
+  width: 100%;
   min-height: 54px;
   border: none;
   border-radius: 999px;

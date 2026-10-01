@@ -1,4 +1,4 @@
-.acct-wait { min-height: 100vh; background: #fbf8f5; }
+.acct-wait { min-height: 100vh; background: #fbf8f5; display: grid; place-items: center; }
 
 :root {
   color: #2a1527;

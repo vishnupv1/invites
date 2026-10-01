@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { Brand } from "../components/Brand";
+import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
@@ -96,6 +97,7 @@ export function CreateGuest() {
   const [authPassword, setAuthPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [liveCode, setLiveCode] = useState("");
   const [showQr, setShowQr] = useState(false);
@@ -321,6 +323,7 @@ export function CreateGuest() {
     if (!summaryNames && (!name1.trim() || (two && !name2.trim()))) return setToast("Add the names before you publish.");
     if (!summaryDate && !date) return setToast("Add the date before you publish.");
     setBusy(true);
+    setPubPhase("loading");
     try {
       if (creatingRef.current) inviteIdRef.current = await creatingRef.current;
       let savedInvite;
@@ -342,12 +345,15 @@ export function CreateGuest() {
       }
       liveRef.current = true;
       library.remember(savedInvite);
+      setPubPhase("done");
+      await hold();
       setLiveCode(savedInvite.code);
       setShowQr(false);
     } catch (reason) {
       setToast(reason instanceof Error ? reason.message : "Could not publish.");
     } finally {
       setBusy(false);
+      setPubPhase("idle");
     }
   }
 
@@ -599,9 +605,12 @@ export function CreateGuest() {
                           : `One-time ${formatPrice(template)} for this design. You pay once at checkout, then you can publish.`}
                     </p>
                   </div>
-                  <button type="button" className="cg-publish" disabled={busy} onClick={() => void publish()}>
-                    {busy ? "Publishing…" : ownsTemplate ? "Publish" : `Get ${template.name}`}
-                  </button>
+                  <SmartButton
+                    className="cg-publish"
+                    phase={pubPhase}
+                    idle={ownsTemplate ? "Publish" : `Get ${template.name}`}
+                    onClick={() => void publish()}
+                  />
                 </div>
               ) : (
                 <div className="cg-live">
@@ -752,8 +761,9 @@ export function CreateGuest() {
                   </label>
                   {authError ? <p className="cg-error">{authError}</p> : null}
                   <div className="cg-auth-actions">
-                    <button type="submit" className="fill" disabled={busy}>
-                      {busy ? "Please wait…" : authTab === "signup" ? "Create account" : "Log in"}
+                    <button type="submit" className="fill" disabled={busy} aria-busy={busy || undefined}>
+                      {busy ? <Spinner tone="paper" /> : authTab === "signup" ? "Create account" : "Log in"}
+                      {busy ? <span className="spin-sr">{authTab === "signup" ? "Creating account" : "Logging in"}</span> : null}
                     </button>
                   </div>
                 </>

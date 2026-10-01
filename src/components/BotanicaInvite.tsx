@@ -3,6 +3,7 @@ import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
 import type { InviteFields } from "../types";
 import { InstagramLink } from "./InstagramLink";
+import { Spinner } from "./Loader";
 import "./botanica.css";
 
 export type BotanicaTheme = "blush" | "sage" | "midnight";
@@ -532,9 +533,10 @@ export function BotanicaInvite({
                         </div>
                       </div>
                     ) : null}
-                    <button type="submit" className="bf-send" disabled={sending}>
+                    <button type="submit" className="bf-send" disabled={sending} aria-busy={sending || undefined}>
                       <span className="bf-shimmer" aria-hidden="true" />
-                      <span style={{ position: "relative" }}>{sending ? "Sending…" : "Send RSVP"}</span>
+                      <span style={{ position: "relative" }}>{sending ? <Spinner tone="paper" /> : "Send RSVP"}</span>
+                      {sending ? <span className="spin-sr">Sending</span> : null}
                     </button>
                     {wishes.length ? (
                       <ul className="bf-wish-list">

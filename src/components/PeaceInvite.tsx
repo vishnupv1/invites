@@ -6,6 +6,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
+import { Spinner } from "./Loader";
 import "./peace.css";
 
 export type PeaceTheme = "blush" | "noir" | "sage";
@@ -561,9 +562,10 @@ export function PeaceInvite({
                     <label htmlFor="pc-wish">A note for the couple</label>
                     <input id="pc-wish" value={wish} placeholder="Optional" onChange={(event) => setWish(event.target.value)} />
                   </div>
-                  <button type="submit" className="pc-send" disabled={busy}>
+                  <button type="submit" className="pc-send" disabled={busy} aria-busy={busy || undefined}>
                     <span className="pc-shimmer" aria-hidden="true" />
-                    <span style={{ position: "relative" }}>{busy ? "Sending…" : "Send RSVP"}</span>
+                    <span style={{ position: "relative" }}>{busy ? <Spinner tone="paper" /> : "Send RSVP"}</span>
+                    {busy ? <span className="spin-sr">Sending</span> : null}
                   </button>
                 </form>
               )}

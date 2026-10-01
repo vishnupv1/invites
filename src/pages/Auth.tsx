@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackEvent } from "../lib/analytics";
 import { Brand } from "../components/Brand";
+import { Spinner } from "../components/Loader";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./auth.css";
 
@@ -226,8 +227,9 @@ export function Auth() {
               ) : null}
               {errors.form ? <small className="form-note">{errors.form}</small> : null}
               {notice ? <small className="form-note">{notice}</small> : null}
-              <button className="submit" type="submit" disabled={busy}>
-                {busy ? "Please wait…" : login ? "Log in" : "Create account"}
+              <button className="submit" type="submit" disabled={busy} aria-busy={busy || undefined}>
+                {busy ? <Spinner tone="paper" /> : login ? "Log in" : "Create account"}
+                {busy ? <span className="spin-sr">{login ? "Logging in" : "Creating account"}</span> : null}
               </button>
               <p className="switch">
                 {login ? "New to InvitesReady?" : "Already have an account?"}{" "}
