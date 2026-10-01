@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackEvent } from "../lib/analytics";
+import { Brand } from "../components/Brand";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./auth.css";
 
@@ -67,8 +68,8 @@ export function Auth() {
     <div className="auth">
       <header className="m-top">
         <svg className="m-rings" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-          <circle cx="120" cy="120" r="110" stroke="#C89B5B" strokeOpacity="0.25" strokeWidth="1.5" />
-          <circle cx="120" cy="120" r="70" stroke="#C89B5B" strokeOpacity="0.25" strokeWidth="1.5" />
+          <circle cx="120" cy="120" r="110" stroke="#F23F78" strokeOpacity="0.25" strokeWidth="1.5" />
+          <circle cx="120" cy="120" r="70" stroke="#F23F78" strokeOpacity="0.25" strokeWidth="1.5" />
         </svg>
         <div className="m-bar">
           <Link to="/" aria-label="Back to home">
@@ -76,9 +77,7 @@ export function Auth() {
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
           </Link>
-          <span>
-            Invites<em>Ready</em>
-          </span>
+          <img className="brand-name" src="/brand/wordmark-light.png" alt="InvitesReady" />
           <i />
         </div>
         <div className="m-copy">
@@ -87,12 +86,7 @@ export function Auth() {
         </div>
       </header>
       <aside className="auth-brand">
-        <Link className="auth-logo" to="/">
-          <Envelope />
-          <span>
-            Invites<em>Ready</em>
-          </span>
-        </Link>
+        <Brand light />
         <div className="auth-pitch">
           <div>
             <h1>
@@ -247,17 +241,6 @@ export function Auth() {
         </p>
       </main>
     </div>
-  );
-}
-
-function Envelope() {
-  return (
-    <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-      <rect x="3" y="8" width="28" height="21" rx="4" stroke="#fff" strokeWidth="2.4" />
-      <path d="M4 11l13 9 13-9" stroke="#fff" strokeWidth="2.4" strokeLinejoin="round" />
-      <circle cx="29" cy="27" r="7.5" fill="#C89B5B" />
-      <path d="M25.5 27l2.4 2.4 4.4-4.6" stroke="#4A263E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }
 

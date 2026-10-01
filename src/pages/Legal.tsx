@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { Brand } from "../components/Brand";
 import "./legal.css";
 
 export const CONTACT_EMAIL = "hello@invitesready.com";
@@ -8,7 +9,7 @@ function Frame({ title, lede, children }: { title: string; lede: string; childre
   return (
     <div className="legal">
       <header className="legal-bar">
-        <Link to="/">InvitesReady</Link>
+        <Brand />
         <nav aria-label="Policies">
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>

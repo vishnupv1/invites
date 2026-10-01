@@ -108,7 +108,7 @@ export function TemplatePage() {
       <header className="buy-head">
         <div className="buy-id">
           <Link className="buy-back" to="/templates">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
             Templates
@@ -241,7 +241,7 @@ export function TemplatePage() {
               <ul className="buy-list">
                 {template.meta.components.map((item) => (
                   <li key={item.id}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B3A5B" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M5 12l4 4L19 7" />
                     </svg>
                     {item.label}
@@ -279,7 +279,7 @@ export function TemplatePage() {
               {others.map((item) => (
                 <Link key={item.id} to={`/template/${item.id}?event=${event}`}>
                   <div className="buy-like-shot">
-                    <img src={`/covers/${item.id}.jpg`} alt="" />
+                    <img src={`/covers/${item.id}.jpg`} alt={`${item.name} invitation`} />
                   </div>
                   <div className="buy-like-meta">
                     <strong>{item.name}</strong>

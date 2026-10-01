@@ -7,6 +7,7 @@ import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
+import { Brand } from "./components/Brand";
 import { PageMeta } from "./lib/seo";
 import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
@@ -33,11 +34,9 @@ function Shell({ children }: { children: ReactNode }) {
   return (
     <>
       <header className="nav">
-        <Link className="wordmark" to="/">
-          invitesready.com
-        </Link>
+        <Brand />
         <nav>
-          <Link to="/#occasions">Celebrations</Link>
+          <Link to="/occasions">Celebrations</Link>
           <Link to="/browse">Templates</Link>
           <Link to="/studio">Dashboard</Link>
         </nav>
@@ -54,6 +53,11 @@ export default function App() {
       <PageMeta />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/how" element={<Home focus="how" />} />
+        <Route path="/features" element={<Home focus="features" />} />
+        <Route path="/pricing" element={<Home focus="pricing" />} />
+        <Route path="/faq" element={<Home focus="faq" />} />
+        <Route path="/occasions" element={<Home focus="occasions" />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />

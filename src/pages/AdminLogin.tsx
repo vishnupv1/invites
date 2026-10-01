@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { adminSummary, logIn } from "../api";
+import { Brand } from "../components/Brand";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./admin.css";
 
@@ -36,23 +37,15 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
   return (
     <div className="admin-login">
       <svg className="rings left" viewBox="0 0 560 560" fill="none" aria-hidden="true">
-        <circle cx="280" cy="280" r="270" stroke="#C89B5B" strokeOpacity="0.18" strokeWidth="1.5" />
-        <circle cx="280" cy="280" r="190" stroke="#C89B5B" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="270" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="190" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
       </svg>
       <svg className="rings right" viewBox="0 0 560 560" fill="none" aria-hidden="true">
-        <circle cx="280" cy="280" r="270" stroke="#C89B5B" strokeOpacity="0.18" strokeWidth="1.5" />
-        <circle cx="280" cy="280" r="190" stroke="#C89B5B" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="270" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="190" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
       </svg>
       <Link className="admin-mark" to="/">
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-          <rect x="3" y="8" width="28" height="21" rx="4" stroke="#FFFFFF" strokeWidth="2.4" />
-          <path d="M4 11l13 9 13-9" stroke="#FFFFFF" strokeWidth="2.4" strokeLinejoin="round" />
-          <circle cx="29" cy="27" r="7.5" fill="#C89B5B" />
-          <path d="M25.5 27l2.4 2.4 4.4-4.6" stroke="#4A263E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span>
-          Invites<em>Ready</em>
-        </span>
+        <Brand light linked={false} />
         <span className="admin-chip">Admin</span>
       </Link>
       <div className="admin-card">
@@ -60,7 +53,7 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
         {step === "creds" ? (
           <form onSubmit={continueLogin} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div className="shield">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6B3A5B" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z" />
                 <path d="M9 12l2 2 4-4" />
               </svg>
@@ -102,7 +95,7 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
             <div>
               <h1>Two-step verification</h1>
               <p>
-                Enter the 6-digit code from your authenticator app for <strong style={{ color: "#211C1E" }}>{email}</strong>.
+                Enter the 6-digit code from your authenticator app for <strong style={{ color: "#2A1527" }}>{email}</strong>.
               </p>
             </div>
             <label>

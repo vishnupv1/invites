@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
+import { Brand } from "../components/Brand";
 import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
@@ -63,15 +64,6 @@ function palettesFor(template: { meta?: { themes: { id: string }[]; defaultTheme
   return template.meta?.themes.map((item) => item.id) ?? [];
 }
 
-function Mark() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-      <circle cx="18" cy="19" r="14" stroke="#6B3A5B" strokeWidth="2.6" />
-      <circle cx="18" cy="19" r="8" stroke="#C89B5B" strokeWidth="2.4" />
-      <circle cx="18" cy="4" r="2.6" fill="#6B3A5B" />
-    </svg>
-  );
-}
 
 export function CreateGuest() {
   const [params, setParams] = useSearchParams();
@@ -383,10 +375,7 @@ export function CreateGuest() {
   return (
     <div className="cg-root">
       <header className="cg-header">
-        <Link className="cg-brand" to="/">
-          <Mark />
-          invitesready.com
-        </Link>
+        <Brand />
         <ol className="cg-steps" aria-label="Steps">
           {STEPS.map((label, index) => {
             const n = (index + 1) as 1 | 2 | 3 | 4;
@@ -704,7 +693,7 @@ export function CreateGuest() {
             </div>
             <form className="cg-auth" onSubmit={onAuth}>
               <button type="button" className="cg-close" aria-label="Close" onClick={() => setAuthOpen(false)}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </button>
