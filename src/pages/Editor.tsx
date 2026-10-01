@@ -151,6 +151,7 @@ function editorState(model: Model): EditorState {
 
 function modelFromSaved(template: Template, fields: InviteFields, editor?: EditorState | null): Model {
   const merged = { ...sampleFor(template, fields.event), ...fields };
+  if (template.id === "peace" && merged.detail === "Priya & Vivek") merged.detail = "Our guest";
   const base = sectionsFor(template, merged);
   const saved = new Map((editor?.sections ?? []).map((item) => [item.id, item.on]));
   return {

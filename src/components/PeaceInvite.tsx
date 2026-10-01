@@ -292,7 +292,7 @@ export function PeaceInvite({
         {!opened ? (
           <div className="pc-top">
             <span className="pc-kick">A little something for</span>
-            <ScriptFit className="pc-guest pc-foil">{fields.detail || "you"}</ScriptFit>
+            <ScriptFit className="pc-guest pc-foil">{fields.detail || "Our guest"}</ScriptFit>
           </div>
         ) : null}
         {opened ? <div className="pc-rays" aria-hidden="true" /> : null}
