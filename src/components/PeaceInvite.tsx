@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Sparkle } from "lucide-react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
@@ -8,6 +9,41 @@ import { calendarUrl, formatLongDate } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
 import { Spinner } from "./Loader";
 import "./peace.css";
+
+function ScriptFit({ className, children }: { className: string; children: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const parent = el?.parentElement;
+    if (!el || !parent) return;
+    let frame = 0;
+    const fit = () => {
+      const styles = getComputedStyle(parent);
+      const available = parent.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+      if (available <= 0) return;
+      el.style.fontSize = "";
+      const start = parseFloat(getComputedStyle(el).fontSize);
+      const needed = el.scrollWidth;
+      el.style.fontSize = needed > available && needed > 0 ? `${Math.max(20, (start * available) / needed)}px` : "";
+    };
+    fit();
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(fit);
+    });
+    observer.observe(parent);
+    document.fonts.ready.then(fit);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [children]);
+  return (
+    <span ref={ref} className={className}>
+      {children}
+    </span>
+  );
+}
 
 export type PeaceTheme = "blush" | "noir" | "sage";
 
@@ -256,7 +292,7 @@ export function PeaceInvite({
         {!opened ? (
           <div className="pc-top">
             <span className="pc-kick">A little something for</span>
-            <span className="pc-guest pc-foil">{fields.detail || "you"}</span>
+            <ScriptFit className="pc-guest pc-foil">{fields.detail || "you"}</ScriptFit>
           </div>
         ) : null}
         {opened ? <div className="pc-rays" aria-hidden="true" /> : null}
@@ -301,7 +337,7 @@ export function PeaceInvite({
             </span>
           </span>
           {[-20, 250, -30, 260, 120, 10].map((left, index) => (
-            <span key={left} className="pc-spark" style={{ left, top: [20, 0, 170, 150, -60, -40][index], fontSize: 12 + (index % 3) * 6, animationDelay: `${index * 0.4}s` }} aria-hidden="true">✦</span>
+            <span key={left} className="pc-spark" style={{ left, top: [20, 0, 170, 150, -60, -40][index], fontSize: 12 + (index % 3) * 6, animationDelay: `${index * 0.4}s` }} aria-hidden="true"><Sparkle className="glyph" /></span>
           ))}
         </button>
         {!opened ? <span className="pc-hint">Tap the gift to open</span> : null}
@@ -311,9 +347,9 @@ export function PeaceInvite({
               <div className="pc-card-in">
                 <span className="pc-seal"><Seal /></span>
                 <span className="pc-card-kick">{fields.hosts || "Together with their families"}</span>
-                <span className="pc-script one pc-foil">{first}</span>
+                <ScriptFit className="pc-script one pc-foil">{first}</ScriptFit>
                 {second ? <span className="pc-amp">&amp;</span> : null}
-                {second ? <span className="pc-script two pc-foil">{second}</span> : null}
+                {second ? <ScriptFit className="pc-script two pc-foil">{second}</ScriptFit> : null}
                 <span className="pc-sub">{fields.title || "are getting married"}</span>
                 <span className="pc-rule" />
                 <span className="pc-when">{when.long}</span>
@@ -357,9 +393,9 @@ export function PeaceInvite({
             <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6, textAlign: "center", padding: "0 20px" }}>
               <span className="pc-seal pc-hero-seal"><Seal /></span>
               <span className="pc-hero-kick">{fields.hosts || "Together with their families"}</span>
-              <span className="pc-hero-name one pc-foil">{first}</span>
+              <ScriptFit className="pc-hero-name one pc-foil">{first}</ScriptFit>
               {second ? <span className="pc-hero-amp">&amp;</span> : null}
-              {second ? <span className="pc-hero-name two pc-foil">{second}</span> : null}
+              {second ? <ScriptFit className="pc-hero-name two pc-foil">{second}</ScriptFit> : null}
               <span className="pc-track">{(fields.title || "are getting married").toUpperCase()}</span>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                 <span className="pc-line l" /><span className="pc-date">{when.dots}</span><span className="pc-line r" />

@@ -808,6 +808,7 @@
 .bf-heart {
   position: absolute;
   bottom: 0;
+  font-size: 22px;
   animation: bf-heart 2.4s ease-out infinite;
 }
 .bf-wish-list {

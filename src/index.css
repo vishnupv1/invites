@@ -315,3 +315,11 @@ input::placeholder, textarea::placeholder { color: #9a9396; }
   .shop-actions { flex-wrap: wrap; }
   .wordmark { font-size: 1.15rem; }
 }
+
+svg.glyph {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}

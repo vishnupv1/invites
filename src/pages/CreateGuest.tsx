@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { Brand } from "../components/Brand";
@@ -24,15 +25,20 @@ const BLURB: Record<string, string> = {
   anniversary: "Milestones together",
   reception: "The evening after",
 };
-const EMOJI: Record<string, string> = {
-  marriage: "💍",
-  engagement: "💞",
-  birthday: "🎂",
-  housewarming: "🏡",
-  baptism: "🕊️",
-  anniversary: "🥂",
-  reception: "✨",
+const OCCASION_ICONS: Record<string, LucideIcon> = {
+  marriage: Gem,
+  engagement: Heart,
+  reception: Sparkles,
+  birthday: Cake,
+  anniversary: Wine,
+  baptism: Bird,
+  housewarming: House,
 };
+
+function OccasionIcon({ id }: { id: string }) {
+  const Icon = OCCASION_ICONS[id] ?? Sparkles;
+  return <Icon size={28} strokeWidth={1.8} aria-hidden="true" />;
+}
 type PriceFilter = "All" | "Free" | "Premium";
 type AuthMode = "publish" | "save" | "login";
 
@@ -397,7 +403,7 @@ export function CreateGuest() {
                   aria-current={current ? "step" : undefined}
                   onClick={() => setStep(n)}
                 >
-                  <span className={current ? "cg-dot on" : done ? "cg-dot done" : "cg-dot"}>{done ? "✓" : n}</span>
+                  <span className={current ? "cg-dot on" : done ? "cg-dot done" : "cg-dot"}>{done ? <Check size={13} strokeWidth={3} aria-hidden="true" /> : n}</span>
                   <span className="cg-step-label">{label}</span>
                 </button>
                 {index < 3 ? <i className="cg-rule" aria-hidden="true" /> : null}
@@ -459,8 +465,8 @@ export function CreateGuest() {
                 const on = item.id === event.id;
                 return (
                   <button key={item.id} type="button" className={on ? "cg-event on" : "cg-event"} aria-pressed={on} onClick={() => pickEvent(item.id)}>
-                    <span className="cg-emoji" aria-hidden="true">
-                      {EMOJI[item.id] ?? "🎉"}
+                    <span className="cg-emoji">
+                      <OccasionIcon id={item.id} />
                     </span>
                     <strong>{item.label}</strong>
                     <small>{BLURB[item.id] ?? item.cardLabel}</small>
@@ -615,7 +621,7 @@ export function CreateGuest() {
               ) : (
                 <div className="cg-live">
                   <span className="pop" aria-hidden="true">
-                    🎉
+                    <PartyPopper size={44} />
                   </span>
                   <h1>Your invitation is live!</h1>
                   <div className="cg-linkbox">{link.replace(/^https?:\/\//, "")}</div>

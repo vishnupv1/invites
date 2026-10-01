@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Check, CheckCheck, HandHeart, Lamp, Mail, PartyPopper, Pencil, Sparkle } from "lucide-react";
 import { Brand } from "../components/Brand";
 import { EVENTS } from "../data/events";
 import { templatesFor } from "../data/templates";
@@ -436,9 +437,9 @@ export function Home({ focus }: { focus?: string }) {
             </Link>
           </div>
           <div className="lp-checks">
-            <span>✓ No app for guests</span>
-            <span>{narrow ? "✓ Design free" : "✓ Design free, no sign-up"}</span>
-            <span>✓ Pay once per event</span>
+            <span><Check size={16} aria-hidden="true" /> No app for guests</span>
+            <span><Check size={16} aria-hidden="true" /> {narrow ? "Design free" : "Design free, no sign-up"}</span>
+            <span><Check size={16} aria-hidden="true" /> Pay once per event</span>
           </div>
         </div>
 
@@ -534,7 +535,7 @@ export function Home({ focus }: { focus?: string }) {
           <div className="lp-marquee-track">
             {loop.map((label, index) => (
               <span key={`${label}-${index}`}>
-                {label} <i>✦</i>
+                {label} <i><Sparkle size={16} aria-hidden="true" /></i>
               </span>
             ))}
           </div>
@@ -603,7 +604,7 @@ export function Home({ focus }: { focus?: string }) {
                   </div>
                 </div>
               ))}
-              <span className="lp-typing">✏️ Typing “Anjali & Rahul”…</span>
+              <span className="lp-typing"><Pencil size={16} aria-hidden="true" /> Typing “Anjali & Rahul”…</span>
             </div>
           ) : null}
           {how === 1 ? (
@@ -616,14 +617,14 @@ export function Home({ focus }: { focus?: string }) {
                     </strong>
                     <small>invitesready.com/anjali-rahul</small>
                   </div>
-                  <p>You're invited! Tap to RSVP 💌</p>
-                  <em>10:24 ✓✓</em>
+                  <p>You're invited! Tap to RSVP <Mail size={14} aria-hidden="true" /></p>
+                  <em>10:24 <CheckCheck size={14} aria-hidden="true" /></em>
                 </div>
                 <div className="lp-chat-in" style={{ animationDelay: "1.3s" }}>
-                  So beautiful!! We'll be there 🥳
+                  So beautiful!! We'll be there <PartyPopper size={14} aria-hidden="true" />
                 </div>
                 <div className="lp-chat-in" style={{ animationDelay: "2.1s" }}>
-                  {narrow ? "RSVP'd for all 3 functions 🙏" : "Just RSVP'd for all 3 functions 🙏"}
+                  {narrow ? "RSVP'd for all 3 functions" : "Just RSVP'd for all 3 functions"} <HandHeart size={14} aria-hidden="true" />
                 </div>
               </div>
             </div>
@@ -779,7 +780,7 @@ export function Home({ focus }: { focus?: string }) {
                 {plan.price ? <strong>{plan.price}</strong> : null}
                 <ul>
                   {plan.items.map((item) => (
-                    <li key={item}>✓ {item}</li>
+                    <li key={item}><Check size={16} aria-hidden="true" /> {item}</li>
                   ))}
                 </ul>
                 <Link className="lp-btn" to="/create">
@@ -825,7 +826,7 @@ export function Home({ focus }: { focus?: string }) {
               aria-hidden="true"
               style={{ left: `${6 + i * 12}%`, fontSize: 22 + (i % 3) * 8, animationDuration: `${8 + (i % 4) * 2}s`, animationDelay: `-${i * 1.3}s` }}
             >
-              🏮
+              <Lamp size={22 + (i % 3) * 8} aria-hidden="true" />
             </span>
           ))}
           {burst > 0

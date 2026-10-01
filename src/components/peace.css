@@ -84,7 +84,7 @@
 @keyframes pc-rise { 0% { transform: translateY(160px) scale(0.45); opacity: 0; } 35% { transform: translateY(-60px) scale(0.6); opacity: 1; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
 @keyframes pc-boxout { to { transform: translateY(80px) scale(0.85); opacity: 0; } }
 @keyframes pc-up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pc-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 -10% 0 0); } }
+@keyframes pc-wipe { from { clip-path: inset(-80% 140% -80% -80%); } to { clip-path: inset(-80% -80% -80% -80%); } }
 @keyframes pc-track { from { letter-spacing: 0.1em; opacity: 0; } to { letter-spacing: 0.5em; opacity: 1; } }
 @keyframes pc-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes pc-dust { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 0.9; } 100% { transform: translate(var(--dx), -160px); opacity: 0; } }
@@ -129,7 +129,7 @@
 .pc-dust { width: 4px; height: 4px; border-radius: 50%; background: #e8c987; animation: pc-dust 6s ease-out infinite; }
 .pc-top {
   position: absolute;
-  left: 0; right: 0; top: 110px;
+  left: 16px; right: 16px; top: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,7 +138,17 @@
   animation: pc-up 0.9s ease both;
 }
 .pc-kick { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: var(--sub); }
-.pc-guest { font-family: "Monsieur La Doulaise", cursive; font-size: 56px; line-height: 1.1; padding: 0 10px; }
+.pc-guest,
+.pc-script,
+.pc-hero-name {
+  display: block;
+  width: max-content;
+  box-sizing: border-box;
+  line-height: 1;
+  padding: 0.42em 0.78em 0.52em 0.95em;
+  margin: 0;
+}
+.pc-guest { font-family: "Monsieur La Doulaise", cursive; font-size: 56px; }
 .pc-rays {
   position: absolute;
   left: 50%;
@@ -248,8 +258,8 @@
   left: 50%;
   top: 50%;
   width: 310px;
-  height: 540px;
-  margin: -270px 0 0 -155px;
+  height: 600px;
+  margin: -300px 0 0 -155px;
   z-index: 2;
   opacity: 0;
   pointer-events: none;
@@ -288,9 +298,13 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 .pc.is-open .pc-seal { animation: pc-seal 0.8s ease 2.6s both; }
-.pc-card-kick { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #7a6468; }
+.pc-card-kick { max-width: 100%; font-size: 10px; letter-spacing: 0.18em; line-height: 1.45; text-transform: uppercase; color: #7a6468; }
 .pc.is-open .pc-card-kick { animation: pc-up 0.7s ease 2.8s both; }
-.pc-script { font-family: "Monsieur La Doulaise", cursive; font-size: 70px; line-height: 1; padding: 0 16px; clip-path: inset(0 100% 0 0); }
+.pc-script {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: 64px;
+  clip-path: inset(-80% 140% -80% -80%);
+}
 .pc.is-open .pc-script.one { animation: pc-wipe 1.2s ease-out 3s forwards, pc-foil 4s linear infinite; }
 .pc.is-open .pc-script.two { animation: pc-wipe 1.2s ease-out 3.7s forwards, pc-foil 4s linear infinite; }
 .pc-amp { font-family: "Bodoni Moda", serif; font-style: italic; font-size: 22px; color: #b8893f; }
@@ -350,7 +364,12 @@
 .pc-music.on .pc-eq:nth-child(4) { animation-duration: 1.15s; animation-delay: 0.3s; }
 
 .pc-hero { position: relative; overflow: hidden; height: 860px; background: var(--hero); }
-.pc-hero-name { font-family: "Monsieur La Doulaise", cursive; font-size: 96px; line-height: 1; padding: 0 24px; clip-path: inset(0 100% 0 0); animation: pc-wipe 1.4s ease-out forwards, pc-foil 4s linear infinite; }
+.pc-hero-name {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: min(88px, 22cqi);
+  clip-path: inset(-80% 140% -80% -80%);
+  animation: pc-wipe 1.4s ease-out forwards, pc-foil 4s linear infinite;
+}
 .pc-hero-name.one { animation-delay: 0.8s, 0s; }
 .pc-hero-name.two { animation-delay: 1.7s, 0s; }
 .pc-hero-amp { font-family: "Bodoni Moda", serif; font-style: italic; font-size: 26px; color: var(--accent); animation: pc-up 0.6s ease 1.5s both; }
@@ -622,17 +641,17 @@
   .pc-rays { width: 1400px; height: 1400px; margin: -700px 0 0 -700px; }
   .pc-tag { font-size: 24px; }
   .pc-hint { bottom: 70px; font-size: 15px; }
-  .pc-card-pos { width: 440px; height: 620px; margin: -310px 0 0 -220px; }
+  .pc-card-pos { width: 440px; height: 700px; margin: -350px 0 0 -220px; }
   .pc-card-in { gap: 8px; }
   .pc-seal { width: 70px; height: 70px; font-size: 22px; }
   .pc-card-kick { font-size: 12px; }
-  .pc-script { font-size: 92px; }
+  .pc-script { font-size: 84px; }
   .pc-amp { font-size: 26px; }
   .pc-sub { font-size: 20px; }
   .pc-when { font-size: 13px; }
   .pc-where { font-size: 17px; }
   .pc-hero { height: 940px; }
-  .pc-hero-name { font-size: 150px; }
+  .pc-hero-name { font-size: min(128px, 16cqi); }
   .pc-hero-amp { font-size: 34px; }
   .pc-track { font-size: 15px; }
   .pc-date { font-size: 30px; }

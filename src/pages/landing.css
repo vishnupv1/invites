@@ -209,6 +209,16 @@
   animation: lp-up 0.8s ease both;
   animation-delay: 1.7s;
 }
+.lp-checks span,
+.lp-typing,
+.lp-plan-inner li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lp-plan-inner li { display: flex; }
+.lp-marquee-track i { display: inline-flex; }
+.lp-lantern { color: #ffbe6e; }
 .lp-petal {
   position: absolute;
   top: 0;
@@ -681,10 +691,13 @@
 }
 .lp-chat-card strong em { color: #ff7380; font-style: italic; }
 .lp-chat-card small { display: block; padding: 8px 12px; font-size: 13px; color: #6b5a62; }
-.lp-chat-out p { margin: 8px 4px 0; font-size: 15px; }
-.lp-chat-out em { display: block; text-align: right; font-style: normal; font-size: 11px; color: #4e6853; }
+.lp-chat-out p { margin: 8px 4px 0; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+.lp-chat-out em { display: flex; align-items: center; justify-content: flex-end; gap: 4px; text-align: right; font-style: normal; font-size: 11px; color: #4e6853; }
 .lp-chat-in {
   align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   border-radius: 18px 18px 18px 4px;
   background: #fff;
   padding: 10px 14px;

@@ -278,6 +278,9 @@
   min-height: 38px;
   padding: 0 14px;
   border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: transparent;
   color: #4e3e47;
   border: 1px solid #ebe2dd;
@@ -390,6 +393,9 @@
 .cat-badges.static { position: static; right: auto; }
 .cat-badges span,
 .cat-modal-copy .cat-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 11px;
@@ -411,8 +417,9 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
   color: #d9cdc8;
-  font-size: 18px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
@@ -663,7 +670,7 @@
 .cat-modal-copy p { margin: 0; font-size: 16px; line-height: 1.6; color: #4e3e47; }
 .cat-modal-copy ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .cat-modal-copy li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #4e3e47; }
-.cat-modal-copy li::before { content: "✓"; color: #2e8b57; font-weight: 800; }
+.cat-modal-copy li svg { color: #2e8b57; flex-shrink: 0; }
 .cat-swatches { display: flex; align-items: center; gap: 10px; }
 .cat-swatches span { font-size: 13px; font-weight: 700; color: #6b5a62; }
 .cat-swatches i {
@@ -837,8 +844,8 @@
   .cat-grid-wrap { padding: 16px 12px 40px; gap: 24px; }
   .cat-foot { flex-direction: column; align-items: flex-start; padding: 28px 16px; }
   .cat-heart { width: 36px; height: 36px; font-size: 16px; }
-  .cat-badges .anim { font-size: 0; padding: 4px 8px; }
-  .cat-badges .anim::before { content: "✦"; font-size: 11px; }
+  .cat-badges .anim { font-size: 0; padding: 4px 8px; gap: 0; }
+  .cat-badges .anim svg { width: 12px; height: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

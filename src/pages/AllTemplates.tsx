@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Check, Heart, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { SkeletonCards } from "../components/CardSkeleton";
@@ -347,7 +348,7 @@ export function AllTemplates() {
               </button>
             ))}
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <span aria-hidden="true">♥</span> Saved ({saved.length})
+              <Heart size={16} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> Saved ({saved.length})
             </button>
             <div className="cat-sort-wrap">
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
@@ -380,7 +381,7 @@ export function AllTemplates() {
               {activeCount > 0 ? <span>{activeCount}</span> : null}
             </button>
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <span aria-hidden="true">♥</span> {saved.length}
+              <Heart size={16} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> {saved.length}
             </button>
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
           </div>
@@ -413,11 +414,11 @@ export function AllTemplates() {
                       </button>
                       <div className="cat-badges">
                         <span className={template.free ? "free" : "prem"}>{template.free ? "Free" : "Premium"}</span>
-                        {extra.styles.includes("Animated") ? <span className="anim">✦ Animated</span> : null}
+                        {extra.styles.includes("Animated") ? <span className="anim"><Sparkles size={12} aria-hidden="true" /> Animated</span> : null}
                         {extra.isNew ? <span className="new">New</span> : null}
                       </div>
                       <button type="button" className={`cat-heart${loved ? " on" : ""}`} aria-pressed={loved} aria-label={`${loved ? "Remove" : "Save"} ${template.name}`} onClick={() => toggleSaved(template.id)}>
-                        ♥
+                        <Heart size={18} aria-hidden="true" fill={loved ? "currentColor" : "none"} />
                       </button>
                       <div className="cat-hover">Quick preview</div>
                     </div>
@@ -518,14 +519,14 @@ export function AllTemplates() {
             <div className="cat-modal-copy">
               <div className="cat-badges static">
                 <span className={preview.free ? "free" : "prem"}>{preview.free ? "Free" : "Premium"}</span>
-                {look(preview.id).styles.includes("Animated") ? <span className="anim">✦ Animated</span> : null}
+                {look(preview.id).styles.includes("Animated") ? <span className="anim"><Sparkles size={12} aria-hidden="true" /> Animated</span> : null}
               </div>
               <h2>{preview.name}</h2>
               <span className="cat-modal-meta">{eventLabels(preview)}</span>
               <p>{preview.description}</p>
               <ul>
                 {look(preview.id).styles.map((style) => (
-                  <li key={style}>{FEAT[style]}</li>
+                  <li key={style}><Check size={16} aria-hidden="true" /> {FEAT[style]}</li>
                 ))}
                 <li>RSVP, maps, countdown and wishes</li>
                 <li>Share on WhatsApp — no app for guests</li>

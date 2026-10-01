@@ -301,11 +301,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  color: #2a1527;
   background: #fbf8f5;
 }
 
 .cg-event.on .cg-emoji {
+  color: #d81b60;
   background: #fceff4;
 }
 
@@ -355,7 +356,7 @@
 
 .cg-step2 {
   box-sizing: border-box;
-  padding: 40px 120px 28px;
+  padding: 40px 120px 120px;
   display: flex;
   flex-direction: column;
   gap: 26px;
@@ -783,6 +784,15 @@
   gap: 16px;
   background: #fff;
   border-top: 1px solid #ebe2dd;
+}
+
+.cg-root:has(.cg-step2) .cg-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  box-shadow: 0 -10px 24px rgba(42, 21, 39, 0.06);
 }
 
 .cg-bar-id {
@@ -1526,6 +1536,14 @@
   .cg-frame.desk {
     width: min(320px, 100%);
     height: 520px;
+  }
+
+  .cg-root:has(.cg-step2) .cg-step2 {
+    padding-bottom: 180px;
+  }
+
+  .cg-root:has(.cg-step2) .cg-bar {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
 
   .cg-bar {
