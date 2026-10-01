@@ -61,7 +61,7 @@ function describe(pathname: string): Meta {
       image: BRAND_IMAGE,
     };
   }
-  if (pathname === "/browse" || pathname === "/templates") {
+  if (pathname === "/browse") {
     return {
       title: "Invitation templates | InvitesReady",
       description: "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy.",

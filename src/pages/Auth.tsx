@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackEvent } from "../lib/analytics";
 import { Brand } from "../components/Brand";
@@ -11,6 +11,7 @@ type Mode = "login" | "signup";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function Auth() {
+  const [params] = useSearchParams();
   const [mode, setMode] = useState<Mode>("login");
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
@@ -61,7 +62,9 @@ export function Auth() {
   }
 
   function continueOn() {
-    window.location.assign("/studio");
+    const next = params.get("next");
+    const safe = next && next.startsWith("/") && !next.startsWith("//") ? next : "/studio";
+    window.location.assign(safe);
   }
 
   return (

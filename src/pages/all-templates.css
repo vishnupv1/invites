@@ -677,7 +677,8 @@
 .cat-modal-price strong { font-family: Fraunces, Georgia, serif; font-size: 32px; font-weight: 700; }
 .cat-modal-price span { font-size: 13px; color: #6b5a62; }
 .cat-modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-.cat-modal-actions a {
+.cat-modal-actions a,
+.cat-modal-actions button {
   min-height: 52px;
   flex-grow: 1;
   display: flex;
@@ -689,10 +690,36 @@
   color: #fff;
   font-size: 15px;
   font-weight: 800;
+  cursor: pointer;
 }
 .cat-modal-actions a:hover { color: #fff; }
-.cat-modal-actions a.ghost { background: #fff; color: #2a1527; border: 1.5px solid #2a1527; }
-.cat-modal-actions a.ghost:hover { color: #2a1527; }
+.cat-modal-actions a.ghost,
+.cat-modal-actions button.ghost { background: #fff; color: #2a1527; border: 1.5px solid #2a1527; }
+.cat-modal-actions a.ghost:hover,
+.cat-modal-actions button.ghost:hover { color: #2a1527; }
+.cat-demo {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: auto;
+  background: #1a1016;
+}
+.cat-demo-x {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 61;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #2a1527;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
 
 @keyframes cat-in {
   from { opacity: 0; transform: translateY(14px); }

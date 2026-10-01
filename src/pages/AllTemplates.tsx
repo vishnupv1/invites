@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Brand } from "../components/Brand";
+import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, eventLabels, formatPrice, withCatalogMeta } from "../data/templates";
+import { TEMPLATES, eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import type { Template } from "../types";
 import "./all-templates.css";
 
@@ -83,6 +84,7 @@ export function AllTemplates() {
   const [collection, setCollection] = useState<string | null>(null);
   const [sheet, setSheet] = useState(false);
   const [previewId, setPreviewId] = useState<string | null>(null);
+  const [demo, setDemo] = useState(false);
   const [broken, setBroken] = useState<string[]>([]);
   const [menu, setMenu] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
@@ -108,21 +110,24 @@ export function AllTemplates() {
   }, [sortOpen]);
 
   useEffect(() => {
-    if (!sheet && !previewId) return;
+    if (!sheet && !previewId && !demo) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setSheet(false);
-        setPreviewId(null);
+      if (event.key !== "Escape") return;
+      if (demo) {
+        setDemo(false);
+        return;
       }
+      setSheet(false);
+      setPreviewId(null);
     }
     document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previous;
       document.removeEventListener("keydown", onKey);
     };
-  }, [sheet, previewId]);
+  }, [sheet, previewId, demo]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -488,6 +493,13 @@ export function AllTemplates() {
         </div>
       ) : null}
 
+      {preview && demo ? (
+        <div className="cat-demo" role="dialog" aria-label={`${preview.name} live demo`}>
+          <button type="button" className="cat-demo-x" aria-label="Close" onClick={() => setDemo(false)}>×</button>
+          <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} live />
+        </div>
+      ) : null}
+
       {preview ? (
         <div className="cat-modal-back" onClick={() => setPreviewId(null)}>
           <div role="dialog" aria-label={`${preview.name} preview`} className="cat-modal" onClick={(event) => event.stopPropagation()}>
@@ -522,7 +534,7 @@ export function AllTemplates() {
               </div>
               <div className="cat-modal-actions">
                 <Link to={useHref(preview)}>Use this template</Link>
-                <Link className="ghost" to={`/preview/${preview.id}`}>Open live demo</Link>
+                <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
               </div>
             </div>
           </div>
