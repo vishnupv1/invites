@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, Heart, Sparkles } from "lucide-react";
+import { Check, Heart } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { SkeletonCards } from "../components/CardSkeleton";
@@ -433,7 +433,6 @@ export function AllTemplates() {
                       </button>
                       <div className="cat-badges">
                         <span className={template.free ? "free" : "prem"}>{template.free ? "Free" : "Premium"}</span>
-                        {extra.styles.includes("Animated") ? <span className="anim"><Sparkles size={12} aria-hidden="true" /> Animated</span> : null}
                         {extra.isNew ? <span className="new">New</span> : null}
                       </div>
                       <button type="button" className={`cat-heart${loved ? " on" : ""}`} aria-pressed={loved} aria-label={`${loved ? "Remove" : "Save"} ${template.name}`} onClick={() => toggleSaved(template.id)}>
@@ -538,7 +537,6 @@ export function AllTemplates() {
             <div className="cat-modal-copy">
               <div className="cat-badges static">
                 <span className={preview.free ? "free" : "prem"}>{preview.free ? "Free" : "Premium"}</span>
-                {look(preview.id).styles.includes("Animated") ? <span className="anim"><Sparkles size={12} aria-hidden="true" /> Animated</span> : null}
               </div>
               <h2>{preview.name}</h2>
               <span className="cat-modal-meta">{eventLabels(preview)}</span>
