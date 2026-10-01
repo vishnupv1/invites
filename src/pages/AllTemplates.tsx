@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Brand } from "../components/Brand";
+import { SkeletonCards } from "../components/CardSkeleton";
 import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
@@ -74,6 +75,7 @@ export function AllTemplates() {
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>(EVENTS);
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
+  const [catalogReady, setCatalogReady] = useState(false);
   const [occasion, setOccasion] = useState("all");
   const [price, setPrice] = useState<PriceFilter>("All");
   const [styles, setStyles] = useState<StyleTag[]>([]);
@@ -93,7 +95,8 @@ export function AllTemplates() {
     listEvents().then(setEvents).catch(() => setEvents(EVENTS));
     listTemplates()
       .then((rows) => setCatalog(rows.map(withCatalogMeta)))
-      .catch(() => setCatalog(TEMPLATES));
+      .catch(() => setCatalog(TEMPLATES))
+      .finally(() => setCatalogReady(true));
   }, []);
 
   useEffect(() => {
@@ -384,7 +387,12 @@ export function AllTemplates() {
         </section>
 
         <section className="cat-grid-wrap">
-          {filtered.sorted.length === 0 ? (
+          {!catalogReady ? (
+            <div className="cat-grid" role="status" aria-busy="true" aria-label="Loading templates">
+              <span className="skel-sr">Loading</span>
+              <SkeletonCards count={8} />
+            </div>
+          ) : filtered.sorted.length === 0 ? (
             <div className="cat-empty">
               <h2>No templates match</h2>
               <p>Try a different word, or clear your filters to see everything.</p>

@@ -8,6 +8,7 @@ import { formatPrice } from "../data/templates";
 import { formatShortDate } from "../lib/dates";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
+import { SkeletonGrid } from "../components/CardSkeleton";
 import { Brand } from "../components/Brand";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { SavedInvite, Template } from "../types";
@@ -295,7 +296,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
           </section>
         ) : null}
 
-        {view !== "dashboard" && signedIn && !ready ? <p className="empty">Loading your invitations…</p> : null}
+        {view !== "dashboard" && signedIn && !ready ? <SkeletonGrid count={4} cover="studio" /> : null}
 
         {view !== "dashboard" && signedIn && ready && invites.length === 0 && view !== "purchases" ? (
           <section className="panel empty-card">
@@ -425,7 +426,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
 
         {signedIn && ready && view === "purchases" ? (
           !catalogReady ? (
-            <p className="empty">Loading your purchases…</p>
+            <SkeletonGrid count={4} cover="studio" />
           ) : purchased.length === 0 ? (
             <section className="panel empty-card">
               <h2>No purchases yet.</h2>
