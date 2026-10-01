@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Heart, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { InviteView } from "../components/InviteView";
@@ -75,6 +75,8 @@ function useHref(template: Template, occasion: string) {
 }
 
 export function AllTemplates() {
+  const { id: routeId } = useParams();
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>(EVENTS);
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
@@ -88,7 +90,7 @@ export function AllTemplates() {
   const [savedOnly, setSavedOnly] = useState(false);
   const [collection, setCollection] = useState<string | null>(null);
   const [sheet, setSheet] = useState(false);
-  const [previewId, setPreviewId] = useState<string | null>(null);
+  const [previewId, setPreviewId] = useState<string | null>(routeId ?? null);
   const [demo, setDemo] = useState(false);
   const [broken, setBroken] = useState<string[]>([]);
   const [menu, setMenu] = useState(false);
@@ -101,6 +103,15 @@ export function AllTemplates() {
       .catch(() => setCatalog(TEMPLATES))
       .finally(() => setCatalogReady(true));
   }, []);
+
+  useEffect(() => {
+    if (!routeId || !catalogReady) return;
+    if (catalog.some((item) => item.id === routeId)) {
+      setPreviewId(routeId);
+      return;
+    }
+    navigate("/browse", { replace: true });
+  }, [routeId, catalog, catalogReady, navigate]);
 
   useEffect(() => {
     localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
@@ -126,7 +137,7 @@ export function AllTemplates() {
         return;
       }
       setSheet(false);
-      setPreviewId(null);
+      closePreview();
     }
     document.addEventListener("keydown", onKey);
     return () => {
@@ -160,6 +171,12 @@ export function AllTemplates() {
   const preview = catalog.find((template) => template.id === previewId) ?? null;
   const sortLabel = SORTS.find((item) => item.id === sort)?.label ?? "Most popular";
   const activeCount = (price !== "All" ? 1 : 0) + styles.length + (sort !== "popular" ? 1 : 0);
+
+  function closePreview() {
+    setDemo(false);
+    setPreviewId(null);
+    if (routeId) navigate("/browse", { replace: true });
+  }
 
   function markBroken(id: string) {
     setBroken((current) => (current.includes(id) ? current : [...current, id]));
@@ -512,9 +529,9 @@ export function AllTemplates() {
       ) : null}
 
       {preview ? (
-        <div className="cat-modal-back" onClick={() => setPreviewId(null)}>
+        <div className="cat-modal-back" onClick={closePreview}>
           <div role="dialog" aria-label={`${preview.name} preview`} className="cat-modal" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={() => setPreviewId(null)}>×</button>
+            <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={closePreview}>×</button>
             <div className="cat-phone-well">
               <div className="cat-phone">{cover(preview)}</div>
             </div>

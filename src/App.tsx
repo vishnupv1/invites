@@ -12,7 +12,6 @@ import { Spinner } from "./components/Loader";
 import { PageMeta } from "./lib/seo";
 import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
-import { TemplatePage } from "./pages/TemplatePage";
 import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
 import { AllTemplates } from "./pages/AllTemplates";
@@ -90,7 +89,7 @@ export default function App() {
             </Shell>
           }
         />
-        <Route path="/template/:id" element={<TemplatePage />} />
+        <Route path="/template/:id" element={<AllTemplates />} />
         <Route path="/create" element={<CreateGuest />} />
         <Route path="/create/:id" element={<Editor />} />
         <Route path="/studio" element={<RequireAccount><Studio view="dashboard" /></RequireAccount>} />
