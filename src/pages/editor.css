@@ -538,8 +538,14 @@
   background: #fbf8f5;
   transform: translateZ(0);
 }
+.ed-frame.ed-phone .ed-screen {
+  display: flex;
+  flex-direction: column;
+}
 .ed-frame.ed-phone .ed-screen { border-radius: 36px; }
 .ed-zoom { width: 100%; transform-origin: top left; }
+.ed-frame.ed-phone .ed-zoom { min-height: 100%; display: flex; flex-direction: column; }
+.ed-frame.ed-phone .ed-zoom > * { flex: 1 0 auto; width: 100%; min-height: 100%; }
 .ed-caption {
   display: flex;
   align-items: center;
