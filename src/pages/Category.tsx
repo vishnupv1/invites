@@ -19,7 +19,7 @@ export function Category() {
 
   return (
     <section className="shop">
-      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Celebrations", to: "/#occasions" }, { label: event.label }]} />
+      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Celebrations", to: "/occasions" }, { label: event.label }]} />
       <div className="section-head">
         <h1>{event.label}</h1>
         <p>Styles made for this celebration. Preview one before you use it.</p>
@@ -35,7 +35,7 @@ export function Category() {
                 aria-label={`Preview ${template.name}`}
                 onClick={() => setPreviewId(template.id)}
               >
-                <img src={`/covers/${template.id}.jpg`} alt="" />
+                <img src={`/covers/${template.id}.jpg`} alt={`${template.name} invitation`} />
               </button>
               <div className="shop-copy">
                 <div className="shop-top">

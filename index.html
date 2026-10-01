@@ -2,32 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>InvitesReady — digital invitations your guests can open and reply to</title>
+    <meta name="theme-color" content="#D81B60" />
+    <title>Customize digital posters — free or premium | InvitesReady</title>
     <meta
       name="description"
-      content="Design a wedding, nikah, baptism, or housewarming invitation, share one link, and collect RSVPs. Free to design. Premium templates are a one-time purchase."
+      content="Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs."
     />
     <link rel="canonical" href="https://invitesready.com/" />
     <meta name="robots" content="index, follow" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="InvitesReady" />
-    <meta property="og:title" content="InvitesReady — digital invitations your guests can open and reply to" />
+    <meta property="og:title" content="Customize digital posters — free or premium | InvitesReady" />
     <meta
       property="og:description"
-      content="Design a wedding, nikah, baptism, or housewarming invitation, share one link, and collect RSVPs. Free to design. Premium templates are a one-time purchase."
+      content="Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs."
     />
     <meta property="og:url" content="https://invitesready.com/" />
     <meta property="og:image" content="https://invitesready.com/covers/shaadi.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="InvitesReady — digital invitations your guests can open and reply to" />
+    <meta name="twitter:title" content="Customize digital posters — free or premium | InvitesReady" />
     <meta
       name="twitter:description"
-      content="Design a wedding, nikah, baptism, or housewarming invitation, share one link, and collect RSVPs. Free to design. Premium templates are a one-time purchase."
+      content="Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs."
     />
     <meta name="twitter:image" content="https://invitesready.com/covers/shaadi.jpg" />
-    <script type="application/ld+json">
+    <script id="site-jsonld" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
@@ -36,13 +38,43 @@
             "name": "InvitesReady",
             "url": "https://invitesready.com/",
             "email": "hello@invitesready.com",
-            "logo": "https://invitesready.com/favicon.svg"
+            "logo": "https://invitesready.com/brand/mark.png"
           },
           {
             "@type": "WebSite",
             "name": "InvitesReady",
             "url": "https://invitesready.com/",
             "description": "Digital invitations for weddings and other celebrations. Design one, share the link, and collect replies."
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Do my guests need an app or an account?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. Guests open your link in any browser and RSVP in one tap — it works on basic phones too." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I design before signing up?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pick a template and customise it as a guest. We only ask you to log in when you publish, and your draft comes with you." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can different guests see different functions?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Put guests into groups and choose which functions each group sees." }
+              },
+              {
+                "@type": "Question",
+                "name": "Is our family information private?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Pages can be password-protected, and the address can stay hidden until a guest says yes." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I edit after sending?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Of course — every guest sees the latest version through the same link." }
+              }
+            ]
           }
         ]
       }
@@ -55,6 +87,22 @@
     />
   </head>
   <body>
+    <noscript id="seo-fallback">
+      <h1>Invitations your guests open, answer and remember.</h1>
+      <p>Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.</p>
+      <nav>
+        <a href="/browse">Browse templates</a>
+        <a href="/how">How it works</a>
+        <a href="/features">Features</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/faq">Questions</a>
+        <a href="/occasions">Celebrations</a>
+        <a href="/c/marriage">Wedding invitations</a>
+        <a href="/c/baptism">Baptism invitations</a>
+        <a href="/c/housewarming">Housewarming invitations</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,21 +1,64 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getEvent } from "../data/events";
-import { getTemplate } from "../data/templates";
+import { getTemplate, templatesFor } from "../data/templates";
 
 export const SITE = "https://invitesready.com";
 
 const HOME_DESCRIPTION =
-  "Design a wedding, nikah, baptism, or housewarming invitation, share one link, and collect RSVPs. Free to design. Premium templates are a one-time purchase.";
+  "Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
 
-type Meta = { title: string; description: string; index: boolean };
+const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
+
+type Meta = { title: string; description: string; index: boolean; image: string };
 
 function describe(pathname: string): Meta {
   if (pathname === "/") {
     return {
-      title: "InvitesReady — digital invitations your guests can open and reply to",
+      title: "Customize digital posters — free or premium | InvitesReady",
       description: HOME_DESCRIPTION,
       index: true,
+      image: BRAND_IMAGE,
+    };
+  }
+  if (pathname === "/how") {
+    return {
+      title: "How digital invitations work | InvitesReady",
+      description: "Pick a template, add your details, and share one link. Guests open it in the browser and RSVP without an app.",
+      index: true,
+      image: BRAND_IMAGE,
+    };
+  }
+  if (pathname === "/features") {
+    return {
+      title: "Invitation features | InvitesReady",
+      description: "RSVPs, guest groups, reminders, a photo wall, and password-protected pages for wedding and family invitations.",
+      index: true,
+      image: BRAND_IMAGE,
+    };
+  }
+  if (pathname === "/pricing") {
+    return {
+      title: "Invitation pricing | InvitesReady",
+      description: "Design for free. Publish a free template at no cost, or buy a premium invitation once for your celebration.",
+      index: true,
+      image: BRAND_IMAGE,
+    };
+  }
+  if (pathname === "/faq") {
+    return {
+      title: "Invitation questions | InvitesReady",
+      description: "Guests do not need an app. You can design before you sign up, edit after sending, and keep the address private.",
+      index: true,
+      image: BRAND_IMAGE,
+    };
+  }
+  if (pathname === "/occasions") {
+    return {
+      title: "Wedding, baptism, and housewarming invitations | InvitesReady",
+      description: "Digital invitations for weddings, nikah, engagements, baptisms, birthdays, anniversaries, and housewarmings.",
+      index: true,
+      image: BRAND_IMAGE,
     };
   }
   if (pathname === "/browse" || pathname === "/templates") {
@@ -23,6 +66,7 @@ function describe(pathname: string): Meta {
       title: "Invitation templates | InvitesReady",
       description: "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy.",
       index: true,
+      image: BRAND_IMAGE,
     };
   }
   if (pathname === "/privacy") {
@@ -30,6 +74,7 @@ function describe(pathname: string): Meta {
       title: "Privacy policy | InvitesReady",
       description: "How InvitesReady collects, uses, and stores account details, invitation content, guest replies, and payments.",
       index: true,
+      image: BRAND_IMAGE,
     };
   }
   if (pathname === "/terms") {
@@ -37,6 +82,7 @@ function describe(pathname: string): Meta {
       title: "Terms of use | InvitesReady",
       description: "The terms for creating an account, designing an invitation, and buying a template on InvitesReady.",
       index: true,
+      image: BRAND_IMAGE,
     };
   }
   if (pathname === "/refunds") {
@@ -44,6 +90,7 @@ function describe(pathname: string): Meta {
       title: "Refunds | InvitesReady",
       description: "When a one-time InvitesReady template purchase can be refunded, and how to ask.",
       index: true,
+      image: BRAND_IMAGE,
     };
   }
   if (pathname === "/contact") {
@@ -51,6 +98,7 @@ function describe(pathname: string): Meta {
       title: "Contact | InvitesReady",
       description: "Contact InvitesReady about your account, a template purchase, or a published invitation.",
       index: true,
+      image: BRAND_IMAGE,
     };
   }
 
@@ -64,6 +112,7 @@ function describe(pathname: string): Meta {
           ? `Preview the ${template.name} invitation. This design is free to publish.`
           : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`,
         index: true,
+        image: `${SITE}/covers/${template.id}.jpg`,
       };
     }
   }
@@ -71,11 +120,12 @@ function describe(pathname: string): Meta {
   const category = pathname.match(/^\/c\/([^/]+)$/);
   if (category) {
     const event = getEvent(category[1]);
-    if (event.id === category[1]) {
+    if (event.id === category[1] && templatesFor(event.id).length > 0) {
       return {
         title: `${event.label} invitations | InvitesReady`,
         description: `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
         index: true,
+        image: BRAND_IMAGE,
       };
     }
   }
@@ -84,6 +134,7 @@ function describe(pathname: string): Meta {
     title: "InvitesReady",
     description: HOME_DESCRIPTION,
     index: false,
+    image: BRAND_IMAGE,
   };
 }
 
@@ -122,11 +173,13 @@ export function PageMeta() {
     setMeta("og:url", url, "property");
     setMeta("og:type", "website", "property");
     setMeta("og:site_name", "InvitesReady", "property");
-    setMeta("og:image", `${SITE}/covers/shaadi.jpg`, "property");
+    setMeta("og:image", meta.image, "property");
+    setMeta("og:image:alt", meta.title, "property");
     setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", meta.title);
     setMeta("twitter:description", meta.description);
-    setMeta("twitter:image", `${SITE}/covers/shaadi.jpg`);
+    setMeta("twitter:image", meta.image);
+    setMeta("twitter:image:alt", meta.title);
   }, [pathname]);
 
   return null;

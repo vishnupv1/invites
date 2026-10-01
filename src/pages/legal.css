@@ -2,8 +2,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #faf7f2;
-  color: #211c1e;
+  background: #fbf8f5;
+  color: #2a1527;
   font-family: Manrope, "Helvetica Neue", sans-serif;
 }
 
@@ -18,14 +18,14 @@
 
 .legal-bar {
   background: #fff;
-  border-bottom: 1px solid #e8dfd6;
+  border-bottom: 1px solid #ebe2dd;
 }
 
 .legal-bar > a {
   font-family: Fraunces, Georgia, serif;
   font-size: 22px;
   font-weight: 600;
-  color: #211c1e;
+  color: #2a1527;
 }
 
 .legal-bar nav,
@@ -37,7 +37,7 @@
   font-weight: 700;
 }
 
-.legal a { color: #6b3a5b; }
+.legal a { color: #d81b60; }
 
 .legal main {
   width: min(760px, calc(100% - 40px));
@@ -54,7 +54,7 @@
   line-height: 1.05;
 }
 
-.legal-lede { margin: 0 0 28px; color: #716a6d; font-size: 17px; line-height: 1.5; }
+.legal-lede { margin: 0 0 28px; color: #6b5a62; font-size: 17px; line-height: 1.5; }
 
 .legal h2 {
   margin: 28px 0 8px;
@@ -69,7 +69,7 @@
 
 .legal footer {
   margin-top: auto;
-  background: #211c1e;
+  background: #2a1527;
   color: #cfc7ca;
 }
 

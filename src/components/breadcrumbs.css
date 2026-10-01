@@ -10,12 +10,12 @@
   font-family: Manrope, "Helvetica Neue", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #716a6d;
+  color: #6b5a62;
 }
 .crumbs li { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .crumbs a,
 .crumbs button {
-  color: #6b3a5b;
+  color: #d81b60;
   text-decoration: none;
   background: none;
   border: none;
@@ -27,7 +27,7 @@
 .crumbs a:hover,
 .crumbs button:hover { text-decoration: underline; }
 .crumbs [aria-current="page"] {
-  color: #211c1e;
+  color: #2a1527;
   font-weight: 700;
   max-width: 36ch;
   overflow: hidden;

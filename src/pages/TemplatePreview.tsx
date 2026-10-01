@@ -206,7 +206,7 @@ export function TemplatePreview() {
       <header className="pv-head">
         <div className="pv-id">
           <Link className="pv-back" to="/templates">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
             All templates
@@ -225,7 +225,7 @@ export function TemplatePreview() {
             </svg>
           </button>
           <button type="button" className="pv-share" onClick={share}>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="18" cy="5" r="3" />
               <circle cx="6" cy="12" r="3" />
               <circle cx="18" cy="19" r="3" />
@@ -581,7 +581,7 @@ export function TemplatePreview() {
               {similar.map((item) => (
                   <Link key={item.id} to={`/preview/${item.id}`}>
                     <div className="pv-like-shot">
-                      <img src={`/covers/${item.id}.jpg`} alt="" />
+                      <img src={`/covers/${item.id}.jpg`} alt={`${item.name} invitation`} />
                     </div>
                     <div className="pv-like-meta">
                       <strong>{item.name}</strong>

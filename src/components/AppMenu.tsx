@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { AccountMenu } from "./AccountMenu";
+import { Brand } from "./Brand";
 import "../pages/studio.css";
 
 const NAV = [
@@ -18,23 +19,13 @@ export function AppMenu({ current, name, signedIn }: { current: string; name: st
   return (
     <>
       <aside className="side">
-        <Link className="brand" to="/">
-          <svg width="34" height="34" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-            <rect x="3" y="8" width="28" height="21" rx="4" stroke="#FFFFFF" strokeWidth="2.4" />
-            <path d="M4 11l13 9 13-9" stroke="#FFFFFF" strokeWidth="2.4" strokeLinejoin="round" />
-            <circle cx="29" cy="27" r="7.5" fill="#C89B5B" />
-            <path d="M25.5 27l2.4 2.4 4.4-4.6" stroke="#4A263E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span>
-            Invites<em>Ready</em>
-          </span>
-        </Link>
+        <Brand light />
         <nav aria-label="Main">
           {NAV.map((item) => {
             const on = item.href === current;
             return (
               <Link key={item.label} className={on ? "nav-item on" : "nav-item"} to={item.href} aria-current={on ? "page" : undefined}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={on ? "#211C1E" : "#E3D3DC"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={on ? "#2A1527" : "#F3BBCF"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d={item.icon} />
                 </svg>
                 <span>{item.label}</span>

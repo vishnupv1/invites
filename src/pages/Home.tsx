@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { Brand } from "../components/Brand";
+import { EVENTS } from "../data/events";
+import { templatesFor } from "../data/templates";
 import "./landing.css";
 
 const WORDS = ["Invitations", "your", "guests", "open,", "answer", "and"];
 const OCCASIONS = ["Weddings", "Nikah", "Engagements", "Baptisms", "Birthdays", "Housewarmings", "Anniversaries", "Receptions", "Naming ceremonies", "Festivals"];
-const PETAL_COLORS = ["#E8A0A8", "#F2C6CB", "#C89B5B", "#EADCE4"];
+const PETAL_COLORS = ["#F23F78", "#FF7380", "#D81B60", "#FCEFF4"];
 const REPLIES = ["Vishnu's family · 4 guests", "Priya & Vivek · 2 guests", "Joseph Mathew · 3 guests", "Fathima & Arif · 2 guests"];
 const QR = [1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1];
-const CONFETTI = ["#C89B5B", "#F2DDB0", "#E8A0A8", "#FFFFFF", "#9FD3C4"];
+const CONFETTI = ["#D81B60", "#F23F78", "#FF7380", "#FFFFFF", "#FCEFF4"];
 
 const PHONES = [
   {
@@ -111,9 +114,9 @@ const TEMPLATES = [
 ];
 
 const BARS = [
-  ["Mehendi · 118 / 150", 79, "#C89B5B"],
-  ["Wedding · 186 / 320", 58, "#6B3A5B"],
-  ["Reception · 204 / 300", 68, "#6F8B74"],
+  ["Mehendi · 118 / 150", 79, "#F23F78"],
+  ["Wedding · 186 / 320", 58, "#D81B60"],
+  ["Reception · 204 / 300", 68, "#2E8B57"],
 ] as const;
 
 const PLANS = [
@@ -130,6 +133,14 @@ const FAQS = [
   ["Can I edit after sending?", "Of course — every guest sees the latest version through the same link."],
 ] as const;
 
+const NAV = [
+  { href: "/browse", label: "Templates" },
+  { href: "/how", label: "How it works" },
+  { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/faq", label: "FAQ" },
+];
+
 function useNarrow() {
   const [narrow, setNarrow] = useState(false);
   useEffect(() => {
@@ -142,22 +153,9 @@ function useNarrow() {
   return narrow;
 }
 
-function Logo({ light = false }: { light?: boolean }) {
-  const ring = light ? "#FAF7F2" : "#6B3A5B";
-  return (
-    <Link className="lp-logo" to="/" aria-label="invitesready.com">
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-        <circle cx="18" cy="19" r="14" stroke={ring} strokeWidth="2.6" />
-        <circle cx="18" cy="19" r="8" stroke="#C89B5B" strokeWidth="2.4" />
-        <circle cx="18" cy="4" r="2.6" fill={ring} />
-      </svg>
-      <span>invitesready.com</span>
-    </Link>
-  );
-}
-
-export function Home() {
+export function Home({ focus }: { focus?: string }) {
   const narrow = useNarrow();
+  const { hash } = useLocation();
   const tplRow = useRef<HTMLDivElement>(null);
   const tplDragged = useRef(false);
   const [tick, setTick] = useState(0);
@@ -167,6 +165,12 @@ export function Home() {
   const [faq, setFaq] = useState(0);
   const [burst, setBurst] = useState(0);
   const [menu, setMenu] = useState(false);
+
+  useEffect(() => {
+    const id = focus || hash.replace(/^#/, "");
+    if (!id) return;
+    document.getElementById(id)?.scrollIntoView();
+  }, [focus, hash]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -321,13 +325,13 @@ export function Home() {
   return (
     <div className="lp">
       <header className="lp-nav">
-        <Logo />
+        <Brand />
         <nav className="lp-links" aria-label="Main">
-          <a href="#templates">Templates</a>
-          <a href="#how">How it works</a>
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#faq">FAQ</a>
+          {NAV.map((item) => (
+            <Link key={item.href} to={item.href}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
         <div className="lp-nav-actions">
           <Link className="lp-login" to="/login">
@@ -339,11 +343,11 @@ export function Home() {
         </div>
         <button type="button" className="lp-burger" aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} onClick={() => setMenu((open) => !open)}>
           {menu ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
               <path d="M4 7h16M4 12h16M4 17h10" />
             </svg>
           )}
@@ -351,10 +355,11 @@ export function Home() {
       </header>
       {menu ? (
         <nav className="lp-menu" aria-label="Menu">
-          <a href="#templates" onClick={closeMenu}>Templates</a>
-          <a href="#how" onClick={closeMenu}>How it works</a>
-          <a href="#features" onClick={closeMenu}>Features</a>
-          <a href="#pricing" onClick={closeMenu}>Pricing</a>
+          {NAV.map((item) => (
+            <Link key={item.href} to={item.href} onClick={closeMenu}>
+              {item.label}
+            </Link>
+          ))}
           <Link to="/login" onClick={closeMenu}>Log in</Link>
           <Link className="lp-create" to="/create" onClick={closeMenu}>
             Create invite — free
@@ -362,10 +367,11 @@ export function Home() {
         </nav>
       ) : null}
 
+      <main>
       <section
         id="top"
         className="lp-hero"
-        style={{ background: `radial-gradient(${narrow ? 360 : 600}px circle at ${spot.x}% ${spot.y}%, rgba(200,155,91,0.22), rgba(250,247,242,0) 70%), #FAF7F2` }}
+        style={{ background: `radial-gradient(${narrow ? 360 : 600}px circle at ${spot.x}% ${spot.y}%, rgba(216,27,96,0.16), rgba(251,248,245,0) 70%), #FBF8F5` }}
         onMouseMove={(event) => {
           const box = event.currentTarget.getBoundingClientRect();
           setSpot({ x: Math.round(((event.clientX - box.left) / box.width) * 100), y: Math.round(((event.clientY - box.top) / box.height) * 100) });
@@ -386,7 +392,7 @@ export function Home() {
           </span>
         ))}
         <svg className="lp-mandala" width="760" height="760" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-          <g stroke="#C89B5B" strokeWidth="0.4">
+          <g stroke="#F23F78" strokeWidth="0.4">
             <circle cx="100" cy="100" r="96" />
             <circle cx="100" cy="100" r="70" />
             <circle cx="100" cy="100" r="40" />
@@ -411,7 +417,7 @@ export function Home() {
               <span className="lp-remember">
                 remember.
                 <svg viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M4 12C60 4 120 16 180 8s90 4 112 2" stroke="#C89B5B" strokeWidth="4" strokeLinecap="round" fill="none" />
+                  <path d="M4 12C60 4 120 16 180 8s90 4 112 2" stroke="#D81B60" strokeWidth="4" strokeLinecap="round" fill="none" />
                 </svg>
               </span>
             </span>
@@ -533,6 +539,18 @@ export function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section id="occasions" className="lp-occasions">
+        <span className="lp-kicker-label">Celebrations</span>
+        <h2>An invitation for every celebration.</h2>
+        <nav aria-label="Celebrations">
+          {EVENTS.filter((event) => templatesFor(event.id).length > 0).map((event) => (
+            <Link key={event.id} to={`/c/${event.id}`}>
+              {event.cardLabel}
+            </Link>
+          ))}
+        </nav>
       </section>
 
       <section id="how" className="lp-how">
@@ -699,9 +717,9 @@ export function Home() {
             <h3>{narrow ? "Private" : "Private by default"}</h3>
             <p>{narrow ? "Address after a yes." : "Address shown only after a guest says yes."}</p>
             <svg className="lp-lock" width="80" height="96" viewBox="0 0 80 96" aria-hidden="true">
-              <path d="M20 44V30a20 20 0 0 1 40 0v14" stroke="#6B3A5B" strokeWidth="7" fill="none" strokeLinecap="round" />
-              <rect x="8" y="42" width="64" height="50" rx="12" fill="#6B3A5B" />
-              <circle cx="40" cy="64" r="7" fill="#C89B5B" />
+              <path d="M20 44V30a20 20 0 0 1 40 0v14" stroke="#D81B60" strokeWidth="7" fill="none" strokeLinecap="round" />
+              <rect x="8" y="42" width="64" height="50" rx="12" fill="#D81B60" />
+              <circle cx="40" cy="64" r="7" fill="#F23F78" />
             </svg>
           </article>
           <article className="lp-tile paper lp-order-fns">
@@ -736,7 +754,7 @@ export function Home() {
             </div>
             <div className="lp-eq" aria-hidden="true">
               {Array.from({ length: 14 }, (_, i) => (
-                <i key={i} style={{ background: i % 2 ? "#C89B5B" : "#6B3A5B", animationDuration: `${0.7 + (i % 5) * 0.15}s`, animationDelay: `${i * 0.08}s` }} />
+                <i key={i} style={{ background: i % 2 ? "#F23F78" : "#D81B60", animationDuration: `${0.7 + (i % 5) * 0.15}s`, animationDelay: `${i * 0.08}s` }} />
               ))}
             </div>
           </article>
@@ -787,7 +805,7 @@ export function Home() {
                   <span>{question}</span>
                   <i className={open ? "on" : ""}>+</i>
                 </button>
-                {open ? <p>{answer}</p> : null}
+                <p hidden={!open}>{answer}</p>
               </div>
             );
           })}
@@ -845,12 +863,14 @@ export function Home() {
           </Link>
         </div>
       </section>
+      </main>
 
       <footer className="lp-foot">
-        <Logo light />
+        <Brand light />
         <nav aria-label="Footer">
           <Link to="/browse">Templates</Link>
-          <a href="#pricing">Pricing</a>
+          <Link to="/pricing">Pricing</Link>
+          <Link to="/faq">FAQ</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
           <Link to="/refunds">Refunds</Link>

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { AdminLogin } from "./AdminLogin";
 import { adminSummary, getToken, signOut, type AdminSummary } from "../api";
+import { Brand } from "../components/Brand";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { EVENTS } from "../data/events";
 import { TEMPLATES } from "../data/templates";
@@ -38,7 +39,7 @@ const SUBS: Record<Section, string> = {
   More: "Purchases and this console.",
 };
 
-const COLORS = ["#4A263E", "#C89B5B", "#6F8B74", "#C45B63", "#6B3A5B", "#2F4858"];
+const COLORS = ["#2A1527", "#F23F78", "#2E8B57", "#C8392B", "#D81B60", "#8E1550"];
 
 function initials(name: string) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
@@ -132,32 +133,20 @@ export function Admin() {
     <div className="console">
       <header className="adm-bar">
         <div>
-          <span>
-            Invites<em>Ready</em>
-          </span>
+          <img className="brand-name" src="/brand/wordmark-light.png" alt="InvitesReady" />
           <span className="adm-badge">Admin</span>
         </div>
         <div className="adm-avatar" aria-hidden="true">{initials(data.admin.name)}</div>
       </header>
       <aside className="console-side">
         <Link className="console-brand" to="/">
-          <div>
-            <svg width="30" height="30" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-              <rect x="3" y="8" width="28" height="21" rx="4" stroke="#FFFFFF" strokeWidth="2.4" />
-              <path d="M4 11l13 9 13-9" stroke="#FFFFFF" strokeWidth="2.4" strokeLinejoin="round" />
-              <circle cx="29" cy="27" r="7.5" fill="#C89B5B" />
-              <path d="M25.5 27l2.4 2.4 4.4-4.6" stroke="#211C1E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span>
-              Invites<em>Ready</em>
-            </span>
-          </div>
+          <Brand light linked={false} />
           <span className="console-tag">Admin console</span>
         </Link>
         <nav aria-label="Admin">
           {SECTIONS.map((label) => (
             <button key={label} type="button" className={section === label ? "console-nav on" : "console-nav"} aria-current={section === label ? "page" : undefined} onClick={() => setSection(label)}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={section === label ? "#211C1E" : "#CFC7CA"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={section === label ? "#2A1527" : "#F3BBCF"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d={ICONS[label]} />
               </svg>
               <span>{label}</span>
@@ -165,7 +154,7 @@ export function Admin() {
           ))}
         </nav>
         <div className="console-account">
-          <div className="avatar" style={{ background: "#6B3A5B", color: "#fff" }}>{initials(data.admin.name)}</div>
+          <div className="avatar" style={{ background: "#D81B60", color: "#fff" }}>{initials(data.admin.name)}</div>
           <div style={{ flexGrow: 1 }}>
             <strong>{data.admin.name}</strong>
             <small>Admin</small>

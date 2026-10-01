@@ -1,0 +1,24 @@
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+  line-height: 0;
+}
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+.brand-name {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .site-brand { gap: 8px; }
+  .brand-mark { width: 32px; height: 32px; }
+  .brand-name { height: 22px; }
+}

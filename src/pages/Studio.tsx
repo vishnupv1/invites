@@ -8,6 +8,7 @@ import { formatPrice } from "../data/templates";
 import { formatShortDate } from "../lib/dates";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
+import { Brand } from "../components/Brand";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { SavedInvite, Template } from "../types";
 import "./studio.css";
@@ -24,7 +25,7 @@ const NAV = [
   { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
 ];
 
-const AVATARS = ["#6B3A5B", "#C89B5B", "#6F8B74", "#4A263E", "#8A5A7A"];
+const AVATARS = ["#D81B60", "#F23F78", "#2E8B57", "#8E1550", "#FF7380"];
 
 function initialsOf(name: string) {
   return name
@@ -190,17 +191,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
   return (
     <div className={view === "dashboard" ? "board dv-board" : "board"}>
       <aside className="side">
-        <Link className="brand" to="/">
-          <svg width="34" height="34" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-            <rect x="3" y="8" width="28" height="21" rx="4" stroke="#FFFFFF" strokeWidth="2.4" />
-            <path d="M4 11l13 9 13-9" stroke="#FFFFFF" strokeWidth="2.4" strokeLinejoin="round" />
-            <circle cx="29" cy="27" r="7.5" fill="#C89B5B" />
-            <path d="M25.5 27l2.4 2.4 4.4-4.6" stroke="#4A263E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span>
-            Invites<em>Ready</em>
-          </span>
-        </Link>
+        <Brand light />
         {view === "dashboard" && signedIn && invites.length > 0 ? (
           <EventSwitcher
             variant="side"
@@ -218,7 +209,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
             const current = pathname === item.href;
             return (
               <Link key={item.label} className={current ? "nav-item on" : "nav-item"} to={item.href} aria-current={current ? "page" : undefined}>
-                <Icon d={item.icon} color={current ? "#211C1E" : "#E3D3DC"} />
+                <Icon d={item.icon} color={current ? "#2A1527" : "#F3BBCF"} />
                 <span>{item.label}</span>
                 {item.label === "Guests" && view === "dashboard" && replies.length > 0 ? <span className="badge">{replies.length}</span> : null}
               </Link>
@@ -250,9 +241,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
               onPick={pickEvent}
             />
           ) : (
-            <Link className="brand" to="/">
-              Invites
-            </Link>
+            <Brand />
           )}
           <Link className="dv-plus" to="/templates" aria-label="Create invite">
             +
