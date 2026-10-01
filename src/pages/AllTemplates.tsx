@@ -67,9 +67,11 @@ function look(id: string) {
   return LOOK[id] ?? { styles: [] as StyleTag[], pop: 0, added: 0, tags: "", swatches: ["#FBF8F5", "#D81B60", "#2A1527"] };
 }
 
-function useHref(template: Template) {
-  const event = template.events[0];
-  return template.free ? `/create/${template.id}?event=${event}` : `/template/${template.id}?event=${event}`;
+function useHref(template: Template, occasion: string) {
+  const event = occasion !== "all" && template.events.includes(occasion as Template["events"][number])
+    ? occasion
+    : template.events[0];
+  return `/create?template=${template.id}&event=${event}`;
 }
 
 export function AllTemplates() {
@@ -431,7 +433,7 @@ export function AllTemplates() {
                       <span className="cat-line mob">{formatPrice(template)} · {first}</span>
                       <div className="cat-actions">
                         <button type="button" onClick={() => setPreviewId(template.id)}>Preview</button>
-                        <Link to={useHref(template)}>Use</Link>
+                        <Link to={useHref(template, occasion)}>Use</Link>
                       </div>
                     </div>
                   </article>
@@ -542,7 +544,7 @@ export function AllTemplates() {
                 <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span>
               </div>
               <div className="cat-modal-actions">
-                <Link to={useHref(preview)}>Use this template</Link>
+                <Link to={useHref(preview, occasion)}>Use this template</Link>
                 <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
               </div>
             </div>

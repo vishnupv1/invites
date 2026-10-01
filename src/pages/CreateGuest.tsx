@@ -75,12 +75,16 @@ function palettesFor(template: { meta?: { themes: { id: string }[]; defaultTheme
 export function CreateGuest() {
   const [params, setParams] = useSearchParams();
   const requested = TEMPLATES.find((item) => item.id === params.get("template"));
+  const requestedEvent = params.get("event");
+  const startEvent = requested && requestedEvent && requested.events.includes(requestedEvent as EventId)
+    ? requestedEvent as EventId
+    : requested?.events[0];
   const saved = useMemo(loadDraft, []);
   const library = useLibrary();
   const [events, setEvents] = useState(EVENTS);
   const [templates, setTemplates] = useState(TEMPLATES);
   const [step, setStep] = useState<1 | 2 | 3 | 4>(requested ? 3 : saved.step === 1 || saved.step === 2 || saved.step === 3 ? saved.step : 1);
-  const [eventId, setEventId] = useState<EventId>(requested?.events[0] ?? (saved.event && EVENTS.some((item) => item.id === saved.event) ? saved.event : "marriage"));
+  const [eventId, setEventId] = useState<EventId>(startEvent ?? (saved.event && EVENTS.some((item) => item.id === saved.event) ? saved.event : "marriage"));
   const [templateId, setTemplateId] = useState(requested?.id || saved.templateId || "gazal");
   const [price, setPrice] = useState<PriceFilter>(saved.price || "All");
   const [swatch, setSwatch] = useState(requested ? requested.meta.defaultTheme || palettesFor(requested)[0] || "" : saved.swatch || "terracotta");
@@ -126,11 +130,12 @@ export function CreateGuest() {
   }, []);
 
   useEffect(() => {
-    if (!params.get("template")) return;
+    if (!params.get("template") && !params.get("event")) return;
     setParams((current) => {
-      if (!current.get("template")) return current;
+      if (!current.get("template") && !current.get("event")) return current;
       const next = new URLSearchParams(current);
       next.delete("template");
+      next.delete("event");
       return next;
     }, { replace: true });
   }, [params, setParams]);
