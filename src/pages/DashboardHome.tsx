@@ -6,6 +6,7 @@ import { getEvent } from "../data/events";
 import { getTemplate } from "../data/templates";
 import { formatShortDate, formatTime } from "../lib/dates";
 import type { SavedInvite } from "../types";
+import { useFonts } from "../lib/fonts";
 
 export type DashGreeting = { id: string; name: string; note: string; attending: boolean; at: string };
 type GuestFilter = "all" | "attending" | "declined";
@@ -249,6 +250,7 @@ export function DashboardHome({
   replies: DashGreeting[];
   onToast: (message: string) => void;
 }) {
+  useFonts("Allura");
   const [filter, setFilter] = useState<GuestFilter>("all");
   const [query, setQuery] = useState("");
   const [section, setSection] = useState<Section>("guests");

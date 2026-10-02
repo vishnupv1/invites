@@ -6,6 +6,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./thiruvizha.css";
 
 export type ThiruvizhaTheme = "rani" | "ivory" | "emerald";
@@ -268,6 +269,7 @@ export function ThiruvizhaInvite({
   wishes?: Wish[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
 }) {
+  useFonts("Cinzel", "Noto Sans Tamil", "Noto Serif Tamil", "Playfair Display");
   const pack = packOf("thiruvizha", fields.lines);
   const people = peopleOf(fields.names);
   const tamilPeople = peopleOf(fields.detail);

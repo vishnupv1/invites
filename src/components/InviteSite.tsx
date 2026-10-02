@@ -17,6 +17,7 @@ import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { useFonts } from "../lib/fonts";
 
 type Reply = { name: string; note: string; attending: boolean };
 
@@ -319,6 +320,7 @@ export function InviteSite({
   wishes?: GazalWish[];
   swatch?: string;
 }) {
+  useFonts("Pinyon Script");
   if (template.style === "gazal") {
     return <GazalInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }

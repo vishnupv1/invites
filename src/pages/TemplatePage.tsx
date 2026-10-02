@@ -21,6 +21,7 @@ import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
+import { useFonts } from "../lib/fonts";
 import "./purchase.css";
 
 const TONES: Record<string, { cover: string; dot: string }> = {
@@ -67,6 +68,7 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
 }
 
 export function TemplatePage() {
+  useFonts("Noto Sans Tamil");
   const { id } = useParams();
   const [params] = useSearchParams();
   const template = getTemplate(id);

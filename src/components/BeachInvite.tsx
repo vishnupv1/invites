@@ -7,6 +7,7 @@ import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./beach.css";
 
 export type BeachTheme = "sunset" | "tropical" | "dusk";
@@ -180,6 +181,7 @@ export function BeachInvite({
   wishes?: { name: string; note: string }[];
   onReply?: (reply: Reply) => void;
 }) {
+  useFonts("Allura", "DM Sans", "Playfair Display");
   const nameId = useId();
   const wishId = useId();
   const audioRef = useRef<HTMLAudioElement>(null);

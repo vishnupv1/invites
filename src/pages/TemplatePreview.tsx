@@ -18,6 +18,7 @@ import { eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/te
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, Template } from "../types";
+import { useFonts } from "../lib/fonts";
 import "./preview.css";
 
 const FAVS = "invitesready.template-favs.v1";
@@ -94,6 +95,7 @@ function extras(template: Template) {
 }
 
 export function TemplatePreview() {
+  useFonts("Noto Sans Malayalam");
   const { id } = useParams();
   const { owns } = useLibrary();
   const [template, setTemplate] = useState<Template | null>(null);

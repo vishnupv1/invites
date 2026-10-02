@@ -12,6 +12,7 @@ import { AureliaInvite } from "./AureliaInvite";
 import { GazalInvite } from "./GazalInvite";
 import { getEvent } from "../data/events";
 import { formatLongDate, formatTime } from "../lib/dates";
+import { useFonts } from "../lib/fonts";
 import { InstagramLink } from "./InstagramLink";
 
 function Occasion({ fields, script }: { fields: InviteFields; script?: boolean }) {
@@ -54,6 +55,7 @@ function Where({ fields }: { fields: InviteFields }) {
 }
 
 function Garden({ fields }: { fields: InviteFields }) {
+  useFonts("Pinyon Script");
   return (
     <article className="card garden">
       <svg className="sprig left" viewBox="0 0 80 80" aria-hidden="true">

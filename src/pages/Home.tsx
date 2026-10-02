@@ -4,6 +4,7 @@ import { Check, CheckCheck, HandHeart, Lamp, Mail, PartyPopper, Pencil, Sparkle 
 import { Brand } from "../components/Brand";
 import { EVENTS } from "../data/events";
 import { templatesFor } from "../data/templates";
+import { useFonts } from "../lib/fonts";
 import "./landing.css";
 
 const WORDS = ["Invitations", "your", "guests", "open,", "answer", "and"];
@@ -155,6 +156,7 @@ function useNarrow() {
 }
 
 export function Home({ focus }: { focus?: string }) {
+  useFonts("Alex Brush", "Allura", "Caveat", "Cormorant Garamond", "Great Vibes", "Parisienne", "Pinyon Script");
   const narrow = useNarrow();
   const { hash } = useLocation();
   const tplRow = useRef<HTMLDivElement>(null);

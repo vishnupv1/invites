@@ -10,7 +10,7 @@ const HOME_DESCRIPTION =
 
 const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
 
-type Meta = { title: string; description: string; index: boolean; image: string };
+type Meta = { title: string; description: string; index: boolean; image: string; canonical?: string };
 
 function describe(pathname: string): Meta {
   if (pathname === "/") {
@@ -113,6 +113,7 @@ function describe(pathname: string): Meta {
           : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`,
         index: true,
         image: `${SITE}/covers/${template.id}.jpg`,
+        canonical: `/template/${template.id}`,
       };
     }
   }
@@ -163,7 +164,7 @@ export function PageMeta() {
 
   useEffect(() => {
     const meta = describe(pathname);
-    const url = `${SITE}${pathname}`;
+    const url = `${SITE}${meta.canonical ?? pathname}`;
     document.title = meta.title;
     setMeta("description", meta.description);
     setMeta("robots", meta.index ? "index, follow" : "noindex, nofollow");

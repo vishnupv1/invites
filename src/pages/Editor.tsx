@@ -27,6 +27,7 @@ import { AppMenu } from "../components/AppMenu";
 import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
+import { useFonts } from "../lib/fonts";
 import "./editor.css";
 
 type Tab = "Details" | "Functions" | "Design" | "Sections" | "RSVP" | "Music";
@@ -209,6 +210,7 @@ export function Editor({
   onInvite?: (id: string) => void;
   onSummary?: (summary: { names: string; date: string; time: string; venue: string }) => void;
 } = {}) {
+  useFonts("Cormorant Garamond", "Pinyon Script");
   const { id: routeId } = useParams();
   const id = templateIdProp || routeId;
   const [params] = useSearchParams();

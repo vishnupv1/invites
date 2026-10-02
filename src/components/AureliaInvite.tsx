@@ -7,6 +7,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./aurelia.css";
 
 export type AureliaWish = { name: string; note: string };
@@ -53,6 +54,7 @@ export function AureliaInvite({
   wishes?: AureliaWish[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
 }) {
+  useFonts("Cormorant Garamond", "Pinyon Script");
   const { first, second } = coupleOf(fields.names);
   const ceremony = eventName(fields.lines, "ceremonyName", fields.title || "Wedding ceremony");
   const reception = eventName(fields.lines, "receptionName", "Reception");
