@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { assetUrl } from "../api";
-import { SkeletonGrid } from "../components/CardSkeleton";
 import { getEvent } from "../data/events";
 import { getTemplate } from "../data/templates";
 import { formatShortDate, formatTime } from "../lib/dates";
@@ -281,7 +280,7 @@ export function DashboardHome({
       </section>
     );
   }
-  if (!ready) return <SkeletonGrid count={4} />;
+  if (!ready) return <p className="dv-loading">Loading your invitations…</p>;
   if (!invite) {
     return (
       <section className="dv-empty-card">

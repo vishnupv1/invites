@@ -24,7 +24,6 @@ import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
-import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import "./editor.css";
@@ -151,7 +150,6 @@ function editorState(model: Model): EditorState {
 
 function modelFromSaved(template: Template, fields: InviteFields, editor?: EditorState | null): Model {
   const merged = { ...sampleFor(template, fields.event), ...fields };
-  if (template.id === "peace" && merged.detail === "Priya & Vivek") merged.detail = "Our guest";
   const base = sectionsFor(template, merged);
   const saved = new Map((editor?.sections ?? []).map((item) => [item.id, item.on]));
   return {
@@ -237,7 +235,6 @@ export function Editor({
   const [device, setDevice] = useState<"phone" | "desktop">("phone");
   const [expanded, setExpanded] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
-  const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
@@ -447,7 +444,7 @@ export function Editor({
 
   if (!template) return embedded ? null : <Navigate to="/" replace />;
   if (!embedded && !owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
-  if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
+  if (!model) return <div className="ed-root"><p className="ed-save">Opening your invitation…</p></div>;
 
   const draft = model.draft;
   const event = getEvent(draft.event);
@@ -672,7 +669,6 @@ export function Editor({
       setError("Add the names and a date before publishing.");
       return;
     }
-    setPubPhase("loading");
     try {
       await ensureHost();
       dirtyRef.current = true;
@@ -692,16 +688,11 @@ export function Editor({
       codeRef.current = saved.code;
       remember(saved);
       setError("");
-      setSaveLabel("Saved");
-      setPubPhase("done");
-      await hold();
       setLink(`${window.location.origin}/i/${saved.code}`);
       setShowQr(false);
       setSaveLabel("Saved");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not publish.");
-    } finally {
-      setPubPhase("idle");
     }
   }
 
@@ -725,7 +716,7 @@ export function Editor({
           <div>
             <div className="ed-title">{title}</div>
             <div className="ed-save">
-              {saveLabel === "Saving…" || saveLabel.startsWith("Opening") ? <Spinner /> : <span className="ed-dot" />}
+              <span className={saveLabel === "Saving…" || saveLabel.startsWith("Opening") ? "ed-dot busy" : "ed-dot"} />
               {saveLabel}
             </div>
           </div>
@@ -1026,7 +1017,6 @@ export function Editor({
                     <input className="ed-input" value={placeQuery} placeholder="Search a venue or address" onChange={(change) => setPlaceQuery(change.target.value)} />
                     <button
                       type="button"
-                      aria-busy={searching || undefined}
                       onClick={async () => {
                         if (!placeQuery.trim()) return;
                         setSearching(true);
@@ -1039,8 +1029,7 @@ export function Editor({
                         }
                       }}
                     >
-                      {searching ? <Spinner /> : "Search"}
-                      {searching ? <span className="spin-sr">Searching</span> : null}
+                      {searching ? "Searching" : "Search"}
                     </button>
                   </div>
                   <ul className="ed-places">
@@ -1333,7 +1322,7 @@ export function Editor({
                 <h2>{link ? "Your invitation is live" : "Publish your invitation"}</h2>
                 <p className="ed-lead">{link ? "Share it with your guests now." : "Publish when the preview looks right."}</p>
               </div>
-              <button type="button" className="ed-x" aria-label="Close" onClick={() => { setPublishOpen(false); setPubPhase("idle"); }}>
+              <button type="button" className="ed-x" aria-label="Close" onClick={() => setPublishOpen(false)}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
@@ -1366,7 +1355,7 @@ export function Editor({
                 <Link className="ed-studio" to="/guests">Go to guest list</Link>
               </div>
             ) : (
-              <SmartButton className="ed-go" phase={pubPhase} idle="Publish invite" onClick={() => void publish()} />
+              <button type="button" className="ed-go" onClick={() => void publish()}>Publish</button>
             )}
           </div>
         </div>

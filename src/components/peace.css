@@ -138,17 +138,7 @@
   animation: pc-up 0.9s ease both;
 }
 .pc-kick { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: var(--sub); }
-.pc-guest,
-.pc-script,
-.pc-hero-name {
-  display: block;
-  width: max-content;
-  box-sizing: border-box;
-  line-height: 1;
-  padding: 0.42em 0.78em 0.52em 0.95em;
-  margin: 0;
-}
-.pc-guest { font-family: "Monsieur La Doulaise", cursive; font-size: 56px; }
+.pc-guest { font-family: "Monsieur La Doulaise", cursive; font-size: 56px; line-height: 1.1; padding: 0 10px; }
 .pc-rays {
   position: absolute;
   left: 50%;
@@ -301,13 +291,6 @@
 .pc-card-kick { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #7a6468; }
 .pc.is-open .pc-card-kick { animation: pc-up 0.7s ease 2.8s both; }
 .pc-script { font-family: "Monsieur La Doulaise", cursive; font-size: 70px; line-height: 1; padding: 0 16px; clip-path: inset(0 100% 0 0); }
-.pc-card-kick { max-width: 100%; font-size: 10px; letter-spacing: 0.18em; line-height: 1.45; text-transform: uppercase; color: #7a6468; }
-.pc.is-open .pc-card-kick { animation: pc-up 0.7s ease 2.8s both; }
-.pc-script {
-  font-family: "Monsieur La Doulaise", cursive;
-  font-size: 64px;
-  clip-path: inset(-80% 140% -80% -80%);
-}
 .pc.is-open .pc-script.one { animation: pc-wipe 1.2s ease-out 3s forwards, pc-foil 4s linear infinite; }
 .pc.is-open .pc-script.two { animation: pc-wipe 1.2s ease-out 3.7s forwards, pc-foil 4s linear infinite; }
 .pc-amp { font-family: "Bodoni Moda", serif; font-style: italic; font-size: 22px; color: #b8893f; }
@@ -367,12 +350,7 @@
 .pc-music.on .pc-eq:nth-child(4) { animation-duration: 1.15s; animation-delay: 0.3s; }
 
 .pc-hero { position: relative; overflow: hidden; height: 860px; background: var(--hero); }
-.pc-hero-name {
-  font-family: "Monsieur La Doulaise", cursive;
-  font-size: min(88px, 22cqi);
-  clip-path: inset(-80% 140% -80% -80%);
-  animation: pc-wipe 1.4s ease-out forwards, pc-foil 4s linear infinite;
-}
+.pc-hero-name { font-family: "Monsieur La Doulaise", cursive; font-size: 96px; line-height: 1; padding: 0 24px; clip-path: inset(0 100% 0 0); animation: pc-wipe 1.4s ease-out forwards, pc-foil 4s linear infinite; }
 .pc-hero-name.one { animation-delay: 0.8s, 0s; }
 .pc-hero-name.two { animation-delay: 1.7s, 0s; }
 .pc-hero-amp { font-family: "Bodoni Moda", serif; font-style: italic; font-size: 26px; color: var(--accent); animation: pc-up 0.6s ease 1.5s both; }

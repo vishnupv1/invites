@@ -2,7 +2,6 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { formatPrice } from "../data/templates";
-import { Spinner } from "./Loader";
 import { trackEvent } from "../lib/analytics";
 import { useSession } from "../session";
 import type { Template } from "../types";
@@ -169,9 +168,8 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
               autoComplete="off"
               placeholder="Enter a code"
             />
-            <button type="button" className="ghost" onClick={() => void applyCoupon()} disabled={checking} aria-busy={checking || undefined}>
-              {checking ? <Spinner /> : "Apply"}
-              {checking ? <span className="spin-sr">Checking</span> : null}
+            <button type="button" className="ghost" onClick={() => void applyCoupon()} disabled={checking}>
+              {checking ? "Checking…" : "Apply"}
             </button>
           </span>
         </label>
@@ -198,9 +196,8 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
           <button type="button" className="ghost" onClick={onClose} disabled={submitting}>
             Cancel
           </button>
-          <button type="submit" className="solid" disabled={submitting} aria-busy={submitting || undefined}>
-            {submitting ? <Spinner tone="paper" /> : applied ? "Unlock template" : `Pay ${formatPrice(template)} with Razorpay`}
-            {submitting ? <span className="spin-sr">Paying</span> : null}
+          <button type="submit" className="solid" disabled={submitting}>
+            {submitting ? "Please wait…" : applied ? "Unlock template" : `Pay ${formatPrice(template)} with Razorpay`}
           </button>
         </div>
       </form>

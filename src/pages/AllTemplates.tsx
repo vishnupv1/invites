@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Heart } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Brand } from "../components/Brand";
-import { SkeletonCards } from "../components/CardSkeleton";
-import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
+import { TEMPLATES, eventLabels, formatPrice, withCatalogMeta } from "../data/templates";
 import type { Template } from "../types";
 import "./all-templates.css";
 
@@ -67,20 +64,15 @@ function look(id: string) {
   return LOOK[id] ?? { styles: [] as StyleTag[], pop: 0, added: 0, tags: "", swatches: ["#FBF8F5", "#D81B60", "#2A1527"] };
 }
 
-function useHref(template: Template, occasion = "all") {
-  const event = occasion !== "all" && template.events.includes(occasion as Template["events"][number])
-    ? occasion
-    : template.events[0];
-  return `/create?template=${template.id}&event=${event}`;
+function useHref(template: Template) {
+  const event = template.events[0];
+  return template.free ? `/create/${template.id}?event=${event}` : `/template/${template.id}?event=${event}`;
 }
 
 export function AllTemplates() {
-  const { id: routeId } = useParams();
-  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>(EVENTS);
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
-  const [catalogReady, setCatalogReady] = useState(false);
   const [occasion, setOccasion] = useState("all");
   const [price, setPrice] = useState<PriceFilter>("All");
   const [styles, setStyles] = useState<StyleTag[]>([]);
@@ -90,8 +82,7 @@ export function AllTemplates() {
   const [savedOnly, setSavedOnly] = useState(false);
   const [collection, setCollection] = useState<string | null>(null);
   const [sheet, setSheet] = useState(false);
-  const [previewId, setPreviewId] = useState<string | null>(routeId ?? null);
-  const [demo, setDemo] = useState(false);
+  const [previewId, setPreviewId] = useState<string | null>(null);
   const [broken, setBroken] = useState<string[]>([]);
   const [menu, setMenu] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
@@ -100,18 +91,8 @@ export function AllTemplates() {
     listEvents().then(setEvents).catch(() => setEvents(EVENTS));
     listTemplates()
       .then((rows) => setCatalog(rows.map(withCatalogMeta)))
-      .catch(() => setCatalog(TEMPLATES))
-      .finally(() => setCatalogReady(true));
+      .catch(() => setCatalog(TEMPLATES));
   }, []);
-
-  useEffect(() => {
-    if (!routeId || !catalogReady) return;
-    if (catalog.some((item) => item.id === routeId)) {
-      setPreviewId(routeId);
-      return;
-    }
-    navigate("/browse", { replace: true });
-  }, [routeId, catalog, catalogReady, navigate]);
 
   useEffect(() => {
     localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
@@ -127,24 +108,21 @@ export function AllTemplates() {
   }, [sortOpen]);
 
   useEffect(() => {
-    if (!sheet && !previewId && !demo) return;
+    if (!sheet && !previewId) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function onKey(event: KeyboardEvent) {
-      if (event.key !== "Escape") return;
-      if (demo) {
-        setDemo(false);
-        return;
+      if (event.key === "Escape") {
+        setSheet(false);
+        setPreviewId(null);
       }
-      setSheet(false);
-      closePreview();
     }
     document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previous;
       document.removeEventListener("keydown", onKey);
     };
-  }, [sheet, previewId, demo]);
+  }, [sheet, previewId]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -171,12 +149,6 @@ export function AllTemplates() {
   const preview = catalog.find((template) => template.id === previewId) ?? null;
   const sortLabel = SORTS.find((item) => item.id === sort)?.label ?? "Most popular";
   const activeCount = (price !== "All" ? 1 : 0) + styles.length + (sort !== "popular" ? 1 : 0);
-
-  function closePreview() {
-    setDemo(false);
-    setPreviewId(null);
-    if (routeId) navigate("/browse", { replace: true });
-  }
 
   function markBroken(id: string) {
     setBroken((current) => (current.includes(id) ? current : [...current, id]));
@@ -367,7 +339,7 @@ export function AllTemplates() {
               </button>
             ))}
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <span aria-hidden="true">♥</span> {saved.length}
+              <span aria-hidden="true">♥</span> Saved ({saved.length})
             </button>
             <div className="cat-sort-wrap">
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
@@ -408,9 +380,10 @@ export function AllTemplates() {
 
         <section className="cat-grid-wrap">
           {filtered.sorted.length === 0 ? (
-            <div className="cat-grid" role="status" aria-busy="true" aria-label="Loading templates">
-              <span className="skel-sr">Loading</span>
-              <SkeletonCards count={8} />
+            <div className="cat-empty">
+              <h2>No templates match</h2>
+              <p>Try a different word, or clear your filters to see everything.</p>
+              <button type="button" onClick={resetFilters}>Clear all filters</button>
             </div>
           ) : (
             <div className="cat-grid">
@@ -427,10 +400,11 @@ export function AllTemplates() {
                       </button>
                       <div className="cat-badges">
                         <span className={template.free ? "free" : "prem"}>{template.free ? "Free" : "Premium"}</span>
+                        {extra.styles.includes("Animated") ? <span className="anim">✦ Animated</span> : null}
                         {extra.isNew ? <span className="new">New</span> : null}
                       </div>
                       <button type="button" className={`cat-heart${loved ? " on" : ""}`} aria-pressed={loved} aria-label={`${loved ? "Remove" : "Save"} ${template.name}`} onClick={() => toggleSaved(template.id)}>
-                        <Heart size={18} aria-hidden="true" fill={loved ? "currentColor" : "none"} />
+                        ♥
                       </button>
                       <div className="cat-hover">Quick preview</div>
                     </div>
@@ -443,7 +417,7 @@ export function AllTemplates() {
                       <span className="cat-line mob">{formatPrice(template)} · {first}</span>
                       <div className="cat-actions">
                         <button type="button" onClick={() => setPreviewId(template.id)}>Preview</button>
-                        <Link to={useHref(template, occasion)}>Use</Link>
+                        <Link to={useHref(template)}>Use</Link>
                       </div>
                     </div>
                   </article>
@@ -515,13 +489,11 @@ export function AllTemplates() {
       ) : null}
 
       {preview ? (
-        <div className="cat-modal-back" onClick={closePreview}>
+        <div className="cat-modal-back" onClick={() => setPreviewId(null)}>
           <div role="dialog" aria-label={`${preview.name} preview`} className="cat-modal" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={closePreview}>×</button>
+            <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={() => setPreviewId(null)}>×</button>
             <div className="cat-phone-well">
-              <div className="cat-phone">
-                {demo ? <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} /> : cover(preview)}
-              </div>
+              <div className="cat-phone">{cover(preview)}</div>
             </div>
             <div className="cat-modal-copy">
               <div className="cat-badges static">
@@ -550,7 +522,7 @@ export function AllTemplates() {
               </div>
               <div className="cat-modal-actions">
                 <Link to={useHref(preview)}>Use this template</Link>
-                <button type="button" className="ghost" onClick={() => setDemo((value) => !value)}>{demo ? "Back to preview" : "Open live demo"}</button>
+                <Link className="ghost" to={`/preview/${preview.id}`}>Open live demo</Link>
               </div>
             </div>
           </div>

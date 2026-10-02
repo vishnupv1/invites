@@ -162,7 +162,6 @@
   position: absolute;
   border-radius: 50%;
 }
-.wd-moon > span { display: none; }
 
 .wd-open {
   position: relative;
@@ -359,7 +358,6 @@
 }
 
 .wd-tap .hand { display: inline-block; animation: wd-knock 1.6s ease-in-out infinite; }
-.wd-tap .hand { display: inline-flex; font-size: 1.4em; animation: wd-knock 1.6s ease-in-out infinite; }
 .wd-tap .desk { display: none; }
 
 .wd-event {
@@ -1047,7 +1045,6 @@
 
 .wd-seal { position: relative; width: 170px; height: 170px; }
 .wd-seal svg { position: absolute; inset: 0; width: 170px; height: 170px; animation: wd-spin 18s linear infinite; }
-.wd-seal-in svg.glyph { position: static; inset: auto; width: 0.7em; height: 0.7em; animation: none; }
 .wd-seal-in {
   position: absolute;
   inset: 40px;

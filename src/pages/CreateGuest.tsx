@@ -2,8 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { Brand } from "../components/Brand";
-import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
-import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
@@ -25,20 +23,15 @@ const BLURB: Record<string, string> = {
   anniversary: "Milestones together",
   reception: "The evening after",
 };
-const OCCASION_ICONS: Record<string, LucideIcon> = {
-  marriage: Gem,
-  engagement: Heart,
-  reception: Sparkles,
-  birthday: Cake,
-  anniversary: Wine,
-  baptism: Bird,
-  housewarming: House,
+const EMOJI: Record<string, string> = {
+  marriage: "💍",
+  engagement: "💞",
+  birthday: "🎂",
+  housewarming: "🏡",
+  baptism: "🕊️",
+  anniversary: "🥂",
+  reception: "✨",
 };
-
-function OccasionIcon({ id }: { id: string }) {
-  const Icon = OCCASION_ICONS[id] ?? Sparkles;
-  return <Icon size={28} strokeWidth={1.8} aria-hidden="true" />;
-}
 type PriceFilter = "All" | "Free" | "Premium";
 type AuthMode = "publish" | "save" | "login";
 
@@ -75,16 +68,12 @@ function palettesFor(template: { meta?: { themes: { id: string }[]; defaultTheme
 export function CreateGuest() {
   const [params, setParams] = useSearchParams();
   const requested = TEMPLATES.find((item) => item.id === params.get("template"));
-  const requestedEvent = params.get("event");
-  const startEvent = requested && requestedEvent && requested.events.includes(requestedEvent as EventId)
-    ? requestedEvent as EventId
-    : requested?.events[0];
   const saved = useMemo(loadDraft, []);
   const library = useLibrary();
   const [events, setEvents] = useState(EVENTS);
   const [templates, setTemplates] = useState(TEMPLATES);
   const [step, setStep] = useState<1 | 2 | 3 | 4>(requested ? 3 : saved.step === 1 || saved.step === 2 || saved.step === 3 ? saved.step : 1);
-  const [eventId, setEventId] = useState<EventId>(startEvent ?? (saved.event && EVENTS.some((item) => item.id === saved.event) ? saved.event : "marriage"));
+  const [eventId, setEventId] = useState<EventId>(requested?.events[0] ?? (saved.event && EVENTS.some((item) => item.id === saved.event) ? saved.event : "marriage"));
   const [templateId, setTemplateId] = useState(requested?.id || saved.templateId || "gazal");
   const [price, setPrice] = useState<PriceFilter>(saved.price || "All");
   const [swatch, setSwatch] = useState(requested ? requested.meta.defaultTheme || palettesFor(requested)[0] || "" : saved.swatch || "terracotta");
@@ -107,7 +96,6 @@ export function CreateGuest() {
   const [authPassword, setAuthPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [liveCode, setLiveCode] = useState("");
   const [showQr, setShowQr] = useState(false);
@@ -130,12 +118,11 @@ export function CreateGuest() {
   }, []);
 
   useEffect(() => {
-    if (!params.get("template") && !params.get("event")) return;
+    if (!params.get("template")) return;
     setParams((current) => {
-      if (!current.get("template") && !current.get("event")) return current;
+      if (!current.get("template")) return current;
       const next = new URLSearchParams(current);
       next.delete("template");
-      next.delete("event");
       return next;
     }, { replace: true });
   }, [params, setParams]);
@@ -334,7 +321,6 @@ export function CreateGuest() {
     if (!summaryNames && (!name1.trim() || (two && !name2.trim()))) return setToast("Add the names before you publish.");
     if (!summaryDate && !date) return setToast("Add the date before you publish.");
     setBusy(true);
-    setPubPhase("loading");
     try {
       if (creatingRef.current) inviteIdRef.current = await creatingRef.current;
       let savedInvite;
@@ -356,15 +342,12 @@ export function CreateGuest() {
       }
       liveRef.current = true;
       library.remember(savedInvite);
-      setPubPhase("done");
-      await hold();
       setLiveCode(savedInvite.code);
       setShowQr(false);
     } catch (reason) {
       setToast(reason instanceof Error ? reason.message : "Could not publish.");
     } finally {
       setBusy(false);
-      setPubPhase("idle");
     }
   }
 
@@ -408,7 +391,7 @@ export function CreateGuest() {
                   aria-current={current ? "step" : undefined}
                   onClick={() => setStep(n)}
                 >
-                  <span className={current ? "cg-dot on" : done ? "cg-dot done" : "cg-dot"}>{done ? <Check size={13} strokeWidth={3} aria-hidden="true" /> : n}</span>
+                  <span className={current ? "cg-dot on" : done ? "cg-dot done" : "cg-dot"}>{done ? "✓" : n}</span>
                   <span className="cg-step-label">{label}</span>
                 </button>
                 {index < 3 ? <i className="cg-rule" aria-hidden="true" /> : null}
@@ -470,8 +453,8 @@ export function CreateGuest() {
                 const on = item.id === event.id;
                 return (
                   <button key={item.id} type="button" className={on ? "cg-event on" : "cg-event"} aria-pressed={on} onClick={() => pickEvent(item.id)}>
-                    <span className="cg-emoji">
-                      <OccasionIcon id={item.id} />
+                    <span className="cg-emoji" aria-hidden="true">
+                      {EMOJI[item.id] ?? "🎉"}
                     </span>
                     <strong>{item.label}</strong>
                     <small>{BLURB[item.id] ?? item.cardLabel}</small>
@@ -616,17 +599,14 @@ export function CreateGuest() {
                           : `One-time ${formatPrice(template)} for this design. You pay once at checkout, then you can publish.`}
                     </p>
                   </div>
-                  <SmartButton
-                    className="cg-publish"
-                    phase={pubPhase}
-                    idle={ownsTemplate ? "Publish" : `Get ${template.name}`}
-                    onClick={() => void publish()}
-                  />
+                  <button type="button" className="cg-publish" disabled={busy} onClick={() => void publish()}>
+                    {busy ? "Publishing…" : ownsTemplate ? "Publish" : `Get ${template.name}`}
+                  </button>
                 </div>
               ) : (
                 <div className="cg-live">
                   <span className="pop" aria-hidden="true">
-                    <PartyPopper size={44} />
+                    🎉
                   </span>
                   <h1>Your invitation is live!</h1>
                   <div className="cg-linkbox">{link.replace(/^https?:\/\//, "")}</div>
@@ -772,9 +752,8 @@ export function CreateGuest() {
                   </label>
                   {authError ? <p className="cg-error">{authError}</p> : null}
                   <div className="cg-auth-actions">
-                    <button type="submit" className="fill" disabled={busy} aria-busy={busy || undefined}>
-                      {busy ? <Spinner tone="paper" /> : authTab === "signup" ? "Create account" : "Log in"}
-                      {busy ? <span className="spin-sr">{authTab === "signup" ? "Creating account" : "Logging in"}</span> : null}
+                    <button type="submit" className="fill" disabled={busy}>
+                      {busy ? "Please wait…" : authTab === "signup" ? "Create account" : "Log in"}
                     </button>
                   </div>
                 </>

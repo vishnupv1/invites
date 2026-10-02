@@ -339,7 +339,7 @@ export const TEMPLATES: Template[] = [
         hosts: "Together with their families",
         names: "Maya & Dev",
         title: "are getting married",
-        detail: "Our guest",
+        detail: "Priya & Vivek",
         date: "2028-12-09",
         time: "17:00",
         venue: "The Glasshouse",

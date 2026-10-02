@@ -182,25 +182,24 @@ function Palette({ fields, tone }: { fields: InviteFields; tone: string }) {
   );
 }
 
-export function InviteView({ template, fields, live = false }: { template: Template; fields: InviteFields; live?: boolean }) {
-  const quiet = !live;
+export function InviteView({ template, fields }: { template: Template; fields: InviteFields }) {
   switch (template.style) {
     case "gazal":
-      return <GazalInvite fields={fields} quiet={quiet} />;
+      return <GazalInvite fields={fields} quiet />;
     case "aurelia":
-      return <AureliaInvite fields={fields} quiet={quiet} />;
+      return <AureliaInvite fields={fields} quiet />;
     case "anna":
-      return <AnnaInvite fields={fields} quiet={quiet} />;
+      return <AnnaInvite fields={fields} quiet />;
     case "baptism":
-      return <BaptismInvite fields={fields} quiet={quiet} />;
+      return <BaptismInvite fields={fields} quiet />;
     case "vivah":
-      return <VivahInvite fields={fields} quiet={quiet} />;
+      return <VivahInvite fields={fields} quiet />;
     case "beach":
-      return <BeachInvite fields={fields} quiet={quiet} />;
+      return <BeachInvite fields={fields} quiet />;
     case "botanica":
-      return <BotanicaInvite fields={fields} quiet={quiet} />;
+      return <BotanicaInvite fields={fields} quiet />;
     case "home":
-      return <HomeInvite fields={fields} quiet={quiet} />;
+      return <HomeInvite fields={fields} quiet />;
     case "shaadi":
       return <ShaadiInvite fields={fields} />;
     case "thiruvizha":

@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPublicInvite, sendGreeting } from "../api";
 import { InviteSite } from "../components/InviteSite";
-import { Spinner } from "../components/Loader";
 import { getTemplate } from "../data/templates";
 import { decodeInvite } from "../lib/codec";
 import type { InviteFields, Template } from "../types";
@@ -27,7 +26,7 @@ export function InvitePage() {
   }, [code, legacy]);
 
   if (missing || (!legacy && !loaded)) {
-    if (!loaded && !missing) return <main className="public missing" aria-busy="true"><p className="wait-line"><Spinner size="md" /> Opening the invitation…</p></main>;
+    if (!loaded && !missing) return <main className="public missing">Opening the invitation…</main>;
     return (
       <main className="public missing">
         <h1>This invitation link is incomplete.</h1>
@@ -36,7 +35,7 @@ export function InvitePage() {
     );
   }
 
-  if (!loaded) return <main className="public missing" aria-busy="true"><p className="wait-line"><Spinner size="md" /> Opening the invitation…</p></main>;
+  if (!loaded) return <main className="public missing">Opening the invitation…</main>;
 
   return (
     <InviteSite

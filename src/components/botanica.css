@@ -36,8 +36,6 @@
 .bf-root.is-fade,
 .bf-root.is-open {
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
 }
 .ed-screen .bf-root.is-load,
 .ed-screen .bf-root.is-fade,
@@ -46,12 +44,7 @@
 .pv-canvas .bf-root.is-fade,
 .pv-canvas .bf-root.is-open {
   min-height: 100%;
-  height: auto;
-}
-.bf-loader,
-.bf-open {
-  flex: 1 1 auto;
-  width: 100%;
+  height: 100%;
 }
 
 .bf-foil {
@@ -208,7 +201,6 @@
   width: min(358px, 88%);
   aspect-ratio: 1;
   flex-shrink: 1;
-  container-type: inline-size;
   animation: bf-bloom 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .bf-wreath-box img {
@@ -220,11 +212,7 @@
 }
 .bf-wreath-copy {
   position: absolute;
-  left: 50%;
-  top: 17%;
-  bottom: 27%;
-  width: 54%;
-  transform: translateX(-50%);
+  inset: 16% 16% 34%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -232,20 +220,6 @@
   gap: 1px;
   text-align: center;
 }
-.bf-wreath-copy > * {
-  max-width: 100%;
-  min-width: 0;
-}
-.bf-wreath-copy .bf-dear { font-size: 2.8cqi; letter-spacing: 0.24em; }
-.bf-wreath-copy .bf-kicker,
-.bf-wreath-copy .bf-wed {
-  font-size: 3.6cqi;
-  line-height: 1.15;
-  text-wrap: balance;
-}
-.bf-wreath-copy .bf-open-name { font-size: 11cqi; }
-.bf-wreath-copy .bf-amp { font-size: 5.4cqi; }
-.bf-wreath-copy .bf-date-line { font-size: 2.4cqi; letter-spacing: 0.14em; }
 .bf-dear,
 .bf-kicker,
 .bf-wed,
@@ -493,7 +467,6 @@
 .bf-border > img,
 .bf-oval > img,
 .bf-pol > img.frame,
-.bf-pol-card > img.frame,
 .bf-bloom > img.frame {
   position: absolute;
   inset: 0;
@@ -544,7 +517,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-self: stretch;
   gap: 28px;
 }
 .bf-pol {
@@ -569,10 +541,10 @@
   background: #efe6da;
 }
 .bf-pol-card .bf-shot {
-  left: 11.6%;
-  top: 10%;
-  width: 76.6%;
-  height: 65%;
+  left: 12.4%;
+  top: 10.4%;
+  width: 75.2%;
+  height: 64%;
 }
 .bf-cap {
   position: absolute;
@@ -703,23 +675,21 @@
 .bf-bloom:nth-child(even) > img.frame { animation-direction: reverse; }
 
 .bf-border-copy {
-  inset: 13% 14% 16%;
-  justify-content: center;
-  gap: 0;
+  inset: 9% 10% 8%;
+  gap: 12px;
 }
-.bf-rsvp-title { font-size: 34px; color: var(--bf-ink); line-height: 1; }
+.bf-rsvp-title { font-size: 42px; color: var(--bf-ink); line-height: 1.1; }
 .bf-by {
-  margin-top: 2px;
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--bf-sub);
 }
 .bf-form {
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 .bf-lab {
   font-size: 12px;
@@ -731,12 +701,12 @@
 .bf-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 .bf-form input {
   width: 100%;
   box-sizing: border-box;
-  min-height: 42px;
+  min-height: 50px;
   padding: 0 16px;
   border: 1px solid #e3d6c6;
   border-radius: 14px;
@@ -751,29 +721,21 @@
 .bf-choice {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: stretch;
   gap: 8px;
 }
 .bf-choice button,
 .bf-step {
+  min-height: 50px;
   border-radius: 999px;
   font-family: "Cormorant Garamond", serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   cursor: pointer;
 }
 .bf-choice button {
-  display: flex;
-  min-height: 48px;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 8px;
   border: 1px solid #d8c8b4;
   background: transparent;
   color: var(--bf-sub);
-  line-height: 1.15;
-  text-align: center;
-  text-wrap: balance;
 }
 .bf-choice button.on {
   border-color: var(--bf-btn);
@@ -787,8 +749,8 @@
 }
 .bf-stepper { display: flex; align-items: center; gap: 8px; }
 .bf-step {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border: 1px solid #d8c8b4;
   border-radius: 50%;
   background: #fff;
@@ -805,10 +767,7 @@
 .bf-send {
   position: relative;
   overflow: hidden;
-  align-self: center;
-  width: calc(100% - 36px);
-  min-height: 44px;
-  margin-top: 2px;
+  min-height: 54px;
   border: none;
   border-radius: 999px;
   background: var(--bf-btn);
@@ -849,7 +808,6 @@
 .bf-heart {
   position: absolute;
   bottom: 0;
-  font-size: 22px;
   animation: bf-heart 2.4s ease-out infinite;
 }
 .bf-wish-list {
@@ -895,10 +853,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 16px 4px 0;
-  font-size: 26px;
-  line-height: 1;
-  letter-spacing: 0.04em;
+  font-size: 34px;
   color: var(--bf-ink);
 }
 .bf-love {
