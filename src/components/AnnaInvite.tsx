@@ -7,6 +7,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./anna.css";
 
 export type AnnaTheme = "terracotta" | "sage" | "dusk";
@@ -105,6 +106,7 @@ export function AnnaInvite({
   theme?: Theme;
   onTheme?: (theme: Theme) => void;
 }) {
+  useFonts("Gloock", "Instrument Sans", "Pinyon Script");
   const { first, second } = coupleOf(fields.names);
   const when = dateParts(fields.date);
   const count = useCountdown(fields.date, fields.time);

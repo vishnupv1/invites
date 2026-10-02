@@ -8,6 +8,7 @@ import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatLongDate } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
 import { Spinner } from "./Loader";
+import { useFonts } from "../lib/fonts";
 import "./peace.css";
 
 function ScriptFit({ className, children }: { className: string; children: string }) {
@@ -183,6 +184,7 @@ export function PeaceInvite({
   wishes?: Wish[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
 }) {
+  useFonts("Bodoni Moda", "Jost", "Monsieur La Doulaise");
   const pageRef = useRef<HTMLElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [node, setNode] = useState<HTMLDivElement | null>(null);

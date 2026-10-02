@@ -60,6 +60,67 @@ function escapeAttr(value) {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 }
 
+function escapeText(value) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+
+function canonicalPath(page) {
+  return page.canonical ?? page.path;
+}
+
+const SITE_LINKS = [
+  ["/browse", "Browse templates"],
+  ["/how", "How it works"],
+  ["/features", "Features"],
+  ["/pricing", "Pricing"],
+  ["/faq", "Questions"],
+  ["/occasions", "Celebrations"],
+  ["/contact", "Contact"],
+];
+
+function linkList(links) {
+  const items = links.map(([href, label]) => `<li><a href="${escapeAttr(href)}">${escapeText(label)}</a></li>`);
+  return `<ul>${items.join("")}</ul>`;
+}
+
+function priceText(template) {
+  return template.free ? "Free to publish" : `₹${template.price.toLocaleString("en-IN")}, paid once`;
+}
+
+function templateLinks(templates) {
+  return linkList(templates.map((template) => [`/template/${template.id}`, `${template.name} invitation template`]));
+}
+
+function bodyFor(page, templates, events) {
+  const heading = page.heading ?? page.title.replace(/ \| InvitesReady$/, "");
+  const parts = [`<h1>${escapeText(heading)}</h1>`, `<p>${escapeText(page.description)}</p>`];
+  if (page.template) {
+    const template = page.template;
+    if (template.description) parts.push(`<p>${escapeText(template.description)}</p>`);
+    parts.push(`<p>${escapeText(priceText(template))}</p>`);
+    parts.push(`<img src="${escapeAttr(page.image)}" alt="${escapeAttr(`${template.name} invitation template cover`)}" width="600" height="800" />`);
+    const occasions = events.filter((event) => template.events.includes(event.id));
+    if (occasions.length) {
+      parts.push("<h2>Occasions</h2>", linkList(occasions.map((event) => [`/c/${event.id}`, `${event.label} invitations`])));
+    }
+    const related = templates.filter(
+      (other) => other.id !== template.id && other.events.some((event) => template.events.includes(event)),
+    );
+    if (related.length) parts.push("<h2>Related templates</h2>", templateLinks(related));
+  } else if (page.event) {
+    const matches = templates.filter((template) => template.events.includes(page.event.id));
+    const items = matches.map(
+      (template) =>
+        `<li><a href="/template/${escapeAttr(template.id)}">${escapeText(template.name)}</a> — ${escapeText(template.description || priceText(template))}</li>`,
+    );
+    parts.push("<h2>Templates</h2>", `<ul>${items.join("")}</ul>`);
+  } else if (page.path === "/" || page.path === "/browse") {
+    parts.push("<h2>Invitation templates</h2>", templateLinks(templates));
+  }
+  parts.push(`<nav aria-label="InvitesReady">${linkList(SITE_LINKS)}</nav>`);
+  return `<div class="seo-shell">${parts.join("")}</div>`;
+}
+
 function replaceMeta(html, attribute, key, content) {
   const pattern = new RegExp(`(<meta[^>]*${attribute}="${key}"[^>]*content=")[^"]*(")`);
   if (!pattern.test(html)) throw new Error(`Missing meta ${attribute}=${key}`);
@@ -103,7 +164,7 @@ function graphFor(page, templates) {
       itemListElement: templates.map((template, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: `${SITE}/preview/${template.id}`,
+        url: `${SITE}/template/${template.id}`,
         name: template.name,
       })),
     });
@@ -121,7 +182,7 @@ function graphFor(page, templates) {
         priceCurrency: "INR",
         price: String(page.template.price),
         availability: "https://schema.org/InStock",
-        url: `${SITE}/preview/${page.template.id}`,
+        url: `${SITE}/template/${page.template.id}`,
       },
     });
   } else if (page.event) {
@@ -136,7 +197,7 @@ function graphFor(page, templates) {
         itemListElement: matches.map((template, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          url: `${SITE}/preview/${template.id}`,
+          url: `${SITE}/template/${template.id}`,
           name: template.name,
         })),
       },
@@ -145,15 +206,16 @@ function graphFor(page, templates) {
   return { "@context": "https://schema.org", "@graph": graph };
 }
 
-function pageHtml(base, page, templates) {
+function pageHtml(base, page, templates, events) {
+  const url = `${SITE}${canonicalPath(page)}`;
   let html = base;
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(page.title)}</title>`);
   html = replaceMeta(html, "name", "description", page.description);
   html = replaceMeta(html, "name", "robots", "index, follow");
-  html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${SITE}${page.path === "/" ? "/" : page.path}$2`);
+  html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`);
   html = replaceMeta(html, "property", "og:title", page.title);
   html = replaceMeta(html, "property", "og:description", page.description);
-  html = replaceMeta(html, "property", "og:url", `${SITE}${page.path === "/" ? "/" : page.path}`);
+  html = replaceMeta(html, "property", "og:url", url);
   html = replaceMeta(html, "property", "og:image", page.image);
   html = replaceMeta(html, "name", "twitter:title", page.title);
   html = replaceMeta(html, "name", "twitter:description", page.description);
@@ -163,7 +225,19 @@ function pageHtml(base, page, templates) {
     /<script id="site-jsonld" type="application\/ld\+json">[\s\S]*?<\/script>/,
     `<script id="site-jsonld" type="application/ld+json">\n${json}\n    </script>`,
   );
-  if (page.path !== "/") html = html.replace(/<noscript id="seo-fallback">[\s\S]*?<\/noscript>\s*/, "");
+  html = html.replace('<div id="root"></div>', `<div id="root">${bodyFor(page, templates, events)}</div>`);
+  return html;
+}
+
+function fallbackHtml(base) {
+  let html = base;
+  html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>InvitesReady</title>");
+  html = replaceMeta(html, "name", "robots", "noindex, nofollow");
+  html = html.replace(/\s*<link rel="canonical" href="[^"]*" \/>/, "");
+  html = html.replace(
+    /\s*<script id="site-jsonld" type="application\/ld\+json">[\s\S]*?<\/script>/,
+    "",
+  );
   return html;
 }
 
@@ -171,6 +245,7 @@ function pages(templates, events) {
   const list = STATIC.map(([pathname, title, description]) => ({
     path: pathname,
     title,
+    heading: pathname === "/" ? "Invitations your guests open, answer and remember." : undefined,
     description,
     image: BRAND_IMAGE,
   }));
@@ -179,10 +254,12 @@ function pages(templates, events) {
       ? `Preview the ${template.name} invitation. This design is free to publish.`
       : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`;
     const image = `${SITE}/covers/${template.id}.jpg`;
-    for (const prefix of ["preview", "template"]) {
+    for (const prefix of ["template", "preview"]) {
       list.push({
         path: `/${prefix}/${template.id}`,
+        canonical: `/template/${template.id}`,
         title: `${template.name} invitation template | InvitesReady`,
+        heading: `${template.name} invitation template`,
         description,
         image,
         template,
@@ -204,7 +281,8 @@ function pages(templates, events) {
 
 function writeSitemap(list) {
   const urls = list
-    .map((page) => `  <url><loc>${SITE}${page.path === "/" ? "/" : page.path}</loc></url>`)
+    .filter((page) => canonicalPath(page) === page.path)
+    .map((page) => `  <url><loc>${SITE}${page.path}</loc></url>`)
     .join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   fs.writeFileSync(path.join(root, "public/sitemap.xml"), xml);
@@ -212,7 +290,7 @@ function writeSitemap(list) {
   if (fs.existsSync(path.dirname(dist))) fs.writeFileSync(dist, xml);
 }
 
-function prerender(list, templates) {
+function prerender(list, templates, events) {
   const indexPath = path.join(root, "dist/index.html");
   if (!fs.existsSync(indexPath)) return;
   const base = fs.readFileSync(indexPath, "utf8");
@@ -220,8 +298,9 @@ function prerender(list, templates) {
     console.log("SEO: dist/index.html has no metadata yet, skipped HTML pages");
     return;
   }
+  fs.writeFileSync(path.join(root, "dist/app.html"), fallbackHtml(base));
   for (const page of list) {
-    const html = pageHtml(base, page, templates);
+    const html = pageHtml(base, page, templates, events);
     if (page.path === "/") {
       fs.writeFileSync(indexPath, html);
       continue;
@@ -236,5 +315,5 @@ const templates = readTemplates();
 const events = readEvents();
 const list = pages(templates, events);
 writeSitemap(list);
-prerender(list, templates);
+prerender(list, templates, events);
 console.log(`SEO: ${list.length} public URLs`);

@@ -8,6 +8,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./baptism.css";
 
 export type BaptismTheme = "sky" | "blush" | "sage";
@@ -184,6 +185,7 @@ export function BaptismInvite({
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
   theme?: Theme;
 }) {
+  useFonts("Great Vibes", "Lora", "Nunito Sans");
   const child = firstName(fields.names);
   const pack = packOf("baptism", fields.lines);
   const ceremony = eventName(fields.lines, "ceremonyName", "Holy Baptism");

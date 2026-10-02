@@ -5,6 +5,7 @@ import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
 import type { InviteFields } from "../types";
 import { InstagramLink } from "./InstagramLink";
 import { Spinner } from "./Loader";
+import { useFonts } from "../lib/fonts";
 import "./botanica.css";
 
 export type BotanicaTheme = "blush" | "sage" | "midnight";
@@ -179,6 +180,7 @@ export function BotanicaInvite({
   wishes?: { name: string; note: string }[];
   onReply?: (reply: Reply) => void | Promise<void>;
 }) {
+  useFonts("Alex Brush", "Cormorant Garamond", "Karla");
   const nameId = useId();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [stage, setStage] = useState<"load" | "fade" | "open" | "page">(quiet ? "open" : "load");

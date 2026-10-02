@@ -5,6 +5,7 @@ import { eventName, packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import type { InviteFields } from "../types";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./home.css";
 
 export type HomeTheme = "day" | "sunset" | "night";
@@ -200,6 +201,7 @@ export function HomeInvite({
   wishes?: { name: string; note: string }[];
   onReply?: (reply: Reply) => void;
 }) {
+  useFonts("Caveat", "Fredoka", "Nunito");
   const nameId = useId();
   const wishId = useId();
   const audioRef = useRef<HTMLAudioElement>(null);

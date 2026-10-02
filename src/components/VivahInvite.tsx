@@ -7,6 +7,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { formatTime } from "../lib/dates";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./vivah.css";
 
 export type VivahTheme = "midnight" | "royal" | "emerald";
@@ -325,6 +326,7 @@ export function VivahInvite({
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void;
   motion?: boolean;
 }) {
+  useFonts("Cinzel Decorative", "Cormorant Garamond", "Jost", "Parisienne");
   const sealId = useId().replace(/:/g, "");
   const nameId = useId();
   const wishId = useId();

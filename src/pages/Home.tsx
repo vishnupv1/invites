@@ -4,6 +4,7 @@ import { Brand } from "../components/Brand";
 import { InviteView } from "../components/InviteView";
 import { getTemplate, sampleFor } from "../data/templates";
 import type { EventId } from "../types";
+import { useFonts } from "../lib/fonts";
 import "./landing.css";
 
 const WORDS = ["Invitations", "your", "guests", "open,", "answer", "and"];
@@ -238,6 +239,7 @@ function PlanCheck({ light = false }: { light?: boolean }) {
 }
 
 export function Home({ focus }: { focus?: string }) {
+  useFonts("Alex Brush", "Allura", "Caveat", "Cormorant Garamond", "Great Vibes", "Parisienne", "Pinyon Script");
   const narrow = useNarrow();
   const { hash, pathname } = useLocation();
   const tplRow = useRef<HTMLDivElement>(null);

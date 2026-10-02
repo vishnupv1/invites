@@ -7,6 +7,7 @@ import { photoNotes } from "../data/photos";
 import catalogMeta from "../data/template-meta.json";
 import { Arch, Diyas, Elephant, EventMark, Flourish, Havan, Mandala, Palace, Petals, Rangoli, Stars, Toran } from "./shaadi-art";
 import { InstagramLink } from "./InstagramLink";
+import { useFonts } from "../lib/fonts";
 import "./shaadi.css";
 
 export type { ShaadiTheme };
@@ -113,6 +114,7 @@ export function ShaadiInvite({
   wishes?: Wish[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
 }) {
+  useFonts("Cinzel", "Cormorant Garamond", "Great Vibes", "Jost", "Tiro Devanagari Hindi");
   const people = peopleOf(fields.names);
   const letters = lettersOf(people);
   const families = familiesOf(fields.hosts);
