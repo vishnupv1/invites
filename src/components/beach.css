@@ -449,6 +449,7 @@
   animation: bw-bob 3s ease-in-out infinite;
 }
 .bw-dress span { font-size: 12px; font-weight: 700; }
+.bw-dress span:first-child { font-size: 22px; line-height: 1; }
 .bw-swatches { display: flex; gap: 10px; }
 .bw-swatches i { width: 38px; height: 38px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px #e6d6be; animation: bw-bob 2.4s ease-in-out infinite; }
 
@@ -478,6 +479,10 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   background: #fff;
   color: #5e7479;
   border: 1.5px solid #e6d6be;
@@ -562,6 +567,7 @@
 }
 .bw-wish p { margin: 0; font-family: "Playfair Display", serif; font-size: 16px; font-style: italic; line-height: 1.45; }
 .bw-wish span { font-size: 12px; font-weight: 700; color: var(--warm); }
+.bw-wish > span:first-child { font-size: 28px; line-height: 1; }
 
 .bw-foot {
   position: relative;

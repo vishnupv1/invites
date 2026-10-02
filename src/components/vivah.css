@@ -156,12 +156,11 @@
   position: absolute;
   border-radius: 50%;
   background: #f6e8c8;
+  -webkit-mask-image: radial-gradient(circle at 76% 36%, transparent 54%, #000 56%);
+  mask-image: radial-gradient(circle at 76% 36%, transparent 54%, #000 56%);
 }
 
-.wd-moon > span {
-  position: absolute;
-  border-radius: 50%;
-}
+.wd-moon > span { display: none; }
 
 .wd-open {
   position: relative;
@@ -179,13 +178,7 @@
   animation: wd-moon 5s ease-in-out infinite;
 }
 
-.wd-open .wd-moon > span {
-  left: 14px;
-  top: -6px;
-  width: 54px;
-  height: 54px;
-  background: var(--bg0);
-}
+.wd-open .wd-moon > span { display: none; }
 
 .wd-open-copy {
   position: absolute;
@@ -357,7 +350,7 @@
   animation: wd-pulse 2s ease-in-out infinite;
 }
 
-.wd-tap .hand { display: inline-block; animation: wd-knock 1.6s ease-in-out infinite; }
+.wd-tap .hand { display: inline-flex; font-size: 1.4em; animation: wd-knock 1.6s ease-in-out infinite; }
 .wd-tap .desk { display: none; }
 
 .wd-event {
@@ -1045,6 +1038,7 @@
 
 .wd-seal { position: relative; width: 170px; height: 170px; }
 .wd-seal svg { position: absolute; inset: 0; width: 170px; height: 170px; animation: wd-spin 18s linear infinite; }
+.wd-seal-in svg.glyph { position: static; inset: auto; width: 0.7em; height: 0.7em; animation: none; }
 .wd-seal-in {
   position: absolute;
   inset: 40px;
@@ -1107,7 +1101,6 @@
   .wd-event .wd-mandala { width: 800px; height: 800px; margin: -400px 0 0 -400px; opacity: 0.25; animation-duration: 80s; }
 
   .wd-open .wd-moon { right: 140px; top: 90px; width: 80px; height: 80px; animation-name: wd-d-moon; }
-  .wd-open .wd-moon > span { left: 22px; top: -8px; width: 80px; height: 80px; }
   .wd-open-copy { gap: 18px; padding: 0; }
   .wd-open-card { gap: 16px; }
   .wd-burst { width: 240px; height: 240px; margin: -120px 0 0 -120px; animation-name: wd-d-burst; animation-duration: 1.5s; }
@@ -1186,14 +1179,7 @@
     top: 140px;
     width: 70px;
     height: 70px;
-    box-shadow: 0 0 60px 14px rgba(246, 232, 200, 0.4);
-  }
-  .wd-event .wd-moon > span {
-    left: 20px;
-    top: -8px;
-    width: 70px;
-    height: 70px;
-    background: var(--bg1);
+    filter: drop-shadow(0 0 16px rgba(246, 232, 200, 0.45));
   }
   .wd-kicker { font-size: 18px; letter-spacing: 6px; }
   .wd-bless { font-size: 15px; letter-spacing: 3px; }
@@ -1380,8 +1366,8 @@
 @keyframes wd-glow-event { 0%, 100% { text-shadow: 0 0 8px rgba(230, 200, 147, 0.35); } 50% { text-shadow: 0 0 22px rgba(230, 200, 147, 0.95); } }
 @keyframes wd-d-glow-open { 0%, 100% { text-shadow: 0 0 10px rgba(230, 200, 147, 0.4); } 50% { text-shadow: 0 0 28px rgba(230, 200, 147, 0.95); } }
 @keyframes wd-d-glow { 0%, 100% { text-shadow: 0 0 10px rgba(230, 200, 147, 0.35); } 50% { text-shadow: 0 0 28px rgba(230, 200, 147, 0.95); } }
-@keyframes wd-moon { 0%, 100% { box-shadow: 0 0 30px 6px rgba(246, 232, 200, 0.35); } 50% { box-shadow: 0 0 60px 16px rgba(246, 232, 200, 0.6); } }
-@keyframes wd-d-moon { 0%, 100% { box-shadow: 0 0 40px 8px rgba(246, 232, 200, 0.35); } 50% { box-shadow: 0 0 80px 20px rgba(246, 232, 200, 0.6); } }
+@keyframes wd-moon { 0%, 100% { filter: drop-shadow(0 0 8px rgba(246, 232, 200, 0.4)); } 50% { filter: drop-shadow(0 0 16px rgba(246, 232, 200, 0.7)); } }
+@keyframes wd-d-moon { 0%, 100% { filter: drop-shadow(0 0 12px rgba(246, 232, 200, 0.4)); } 50% { filter: drop-shadow(0 0 24px rgba(246, 232, 200, 0.7)); } }
 @keyframes wd-knock { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-8deg); } 40% { transform: rotate(6deg); } 60% { transform: rotate(-4deg); } }
 @keyframes wd-draw { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
 @keyframes wd-d-draw { from { stroke-dashoffset: 1200; } to { stroke-dashoffset: 0; } }

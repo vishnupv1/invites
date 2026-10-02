@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Armchair, Balloon, Birdhouse, BookOpen, Car, Coffee, CookingPot, CupSoda, Dice5, Flower2, Frame, Heart, House, Key, KeyRound, Leaf, Milk, Nut, PlantPot, Smile, Sofa, Sparkles, Star, SunMedium, TrainFront, TreePalm, TreePine, Utensils, type LucideIcon } from "lucide-react";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
@@ -21,16 +22,17 @@ const PROGRAMME_LOOK = [
   { key: "lights", bg: "#2E2A25" },
 ];
 
-const ROOM_LOOK = [
-  { icons: ["🛋️", "🪴", "🖼️", "🪑"], bg: "#FDEFD9" },
-  { icons: ["☕", "🍳", "🥥", "🫖"], bg: "#E4F0DD" },
-  { icons: ["🧸", "🚂", "⭐", "📚"], bg: "#E3EEF6" },
-  { icons: ["🌿", "🌼", "🪺", "☀️"], bg: "#FCE3CC" },
+const ROOM_LOOK: { icons: LucideIcon[]; bg: string }[] = [
+  { icons: [Sofa, PlantPot, Frame, Armchair], bg: "#FDEFD9" },
+  { icons: [Coffee, CookingPot, Nut, CupSoda], bg: "#E4F0DD" },
+  { icons: [Smile, TrainFront, Star, BookOpen], bg: "#E3EEF6" },
+  { icons: [Leaf, Flower2, Birdhouse, SunMedium], bg: "#FCE3CC" },
 ];
+const CONFETTI_ICONS = [House, Key, Heart, Sparkles, Flower2];
 
 const SAMPLE_NOTES = [
   { name: "Ammachi", text: "May this home always be full of laughter!" },
-  { name: "Jithin", text: "Finally a place big enough for game nights 🎲" },
+  { name: "Jithin", text: <>Finally a place big enough for game nights <Dice5 className="glyph" aria-hidden="true" /></> },
   { name: "Sneha", text: "Save me the corner seat on the balcony." },
   { name: "The Nairs next door", text: "Welcome to the neighbourhood!" },
 ];
@@ -143,7 +145,7 @@ function IntroHouse({ open, onOpen }: { open: boolean; onOpen: () => void }) {
           </span>
         </button>
       </div>
-      {open ? null : <span className="hw-key" aria-hidden="true">🔑</span>}
+      {open ? null : <span className="hw-key" aria-hidden="true"><Key className="glyph" /></span>}
     </div>
   );
 }
@@ -230,7 +232,7 @@ export function HomeInvite({
   const milkTitle = typeof home.milkTitle === "string" ? home.milkTitle.trim() : "";
   const programme = (home.programme ?? []).filter((item) => item.title.trim()).map((item, index) => ({ ...PROGRAMME_LOOK[index], ...item, key: PROGRAMME_LOOK[index]?.key ?? `item-${index}` }));
   const rooms = (home.rooms ?? []).filter((item) => item.name.trim() || item.label.trim()).map((item, index) => ({ ...ROOM_LOOK[index], ...item, icons: ROOM_LOOK[index]?.icons ?? [], bg: ROOM_LOOK[index]?.bg ?? "#FDEFD9" }));
-  const current = rooms[room] ?? rooms[0] ?? { icons: [] as string[], bg: "#FDEFD9", label: "", name: "", text: "", note: "" };
+  const current = rooms[room] ?? rooms[0] ?? { icons: [] as LucideIcon[], bg: "#FDEFD9", label: "", name: "", text: "", note: "" };
 
   const countdown = useMemo(() => {
     let diff = Math.max(0, Math.floor((targetTime(fields.date, fields.time) - now) / 1000));
@@ -411,8 +413,8 @@ export function HomeInvite({
                         <path d="M4 24h36c-2 8-8 12-18 12S6 32 4 24z" fill="#C9772F" stroke="#2E2A25" strokeWidth="1.5" />
                       </svg>
                     ) : null}
-                    {item.key === "milk" ? <span className="hw-swing">🥛</span> : null}
-                    {item.key === "food" ? <span className="hw-bob">🍛</span> : null}
+                    {item.key === "milk" ? <span className="hw-swing"><Milk className="glyph" aria-hidden="true" /></span> : null}
+                    {item.key === "food" ? <span className="hw-bob"><Utensils className="glyph" aria-hidden="true" /></span> : null}
                     {item.key === "lights" ? (
                       <div style={{ display: "flex", gap: 5 }}>
                         {["#F2B544", "#F28BA8", "#8FB7C9", "#9FD18B"].map((color, bulb) => (
@@ -442,8 +444,8 @@ export function HomeInvite({
             </div>
             <div className={room % 2 ? "hw-room slide" : "hw-room slideb"} style={{ background: current.bg }} key={current.name}>
               <div className="hw-room-art">
-                {current.icons.map((icon, index) => (
-                  <span key={icon} style={{ animationDelay: `${index * 0.1}s, ${0.6 + index * 0.2}s`, animationDuration: `0.5s, ${2 + index * 0.3}s` }}>{icon}</span>
+                {current.icons.map((Icon, index) => (
+                  <span key={index} style={{ animationDelay: `${index * 0.1}s, ${0.6 + index * 0.2}s`, animationDuration: `0.5s, ${2 + index * 0.3}s` }}><Icon className="glyph" aria-hidden="true" /></span>
                 ))}
               </div>
               <div>
@@ -471,10 +473,10 @@ export function HomeInvite({
                 <path d="M20 260C140 260 140 150 260 150S420 60 520 60" stroke="#FFFFFF" strokeWidth="18" strokeLinecap="round" />
                 <path d="M20 260C140 260 140 150 260 150S420 60 520 60" stroke="#D9CBB2" strokeWidth="2" strokeDasharray="8 8" />
               </svg>
-              <span className="hw-tree a" aria-hidden="true">🌳</span>
-              <span className="hw-tree b" aria-hidden="true">🌴</span>
-              <span className="hw-car" aria-hidden="true">🚗</span>
-              <span className="hw-pin" aria-hidden="true">🏡</span>
+              <span className="hw-tree a" aria-hidden="true"><TreePine className="glyph" /></span>
+              <span className="hw-tree b" aria-hidden="true"><TreePalm className="glyph" /></span>
+              <span className="hw-car" aria-hidden="true"><Car className="glyph" /></span>
+              <span className="hw-pin" aria-hidden="true"><House className="glyph" /></span>
             </div>
           </section>
 
@@ -504,13 +506,13 @@ export function HomeInvite({
               <div className="hw-done">
                 {Array.from({ length: 20 }, (_, index) => (
                   <span key={index} className="hw-confetti" style={{ top: 0, left: `${(index * 37) % 95}%`, fontSize: 16 + (index % 3) * 6, animation: `hw-confetti ${2.4 + (index % 4) * 0.4}s ease-in both`, animationDelay: `${(index % 6) * 0.15}s` }} aria-hidden="true">
-                    {["🏠", "🔑", "💛", "✨", "🌼"][index % 5]}
+                    {(() => { const Icon = CONFETTI_ICONS[index % 5]; return <Icon className="glyph" fill={Icon === Heart ? "currentColor" : "none"} />; })()}
                   </span>
                 ))}
                 {[0, 1, 2, 3, 4].map((index) => (
-                  <span key={index} className="hw-balloon" style={{ bottom: -40, left: `${8 + index * 20}%`, fontSize: 30 + (index % 2) * 10, animation: `hw-balloon ${4 + index * 0.5}s ease-out infinite`, animationDelay: `${index * 0.4}s` }} aria-hidden="true">🎈</span>
+                  <span key={index} className="hw-balloon" style={{ bottom: -40, left: `${8 + index * 20}%`, fontSize: 30 + (index % 2) * 10, animation: `hw-balloon ${4 + index * 0.5}s ease-out infinite`, animationDelay: `${index * 0.4}s` }} aria-hidden="true"><Balloon className="glyph" /></span>
                 ))}
-                <span style={{ position: "relative", fontSize: 56 }} aria-hidden="true">🗝️</span>
+                <span style={{ position: "relative", fontSize: 56 }} aria-hidden="true"><KeyRound className="glyph" /></span>
                 <h3>{attend === "yes" ? "Yay! See you soon" : "We’ll miss you!"}</h3>
                 <p>
                   {attend === "yes"
@@ -525,7 +527,7 @@ export function HomeInvite({
                 <input id={nameId} className={nameError ? "bad" : undefined} value={name} placeholder="Guest or family name" onChange={(event) => { setName(event.target.value); setNameError(false); }} />
                 {nameError ? <span className="err">Please enter your name.</span> : null}
                 <div className="hw-yesno">
-                  <button type="button" className={attend === "yes" ? "on" : undefined} aria-pressed={attend === "yes"} onClick={() => setAttend("yes")}>🏡 We'll be there</button>
+                  <button type="button" className={attend === "yes" ? "on" : undefined} aria-pressed={attend === "yes"} onClick={() => setAttend("yes")}><House className="glyph" aria-hidden="true" /> We'll be there</button>
                   <button type="button" className={attend === "no" ? "on" : undefined} aria-pressed={attend === "no"} onClick={() => setAttend("no")}>Can't make it</button>
                 </div>
                 {attend === "yes" ? (

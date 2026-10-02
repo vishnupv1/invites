@@ -23,7 +23,6 @@ const STATIC = [
   ["/faq", "Invitation questions | InvitesReady", "Guests do not need an app. You can design before you sign up, edit after sending, and keep the address private."],
   ["/occasions", "Wedding, baptism, and housewarming invitations | InvitesReady", "Digital invitations for weddings, nikah, engagements, baptisms, birthdays, anniversaries, and housewarmings."],
   ["/browse", "Invitation templates | InvitesReady", "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy."],
-  ["/templates", "Invitation templates | InvitesReady", "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy."],
   ["/privacy", "Privacy policy | InvitesReady", "How InvitesReady collects, uses, and stores account details, invitation content, guest replies, and payments."],
   ["/terms", "Terms of use | InvitesReady", "The terms for creating an account, designing an invitation, and buying a template on InvitesReady."],
   ["/refunds", "Refunds | InvitesReady", "When a one-time InvitesReady template purchase can be refunded, and how to ask."],
