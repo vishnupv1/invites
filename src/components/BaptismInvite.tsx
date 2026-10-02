@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { Baby, Bird, Heart, Milk, Smile, Sparkle, type LucideIcon } from "lucide-react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
@@ -25,7 +26,7 @@ const HERO_D = [[60, 150], [1360, 130], [560, 110], [880, 90], [40, 480], [1390,
 const DARK_M = [[24, 30], [350, 50], [40, 200], [340, 260], [180, 14], [300, 140]];
 const DARK_D = [[40, 40], [1380, 60], [80, 420], [1360, 460], [700, 24], [560, 500], [1000, 30], [300, 200], [1200, 250], [900, 520]];
 
-const FACT_EMOJI = ["👶", "🍼", "😊", "🧸"];
+const FACT_ICONS: LucideIcon[] = [Baby, Milk, Smile, Heart];
 
 function initialsOf(name: string) {
   return name.split(/\s+/).map((part) => part[0] ?? "").join("").slice(0, 2).toUpperCase();
@@ -152,7 +153,7 @@ function Sparks({ points, variant, size }: { points: number[][]; variant: "m" | 
       }}
       aria-hidden="true"
     >
-      ✦
+      <Sparkle className="glyph" />
     </span>
   ));
 }
@@ -188,7 +189,7 @@ export function BaptismInvite({
   const ceremony = eventName(fields.lines, "ceremonyName", "Holy Baptism");
   const reception = eventName(fields.lines, "receptionName", "Lunch & cake");
   const godparents = (pack.people ?? []).filter((person) => person.name.trim()).map((person) => ({ ...person, initials: initialsOf(person.name) }));
-  const facts = (pack.facts ?? []).filter((fact) => fact.label.trim() || fact.value.trim()).map((fact, index) => ({ ...fact, emoji: FACT_EMOJI[index] ?? "✦" }));
+  const facts = (pack.facts ?? []).filter((fact) => fact.label.trim() || fact.value.trim()).map((fact, index) => ({ ...fact, icon: FACT_ICONS[index] ?? Sparkle }));
   const when = whenOf(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
@@ -407,7 +408,7 @@ export function BaptismInvite({
               <div className="bp-facts-grid">
                 {facts.map((fact, index) => (
                   <div key={fact.label} className="bp-fact" style={{ animationDelay: `${0.2 + index * 0.12}s` }}>
-                    <em>{fact.emoji}</em>
+                    <em><fact.icon className="glyph" aria-hidden="true" /></em>
                     <small>{fact.label}</small>
                     <strong>{fact.value}</strong>
                   </div>
@@ -477,7 +478,7 @@ export function BaptismInvite({
                     <div className="bp-field">
                       <span>Attending?</span>
                       <div className="bp-yesno">
-                        <button type="button" className={attending ? "on" : ""} onClick={() => setAttending(true)}>🕊️ Happily yes</button>
+                        <button type="button" className={attending ? "on" : ""} onClick={() => setAttending(true)}><Bird className="glyph" aria-hidden="true" /> Happily yes</button>
                         <button type="button" className={!attending ? "on" : ""} onClick={() => setAttending(false)}>Can't make it</button>
                       </div>
                     </div>
@@ -523,7 +524,7 @@ export function BaptismInvite({
 
           <footer className="bp-foot">
             <em>{fields.names}</em>
-            <span>With love, {fields.hosts || "the family"} <span className="bp-heart">♥</span></span>
+            <span>With love, {fields.hosts || "the family"} <span className="bp-heart"><Heart className="glyph" fill="currentColor" aria-hidden="true" /></span></span>
             <Link to="/">Made with InvitesReady</Link>
             <InstagramLink />
           </footer>

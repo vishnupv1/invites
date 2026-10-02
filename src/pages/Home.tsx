@@ -1,178 +1,133 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Check, Sparkle } from "lucide-react";
 import { Brand } from "../components/Brand";
 import { InviteView } from "../components/InviteView";
 import { getTemplate, sampleFor } from "../data/templates";
-import type { EventId } from "../types";
 import "./landing.css";
 
 const WORDS = ["Invitations", "your", "guests", "open,", "answer", "and"];
-const OCCASION_GROUPS = [
-  ["Weddings", "Engagements", "Receptions"],
-  ["Birthdays", "Anniversaries"],
-  ["Baptisms", "Naming ceremonies"],
-  ["Housewarmings", "Festivals"],
-  ["Corporate events"],
-] as const;
+const OCCASIONS = ["Weddings", "Nikah", "Engagements", "Baptisms", "Birthdays", "Housewarmings", "Anniversaries", "Receptions", "Naming ceremonies", "Festivals"];
+const OCCASION_GROUPS = [["Weddings", "Nikah", "Engagements"], ["Baptisms", "Birthdays", "Naming ceremonies"], ["Housewarmings", "Anniversaries", "Receptions", "Festivals"]];
+const LANG_CHIPS = ["English", "മലയാളം", "தமிழ்", "हिन्दी"];
+const LANG_DEMOS = [
+  { chip: "English", script: "latin", invite: "Together with their families", names: ["Anjali", "Rahul"], joiner: "&", date: "Sunday, 14 February 2027", venue: "The garden pavilion", event: "Wedding", place: "Kochi", theme: { wash: "#FBF8F5", deep: "#4A263E", accent: "#D81B60", soft: "#FCEFF4", orb: "#F6DCE2", orb2: "#E6C893", petal: "#F23F78", petal2: "#FF7380", petal3: "#D81B60" } },
+  { chip: "മലയാളം", script: "malayalam", invite: "കുടുംബാംഗങ്ങളോടൊപ്പം", names: ["അഞ്ജലി", "രാഹുൽ"], joiner: "&", date: "ഞായർ, 14 ഫെബ്രുവരി 2027", venue: "ഗാർഡൻ പവിലിയൻ", event: "വിവാഹം", place: "കൊച്ചി", theme: { wash: "#F5F1E8", deep: "#234A3B", accent: "#B8893F", soft: "#E8F0E8", orb: "#DCE8D9", orb2: "#F1DDB0", petal: "#8BA98A", petal2: "#D7B879", petal3: "#B8893F" } },
+  { chip: "தமிழ்", script: "tamil", invite: "குடும்பத்துடன்", names: ["அஞ்சலி", "ராகுல்"], joiner: "&", date: "ஞாயிறு, 14 பிப்ரவரி 2027", venue: "தோட்ட அரங்கம்", event: "திருமணம்", place: "கொச்சி", theme: { wash: "#FBF3EA", deep: "#6B3A5B", accent: "#C8553D", soft: "#FCE8DD", orb: "#F6DCE2", orb2: "#E6C893", petal: "#F23F78", petal2: "#C8553D", petal3: "#D9B26A" } },
+  { chip: "हिन्दी", script: "devanagari", invite: "सपरिवार आमंत्रित", names: ["अंजलि", "राहुल"], joiner: "&", date: "रविवार, 14 फ़रवरी 2027", venue: "गार्डन पवेलियन", event: "विवाह", place: "कोच्चि", theme: { wash: "#F8F0E4", deep: "#4A263E", accent: "#B8893F", soft: "#F5E7D1", orb: "#E8C987", orb2: "#DCE8D9", petal: "#D81B60", petal2: "#E6C893", petal3: "#C8553D" } },
+];
 const PETAL_COLORS = ["#F23F78", "#FF7380", "#D81B60", "#FCEFF4"];
+const REPLIES = ["Vishnu's family · 4 guests", "Priya & Vivek · 2 guests", "Joseph Mathew · 3 guests", "Fathima & Arif · 2 guests"];
+const DEMO_SLIDES = [
+  { id: "vivah", event: "marriage", reply: REPLIES[0] },
+  { id: "beach", event: "marriage", reply: REPLIES[1] },
+  { id: "baptism", event: "baptism", reply: REPLIES[2] },
+  { id: "hearth", event: "housewarming", reply: REPLIES[3] },
+];
+const loop = OCCASIONS;
 const QR = [1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1];
 const CONFETTI = ["#D81B60", "#F23F78", "#FF7380", "#FFFFFF", "#FCEFF4"];
 
-const DEMO_SLIDES = [
-  { id: "vivah", event: "marriage" as EventId, reply: "Vishnu's family · 4 guests" },
-  { id: "baptism", event: "baptism" as EventId, reply: "Joseph Mathew · 3 guests" },
-  { id: "hearth", event: "housewarming" as EventId, reply: "Priya & Vivek · 2 guests" },
-  { id: "beach", event: "marriage" as EventId, reply: "Fathima & Arif · 2 guests" },
-  { id: "anna", event: "marriage" as EventId, reply: "Nisha · attending" },
-  { id: "gazal", event: "marriage" as EventId, reply: "Imran's family · 5 guests" },
+const PHONES = [
+  {
+    kicker: "Together with their families",
+    names: "Anjali & Rahul",
+    date: "Sunday, 14 Feb 2027 · Kochi",
+    bg: "#6B3A5B",
+    fg: "#FFFFFF",
+    accent: "#E6C893",
+    font: '"Cormorant Garamond", serif',
+    weight: 600,
+    stars: false,
+    waves: false,
+    events: [
+      ["Mehendi", "FRI 12 FEB · 5:00 PM"],
+      ["Wedding", "SUN 14 FEB · 10:30 AM"],
+      ["Reception", "SUN 14 FEB · 7:00 PM"],
+    ],
+  },
+  {
+    kicker: "Shubh Vivah",
+    names: "Karthik & Nandana",
+    date: "12 · 02 · 2027 · Guruvayur",
+    bg: "#0B1424",
+    fg: "#F6E8C8",
+    accent: "#D9B26A",
+    font: '"Parisienne", cursive',
+    weight: 400,
+    stars: true,
+    waves: false,
+    events: [
+      ["Sangeet", "THU 11 FEB · 6:00 PM"],
+      ["Muhurtham", "FRI 12 FEB · 10:30 AM"],
+      ["Reception", "FRI 12 FEB · 7:00 PM"],
+    ],
+  },
+  {
+    kicker: "Two hearts · one shore",
+    names: "Rohan & Alisha",
+    date: "Sat, 20 Mar 2027 · Varkala",
+    bg: "#F7B38A",
+    fg: "#1E3A44",
+    accent: "#1F6F78",
+    font: '"Allura", cursive',
+    weight: 400,
+    stars: false,
+    waves: true,
+    events: [
+      ["Sunset vows", "SAT · 5:30 PM"],
+      ["Beach reception", "SAT · 7:30 PM"],
+      ["Bonfire", "SAT · 10:30 PM"],
+    ],
+  },
+  {
+    kicker: "Griha Pravesh",
+    names: "Our new home!",
+    date: "Sun, 17 Jan 2027 · Kakkanad",
+    bg: "#DDEFE8",
+    fg: "#2E2A25",
+    accent: "#C8553D",
+    font: '"Caveat", cursive',
+    weight: 700,
+    stars: false,
+    waves: false,
+    events: [
+      ["Pooja", "6:30 AM"],
+      ["Paalukachal", "7:15 AM"],
+      ["Sadya lunch", "12:00 PM"],
+    ],
+  },
 ] as const;
 
 const STEPS = [
-  ["01", "Pick & personalise", "Choose a template and add names, photos and every function — no sign-up needed."],
+  ["01", "Pick & personalise", "Choose a template and add your names, photos and every function — no sign-up needed."],
   ["02", "Share on WhatsApp", "Send one link from your own WhatsApp. Guests open it instantly — no app."],
   ["03", "Watch replies arrive", "Headcounts, meals and wishes land in your dashboard in real time."],
 ] as const;
 
-const LANG_DEMOS = [
-  {
-    chip: "English",
-    invite: "You're invited",
-    names: ["Anna", "Joel"],
-    joiner: "&",
-    date: "Saturday · 14 December",
-    place: "Goa",
-    venue: "Candolim · North Goa",
-    event: "Wedding",
-    script: "latin",
-    theme: {
-      wash: "rgba(68, 42, 58, 0.7)",
-      deep: "rgba(36, 22, 32, 0.45)",
-      accent: "#e6c893",
-      soft: "#f3e2b8",
-      orb: "rgba(200, 155, 91, 0.5)",
-      orb2: "rgba(230, 183, 195, 0.35)",
-      petal: "#e6c893",
-      petal2: "#e7b7c3",
-      petal3: "#f0e6d8",
-    },
-  },
-  {
-    chip: "മലയാളം",
-    invite: "സ്വാഗതം",
-    names: ["അന്ന", "ജോയൽ"],
-    joiner: "&",
-    date: "ശനി · ഡിസംബർ 14",
-    place: "കൊച്ചി",
-    venue: "ഫോർട്ട് കൊച്ചി",
-    event: "വിവാഹം",
-    script: "ml",
-    theme: {
-      wash: "rgba(34, 78, 68, 0.72)",
-      deep: "rgba(18, 42, 40, 0.42)",
-      accent: "#9fd4c0",
-      soft: "#f4f0e6",
-      orb: "rgba(111, 168, 148, 0.55)",
-      orb2: "rgba(200, 155, 91, 0.32)",
-      petal: "#9fd4c0",
-      petal2: "#e6c893",
-      petal3: "#f0e6d8",
-    },
-  },
-  {
-    chip: "हिन्दी",
-    invite: "आप आमंत्रित हैं",
-    names: ["अन्ना", "जोएल"],
-    joiner: "और",
-    date: "शनिवार · 14 दिसंबर",
-    place: "जयपुर",
-    venue: "सिटी पैलेस · जयपुर",
-    event: "विवाह",
-    script: "hi",
-    theme: {
-      wash: "rgba(92, 36, 28, 0.72)",
-      deep: "rgba(48, 18, 16, 0.45)",
-      accent: "#f0b27a",
-      soft: "#fce8d4",
-      orb: "rgba(212, 110, 62, 0.45)",
-      orb2: "rgba(230, 200, 147, 0.35)",
-      petal: "#f0b27a",
-      petal2: "#e6c893",
-      petal3: "#f8d9b8",
-    },
-  },
-  {
-    chip: "বাংলা",
-    invite: "আপনি আমন্ত্রিত",
-    names: ["আনা", "জোয়েল"],
-    joiner: "ও",
-    date: "শনিবার · ১৪ ডিসেম্বর",
-    place: "কলকাতা",
-    venue: "ভিক্টোরিয়া · কলকাতা",
-    event: "বিবাহ",
-    script: "bn",
-    theme: {
-      wash: "rgba(42, 48, 92, 0.72)",
-      deep: "rgba(20, 24, 52, 0.45)",
-      accent: "#a8b8f0",
-      soft: "#e8ecf8",
-      orb: "rgba(96, 118, 196, 0.5)",
-      orb2: "rgba(230, 183, 195, 0.32)",
-      petal: "#a8b8f0",
-      petal2: "#e7b7c3",
-      petal3: "#e8ecf8",
-    },
-  },
-  {
-    chip: "தமிழ்",
-    invite: "வரவேற்கிறோம்",
-    names: ["அன்னா", "ஜோயல்"],
-    joiner: "&",
-    date: "சனி · 14 டிசம்பர்",
-    place: "மதுரை",
-    venue: "மீனாட்சி அம்மன் · மதுரை",
-    event: "திருமணம்",
-    script: "ta",
-    theme: {
-      wash: "rgba(58, 32, 78, 0.72)",
-      deep: "rgba(28, 16, 42, 0.45)",
-      accent: "#d4a8f0",
-      soft: "#f2e8f8",
-      orb: "rgba(148, 96, 186, 0.5)",
-      orb2: "rgba(200, 155, 91, 0.32)",
-      petal: "#d4a8f0",
-      petal2: "#e6c893",
-      petal3: "#f2e8f8",
-    },
-  },
-] as const;
-
-const LANG_CHIPS = ["English", "മലയാളം", "हिन्दी", "বাংলা", "தமிழ்", "ગુજરાતી", "ಕನ್ನಡ", "తెలుగు"] as const;
-
 const HOW_CARDS = [
-  { id: "vivah", name: "Karthik & Nandana", cover: "/covers/vivah.jpg", rot: -12, dx: -118 },
-  { id: "baptism", name: "Ethan", cover: "/covers/baptism.jpg", rot: -5, dx: -40 },
-  { id: "hearth", name: "Our new home", cover: "/covers/hearth.jpg", rot: 12, dx: 118 },
-  { id: "anna", name: "Anna & Joel", cover: "/covers/anna.jpg", rot: 0, dx: 0 },
-] as const;
+  { bg: "#FAF7F2", fg: "#4A263E", accent: "#C89B5B", font: '"Cormorant Garamond", serif', text: "Devika & Hari", rot: -18, dx: -120 },
+  { bg: "#0B1424", fg: "#F6E8C8", accent: "#D9B26A", font: '"Parisienne", cursive', text: "Karthik & Nandana", rot: -6, dx: -40 },
+  { bg: "#F6F0E6", fg: "#A44B32", accent: "#8A9A7B", font: '"Pinyon Script", cursive', text: "Anna & Joel", rot: 6, dx: 40 },
+  { bg: "#6B3A5B", fg: "#FFFFFF", accent: "#E6C893", font: '"Cormorant Garamond", serif', text: "Anjali & Rahul", rot: 0, dx: 0 },
+];
 
 const RSVPS = [
-  ["MF", "Vishnu's family", "Attending", "#D81B60", "All 3 functions"],
-  ["PV", "Priya & Vivek", "Attending", "#F23F78", "Wedding + Reception"],
-  ["JM", "Joseph Mathew", "Pending", "#6F8B74", "No reply yet"],
-  ["AR", "Aisha & Rafi", "Attending", "#8E1550", "Wedding only"],
+  ["MF", "Vishnu's family", "Attending", "#6B3A5B"],
+  ["PV", "Priya & Vivek", "Attending", "#C89B5B"],
+  ["JM", "Joseph Mathew", "Pending", "#6F8B74"],
+  ["DT", "Design team", "Attending", "#4A263E"],
 ] as const;
 
 const TEMPLATES = [
-  { name: "Royal Night", tag: "Animated", cover: "/covers/vivah.jpg", sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/create?template=vivah" },
-  { name: "Sunset Shore", tag: "Animated", cover: "/covers/beach.jpg", sample: "Rohan & Alisha", kicker: "One shore", to: "/create?template=beach" },
-  { name: "Blush Botanica", tag: "Animated", cover: "/covers/botanica.jpg", sample: "Nila & Kiran", kicker: "Wedding", to: "/create?template=botanica" },
-  { name: "Happy Home", tag: "Animated", cover: "/covers/hearth.jpg", sample: "Our new home", kicker: "Griha Pravesh", to: "/create?template=hearth" },
-  { name: "Heavenly Halo", tag: "Animated", cover: "/covers/baptism.jpg", sample: "Ethan", kicker: "Baptism", to: "/create?template=baptism" },
-  { name: "Emerald Nikah", tag: "Premium", cover: "/covers/gazal.jpg", sample: "Imran & Safa", kicker: "Nikah", to: "/create?template=gazal" },
-  { name: "Garden Editorial", tag: "Free", cover: "/covers/anna.jpg", sample: "Anna & Joel", kicker: "Save the date", to: "/create?template=anna" },
-  { name: "Aurelia", tag: "Premium", cover: "/covers/aurelia.jpg", sample: "Aisha & Kabir", kicker: "Wedding", to: "/create?template=aurelia" },
-  { name: "Thiruvizha", tag: "Animated", cover: "/covers/thiruvizha.jpg", sample: "Family feast", kicker: "Celebration", to: "/create?template=thiruvizha" },
-] as const;
+  { name: "Royal Night", tag: "Animated", bg: "#0B1424", fg: "#F6E8C8", accent: "#D9B26A", font: '"Parisienne", cursive', sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/create?template=vivah" },
+  { name: "Sunset Shore", tag: "Animated", bg: "#F7B38A", fg: "#1E3A44", accent: "#1F6F78", font: '"Allura", cursive', sample: "Rohan & Alisha", kicker: "One shore", to: "/create?template=beach" },
+  { name: "Blush Botanica", tag: "Animated", bg: "#F3E3D6", fg: "#3A2E2A", accent: "#B8893F", font: '"Alex Brush", cursive', sample: "Nila & Kiran", kicker: "Wedding", to: "/create?template=botanica" },
+  { name: "Happy Home", tag: "Animated", bg: "#DDEFE8", fg: "#2E2A25", accent: "#C8553D", font: '"Caveat", cursive', sample: "Our new home!", kicker: "Griha Pravesh", to: "/create?template=hearth" },
+  { name: "Heavenly Halo", tag: "Animated", bg: "#DCEBF7", fg: "#2F5E8A", accent: "#D9B26A", font: '"Great Vibes", cursive', sample: "Ethan", kicker: "Baptism", to: "/create?template=baptism" },
+  { name: "Emerald Nikah", tag: "Premium", bg: "#12352B", fg: "#FFFFFF", accent: "#C89B5B", font: '"Cormorant Garamond", serif', sample: "Imran & Safa", kicker: "Nikah", to: "/create?template=gazal" },
+  { name: "Garden Editorial", tag: "Free", bg: "#F6F0E6", fg: "#A44B32", accent: "#8A9A7B", font: '"Pinyon Script", cursive', sample: "Anna & Joel", kicker: "Save the date", to: "/create?template=anna" },
+];
 
 const BARS = [
   ["Mehendi · 118 / 150", 79, "#F23F78"],
@@ -181,9 +136,9 @@ const BARS = [
 ] as const;
 
 const PLANS = [
-  { id: "free", kicker: "Gatherings", name: "Free", sub: "For simple get-togethers", price: "₹0", note: "Design and share", items: ["Free templates", "1 function", "RSVP up to 50 guests", "Small InvitesReady credit"], cta: "Start free", featured: false },
-  { id: "wedding", kicker: "Most loved", name: "Wedding", sub: "For multi-day celebrations", price: "Pay once", note: "One price per celebration", items: ["All animated & premium templates", "Unlimited functions & groups", "Reminders, QR check-in, photo wall", "No branding"], cta: "Plan my wedding", featured: true },
-  { id: "premium", kicker: "Family events", name: "Premium", sub: "Birthdays & family functions", price: "Pay once", note: "One price per event", items: ["All premium templates", "Up to 3 functions", "RSVP up to 300 guests", "No branding"], cta: "Go premium", featured: false },
+  { id: "free", name: "Free", kicker: "Start here", sub: "For simple get-togethers", price: "₹0", note: "forever", items: ["Free templates", "1 function", "RSVP up to 50 guests", "Small InvitesReady credit"], cta: "Start free", featured: false },
+  { id: "wedding", name: "Wedding", kicker: "Most popular", sub: "For multi-day celebrations", price: "", note: "one-time per event", items: ["All animated & premium templates", "Unlimited functions & groups", "Reminders, QR check-in, photo wall", "No branding"], cta: "Plan my wedding", featured: true },
+  { id: "premium", name: "Premium", kicker: "For family events", sub: "Birthdays & family functions", price: "", note: "one-time per event", items: ["All premium templates", "Up to 3 functions", "RSVP up to 300 guests", "No branding"], cta: "Go premium", featured: false },
 ];
 
 const FAQS = [
@@ -250,7 +205,6 @@ export function Home({ focus }: { focus?: string }) {
   const [burst, setBurst] = useState(0);
   const [menu, setMenu] = useState(false);
   const [lang, setLang] = useState(0);
-  const [priceSpot, setPriceSpot] = useState({ x: 70, y: 24 });
 
   useEffect(() => {
     const id = focus || hash.replace(/^#/, "");
@@ -282,6 +236,8 @@ export function Home({ focus }: { focus?: string }) {
   const slide = DEMO_SLIDES[Math.floor(tick / 7) % DEMO_SLIDES.length];
   const template = getTemplate(slide.id);
   const fields = template ? sampleFor(template, slide.event) : null;
+  const phone = PHONES[Math.floor(tick / 7) % PHONES.length];
+  const lightCover = phone.bg !== "#0B1424";
   const head = 140 + (tick % 60) * 0.8;
   const headcount = String(Math.round(head));
   const pct = Math.round((head / 220) * 100);
@@ -529,9 +485,9 @@ export function Home({ focus }: { focus?: string }) {
             </Link>
           </div>
           <div className="lp-checks">
-            <span>✓ No app for guests</span>
-            <span>{narrow ? "✓ Design free" : "✓ Design free, no sign-up"}</span>
-            <span>✓ Pay once per event</span>
+            <span><Check size={16} aria-hidden="true" /> No app for guests</span>
+            <span><Check size={16} aria-hidden="true" /> {narrow ? "Design free" : "Design free, no sign-up"}</span>
+            <span><Check size={16} aria-hidden="true" /> Pay once per event</span>
           </div>
         </div>
 
@@ -545,6 +501,59 @@ export function Home({ focus }: { focus?: string }) {
                   </div>
                 </div>
               ) : null}
+              <div className="lp-screen" key={phone.names}>
+                <div className="lp-cover" style={{ background: phone.bg, color: phone.fg }}>
+                  {phone.stars
+                    ? Array.from({ length: 6 }, (_, i) => (
+                        <span key={i} className="lp-star" style={{ left: 20 + i * 50, top: 18 + (i % 3) * 24, animationDuration: `${1.6 + i * 0.3}s` }} />
+                      ))
+                    : null}
+                  <span className="lp-kicker">{phone.kicker}</span>
+                  <span className="lp-names" style={{ fontFamily: phone.font, fontWeight: phone.weight }}>
+                    {phone.names}
+                  </span>
+                  <span className="lp-date">{phone.date}</span>
+                  {phone.waves ? (
+                    <div className="lp-waves" aria-hidden="true">
+                      <div>
+                        <svg width="640" height="40" viewBox="0 0 1600 100" preserveAspectRatio="none">
+                          <path d="M0 40C100 10 200 70 300 40S500 10 600 40 800 70 900 40 1100 10 1200 40 1400 70 1500 40 1600 40V100H0z" fill="#1F6F78" />
+                        </svg>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+                <div className="lp-sheet">
+                  <div className="lp-count">
+                    {[
+                      ["142", "DAYS"],
+                      ["06", "HOURS"],
+                      ["32", "MINS"],
+                    ].map(([value, label]) => (
+                      <div key={label}>
+                        <strong>{value}</strong>
+                        <span>{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {phone.events.map(([name, when]) => (
+                    <div className="lp-fn" key={name}>
+                      <div>
+                        <strong>{name}</strong>
+                        <small>{when}</small>
+                      </div>
+                      <em style={{ color: lightCover ? phone.accent : "#6B3A5B" }}>Map</em>
+                    </div>
+                  ))}
+                  <div className="lp-join">
+                    <span style={{ background: lightCover ? phone.accent : phone.bg }}>Joyfully joining</span>
+                    <i>Can't make it</i>
+                  </div>
+                  <span className="lp-join-solo" style={{ background: lightCover ? phone.accent : phone.bg }}>
+                    Joyfully joining
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="lp-float-card lp-rsvp">
@@ -569,8 +578,8 @@ export function Home({ focus }: { focus?: string }) {
           </div>
           <div className="lp-wa"><img src="/whatsapp.png" alt="" width={16} height={16} /> Shared on WhatsApp</div>
           <div className="lp-dots" aria-hidden="true">
-            {DEMO_SLIDES.map((item) => (
-              <i key={item.id} style={{ width: item.id === slide.id ? 28 : 8, background: item.id === slide.id ? "#D81B60" : "#D8CCBF" }} />
+            {PHONES.map((item) => (
+              <i key={item.names} style={{ width: item.names === phone.names ? 28 : 8, background: item.names === phone.names ? "#6B3A5B" : "#D8CCBF" }} />
             ))}
           </div>
         </div>
@@ -600,217 +609,45 @@ export function Home({ focus }: { focus?: string }) {
         </div>
       </section>
 
-      <section className="lp-occasions" aria-label="Celebrations">
-        <div className="lp-occasions-glow" aria-hidden="true">
-          <i className="a" />
-          <i className="b" />
-          {Array.from({ length: 7 }, (_, n) => (
-            <span
-              key={n}
-              className="lp-occasions-petal"
-              style={{
-                left: `${6 + n * 14}%`,
-                animationDuration: `${13 + (n % 4) * 2.5}s`,
-                animationDelay: `${-n * 1.8}s`,
-              }}
-            />
-          ))}
-        </div>
-        <span className="lp-kicker-label">Celebrations</span>
-        <h2>
-          An invitation for every <em>celebration.</em>
-        </h2>
-        <nav aria-label="Celebrations">
-          <Link to="/c/marriage">Marriage</Link>
-          <Link to="/c/engagement">Engagements</Link>
-          <Link to="/c/housewarming">Housewarming</Link>
-        </nav>
-      </section>
-
       <section id="how" className="lp-how">
-        <div className="lp-how-glow" aria-hidden="true">
-          <i className="a" />
-          <i className="b" />
-          <span />
-        </div>
+        <div className="lp-how-glow" aria-hidden="true"><i className="a" /><i className="b" /><span /></div>
         <div className="lp-how-copy">
           <span className="lp-kicker-label">How it works</span>
-          <h2>
-            From idea to replies in <em>three steps.</em>
-          </h2>
-          <p className="lp-how-lede">Design once, share one link, and keep every reply in one place.</p>
-          <div className="lp-steps" role="tablist" aria-label="Steps">
-            {STEPS.map(([n, title, text], index) => {
-              const on = how === index;
-              return (
-                <button
-                  key={n}
-                  type="button"
-                  role="tab"
-                  aria-selected={on}
-                  className={on ? "lp-step on" : "lp-step"}
-                  onClick={() => {
-                    setHow(index);
-                    setHowT(0);
-                  }}
-                >
-                  <b>{n}</b>
-                  <span>
-                    <strong>{title}</strong>
-                    <p>{text}</p>
-                  </span>
-                  <u aria-hidden="true">
-                    <i style={{ width: `${on ? Math.min(100, (howT + 1) * 12.5) : 0}%` }} />
-                  </u>
-                </button>
-              );
-            })}
+          <h2>{STEPS[how]?.[1]}</h2>
+          <p className="lp-how-lede">{STEPS[how]?.[2]}</p>
+          <div className="lp-how-progress" aria-label={`Step ${how + 1} of ${STEPS.length}`}>
+            {STEPS.map((step, index) => <button key={step[0]} type="button" aria-pressed={how === index} onClick={() => { setHow(index); setHowT(0); }}>{step[0]}</button>)}
+            <span aria-hidden="true" style={{ width: `${(howT / 8) * 100}%` }} />
           </div>
         </div>
-        <div className="lp-how-stage">
-          <div className="lp-how-aura" aria-hidden="true">
-            <span className="lp-how-ribbon lp-how-ribbon-a" />
-            <span className="lp-how-ribbon lp-how-ribbon-b" />
-            <span className="lp-how-ribbon lp-how-ribbon-c" />
-            <svg className="lp-how-ornament lp-how-ornament-tl" viewBox="0 0 120 120" fill="none">
-              <path d="M8 112C18 72 48 42 88 28" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M28 112C36 84 58 58 92 44" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-              <path d="M88 28c8-4 16-6 24-6M88 28c2 10 0 20-6 28" stroke="currentColor" strokeWidth="1" />
-              <circle cx="88" cy="28" r="2.5" fill="currentColor" />
-            </svg>
-            <svg className="lp-how-ornament lp-how-ornament-br" viewBox="0 0 120 120" fill="none">
-              <path d="M112 8C102 48 72 78 32 92" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M92 8C84 36 62 62 28 76" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-              <path d="M32 92c-8 4-16 6-24 6M32 92c-2-10 0-20 6-28" stroke="currentColor" strokeWidth="1" />
-              <circle cx="32" cy="92" r="2.5" fill="currentColor" />
-            </svg>
-            {Array.from({ length: narrow ? 10 : 16 }, (_, i) => (
-              <span
-                key={i}
-                className={`lp-how-foil lp-how-foil-${(i % 3) + 1}`}
-                style={{
-                  left: `${8 + ((i * 11.7) % 84)}%`,
-                  animationDuration: `${7 + (i % 5) * 1.6}s`,
-                  animationDelay: `-${i * 0.7}s`,
-                }}
-              />
+        <div className="lp-how-stage" aria-label="Invitation examples" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, minHeight: 300 }}>
+          {HOW_CARDS.map((card, index) => <div key={card.text} className="lp-how-card" style={{ background: card.bg, color: card.fg, border: `2px solid ${card.accent}`, padding: 18, transform: `rotate(${card.rot + (index === how ? 0 : card.dx / 30)}deg)`, zIndex: index === how ? 2 : 1 }}><span style={{ fontFamily: card.font }}>{card.text}</span></div>)}
+          <div className="lp-how-replies">{RSVPS.map(([initials, name, status, color]) => <span key={initials}><i style={{ background: color }}>{initials}</i>{name}<small>{status}</small></span>)}</div>
+        </div>
+      </section>
+
+      <section className="lp-marquee" aria-hidden="true">
+        <div>
+          <div className="lp-marquee-track">
+            {loop.map((label, index) => (
+              <span key={`${label}-${index}`}>
+                {label} <i><Sparkle size={16} aria-hidden="true" /></i>
+              </span>
             ))}
           </div>
-          {how === 0 ? (
-            <div className="lp-how-panel" key="pick">
-              <div className="lp-how-fan">
-                {HOW_CARDS.map((card, index) => (
-                  <div
-                    key={card.id}
-                    className="lp-how-slot"
-                    style={{
-                      transform: `translate(${Math.round(card.dx * (narrow ? 0.52 : 1))}px, 0) rotate(${card.rot}deg)`,
-                      zIndex: index === 3 ? 2 : 1,
-                    }}
-                  >
-                    <div className="lp-how-card" style={{ animationDelay: `${index * 0.12}s` }}>
-                      <img src={card.cover} alt="" />
-                      <span>{card.name}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <span className="lp-typing">Personalising Anna &amp; Joel…</span>
-            </div>
-          ) : null}
-          {how === 1 ? (
-            <div className="lp-how-panel" key="share">
-              <div className="lp-chat-shell">
-                <div className="lp-chat">
-                  <div className="lp-chat-head">
-                    <img src="/whatsapp.png" alt="" width={16} height={16} />
-                    <span>WhatsApp</span>
-                  </div>
-                  <div className="lp-chat-body">
-                    <div className="lp-chat-out">
-                      <div className="lp-chat-card">
-                        <img src="/covers/anna.jpg" alt="" />
-                        <strong>
-                          Anna <em>&amp;</em> Joel
-                        </strong>
-                        <small>invitesready.com/anna-joel</small>
-                      </div>
-                      <p>You're invited — tap to RSVP</p>
-                      <em>10:24 ✓✓</em>
-                    </div>
-                    <div className="lp-chat-in" style={{ animationDelay: "0.55s" }}>
-                      So beautiful. We'll be there.
-                    </div>
-                    <div className="lp-chat-in" style={{ animationDelay: "0.95s" }}>
-                      RSVP'd for all three functions.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : null}
-          {how === 2 ? (
-            <div className="lp-how-panel lp-how-panel-live" key="replies">
-              <div className="lp-live-invite" aria-hidden="true">
-                <img src="/covers/anna.jpg" alt="" />
-                <span>Anna &amp; Joel</span>
-              </div>
-              <div className="lp-live">
-                <div className="lp-live-top">
-                  <div>
-                    <span>Live RSVPs</span>
-                    <small>Updating as guests reply</small>
-                  </div>
-                  <strong>{headcount}</strong>
-                </div>
-                <div className="lp-live-list">
-                  {RSVPS.map(([initials, name, status, color, detail], index) => (
-                    <div className="lp-live-row" key={name} style={{ animationDelay: `${0.15 + index * 0.18}s` }}>
-                      <b style={{ background: color }}>{initials}</b>
-                      <span>
-                        <strong>{name}</strong>
-                        <small>{detail}</small>
-                      </span>
-                      <em className={status === "Pending" ? "wait" : "yes"}>{status}</em>
-                    </div>
-                  ))}
-                </div>
-                <div className="lp-live-foot">
-                  <i style={{ width: `${pct}%` }} />
-                </div>
-              </div>
-            </div>
-          ) : null}
         </div>
       </section>
 
       <section id="templates" className="lp-templates">
-        <div className="lp-templates-glow" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          {Array.from({ length: 18 }, (_, i) => (
-            <em
-              key={i}
-              style={{
-                left: `${4 + ((i * 13.7) % 92)}%`,
-                animationDuration: `${8 + (i % 6) * 1.4}s`,
-                animationDelay: `-${i * 0.55}s`,
-              }}
-            />
-          ))}
-        </div>
         <div className="lp-templates-head">
           <div>
-            <span className="lp-kicker-label lp-kicker-gold">Templates</span>
+            <span className="lp-kicker-label" style={{ color: "#E6C893" }}>
+              Templates
+            </span>
             <h2>
               Invitations that <em>move.</em>
             </h2>
-            <p>
-              {narrow
-                ? "Doors that open, sunsets that settle, homes that build themselves."
-                : "Palace doors that open, sunsets that set, houses that build themselves. Hover to peek."}
-            </p>
+            <p>{narrow ? "Palace doors, sunsets and houses that build themselves." : "Palace doors that open, sunsets that set, houses that build themselves. Hover to peek."}</p>
           </div>
           <Link className="lp-gold-link lp-btn" to="/browse">
             See all templates
@@ -819,17 +656,12 @@ export function Home({ focus }: { focus?: string }) {
         <div className="lp-tpl-row" ref={tplRow} tabIndex={0} role="region" aria-label="Invitation templates">
           <div className="lp-tpl-track">
             {cards.map((template, index) => (
-              <Link draggable={false} className="lp-tpl" to={template.to} key={`${template.name}-${index}`}>
-                <span className={`lp-tpl-badge${template.tag === "Free" ? " free" : template.tag === "Premium" ? " premium" : ""}`}>
-                  {template.tag}
-                </span>
-                <div className="lp-tpl-media">
-                  <img src={template.cover} alt="" loading="lazy" />
-                  <div className="lp-tpl-veil">
-                    <small>{template.kicker}</small>
-                    <strong>{template.sample}</strong>
-                  </div>
+              <Link draggable={false} className="lp-tpl" to={template.to} key={`${template.name}-${index}`} style={{ background: template.bg, color: template.fg }}>
+                <div className="lp-tpl-frame" style={{ borderColor: template.accent }}>
+                  <small>{template.kicker}</small>
+                  <strong style={{ fontFamily: template.font }}>{template.sample}</strong>
                 </div>
+                {template.tag === "Animated" ? null : <span className={template.tag === "Free" ? "lp-tpl-badge free" : "lp-tpl-badge"}>{template.tag}</span>}
                 <span className="lp-tpl-name">{template.name}</span>
               </Link>
             ))}
@@ -1018,14 +850,14 @@ export function Home({ focus }: { focus?: string }) {
               <h3>Every function, one link</h3>
             </div>
             <div className="lp-fns-board" aria-hidden="true">
-              {BARS.map(([name, width, color]) => (
+              {BARS.map(([name, width, color], index) => (
                 <div key={name}>
                   <div className="lp-fns-meta">
                     <span>{name.split(" · ")[0]}</span>
                     <em>{name.split(" · ")[1]}</em>
                   </div>
                   <div className="lp-bar">
-                    <i style={{ width: `${width}%`, background: color }} />
+                    <i style={{ width: `${width}%`, background: color, animationDelay: `${0.2 + index * 0.25}s` }} />
                   </div>
                 </div>
               ))}
@@ -1074,47 +906,8 @@ export function Home({ focus }: { focus?: string }) {
         </div>
       </section>
 
-      <section
-        id="pricing"
-        className="lp-pricing"
-        onMouseMove={(event) => {
-          const box = event.currentTarget.getBoundingClientRect();
-          setPriceSpot({ x: Math.round(((event.clientX - box.left) / box.width) * 100), y: Math.round(((event.clientY - box.top) / box.height) * 100) });
-        }}
-      >
-        <div className="lp-pricing-stage" aria-hidden="true">
-          <div
-            className="lp-pricing-spot"
-            style={{ background: `radial-gradient(${narrow ? 260 : 540}px circle at ${priceSpot.x}% ${priceSpot.y}%, rgba(242, 63, 120, 0.38), rgba(243,235,227,0) 70%)` }}
-          />
-          <i className="lp-pricing-orb a" />
-          <i className="lp-pricing-orb b" />
-          <i className="lp-pricing-ring r1" />
-          <i className="lp-pricing-ring r2" />
-          <i className="lp-pricing-ring r3" />
-          <PricingMandala className="lp-pricing-mandala left" />
-          <PricingMandala className="lp-pricing-mandala right" />
-          {Array.from({ length: narrow ? 7 : 14 }, (_, i) => (
-            <span
-              key={i}
-              className="lp-petal"
-              style={{ left: `${(i * 7.4 + 3) % 100}%`, animationDuration: `${11 + (i % 5) * 2}s`, animationDelay: `-${i * 1.1}s` }}
-            >
-              <span style={{ animationDuration: `${3 + (i % 3)}s` }}>
-                <svg width={10 + (i % 3) * 5} height={10 + (i % 3) * 5} viewBox="0 0 20 20">
-                  <path d="M10 1C15 5 17 11 10 19 3 11 5 5 10 1z" fill={PETAL_COLORS[i % 4]} />
-                </svg>
-              </span>
-            </span>
-          ))}
-          {Array.from({ length: 10 }, (_, i) => (
-            <i
-              key={i}
-              className="lp-pricing-dot"
-              style={{ left: `${8 + (i * 9.3) % 84}%`, top: `${12 + (i * 17) % 76}%`, animationDuration: `${2.6 + (i % 4) * 0.7}s`, animationDelay: `-${i * 0.4}s` }}
-            />
-          ))}
-        </div>
+      <section id="pricing" className="lp-pricing">
+        <PricingMandala className="lp-pricing-mandala" />
         <div className="lp-pricing-intro">
           <span className="lp-kicker-label">Pricing</span>
           <h2>
@@ -1134,10 +927,7 @@ export function Home({ focus }: { focus?: string }) {
               </p>
               <ul>
                 {plan.items.map((item) => (
-                  <li key={item}>
-                    <PlanCheck light={plan.featured} />
-                    {item}
-                  </li>
+                  <li key={item}><PlanCheck light={plan.featured} /> {item}</li>
                 ))}
               </ul>
               <Link className="lp-plan-cta" to="/create">
@@ -1149,22 +939,6 @@ export function Home({ focus }: { focus?: string }) {
       </section>
 
       <section id="faq" className="lp-faq">
-        <div className="lp-faq-stage" aria-hidden="true">
-          <div className="lp-faq-rules" />
-          <div className="lp-faq-wash" />
-          <i className="lp-faq-pen" />
-          <i className="lp-faq-pen late" />
-          {["tr", "bl"].map((corner) => (
-            <span key={corner} className={`lp-faq-corner ${corner}`} />
-          ))}
-          {Array.from({ length: narrow ? 4 : 7 }, (_, i) => (
-            <i
-              key={i}
-              className="lp-faq-gem"
-              style={{ left: i % 2 === 0 ? "2.2%" : "96%", top: `${18 + (i * 16) % 64}%`, animationDelay: `-${i * 0.45}s`, animationDuration: `${3 + (i % 3) * 0.8}s` }}
-            />
-          ))}
-        </div>
         <div className="lp-faq-intro">
           <span className="lp-kicker-label">FAQ</span>
           <h2>
@@ -1221,21 +995,15 @@ export function Home({ focus }: { focus?: string }) {
               </>
             ) : (
               <>
-                Your celebration deserves more than a <em>forwarded PDF.</em>
+                <span className="lp-desk-line">Your celebration deserves more than a </span>
+                <em>forwarded PDF.</em>
               </>
             )}
           </h2>
           <p>{narrow ? "Your first invite in about ten minutes. Free to design." : "Create your first invite in about ten minutes. Free to design — no sign-up needed."}</p>
-          <div className="lp-ctas">
-            <Link className="lp-cta" to="/create">
-              Create your invitation — free <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-          <div className="lp-checks">
-            <span>✓ Free to design</span>
-            <span>✓ No sign-up</span>
-            <span>✓ Share on WhatsApp</span>
-          </div>
+          <Link className="lp-shine lp-btn" to="/create">
+            Create your invitation — free →
+          </Link>
         </div>
       </section>
       </main>
@@ -1250,6 +1018,22 @@ export function Home({ focus }: { focus?: string }) {
           <Link to="/terms">Terms</Link>
           <Link to="/refunds">Refunds</Link>
           <Link to="/contact">Contact</Link>
+        </nav>
+        <nav className="lp-social" aria-label="Social">
+          <a href="https://www.facebook.com/profile.php?id=61594844762009" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14.5 8.5V6.8c0-.6.4-.8.8-.8H17V3.5h-2.4C12.1 3.5 11 4.9 11 7.1v1.4H9v2.7h2V20h2.8v-8.8h2.3l.4-2.7h-2.7z" />
+            </svg>
+            <span className="lp-sr">Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/invitesready/" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span className="lp-sr">Instagram</span>
+          </a>
         </nav>
         <small>© 2026 InvitesReady.com</small>
       </footer>

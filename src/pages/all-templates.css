@@ -27,9 +27,9 @@
   position: sticky;
   top: 0;
   z-index: 30;
-  height: 76px;
+  height: 84px;
   box-sizing: border-box;
-  padding: 0 40px;
+  padding: 0 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,6 +37,7 @@
   background: linear-gradient(#d81b60, #d81b60) left bottom / 100% 1px no-repeat,
     linear-gradient(#f23f78, #f23f78) left bottom 4px / 100% 1px no-repeat,
     rgba(251, 248, 245, 0.96);
+  border-bottom: 1px solid #ebe2dd;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
@@ -47,7 +48,7 @@
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 5px;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 239, 244, 0.92) 100%);
@@ -76,7 +77,7 @@
 .cat-nav-actions { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; }
 .cat-login {
   position: relative;
-  min-height: 36px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   padding: 0 16px 0 0;
@@ -89,10 +90,10 @@
 }
 .cat-login:hover { color: #8e1550; }
 .cat a.cat-create {
-  min-height: 36px;
+  min-height: 46px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 22px;
   border-radius: 6px;
   background: #d81b60;
   color: #fff;
@@ -231,7 +232,7 @@
 
 .cat-bar {
   position: sticky;
-  top: 76px;
+  top: 84px;
   z-index: 20;
   padding: 16px clamp(20px, 8vw, 120px);
   display: flex;
@@ -313,6 +314,9 @@
   min-height: 38px;
   padding: 0 14px;
   border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: transparent;
   color: #4e3e47;
   border: 1px solid #ebe2dd;
@@ -425,6 +429,9 @@
 .cat-badges.static { position: static; right: auto; }
 .cat-badges span,
 .cat-modal-copy .cat-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 11px;
@@ -448,6 +455,9 @@
   color: #d9cdc8;
   font-size: 18px;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
@@ -712,7 +722,8 @@
 .cat-modal-price strong { font-family: Fraunces, Georgia, serif; font-size: 32px; font-weight: 700; }
 .cat-modal-price span { font-size: 13px; color: #6b5a62; }
 .cat-modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-.cat-modal-actions a {
+.cat-modal-actions a,
+.cat-modal-actions button {
   min-height: 52px;
   flex-grow: 1;
   display: flex;
@@ -724,10 +735,36 @@
   color: #fff;
   font-size: 15px;
   font-weight: 800;
+  cursor: pointer;
 }
 .cat-modal-actions a:hover { color: #fff; }
-.cat-modal-actions a.ghost { background: #fff; color: #2a1527; border: 1.5px solid #2a1527; }
-.cat-modal-actions a.ghost:hover { color: #2a1527; }
+.cat-modal-actions a.ghost,
+.cat-modal-actions button.ghost { background: #fff; color: #2a1527; border: 1.5px solid #2a1527; }
+.cat-modal-actions a.ghost:hover,
+.cat-modal-actions button.ghost:hover { color: #2a1527; }
+.cat-demo {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: auto;
+  background: #1a1016;
+}
+.cat-demo-x {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 61;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #2a1527;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
 
 @keyframes cat-in {
   from { opacity: 0; transform: translateY(14px); }
@@ -763,7 +800,7 @@
   .cat-menu {
     display: flex;
     position: sticky;
-    top: 76px;
+    top: 84px;
     z-index: 29;
     margin: 8px 12px 0;
     border-radius: 22px;
@@ -843,10 +880,9 @@
   .cat-cols { padding: 0 16px 16px; }
   .cat-col-copy strong { font-size: 16px; }
   .cat-grid-wrap { padding: 16px 12px 40px; gap: 24px; }
-  .cat-foot { flex-direction: column; align-items: flex-start; padding: 28px 16px; }
   .cat-heart { width: 36px; height: 36px; font-size: 16px; }
-  .cat-badges .anim { font-size: 0; padding: 4px 8px; }
-  .cat-badges .anim::before { content: "✦"; font-size: 11px; }
+  .cat-badges .anim { font-size: 0; padding: 4px 8px; gap: 0; }
+  .cat-badges .anim svg { width: 12px; height: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { Flower2, Hand, Heart, Music, Music2, Sparkle, Wine } from "lucide-react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
@@ -235,9 +236,9 @@ function EventIcon({ kind }: { kind: "music" | "fire" | "sparkle" }) {
   if (kind === "music") {
     return (
       <>
-        <span className="bob" aria-hidden="true">🎶</span>
-        <span className="note a" aria-hidden="true">♪</span>
-        <span className="note b" aria-hidden="true">♫</span>
+        <span className="bob" aria-hidden="true"><Music className="glyph" /></span>
+        <span className="note a" aria-hidden="true"><Music2 className="glyph" /></span>
+        <span className="note b" aria-hidden="true"><Music className="glyph" /></span>
       </>
     );
   }
@@ -253,9 +254,9 @@ function EventIcon({ kind }: { kind: "music" | "fire" | "sparkle" }) {
   }
   return (
     <>
-      <span aria-hidden="true">🥂</span>
-      <span className="spark a" aria-hidden="true">✦</span>
-      <span className="spark b" aria-hidden="true">✦</span>
+      <span aria-hidden="true"><Wine className="glyph" /></span>
+      <span className="spark a" aria-hidden="true"><Sparkle className="glyph" /></span>
+      <span className="spark b" aria-hidden="true"><Sparkle className="glyph" /></span>
     </>
   );
 }
@@ -514,7 +515,7 @@ export function VivahInvite({
                     <div className="title">{beat.title}</div>
                     <p>{beat.text}</p>
                   </div>
-                  <span className="wd-heart" style={{ animationDelay: `${index * 0.4}s` }} aria-hidden="true">♥</span>
+                  <span className="wd-heart" style={{ animationDelay: `${index * 0.4}s` }} aria-hidden="true"><Heart className="glyph" fill="currentColor" /></span>
                 </div>
               ))}
             </div>
@@ -524,7 +525,7 @@ export function VivahInvite({
               </svg>
               {story.map((beat, index) => (
                 <article key={beat.year} style={{ animationDelay: `${0.4 + index * 0.4}s, ${index * -2}s` }}>
-                  <span className="wd-heart" style={{ animationDelay: `${index * 0.4}s` }} aria-hidden="true">♥</span>
+                  <span className="wd-heart" style={{ animationDelay: `${index * 0.4}s` }} aria-hidden="true"><Heart className="glyph" fill="currentColor" /></span>
                   <div className="year">{beat.year}</div>
                   <div className="title">{beat.title}</div>
                   <p>{beat.text}</p>
@@ -619,15 +620,15 @@ export function VivahInvite({
                   <Fireworks wide points={DESK_FIRE} sparks={16} radius={80} step={24} size={7} duration="1.4s" delay={0.4} />
                   <span className="wd-only-phone">
                     {nums(8).map((index) => (
-                      <span key={index} className="wd-float" aria-hidden="true" style={{ left: `${10 + index * 12}%`, color: ["#E8A0A8", "#D9B26A", "#F2C6CB"][index % 3], fontSize: 14 + (index % 3) * 6, animationDuration: `${3 + (index % 3) * 0.7}s`, animationDelay: `${index * 0.35}s` }}>♥</span>
+                      <span key={index} className="wd-float" aria-hidden="true" style={{ left: `${10 + index * 12}%`, color: ["#E8A0A8", "#D9B26A", "#F2C6CB"][index % 3], fontSize: 14 + (index % 3) * 6, animationDuration: `${3 + (index % 3) * 0.7}s`, animationDelay: `${index * 0.35}s` }}><Heart className="glyph" fill="currentColor" /></span>
                     ))}
                   </span>
                   <span className="wd-only-desk">
                     {nums(10).map((index) => (
-                      <span key={index} className="wd-float" aria-hidden="true" style={{ left: `${6 + index * 9.5}%`, color: ["#E8A0A8", "#D9B26A", "#F2C6CB"][index % 3], fontSize: 16 + (index % 3) * 7, animationDuration: `${3.2 + (index % 3) * 0.7}s`, animationDelay: `${index * 0.3}s` }}>♥</span>
+                      <span key={index} className="wd-float" aria-hidden="true" style={{ left: `${6 + index * 9.5}%`, color: ["#E8A0A8", "#D9B26A", "#F2C6CB"][index % 3], fontSize: 16 + (index % 3) * 7, animationDuration: `${3.2 + (index % 3) * 0.7}s`, animationDelay: `${index * 0.3}s` }}><Heart className="glyph" fill="currentColor" /></span>
                     ))}
                   </span>
-                  <span className="bloom" aria-hidden="true">💐</span>
+                  <span className="bloom" aria-hidden="true"><Flower2 className="glyph" /></span>
                   <h3>{doneTitle}</h3>
                   <p>{doneText}</p>
                   <button type="button" onClick={() => setDone(false)}>Change my reply</button>
@@ -718,7 +719,7 @@ export function VivahInvite({
                   <textPath href={`#${sealId}`}>{seal}</textPath>
                 </text>
               </svg>
-              <div className="wd-seal-in">{(first[0] || "").toUpperCase()}<i>♥</i>{(second[0] || "").toUpperCase()}</div>
+              <div className="wd-seal-in">{(first[0] || "").toUpperCase()}<i><Heart className="glyph" fill="currentColor" /></i>{(second[0] || "").toUpperCase()}</div>
             </div>
             <span className="wd-foot-love">With love, {fields.hosts}</span>
             <a className="wd-made" href="/">Made with InvitesReady</a>
@@ -767,7 +768,7 @@ export function VivahInvite({
             {open ? null : (
               <span className="wd-chip">
                 <span className="wd-mono">{mono}</span>
-                <span className="wd-tap"><span className="hand" aria-hidden="true">✋</span><span className="phone">Tap to open the doors</span><span className="desk">Click to open the doors</span></span>
+                <span className="wd-tap"><span className="hand" aria-hidden="true"><Hand className="glyph" /></span><span className="phone">Tap to open the doors</span><span className="desk">Click to open the doors</span></span>
               </span>
             )}
           </button>

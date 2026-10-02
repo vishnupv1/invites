@@ -1,8 +1,10 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Heart, Music2 } from "lucide-react";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
 import type { InviteFields } from "../types";
 import { InstagramLink } from "./InstagramLink";
+import { Spinner } from "./Loader";
 import "./botanica.css";
 
 export type BotanicaTheme = "blush" | "sage" | "midnight";
@@ -159,7 +161,7 @@ function EventIcon({ index }: { index: number }) {
       {[0, 1, 2, 3, 4].map((bar) => (
         <i key={bar} style={{ animationDuration: `${0.6 + bar * 0.12}s` }} />
       ))}
-      <span className="bf-note-float">♪</span>
+      <span className="bf-note-float"><Music2 className="glyph" aria-hidden="true" /></span>
     </div>
   );
 }
@@ -475,7 +477,7 @@ export function BotanicaInvite({
                     ))}
                     {["#E9A8A2", "#D8B574", "#EDB8B3"].map((color, index) => (
                       <span key={color} className="bf-heart" style={{ left: `${18 + index * 22}%`, color, animationDelay: `${index * 0.35}s` }} aria-hidden="true">
-                        ♥
+                        <Heart className="glyph" fill="currentColor" />
                       </span>
                     ))}
                     <span className="bf-script bf-foil bf-thanks">{attend === "yes" ? "Thank you!" : "You’ll be missed"}</span>
@@ -532,7 +534,6 @@ export function BotanicaInvite({
                         </div>
                       </div>
                     ) : null}
-                    <button type="submit" className="bf-send" disabled={sending}>
                       <span className="bf-shimmer" aria-hidden="true" />
                       <span style={{ position: "relative" }}>{sending ? "Sending…" : "Send RSVP"}</span>
                     </button>

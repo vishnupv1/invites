@@ -112,7 +112,7 @@ export function TemplatePreview() {
   const [venue, setVenue] = useState("");
   const [favs, setFavs] = useState<string[]>(readFavs);
   const [toast, setToast] = useState("");
-  const { signedIn, host } = useSession();
+  const { signedIn, host, ready } = useSession();
   const hostName = host?.name ?? "";
 
   useEffect(() => {
@@ -158,6 +158,7 @@ export function TemplatePreview() {
   }, [catalog, template]);
 
   const menu = <AppMenu current="/templates" name={hostName} signedIn={signedIn} />;
+  if (ready && !signedIn && id) return <Navigate to={`/template/${id}`} replace />;
   if (missing) return <Navigate to="/templates" replace />;
   if (!template || !sample) {
     return (
