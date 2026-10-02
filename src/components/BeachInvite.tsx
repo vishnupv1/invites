@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { BottleWine, Fish, Flower2, Footprints, Glasses, HatGlasses, Plane, Shell, Shirt, Sparkle, SportShoe, Star, Waves, type LucideIcon } from "lucide-react";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
@@ -16,15 +17,15 @@ const STORY_COLORS = ["#F6C08F", "#9ED3D6", "#F7A77F"];
 
 const FILM = ["#F6C08F", "#9ED3D6", "#F7A77F", "#BFE3E6", "#F4E4CC"];
 
-const DRESS = [
-  ["👡", "Flat sandals"],
-  ["👒", "Sun hats"],
-  ["🕶️", "Shades"],
-  ["🧣", "Light shawl"],
-] as const;
+const DRESS: [LucideIcon, string][] = [
+  [SportShoe, "Flat sandals"],
+  [HatGlasses, "Sun hats"],
+  [Glasses, "Shades"],
+  [Shirt, "Light shawl"],
+];
 
 const SWATCHES = ["#F7A77F", "#F4E4CC", "#9ED3D6", "#1F6F78", "#FFFFFF"];
-const SHELLS = ["🐚", "⭐", "🌸", "🐠", "✦"];
+const SHELLS = [Shell, Star, Flower2, Fish, Sparkle];
 
 function splitNames(names: string) {
   const parts = names.split(/\s+&\s+/);
@@ -504,7 +505,7 @@ export function BeachInvite({
                   <circle cx="480" cy="150" r="9" fill="var(--accent)" />
                 </svg>
                 <span className="bw-plane" aria-hidden="true">
-                  ✈
+                  <Plane className="glyph" />
                 </span>
                 <span className="bw-from">{journey.travelFrom || "Trivandrum Airport"}</span>
                 <span className="bw-to">{place} Cliff · {journey.travelKm || "50 km"}</span>
@@ -517,9 +518,9 @@ export function BeachInvite({
               <h2 className="bw-h2 left">Beach formal</h2>
               <p>{fields.dress || "Light linens, flowing sarees and breezy dresses. Leave the heels at home — we'll be on sand!"}</p>
               <div className="bw-dress-row">
-                {DRESS.map(([emoji, label], index) => (
+                {DRESS.map(([Icon, label], index) => (
                   <div key={label} className="bw-dress" style={{ animationDelay: `${index * 0.3}s` }}>
-                    <span aria-hidden="true">{emoji}</span>
+                    <span aria-hidden="true"><Icon className="glyph" /></span>
                     <span>{label}</span>
                   </div>
                 ))}
@@ -557,10 +558,10 @@ export function BeachInvite({
                       }}
                       aria-hidden="true"
                     >
-                      {SHELLS[index % 5]}
+                      {(() => { const Icon = SHELLS[index % 5]; return <Icon className="glyph" />; })()}
                     </span>
                   ))}
-                  <span aria-hidden="true">🐚</span>
+                  <span aria-hidden="true" style={{ fontSize: 48 }}><Shell className="glyph" /></span>
                   <h3>{attend === "yes" ? "See you at the shore!" : "We’ll miss you"}</h3>
                   <p>
                     {attend === "yes"
@@ -584,7 +585,7 @@ export function BeachInvite({
                   {nameError ? <span className="err">Please enter your name.</span> : null}
                   <div className="bw-yesno">
                     <button type="button" className={attend === "yes" ? "on" : undefined} aria-pressed={attend === "yes"} onClick={() => setAttend("yes")}>
-                      🌊 Count me in
+                      <Waves className="glyph" aria-hidden="true" /> Count me in
                     </button>
                     <button type="button" className={attend === "no" ? "on" : undefined} aria-pressed={attend === "no"} onClick={() => setAttend("no")}>
                       Can't make it
@@ -630,7 +631,7 @@ export function BeachInvite({
               <div className="bw-wish-grid">
                 {liveWishes.map((item, index) => (
                   <article key={`${item.name}-${index}`} className="bw-wish" style={{ animationDuration: `${4 + (index % 3)}s`, animationDelay: `${index * -0.8}s` }}>
-                    <span aria-hidden="true">🍾</span>
+                    <span aria-hidden="true"><BottleWine className="glyph" /></span>
                     <p>{item.text}</p>
                     <span>— {item.name}</span>
                   </article>
@@ -645,7 +646,7 @@ export function BeachInvite({
             <div className="bw-feet" aria-hidden="true">
               {Array.from({ length: 16 }, (_, index) => (
                 <i key={index} className={index >= 8 ? "extra" : index % 2 ? "odd" : undefined} style={{ ["--i" as string]: index, animationDelay: `${index * 0.5}s` }}>
-                  👣
+                  <Footprints className="glyph" />
                 </i>
               ))}
             </div>

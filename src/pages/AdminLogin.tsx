@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { adminSummary, logIn } from "../api";
 import { Brand } from "../components/Brand";
+import { Spinner } from "../components/Loader";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./admin.css";
 
@@ -71,8 +72,9 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
               Password
               <input id="ad-pw" type="password" placeholder="Your password" value={password} onChange={(input) => setPassword(input.target.value)} />
             </label>
-            <button className="admin-go" type="submit" disabled={busy}>
-              {busy ? "Checking…" : "Continue"}
+            <button className="admin-go" type="submit" disabled={busy} aria-busy={busy || undefined}>
+              {busy ? <Spinner tone="paper" /> : "Continue"}
+              {busy ? <span className="spin-sr">Checking</span> : null}
             </button>
             <button className="admin-sso" type="button" onClick={() => setError("Company SSO isn't set up.")}>
               Sign in with company SSO

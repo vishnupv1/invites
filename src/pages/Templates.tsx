@@ -6,6 +6,7 @@ import { useSession } from "../session";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
 import { Brand } from "../components/Brand";
+import { SkeletonCards } from "../components/CardSkeleton";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { Template } from "../types";
 import "./studio.css";
@@ -41,6 +42,7 @@ export function Templates() {
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>([]);
   const [catalog, setCatalog] = useState<Template[]>([]);
+  const [catalogReady, setCatalogReady] = useState(false);
   const [occasion, setOccasion] = useState("all");
   const [price, setPrice] = useState<"All" | "Free" | "Paid">("All");
   const [favsOnly, setFavsOnly] = useState(false);
@@ -54,7 +56,10 @@ export function Templates() {
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => setEvents([]));
-    listTemplates().then(setCatalog).catch(() => setCatalog([]));
+    listTemplates()
+      .then(setCatalog)
+      .catch(() => setCatalog([]))
+      .finally(() => setCatalogReady(true));
   }, []);
 
   const items = useMemo(() => {
@@ -183,7 +188,12 @@ export function Templates() {
           </div>
         </div>
 
-        {items.length === 0 ? (
+        {!catalogReady ? (
+          <div className="tpl-grid" role="status" aria-busy="true" aria-label="Loading templates">
+            <span className="skel-sr">Loading</span>
+            <SkeletonCards count={8} cover="studio" />
+          </div>
+        ) : items.length === 0 ? (
           <div className="tpl-empty">
             <h2>No templates match</h2>
             <p>Try another occasion, or clear your filters.</p>
