@@ -913,7 +913,7 @@
   .lp-foot nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
   .lp-foot nav.lp-social { display: flex; width: auto; gap: 10px; }
   .lp-foot .desk-link { display: none; }
-}
+
 
 .lp-tpl-more { display: none; }
 .lp-join-solo { display: none; }
