@@ -191,7 +191,7 @@ export function BaptismInvite({
   const ceremony = eventName(fields.lines, "ceremonyName", "Holy Baptism");
   const reception = eventName(fields.lines, "receptionName", "Lunch & cake");
   const godparents = (pack.people ?? []).filter((person) => person.name.trim()).map((person) => ({ ...person, initials: initialsOf(person.name) }));
-  const facts = (pack.facts ?? []).filter((fact) => fact.label.trim() || fact.value.trim()).map((fact, index) => ({ ...fact, emoji: FACT_ICONS[index] ?? Sparkle }));
+  const facts = (pack.facts ?? []).filter((fact) => fact.label.trim() || fact.value.trim()).map((fact, index) => ({ ...fact, icon: FACT_ICONS[index] ?? Sparkle }));
   const when = whenOf(fields.date);
   const count = useCountdown(fields.date, fields.time);
   const photos = (fields.photos ?? []).map(assetUrl);
@@ -410,7 +410,7 @@ export function BaptismInvite({
               <div className="bp-facts-grid">
                 {facts.map((fact, index) => (
                   <div key={fact.label} className="bp-fact" style={{ animationDelay: `${0.2 + index * 0.12}s` }}>
-                    <em>{(() => { const Icon = fact.emoji; return <Icon className="glyph" />; })()}</em>
+                    <em><fact.icon className="glyph" aria-hidden="true" /></em>
                     <small>{fact.label}</small>
                     <strong>{fact.value}</strong>
                   </div>

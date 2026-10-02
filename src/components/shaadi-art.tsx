@@ -1,4 +1,3 @@
-import { Music, Music2, Sparkle } from "lucide-react";
 import type { ShaadiEventKind } from "./shaadi";
 
 const MANDALA = "M100 4c14 34 14 64 0 96-14-32-14-62 0-96zM196 100c-34 14-64 14-96 0 32-14 62-14 96 0zM100 196c-14-34-14-64 0-96 14 32 14 62 0 96zM4 100c34-14 64-14 96 0-32 14-62 14-96 0zM168 32c-10 32-32 54-68 68 14-36 36-58 68-68zM168 168c-32-10-54-32-68-68 36 14 58 36 68 68zM32 168c10-32 32-54 68-68-14 36-36 58-68 68zM32 32c32 10 54 32 68 68-36-14-58-36-68-68z";
@@ -193,8 +192,8 @@ export function EventMark({ kind }: { kind: ShaadiEventKind }) {
           <ellipse cx="8" cy="21" rx="3" ry="11" fill="#F5D77A" />
           <ellipse cx="40" cy="21" rx="3" ry="11" fill="#F5D77A" />
         </svg>
-        <span className="sh-note sh-note-a" aria-hidden="true"><Music2 className="glyph" /></span>
-        <span className="sh-note sh-note-b" aria-hidden="true"><Music className="glyph" /></span>
+        <span className="sh-note sh-note-a" aria-hidden="true">♪</span>
+        <span className="sh-note sh-note-b" aria-hidden="true">♫</span>
       </>
     );
   }
@@ -227,8 +226,8 @@ export function EventMark({ kind }: { kind: ShaadiEventKind }) {
           <circle cx="25" cy="38" r="3" fill="#F5D77A" />
           <circle cx="38" cy="36" r="3" fill="#F5D77A" />
         </svg>
-        <span className="sh-spark sh-spark-a" aria-hidden="true"><Sparkle className="glyph" /></span>
-        <span className="sh-spark sh-spark-b" aria-hidden="true"><Sparkle className="glyph" /></span>
+        <span className="sh-spark sh-spark-a" aria-hidden="true">✦</span>
+        <span className="sh-spark sh-spark-b" aria-hidden="true">✦</span>
       </>
     );
   }

@@ -45,7 +45,6 @@ function ScriptFit({ className, children }: { className: string; children: strin
     </span>
   );
 }
-
 export type PeaceTheme = "blush" | "noir" | "sage";
 
 type Wish = { name: string; note: string };
@@ -600,10 +599,9 @@ export function PeaceInvite({
                     <label htmlFor="pc-wish">A note for the couple</label>
                     <input id="pc-wish" value={wish} placeholder="Optional" onChange={(event) => setWish(event.target.value)} />
                   </div>
-                  <button type="submit" className="pc-send" disabled={busy} aria-busy={busy || undefined}>
+                  <button type="submit" className="pc-send" disabled={busy}>
                     <span className="pc-shimmer" aria-hidden="true" />
-                    <span style={{ position: "relative" }}>{busy ? <Spinner tone="paper" /> : "Send RSVP"}</span>
-                    {busy ? <span className="spin-sr">Sending</span> : null}
+                    <span style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 8 }}>{busy ? <Spinner tone="paper" /> : null}{busy ? "Sending…" : "Send RSVP"}</span>
                   </button>
                 </form>
               )}

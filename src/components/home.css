@@ -321,7 +321,7 @@
 .hw-form input.bad { border-color: #c8553d; }
 .hw-form .err { font-size: 13px; color: #b0473b; }
 .hw-yesno { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.hw-yesno button { min-height: 52px; border-radius: 16px; border: 2px solid #2e2a25; font-family: Fredoka, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; background: #fff; color: #2e2a25; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.hw-yesno button { min-height: 52px; border-radius: 16px; border: 2px solid #2e2a25; font-family: Fredoka, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; background: #fff; color: #2e2a25; }
 .hw-yesno button.on { background: #4f7a4b; color: #fff; box-shadow: 3px 3px 0 #2e2a25; }
 .hw-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .hw-chips button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 2px solid #2e2a25; font-size: 13px; font-weight: 800; cursor: pointer; background: #fff; color: #7a7064; }

@@ -8,16 +8,17 @@ import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
 import { Brand } from "./components/Brand";
-import { Spinner } from "./components/Loader";
 import { PageMeta } from "./lib/seo";
 import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
+import { TemplatePage } from "./pages/TemplatePage";
+import { Spinner } from "./components/Loader";
 import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
 import { AllTemplates } from "./pages/AllTemplates";
 import { Templates } from "./pages/Templates";
-import { Unauthorized } from "./pages/Unauthorized";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
+import { Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
 
 function Analytics() {
@@ -89,7 +90,7 @@ export default function App() {
             </Shell>
           }
         />
-        <Route path="/template/:id" element={<AllTemplates />} />
+        <Route path="/template/:id" element={<TemplatePage />} />
         <Route path="/create" element={<CreateGuest />} />
         <Route path="/create/:id" element={<Editor />} />
         <Route path="/studio" element={<RequireAccount><Studio view="dashboard" /></RequireAccount>} />

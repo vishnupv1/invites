@@ -193,7 +193,8 @@
   position: relative;
   z-index: 2;
   display: flex;
-  min-height: 100%;
+  min-height: inherit;
+  height: 100%;
   box-sizing: border-box;
   flex-direction: column;
   align-items: center;
@@ -491,6 +492,7 @@
 .bf-deco > img,
 .bf-border > img,
 .bf-oval > img,
+.bf-pol > img.frame,
 .bf-pol-card > img.frame,
 .bf-bloom > img.frame {
   position: absolute;
@@ -540,7 +542,6 @@
 
 .bf-row {
   display: flex;
-  width: 100%;
   flex-direction: column;
   align-items: center;
   align-self: stretch;

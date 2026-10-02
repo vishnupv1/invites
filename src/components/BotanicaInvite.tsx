@@ -538,8 +538,10 @@ export function BotanicaInvite({
                     ) : null}
                     <button type="submit" className="bf-send" disabled={sending} aria-busy={sending || undefined}>
                       <span className="bf-shimmer" aria-hidden="true" />
-                      <span style={{ position: "relative" }}>{sending ? <Spinner tone="paper" /> : "Send RSVP"}</span>
-                      {sending ? <span className="spin-sr">Sending</span> : null}
+                      <span style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                        {sending ? <Spinner tone="paper" /> : null}
+                        {sending ? "Sending…" : "Send RSVP"}
+                      </span>
                     </button>
                     {wishes.length ? (
                       <ul className="bf-wish-list">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { SkeletonCards } from "../components/CardSkeleton";
@@ -67,7 +67,7 @@ function look(id: string) {
   return LOOK[id] ?? { styles: [] as StyleTag[], pop: 0, added: 0, tags: "", swatches: ["#FBF8F5", "#D81B60", "#2A1527"] };
 }
 
-function useHref(template: Template, occasion: string) {
+function useHref(template: Template, occasion = "all") {
   const event = occasion !== "all" && template.events.includes(occasion as Template["events"][number])
     ? occasion
     : template.events[0];
@@ -367,7 +367,7 @@ export function AllTemplates() {
               </button>
             ))}
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <Heart size={16} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> Saved ({saved.length})
+              <span aria-hidden="true">♥</span> {saved.length}
             </button>
             <div className="cat-sort-wrap">
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
@@ -400,23 +400,17 @@ export function AllTemplates() {
               {activeCount > 0 ? <span>{activeCount}</span> : null}
             </button>
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <Heart size={16} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> {saved.length}
+              <span aria-hidden="true">♥</span> {saved.length}
             </button>
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
           </div>
         </section>
 
         <section className="cat-grid-wrap">
-          {!catalogReady ? (
+          {filtered.sorted.length === 0 ? (
             <div className="cat-grid" role="status" aria-busy="true" aria-label="Loading templates">
               <span className="skel-sr">Loading</span>
               <SkeletonCards count={8} />
-            </div>
-          ) : filtered.sorted.length === 0 ? (
-            <div className="cat-empty">
-              <h2>No templates match</h2>
-              <p>Try a different word, or clear your filters to see everything.</p>
-              <button type="button" onClick={resetFilters}>Clear all filters</button>
             </div>
           ) : (
             <div className="cat-grid">
@@ -520,30 +514,26 @@ export function AllTemplates() {
         </div>
       ) : null}
 
-      {preview && demo ? (
-        <div className="cat-demo" role="dialog" aria-label={`${preview.name} live demo`}>
-          <button type="button" className="cat-demo-x" aria-label="Close" onClick={() => setDemo(false)}>×</button>
-          <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} live />
-        </div>
-      ) : null}
-
       {preview ? (
         <div className="cat-modal-back" onClick={closePreview}>
           <div role="dialog" aria-label={`${preview.name} preview`} className="cat-modal" onClick={(event) => event.stopPropagation()}>
             <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={closePreview}>×</button>
             <div className="cat-phone-well">
-              <div className="cat-phone">{cover(preview)}</div>
+              <div className="cat-phone">
+                {demo ? <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} /> : cover(preview)}
+              </div>
             </div>
             <div className="cat-modal-copy">
               <div className="cat-badges static">
                 <span className={preview.free ? "free" : "prem"}>{preview.free ? "Free" : "Premium"}</span>
+                {look(preview.id).styles.includes("Animated") ? <span className="anim">✦ Animated</span> : null}
               </div>
               <h2>{preview.name}</h2>
               <span className="cat-modal-meta">{eventLabels(preview)}</span>
               <p>{preview.description}</p>
               <ul>
                 {look(preview.id).styles.map((style) => (
-                  <li key={style}><Check size={16} aria-hidden="true" /> {FEAT[style]}</li>
+                  <li key={style}>{FEAT[style]}</li>
                 ))}
                 <li>RSVP, maps, countdown and wishes</li>
                 <li>Share on WhatsApp — no app for guests</li>
@@ -559,8 +549,8 @@ export function AllTemplates() {
                 <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span>
               </div>
               <div className="cat-modal-actions">
-                <Link to={useHref(preview, occasion)}>Use this template</Link>
-                <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
+                <Link to={useHref(preview)}>Use this template</Link>
+                <button type="button" className="ghost" onClick={() => setDemo((value) => !value)}>{demo ? "Back to preview" : "Open live demo"}</button>
               </div>
             </div>
           </div>

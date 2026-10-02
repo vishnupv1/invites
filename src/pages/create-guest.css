@@ -301,6 +301,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 30px;
   color: #2a1527;
   background: #fbf8f5;
 }
@@ -356,7 +357,7 @@
 
 .cg-step2 {
   box-sizing: border-box;
-  padding: 40px 120px 120px;
+  padding: 40px 120px 28px;
   display: flex;
   flex-direction: column;
   gap: 26px;

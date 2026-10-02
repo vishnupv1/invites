@@ -699,6 +699,7 @@ export function Editor({
       await hold();
       setLink(`${window.location.origin}/i/${saved.code}`);
       setShowQr(false);
+      setSaveLabel("Saved");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not publish.");
     } finally {

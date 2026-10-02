@@ -285,7 +285,7 @@
 .bp-form input[aria-invalid="true"] { border-color: #c45b63; }
 .bp-form small { color: #a8434b; font-size: 13px; }
 .bp-yesno { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.bp-yesno button { min-height: 52px; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; background: #fff; color: #5b6b7b; border: 1.5px solid #e6e0d4; transition: transform 0.15s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.bp-yesno button { min-height: 52px; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; background: #fff; color: #5b6b7b; border: 1.5px solid #e6e0d4; transition: transform 0.15s; }
 .bp-yesno button.on { background: var(--deep); color: #fff; border-color: var(--deep); transform: scale(1.03); }
 .bp-stepper { display: flex; justify-content: space-between; align-items: center; }
 .bp-stepper div { display: flex; align-items: center; gap: 6px; }
