@@ -248,7 +248,6 @@ export function AllTemplates() {
           <Link to="/browse" aria-current="page">Templates</Link>
           <Link to="/how">How it works</Link>
           <Link to="/features">Features</Link>
-          <Link to="/pricing">Pricing</Link>
           <Link to="/faq">FAQ</Link>
         </nav>
         <div className="cat-nav-actions">
@@ -272,7 +271,6 @@ export function AllTemplates() {
           <Link to="/browse" onClick={() => setMenu(false)}>Templates</Link>
           <Link to="/how" onClick={() => setMenu(false)}>How it works</Link>
           <Link to="/features" onClick={() => setMenu(false)}>Features</Link>
-          <Link to="/pricing" onClick={() => setMenu(false)}>Pricing</Link>
           <Link to="/faq" onClick={() => setMenu(false)}>FAQ</Link>
           <Link to="/login" onClick={() => setMenu(false)}>Log in</Link>
           <Link className="cat-create" to="/create" onClick={() => setMenu(false)}>Create invite — free</Link>
@@ -475,7 +473,6 @@ export function AllTemplates() {
         <Brand light />
         <nav aria-label="Footer">
           <Link to="/browse">Templates</Link>
-          <Link to="/pricing">Pricing</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
           <Link to="/refunds">Refunds</Link>

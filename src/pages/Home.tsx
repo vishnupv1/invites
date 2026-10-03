@@ -182,12 +182,6 @@ const BARS = [
   ["Reception · 204 / 300", 68, "#2E8B57"],
 ] as const;
 
-const PLANS = [
-  { id: "free", kicker: "Gatherings", name: "Free", sub: "For simple get-togethers", price: "₹0", note: "Design and share", items: ["Free templates", "1 function", "RSVP up to 50 guests", "Small InvitesReady credit"], cta: "Start free", featured: false },
-  { id: "wedding", kicker: "Most loved", name: "Wedding", sub: "For multi-day celebrations", price: "Pay once", note: "One price per celebration", items: ["All animated & premium templates", "Unlimited functions & groups", "Reminders, QR check-in, photo wall", "No branding"], cta: "Plan my wedding", featured: true },
-  { id: "premium", kicker: "Family events", name: "Premium", sub: "Birthdays & family functions", price: "Pay once", note: "One price per event", items: ["All premium templates", "Up to 3 functions", "RSVP up to 300 guests", "No branding"], cta: "Go premium", featured: false },
-];
-
 const FAQS = [
   ["Do my guests need an app or an account?", "No. Guests open your link in any browser and RSVP in one tap — it works on basic phones too."],
   ["Can I design before signing up?", "Yes. Pick a template and customise it as a guest. We only ask you to log in when you publish, and your draft comes with you."],
@@ -200,7 +194,6 @@ const NAV = [
   { href: "/browse", label: "Templates" },
   { href: "/how", label: "How it works" },
   { href: "/features", label: "Features" },
-  { href: "/pricing", label: "Pricing" },
   { href: "/faq", label: "FAQ" },
 ];
 
@@ -214,29 +207,6 @@ function useNarrow() {
     return () => query.removeEventListener("change", apply);
   }, []);
   return narrow;
-}
-
-function PricingMandala({ className }: { className: string }) {
-  return (
-    <svg className={className} viewBox="0 0 200 200" fill="none" aria-hidden="true">
-      <g stroke="#F23F78" strokeWidth="0.45">
-        <circle cx="100" cy="100" r="96" />
-        <circle cx="100" cy="100" r="70" />
-        <circle cx="100" cy="100" r="40" />
-        <path d="M100 4c12 30 12 62 0 96-12-34-12-66 0-96zM196 100c-30 12-62 12-96 0 34-12 66-12 96 0zM100 196c-12-30-12-62 0-96 12 34 12 66 0 96zM4 100c30-12 62-12 96 0-34 12-66 12-96 0z" />
-      </g>
-    </svg>
-  );
-}
-
-function PlanCheck({ light = false }: { light?: boolean }) {
-  const stroke = light ? "#FF7380" : "#D81B60";
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <circle cx="8" cy="8" r="7" stroke={stroke} strokeWidth="1.2" />
-      <path d="M4.7 8.15 6.9 10.3 11.3 5.7" stroke={stroke} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
 }
 
 export function Home({ focus }: { focus?: string }) {
@@ -253,7 +223,6 @@ export function Home({ focus }: { focus?: string }) {
   const [burst, setBurst] = useState(0);
   const [menu, setMenu] = useState(false);
   const [lang, setLang] = useState(0);
-  const [priceSpot, setPriceSpot] = useState({ x: 70, y: 24 });
 
   useEffect(() => {
     const id = focus || hash.replace(/^#/, "");
@@ -1077,80 +1046,6 @@ export function Home({ focus }: { focus?: string }) {
         </div>
       </section>
 
-      <section
-        id="pricing"
-        className="lp-pricing"
-        onMouseMove={(event) => {
-          const box = event.currentTarget.getBoundingClientRect();
-          setPriceSpot({ x: Math.round(((event.clientX - box.left) / box.width) * 100), y: Math.round(((event.clientY - box.top) / box.height) * 100) });
-        }}
-      >
-        <div className="lp-pricing-stage" aria-hidden="true">
-          <div
-            className="lp-pricing-spot"
-            style={{ background: `radial-gradient(${narrow ? 260 : 540}px circle at ${priceSpot.x}% ${priceSpot.y}%, rgba(242, 63, 120, 0.38), rgba(243,235,227,0) 70%)` }}
-          />
-          <i className="lp-pricing-orb a" />
-          <i className="lp-pricing-orb b" />
-          <i className="lp-pricing-ring r1" />
-          <i className="lp-pricing-ring r2" />
-          <i className="lp-pricing-ring r3" />
-          <PricingMandala className="lp-pricing-mandala left" />
-          <PricingMandala className="lp-pricing-mandala right" />
-          {Array.from({ length: narrow ? 7 : 14 }, (_, i) => (
-            <span
-              key={i}
-              className="lp-petal"
-              style={{ left: `${(i * 7.4 + 3) % 100}%`, animationDuration: `${11 + (i % 5) * 2}s`, animationDelay: `-${i * 1.1}s` }}
-            >
-              <span style={{ animationDuration: `${3 + (i % 3)}s` }}>
-                <svg width={10 + (i % 3) * 5} height={10 + (i % 3) * 5} viewBox="0 0 20 20">
-                  <path d="M10 1C15 5 17 11 10 19 3 11 5 5 10 1z" fill={PETAL_COLORS[i % 4]} />
-                </svg>
-              </span>
-            </span>
-          ))}
-          {Array.from({ length: 10 }, (_, i) => (
-            <i
-              key={i}
-              className="lp-pricing-dot"
-              style={{ left: `${8 + (i * 9.3) % 84}%`, top: `${12 + (i * 17) % 76}%`, animationDuration: `${2.6 + (i % 4) * 0.7}s`, animationDelay: `-${i * 0.4}s` }}
-            />
-          ))}
-        </div>
-        <div className="lp-pricing-intro">
-          <span className="lp-kicker-label">Pricing</span>
-          <h2>
-            Design free. <em>Pay once</em> to share.
-          </h2>
-          <p>No subscriptions. One price per event.</p>
-        </div>
-        <div className="lp-plans">
-          {PLANS.map((plan) => (
-            <article key={plan.id} className={plan.featured ? `lp-plan featured ${plan.id}` : `lp-plan ${plan.id}`}>
-              <p className="lp-plan-kicker">{plan.kicker}</p>
-              <h3>{plan.name}</h3>
-              <p className="lp-plan-sub">{plan.sub}</p>
-              <p className="lp-plan-price">
-                <strong>{plan.price}</strong>
-                <span>{plan.note}</span>
-              </p>
-              <ul>
-                {plan.items.map((item) => (
-                  <li key={item}>
-                    <PlanCheck light={plan.featured} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link className="lp-plan-cta" to="/create">
-                {plan.cta}
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section id="faq" className="lp-faq">
         <div className="lp-faq-stage" aria-hidden="true">
           <div className="lp-faq-rules" />
@@ -1247,7 +1142,6 @@ export function Home({ focus }: { focus?: string }) {
         <Brand light />
         <nav aria-label="Footer">
           <Link to="/browse">Templates</Link>
-          <Link to="/pricing">Pricing</Link>
           <Link to="/faq">FAQ</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>

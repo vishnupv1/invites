@@ -38,14 +38,6 @@ function describe(pathname: string): Meta {
       image: BRAND_IMAGE,
     };
   }
-  if (pathname === "/pricing") {
-    return {
-      title: "Invitation pricing | InvitesReady",
-      description: "Design for free. Publish a free template at no cost, or buy a premium invitation once for your celebration.",
-      index: true,
-      image: BRAND_IMAGE,
-    };
-  }
   if (pathname === "/faq") {
     return {
       title: "Invitation questions | InvitesReady",
