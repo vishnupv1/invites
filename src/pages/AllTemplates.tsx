@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Heart } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { InviteView } from "../components/InviteView";
@@ -78,6 +78,7 @@ function useHref(template: Template, occasion = "all") {
 export function AllTemplates() {
   const { id: routeId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>(EVENTS);
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
@@ -106,7 +107,12 @@ export function AllTemplates() {
   }, []);
 
   useEffect(() => {
-    if (!routeId || !catalogReady) return;
+    if (!catalogReady) return;
+    if (!routeId) {
+      setPreviewId(null);
+      setDemo(false);
+      return;
+    }
     if (catalog.some((item) => item.id === routeId)) {
       setPreviewId(routeId);
       return;
@@ -176,7 +182,9 @@ export function AllTemplates() {
   function closePreview() {
     setDemo(false);
     setPreviewId(null);
-    if (routeId) navigate("/browse", { replace: true });
+    if (!routeId) return;
+    if ((location.state as { fromBrowse?: boolean } | null)?.fromBrowse) navigate(-1);
+    else navigate("/browse", { replace: true });
   }
 
   function markBroken(id: string) {
@@ -423,9 +431,9 @@ export function AllTemplates() {
                 return (
                   <article className="cat-card" key={template.id} style={{ animationDelay: `${Math.min(index, 8) * 0.04}s` }}>
                     <div className="cat-thumb">
-                      <button type="button" className="cat-thumb-hit" aria-label={`Preview ${template.name}`} onClick={() => setPreviewId(template.id)}>
+                      <Link className="cat-thumb-hit" to={`/browse/${template.id}`} state={{ fromBrowse: true }} aria-label={`Preview ${template.name}`}>
                         {cover(template)}
-                      </button>
+                      </Link>
                       <div className="cat-badges">
                         <span className={template.free ? "free" : "prem"}>{template.free ? "Free" : "Premium"}</span>
                         {extra.isNew ? <span className="new">New</span> : null}
@@ -443,7 +451,7 @@ export function AllTemplates() {
                       <span className="cat-line desk">{labels}</span>
                       <span className="cat-line mob">{formatPrice(template)} · {first}</span>
                       <div className="cat-actions">
-                        <button type="button" onClick={() => setPreviewId(template.id)}>Preview</button>
+                        <Link className="cat-preview" to={`/browse/${template.id}`} state={{ fromBrowse: true }}>Preview</Link>
                         <Link to={useHref(template, occasion)}>Use</Link>
                       </div>
                     </div>
@@ -515,13 +523,23 @@ export function AllTemplates() {
         </div>
       ) : null}
 
+      {preview && demo ? (
+        <div className="cat-demo" role="dialog" aria-label={`${preview.name} live demo`}>
+          <div className="cat-demo-bar">
+            <Link className="cat-demo-use" to={useHref(preview, occasion)}>Use this template</Link>
+            <button type="button" className="cat-demo-x" aria-label="Close" onClick={() => setDemo(false)}>×</button>
+          </div>
+          <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} live demo />
+        </div>
+      ) : null}
+
       {preview ? (
         <div className="cat-modal-back" onClick={closePreview}>
           <div role="dialog" aria-label={`${preview.name} preview`} className="cat-modal" onClick={(event) => event.stopPropagation()}>
             <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={closePreview}>×</button>
             <div className="cat-phone-well">
               <div className="cat-phone">
-                {demo ? <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} demo /> : cover(preview)}
+                {cover(preview)}
               </div>
             </div>
             <div className="cat-modal-copy">
@@ -551,7 +569,7 @@ export function AllTemplates() {
               </div>
               <div className="cat-modal-actions">
                 <Link to={useHref(preview)}>Use this template</Link>
-                <button type="button" className="ghost" onClick={() => setDemo((value) => !value)}>{demo ? "Back to preview" : "Open live demo"}</button>
+                <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
               </div>
             </div>
           </div>

@@ -63,7 +63,7 @@ export default function App() {
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/browse" element={<AllTemplates />} />
+        <Route path="/browse/:id?" element={<AllTemplates />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/templates" element={<RequireAccount><Templates /></RequireAccount>} />
         <Route path="/preview/:id" element={<TemplatePreview />} />
