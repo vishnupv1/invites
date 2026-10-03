@@ -544,7 +544,7 @@ export function Home({ focus }: { focus?: string }) {
               {template && fields ? (
                 <div className="lp-phone-live" key={slide.id}>
                   <div className="lp-phone-live-stage">
-                    <InviteView template={template} fields={fields} />
+                    <InviteView template={template} fields={fields} demo />
                   </div>
                 </div>
               ) : null}

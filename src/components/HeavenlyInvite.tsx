@@ -312,11 +312,14 @@ export function HeavenlyInvite({
   quiet = false,
   wishes = [],
   onReply,
+  demo = false,
 }: {
   fields: InviteFields;
   quiet?: boolean;
   wishes?: Wish[];
   onReply?: (reply: Reply) => void | Promise<unknown>;
+  /** Sample replies fill the section on template demos. A real invite lists only replies guests send. */
+  demo?: boolean;
 }) {
   useFonts("Pinyon Script", "Cinzel", "Cormorant Garamond", "Jost");
   const nameId = useId();
@@ -479,7 +482,7 @@ export function HeavenlyInvite({
     [left % 60, "SECONDS"],
   ] as const;
 
-  const others = live ? wishes.map(rowFromWish) : SAMPLE_REPLIES;
+  const others = demo ? SAMPLE_REPLIES : wishes.map(rowFromWish);
   const rows = mine ? [mine, ...others.filter((row) => row.name !== mine.name)] : others;
   const stats = [
     [rows.filter((row) => row.attending).reduce((sum, row) => sum + row.guests, 0), "GUESTS ATTENDING"],

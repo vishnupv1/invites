@@ -176,6 +176,7 @@ export function PeaceInvite({
   allowMusic = true,
   wishes = [],
   onReply,
+  demo = false,
 }: {
   fields: InviteFields;
   theme?: PeaceTheme;
@@ -183,6 +184,7 @@ export function PeaceInvite({
   allowMusic?: boolean;
   wishes?: Wish[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
+  demo?: boolean;
 }) {
   useFonts("Bodoni Moda", "Jost", "Monsieur La Doulaise");
   const pageRef = useRef<HTMLElement>(null);
@@ -215,7 +217,7 @@ export function PeaceInvite({
   const captions = photoNotes(fields.notes, catalogMeta.peace.shots);
   const photos = (fields.photos ?? []).map((photo, index) => ({ src: photo ? assetUrl(photo) : "", label: FRAME_COLORS[index % FRAME_COLORS.length] }));
   const frames = photos.length ? photos : FRAME_COLORS.map((label) => ({ src: "", label }));
-  const notes = wishes.length ? wishes.map((item) => ({ name: item.name, text: item.note })) : SAMPLE_NOTES;
+  const notes = wishes.length ? wishes.map((item) => ({ name: item.name, text: item.note })) : demo ? SAMPLE_NOTES : [];
   const wide = desk ? 10 : 7;
 
   useEffect(() => {
@@ -610,6 +612,7 @@ export function PeaceInvite({
 
           <section className="pc-block alt" style={{ alignItems: "stretch" }}>
             <h2 className="pc-h">Love notes</h2>
+            {notes.length ? (
             <div className="pc-wishes">
               <div className="pc-marq">
                 {[...notes, ...notes].map((item, index) => (
@@ -620,6 +623,9 @@ export function PeaceInvite({
                 ))}
               </div>
             </div>
+            ) : (
+              <p className="pc-empty">Love notes appear here as guests reply.</p>
+            )}
           </section>
 
           <footer className="pc-foot">

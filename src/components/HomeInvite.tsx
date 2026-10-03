@@ -193,6 +193,7 @@ export function HomeInvite({
   motion = true,
   wishes = [],
   onReply,
+  demo = false,
 }: {
   fields: InviteFields;
   theme?: HomeTheme;
@@ -200,6 +201,7 @@ export function HomeInvite({
   motion?: boolean;
   wishes?: { name: string; note: string }[];
   onReply?: (reply: Reply) => void;
+  demo?: boolean;
 }) {
   useFonts("Caveat", "Fredoka", "Nunito");
   const nameId = useId();
@@ -252,7 +254,7 @@ export function HomeInvite({
     ];
   }, [fields.date, fields.time, now]);
 
-  const notes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...SAMPLE_NOTES];
+  const notes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...(demo ? SAMPLE_NOTES : [])];
   const picked = programme.map((item) => item.title).filter((title) => !skipped.includes(title)).map((title) => title.toLowerCase());
 
   function toggleMusic() {
@@ -560,13 +562,13 @@ export function HomeInvite({
           <section className="hw-wishes">
             <h2 className="hw-h2">Notes on our fridge</h2>
             <div className="hw-fridge">
-              {notes.map((item, index) => (
+              {notes.length ? notes.map((item, index) => (
                 <article key={`${item.name}-${index}`} className="hw-note" style={{ background: NOTE_COLORS[index % 6], ["--r" as string]: `${ROTATIONS[index % 6]}deg`, animationDuration: `${3 + (index % 3)}s` }}>
                   <span className="hw-magnet" style={{ background: FLAGS[index % 5] }} aria-hidden="true" />
                   <p>{item.text}</p>
                   <span>— {item.name}</span>
                 </article>
-              ))}
+              )) : <p className="hw-empty">Notes appear here as guests reply.</p>}
             </div>
           </section>
 

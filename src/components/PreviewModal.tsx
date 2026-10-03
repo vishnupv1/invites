@@ -42,7 +42,7 @@ export function PreviewModal({ template, event, onEvent, onClose }: Props) {
           </button>
         </div>
       </div>
-      <InviteSite template={template} fields={sampleFor(template, active)} />
+      <InviteSite template={template} fields={sampleFor(template, active)} demo />
     </div>
   );
 }

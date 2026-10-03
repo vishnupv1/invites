@@ -314,12 +314,14 @@ export function InviteSite({
   onReply,
   wishes = [],
   swatch = "",
+  demo = false,
 }: {
   template: Template;
   fields: InviteFields;
   onReply?: (reply: Reply) => void;
   wishes?: (GazalWish & { attending?: boolean })[];
   swatch?: string;
+  demo?: boolean;
 }) {
   useFonts("Pinyon Script");
   if (template.style === "gazal") {
@@ -332,10 +334,10 @@ export function InviteSite({
     return <AnnaInvite fields={fields} onReply={onReply} theme={annaThemeOf(swatch)} />;
   }
   if (template.style === "baptism") {
-    return <BaptismInvite fields={fields} wishes={wishes} onReply={onReply} theme={baptismThemeOf(swatch)} />;
+    return <BaptismInvite fields={fields} wishes={wishes} onReply={onReply} theme={baptismThemeOf(swatch)} demo={demo} />;
   }
   if (template.style === "vivah") {
-    return <VivahInvite fields={fields} wishes={wishes} onReply={onReply} theme={vivahThemeOf(swatch)} />;
+    return <VivahInvite fields={fields} wishes={wishes} onReply={onReply} theme={vivahThemeOf(swatch)} demo={demo} />;
   }
   if (template.style === "beach") {
     return <BeachInvite fields={fields} wishes={wishes} onReply={onReply} theme={beachThemeOf(swatch)} />;
@@ -344,10 +346,10 @@ export function InviteSite({
     return <BotanicaInvite fields={fields} wishes={wishes} onReply={onReply} theme={botanicaThemeOf(swatch)} />;
   }
   if (template.style === "heavenly") {
-    return <HeavenlyInvite fields={fields} wishes={wishes} onReply={onReply} />;
+    return <HeavenlyInvite fields={fields} wishes={wishes} onReply={onReply} demo={demo} />;
   }
   if (template.style === "home") {
-    return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} />;
+    return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} demo={demo} />;
   }
   if (template.style === "shaadi") {
     return <ShaadiInvite fields={fields} wishes={wishes} onReply={onReply} theme={shaadiThemeOf(swatch)} />;
@@ -356,7 +358,7 @@ export function InviteSite({
     return <ThiruvizhaInvite fields={fields} wishes={wishes} onReply={onReply} theme={thiruThemeOf(swatch)} />;
   }
   if (template.style === "peace") {
-    return <PeaceInvite fields={fields} wishes={wishes} onReply={onReply} theme={peaceThemeOf(swatch)} />;
+    return <PeaceInvite fields={fields} wishes={wishes} onReply={onReply} theme={peaceThemeOf(swatch)} demo={demo} />;
   }
   let body: ReactNode;
   switch (template.style) {

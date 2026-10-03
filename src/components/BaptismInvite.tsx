@@ -178,12 +178,14 @@ export function BaptismInvite({
   wishes = [],
   onReply,
   theme: themeProp,
+  demo = false,
 }: {
   fields: InviteFields;
   quiet?: boolean;
   wishes?: { name: string; note: string }[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void | Promise<void>;
   theme?: Theme;
+  demo?: boolean;
 }) {
   useFonts("Great Vibes", "Lora", "Nunito Sans");
   const child = firstName(fields.names);
@@ -209,7 +211,7 @@ export function BaptismInvite({
   const [sent, setSent] = useState<{ name: string; text: string }[]>([]);
   const ink = toneOf(theme);
   const live = wishes.filter((item) => item.note.trim()).map((item) => ({ name: item.name, text: item.note }));
-  const blessings = [...sent, ...live, ...SAMPLE_WISHES.map((item) => item.name === "Sister Rose" ? { ...item, text: `God bless you abundantly, dear ${child}.` } : item)];
+  const blessings = [...sent, ...live, ...(demo ? SAMPLE_WISHES.map((item) => item.name === "Sister Rose" ? { ...item, text: `God bless you abundantly, dear ${child}.` } : item) : [])];
   const loop = [...blessings, ...blessings];
   const place = [fields.venue, fields.address].filter(Boolean).join(", ");
 
@@ -512,6 +514,7 @@ export function BaptismInvite({
 
           <section id="blessings" className="bp-bless">
             <h2>Blessings for {child}</h2>
+            {loop.length ? (
             <div className="bp-marquee">
               <div className="bp-track">
                 {loop.map((item, index) => (
@@ -522,6 +525,9 @@ export function BaptismInvite({
                 ))}
               </div>
             </div>
+            ) : (
+              <p className="bp-empty">Blessings appear here as guests reply.</p>
+            )}
           </section>
 
           <footer className="bp-foot">

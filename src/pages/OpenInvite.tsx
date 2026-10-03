@@ -27,14 +27,14 @@ export function OpenInvite() {
       {template.style === "gazal" ? <GazalInvite fields={fields} /> : null}
       {template.style === "aurelia" ? <AureliaInvite fields={fields} /> : null}
       {template.style === "anna" ? <AnnaInvite fields={fields} /> : null}
-      {template.style === "baptism" ? <BaptismInvite fields={fields} /> : null}
-      {template.style === "vivah" ? <VivahInvite fields={fields} /> : null}
+      {template.style === "baptism" ? <BaptismInvite fields={fields} demo /> : null}
+      {template.style === "vivah" ? <VivahInvite fields={fields} demo /> : null}
       {template.style === "beach" ? <BeachInvite fields={fields} /> : null}
       {template.style === "botanica" ? <BotanicaInvite fields={fields} /> : null}
-      {template.style === "heavenly" ? <HeavenlyInvite fields={fields} /> : null}
-      {template.style === "home" ? <HomeInvite fields={fields} /> : null}
+      {template.style === "heavenly" ? <HeavenlyInvite fields={fields} demo /> : null}
+      {template.style === "home" ? <HomeInvite fields={fields} demo /> : null}
       {template.style === "thiruvizha" ? <ThiruvizhaInvite fields={fields} /> : null}
-      {template.style === "peace" ? <PeaceInvite fields={fields} /> : null}
+      {template.style === "peace" ? <PeaceInvite fields={fields} demo /> : null}
     </div>
   );
 }

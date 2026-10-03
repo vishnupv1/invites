@@ -521,7 +521,7 @@ export function AllTemplates() {
             <button type="button" className="cat-modal-x" aria-label="Close preview" onClick={closePreview}>×</button>
             <div className="cat-phone-well">
               <div className="cat-phone">
-                {demo ? <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} /> : cover(preview)}
+                {demo ? <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} demo /> : cover(preview)}
               </div>
             </div>
             <div className="cat-modal-copy">

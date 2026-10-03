@@ -317,6 +317,7 @@ export function VivahInvite({
   wishes = [],
   onReply,
   motion = true,
+  demo = false,
 }: {
   fields: InviteFields;
   theme?: VivahTheme;
@@ -325,6 +326,7 @@ export function VivahInvite({
   wishes?: { name: string; note: string }[];
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void;
   motion?: boolean;
+  demo?: boolean;
 }) {
   useFonts("Cinzel Decorative", "Cormorant Garamond", "Jost", "Parisienne");
   const sealId = useId().replace(/:/g, "");
@@ -395,7 +397,7 @@ export function VivahInvite({
   const replyBy = replyDate && !Number.isNaN(replyDate.getTime())
     ? `${replyDate.getDate()} ${replyDate.toLocaleDateString("en-US", { month: "long" })} ${replyDate.getFullYear()}`
     : "";
-  const liveWishes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...SAMPLE_WISHES];
+  const liveWishes = [...added, ...wishes.map((item) => ({ name: item.name, text: item.note })), ...(demo ? SAMPLE_WISHES : [])];
   const half = Math.ceil(liveWishes.length / 2);
   const rowA = liveWishes.slice(0, half);
   const rowB = liveWishes.slice(half).length ? liveWishes.slice(half) : liveWishes.slice(0, 1);
@@ -693,7 +695,8 @@ export function VivahInvite({
 
           <section className="wd-blessings" id="blessings">
             <h2 className="wd-h">Blessings</h2>
-            {[rowA, rowB].map((row, index) => (
+            {liveWishes.length === 0 ? <p className="wd-empty">Blessings appear here as guests reply.</p> : null}
+            {liveWishes.length ? [rowA, rowB].map((row, index) => (
               <div key={index} className="wd-marq">
                 <div className={index === 0 ? "wd-marq-track" : "wd-marq-track back"}>
                   {[...row, ...row].map((item, card) => (
@@ -704,7 +707,7 @@ export function VivahInvite({
                   ))}
                 </div>
               </div>
-            ))}
+            )) : null}
           </section>
 
           <footer className="wd-foot">

@@ -49,23 +49,23 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
     case "anna":
       return <AnnaInvite fields={fields} quiet theme={annaThemeOf(swatch)} />;
     case "baptism":
-      return <BaptismInvite fields={fields} quiet theme={baptismThemeOf(swatch)} />;
+      return <BaptismInvite fields={fields} quiet theme={baptismThemeOf(swatch)} demo />;
     case "vivah":
-      return <VivahInvite fields={fields} quiet theme={vivahThemeOf(swatch)} />;
+      return <VivahInvite fields={fields} quiet theme={vivahThemeOf(swatch)} demo />;
     case "beach":
       return <BeachInvite fields={fields} quiet theme={beachThemeOf(swatch)} />;
     case "botanica":
       return <BotanicaInvite fields={fields} quiet theme={botanicaThemeOf(swatch)} />;
     case "heavenly":
-      return <HeavenlyInvite fields={fields} quiet />;
+      return <HeavenlyInvite fields={fields} quiet demo />;
     case "home":
-      return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} />;
+      return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} demo />;
     case "shaadi":
       return <ShaadiInvite fields={fields} theme={shaadiThemeOf(swatch)} />;
     case "thiruvizha":
       return <ThiruvizhaInvite fields={fields} theme={thiruThemeOf(swatch)} lang={lang} />;
     case "peace":
-      return <PeaceInvite fields={fields} theme={peaceThemeOf(swatch)} />;
+      return <PeaceInvite fields={fields} theme={peaceThemeOf(swatch)} demo />;
     default:
       return <InviteView template={template} fields={fields} />;
   }

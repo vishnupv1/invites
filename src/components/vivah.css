@@ -993,6 +993,7 @@
 
 .wd-blessings { padding: 48px 0; display: flex; flex-direction: column; gap: 14px; }
 .wd-blessings .wd-h { font-size: 46px; margin: 0 0 6px; }
+.wd-blessings .wd-empty { margin: 8px 0 0; text-align: center; font-family: Jost, sans-serif; font-size: 15px; color: #d9c29a; }
 
 .wd-marq { overflow: hidden; }
 .wd-marq-track {

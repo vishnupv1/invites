@@ -338,6 +338,7 @@
 .hw-change { position: relative; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 2px solid #2e2a25; background: #fff; font-size: 14px; font-weight: 800; cursor: pointer; }
 
 .hw-wishes { padding: 48px 18px; display: flex; flex-direction: column; gap: 26px; background: var(--band); }
+.hw-wishes .hw-empty { margin: 0; text-align: center; font-family: Nunito, sans-serif; font-size: 16px; color: #5c564e; }
 .hw-fridge { box-sizing: border-box; padding: 26px 16px; border-radius: 30px; background: #e7ecef; border: 2px solid #2e2a25; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .hw-note { position: relative; box-sizing: border-box; padding: 26px 18px 16px; box-shadow: 0 10px 18px rgba(46, 42, 37, 0.15); display: flex; flex-direction: column; gap: 8px; color: #2e2a25; transform-origin: 50% 0; animation: hw-note ease-in-out infinite; }
 .hw-note p { margin: 0; font-family: Caveat, cursive; font-size: 24px; font-weight: 700; line-height: 1.2; }

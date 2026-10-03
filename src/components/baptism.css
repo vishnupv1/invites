@@ -305,6 +305,7 @@
 .bp-fly .bp-wing { animation-duration: 0.5s; }
 .bp-bless { padding: 40px 0; display: flex; flex-direction: column; gap: 16px; }
 .bp-bless h2 { font-size: 46px; }
+.bp-bless .bp-empty { margin: 0; text-align: center; font-family: "Nunito Sans", sans-serif; font-size: 16px; color: #5d6b78; }
 .bp-marquee { overflow: hidden; }
 .bp-track { display: flex; gap: 12px; width: max-content; animation: bp-marquee 28s linear infinite; }
 .bp-wish { width: 240px; flex-shrink: 0; box-sizing: border-box; background: #fff; border: 1px solid #e6e0d4; border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }

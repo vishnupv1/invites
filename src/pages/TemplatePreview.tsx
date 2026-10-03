@@ -285,6 +285,7 @@ export function TemplatePreview() {
             <div className="pv-canvas">
               {template.style === "baptism" ? (
                 <BaptismInvite
+                  demo
                   fields={{
                     ...sample,
                     names: n2 ? `${n1} & ${n2}` : n1,
@@ -294,6 +295,7 @@ export function TemplatePreview() {
               ) : null}
               {template.style === "vivah" ? (
                 <VivahInvite
+                  demo
                   fields={{
                     ...sample,
                     names: n2 ? `${n1} & ${n2}` : n1,
@@ -322,6 +324,7 @@ export function TemplatePreview() {
               ) : null}
               {template.style === "heavenly" ? (
                 <HeavenlyInvite
+                  demo
                   fields={{
                     ...sample,
                     names: n2 ? `${n1} & ${n2}` : n1,
@@ -331,6 +334,7 @@ export function TemplatePreview() {
               ) : null}
               {template.style === "home" ? (
                 <HomeInvite
+                  demo
                   fields={{
                     ...sample,
                     names: n2 ? `${n1} & ${n2}` : n1,
@@ -378,6 +382,7 @@ export function TemplatePreview() {
               {template.style === "peace" ? (
                 <div className={view === "phone" ? "pv-live phone" : view === "card" ? "pv-live card" : "pv-live desk"}>
                   <PeaceInvite
+                    demo
                     fields={{
                       ...sample,
                       names: n2 ? `${n1} & ${n2}` : n1,

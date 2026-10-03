@@ -185,7 +185,7 @@ function Palette({ fields, tone }: { fields: InviteFields; tone: string }) {
   );
 }
 
-export function InviteView({ template, fields, live = false }: { template: Template; fields: InviteFields; live?: boolean }) {
+export function InviteView({ template, fields, live = false, demo = false }: { template: Template; fields: InviteFields; live?: boolean; demo?: boolean }) {
   const quiet = !live;
   switch (template.style) {
     case "gazal":
@@ -195,23 +195,23 @@ export function InviteView({ template, fields, live = false }: { template: Templ
     case "anna":
       return <AnnaInvite fields={fields} quiet={quiet} />;
     case "baptism":
-      return <BaptismInvite fields={fields} quiet={quiet} />;
+      return <BaptismInvite fields={fields} quiet={quiet} demo={demo} />;
     case "vivah":
-      return <VivahInvite fields={fields} quiet={quiet} />;
+      return <VivahInvite fields={fields} quiet={quiet} demo={demo} />;
     case "beach":
       return <BeachInvite fields={fields} quiet={quiet} />;
     case "botanica":
       return <BotanicaInvite fields={fields} quiet={quiet} />;
     case "heavenly":
-      return <HeavenlyInvite fields={fields} quiet={quiet} />;
+      return <HeavenlyInvite fields={fields} quiet={quiet} demo={demo} />;
     case "home":
-      return <HomeInvite fields={fields} quiet={quiet} />;
+      return <HomeInvite fields={fields} quiet={quiet} demo={demo} />;
     case "shaadi":
       return <ShaadiInvite fields={fields} />;
     case "thiruvizha":
       return <ThiruvizhaInvite fields={fields} />;
     case "peace":
-      return <PeaceInvite fields={fields} />;
+      return <PeaceInvite fields={fields} demo={demo} />;
     case "garden":
       return <Garden fields={fields} />;
     case "midnight":
