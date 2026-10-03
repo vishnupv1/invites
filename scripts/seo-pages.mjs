@@ -5,7 +5,7 @@ const SITE = "https://invitesready.com";
 const root = path.resolve(import.meta.dirname, "..");
 const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
 const HOME_DESCRIPTION =
-  "Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
+  "Design a digital invitation for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
 
 const FAQS = [
   ["Do my guests need an app or an account?", "No. Guests open your link in any browser and RSVP in one tap — it works on basic phones too."],
@@ -16,7 +16,7 @@ const FAQS = [
 ];
 
 const STATIC = [
-  ["/", "Customize digital posters — free or premium | InvitesReady", HOME_DESCRIPTION],
+  ["/", "Digital invitations your guests can open and reply to | InvitesReady", HOME_DESCRIPTION],
   ["/how", "How digital invitations work | InvitesReady", "Pick a template, add your details, and share one link. Guests open it in the browser and RSVP without an app."],
   ["/features", "Invitation features | InvitesReady", "RSVPs, guest groups, reminders, a photo wall, and password-protected pages for wedding and family invitations."],
   ["/pricing", "Invitation pricing | InvitesReady", "Design for free. Publish a free template at no cost, or buy a premium invitation once for your celebration."],

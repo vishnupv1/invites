@@ -8,6 +8,7 @@ import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { Editor } from "./Editor";
+import { trackOnce } from "../lib/analytics";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -181,6 +182,10 @@ export function CreateGuest() {
   const matching = templates.filter((item) => item.events.includes(event.id));
   const visible = matching.filter((item) => price === "All" || (price === "Free" ? item.free : !item.free));
   const template = templates.find((item) => item.id === templateId && item.events.includes(event.id)) ?? matching[0] ?? templates[0];
+  useEffect(() => {
+    if (step < 3 || !template) return;
+    trackOnce("create_started", template.id, { template_id: template.id });
+  }, [step, template]);
   const two = template?.meta.names === "couple";
   const sample = template ? sampleFor(template, event.id) : null;
   const typedNames = two ? [name1.trim(), name2.trim()].filter(Boolean).join(" & ") : name1.trim();

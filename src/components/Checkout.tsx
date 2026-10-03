@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { formatPrice } from "../data/templates";
@@ -62,14 +62,11 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
   const [checking, setChecking] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const busy = useRef(false);
 
-  useEffect(() => {
-    trackEvent("begin_checkout", {
-      currency: "INR",
-      value: template.free ? 0 : template.price,
-      item_id: template.id,
-    });
-  }, [template.free, template.id, template.price]);
+  function checkoutItems(price: number) {
+    return [{ item_id: template.id, item_name: template.name, price }];
+  }
 
   async function applyCoupon() {
     const code = coupon.trim();
@@ -94,17 +91,29 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
 
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (busy.current) return;
     if (!signedIn && !getToken()) {
       if (name.trim().length < 2) return setError("Add your name.");
       if (!email.includes("@")) return setError("Add a valid email.");
     }
+    busy.current = true;
     setSubmitting(true);
     setError("");
+    const price = applied || template.free ? 0 : template.price;
+    trackEvent("begin_checkout", {
+      currency: "INR",
+      value: price,
+      items: checkoutItems(price),
+    });
     try {
       if (!getToken()) await ensureSession(email, name);
       if (applied) {
         await onPurchased(coupon.trim());
-        trackEvent("purchase", { currency: "INR", value: 0, item_id: template.id });
+        trackEvent("purchase", {
+          currency: "INR",
+          value: 0,
+          items: checkoutItems(0),
+        });
         return;
       }
       const order = await createPaymentOrder(template.id);
@@ -137,12 +146,13 @@ export function Checkout({ template, onClose, onPurchased }: Props) {
         currency: "INR",
         value: template.price,
         transaction_id: payment.razorpay_payment_id,
-        item_id: template.id,
+        items: checkoutItems(template.price),
       });
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
       if (message) setError(message);
     } finally {
+      busy.current = false;
       setSubmitting(false);
     }
   }

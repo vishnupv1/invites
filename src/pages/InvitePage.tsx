@@ -4,6 +4,7 @@ import { getPublicInvite, sendGreeting } from "../api";
 import { InviteSite } from "../components/InviteSite";
 import { Spinner } from "../components/Loader";
 import { getTemplate } from "../data/templates";
+import { trackEvent } from "../lib/analytics";
 import { decodeInvite } from "../lib/codec";
 import type { InviteFields, Template } from "../types";
 
@@ -44,7 +45,13 @@ export function InvitePage() {
       fields={loaded.fields}
       swatch={loaded.swatch}
       wishes={loaded.greetings}
-      onReply={legacy ? undefined : (reply) => sendGreeting(code, reply)}
+      onReply={legacy ? undefined : async (reply) => {
+        await sendGreeting(code, reply);
+        trackEvent("rsvp_sent", {
+          template_id: loaded.template.id,
+          attending: reply.attending ? "yes" : "no",
+        });
+      }}
     />
   );
 }

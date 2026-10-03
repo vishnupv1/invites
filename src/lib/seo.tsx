@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getEvent } from "../data/events";
 import { getTemplate, templatesFor } from "../data/templates";
+import { trackPageView } from "./analytics";
 
 export const SITE = "https://invitesready.com";
 
 const HOME_DESCRIPTION =
-  "Customize a digital poster for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
+  "Design a digital invitation for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
 
 const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
 
@@ -15,7 +16,7 @@ type Meta = { title: string; description: string; index: boolean; image: string;
 function describe(pathname: string): Meta {
   if (pathname === "/") {
     return {
-      title: "Customize digital posters — free or premium | InvitesReady",
+      title: "Digital invitations your guests can open and reply to | InvitesReady",
       description: HOME_DESCRIPTION,
       index: true,
       image: BRAND_IMAGE,
@@ -102,10 +103,11 @@ function describe(pathname: string): Meta {
     };
   }
 
-  const preview = pathname.match(/^\/(?:preview|template)\/([^/]+)$/);
+  const preview = pathname.match(/^\/(?:preview|template|browse)\/([^/]+)$/);
   if (preview) {
     const template = getTemplate(preview[1]);
     if (template) {
+      const onBrowse = pathname.startsWith("/browse/");
       return {
         title: `${template.name} invitation template | InvitesReady`,
         description: template.free
@@ -113,7 +115,7 @@ function describe(pathname: string): Meta {
           : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`,
         index: true,
         image: `${SITE}/covers/${template.id}.jpg`,
-        canonical: `/template/${template.id}`,
+        canonical: onBrowse ? `/browse/${template.id}` : `/template/${template.id}`,
       };
     }
   }
@@ -129,6 +131,19 @@ function describe(pathname: string): Meta {
         image: BRAND_IMAGE,
       };
     }
+  }
+
+  if (pathname === "/login") {
+    return { title: "Log in | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+  }
+  if (pathname === "/create" || pathname.startsWith("/create/")) {
+    return { title: "Design your invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+  }
+  if (pathname === "/studio" || pathname === "/events" || pathname === "/guests" || pathname === "/purchases") {
+    return { title: "Your invitations | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+  }
+  if (pathname.startsWith("/i/")) {
+    return { title: "Guest invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
   }
 
   return {
@@ -160,7 +175,7 @@ function setCanonical(href: string) {
 }
 
 export function PageMeta() {
-  const { pathname } = useLocation();
+  const { pathname, search, hash } = useLocation();
 
   useEffect(() => {
     const meta = describe(pathname);
@@ -181,7 +196,8 @@ export function PageMeta() {
     setMeta("twitter:description", meta.description);
     setMeta("twitter:image", meta.image);
     setMeta("twitter:image:alt", meta.title);
-  }, [pathname]);
+    trackPageView(`${pathname}${search}${hash}`, meta.title, pathname.startsWith("/i/") ? "guest" : undefined);
+  }, [pathname, search, hash]);
 
   return null;
 }

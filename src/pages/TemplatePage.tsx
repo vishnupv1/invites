@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
@@ -23,6 +23,7 @@ import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import { useFonts } from "../lib/fonts";
+import { trackOnce } from "../lib/analytics";
 import "./purchase.css";
 
 const TONES: Record<string, { cover: string; dot: string }> = {
@@ -76,6 +77,10 @@ export function TemplatePage() {
   const { id } = useParams();
   const [params] = useSearchParams();
   const template = getTemplate(id);
+  useEffect(() => {
+    if (!template) return;
+    trackOnce("template_opened", template.id, { template_id: template.id, item_name: template.name });
+  }, [template]);
   const { owns, purchase } = useLibrary();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

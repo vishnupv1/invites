@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
@@ -9,7 +9,6 @@ import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
 import { Brand } from "./components/Brand";
 import { PageMeta } from "./lib/seo";
-import { trackPageView } from "./lib/analytics";
 import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
 import { Spinner } from "./components/Loader";
@@ -20,18 +19,6 @@ import { Templates } from "./pages/Templates";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 import { Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
-
-function Analytics() {
-  const location = useLocation();
-
-  useEffect(() => {
-    trackPageView(
-      `${location.pathname}${location.search}${location.hash}`,
-    );
-  }, [location]);
-
-  return null;
-}
 
 function RequireAccount({ children }: { children: ReactNode }) {
   const { ready, signedIn } = useSession();
@@ -62,7 +49,6 @@ function Shell({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <>
-      <Analytics />
       <PageMeta />
       <Routes>
         <Route path="/" element={<Home />} />

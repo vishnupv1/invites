@@ -30,19 +30,34 @@ function initialize() {
   initialized = true;
 }
 
-export function trackEvent(name: string, params?: Record<string, string | number>) {
+type EventItem = { item_id: string; item_name: string; price: number };
+type EventValue = string | number | EventItem[];
+
+export function trackEvent(name: string, params?: Record<string, EventValue>) {
   initialize();
   window.gtag("event", name, params);
 }
 
-export function trackPageView(page: string) {
+const once = new Set<string>();
+
+export function trackOnce(name: string, key: string, params?: Record<string, EventValue>) {
+  const id = `${name}:${key}`;
+  if (once.has(id)) return;
+  once.add(id);
+  trackEvent(name, params);
+}
+
+export function trackPageView(page: string, title: string, pageType?: string) {
   if (lastPage === page) return;
 
   initialize();
   lastPage = page;
-  window.gtag("event", "page_view", {
+  document.title = title;
+  const params: Record<string, string | number> = {
     page_path: page,
     page_location: window.location.href,
-    page_title: document.title,
-  });
+    page_title: title,
+  };
+  if (pageType) params.page_type = pageType;
+  window.gtag("event", "page_view", params);
 }

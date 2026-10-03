@@ -28,6 +28,7 @@ import { AppMenu } from "../components/AppMenu";
 import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
+import { trackOnce } from "../lib/analytics";
 import { useFonts } from "../lib/fonts";
 import "./editor.css";
 
@@ -220,6 +221,12 @@ export function Editor({
   const inviteQuery = embedded ? "" : (params.get("invite") ?? "");
   const eventQuery = eventIdProp || params.get("event") || undefined;
   const { owns, remember, invites, ready: libraryReady } = useLibrary();
+  useEffect(() => {
+    if (embedded || !template) return;
+    if (!template.free && !libraryReady) return;
+    if (!owns(template.id, template.free)) return;
+    trackOnce("create_started", template.id, { template_id: template.id });
+  }, [embedded, template, libraryReady, owns]);
   const onInviteRef = useRef(onInvite);
   const onSummaryRef = useRef(onSummary);
   onInviteRef.current = onInvite;
