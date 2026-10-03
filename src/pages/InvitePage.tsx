@@ -10,7 +10,7 @@ import type { InviteFields, Template } from "../types";
 export function InvitePage() {
   const { code = "" } = useParams();
   const legacy = useMemo(() => decodeInvite(code), [code]);
-  const [loaded, setLoaded] = useState<{ template: Template; fields: InviteFields; swatch: string; greetings: { name: string; note: string }[] } | null>(
+  const [loaded, setLoaded] = useState<{ template: Template; fields: InviteFields; swatch: string; greetings: { name: string; note: string; attending?: boolean }[] } | null>(
     legacy && getTemplate(legacy.t) ? { template: getTemplate(legacy.t)!, fields: legacy.f, swatch: "", greetings: [] } : null,
   );
   const [missing, setMissing] = useState(false);

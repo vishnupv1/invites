@@ -16,6 +16,7 @@ const AVATARS = ["#D81B60", "#F23F78", "#2E8B57", "#FF7380", "#8E1550"];
 const THUMBS: Record<string, { bg: string; fg: string }> = {
   beach: { bg: "#F7B38A", fg: "#1E3A44" },
   botanica: { bg: "#F3E3D6", fg: "#3A2E2A" },
+  heavenly: { bg: "#1E120A", fg: "#F3D9A0" },
   shaadi: { bg: "#4A0D1F", fg: "#F5D77A" },
   hearth: { bg: "#DDEFE8", fg: "#2E2A25" },
   home: { bg: "#DDEFE8", fg: "#2E2A25" },

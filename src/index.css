@@ -337,6 +337,7 @@ svg.glyph {
   div.bf-root.is-fade,
   div.bf-root.is-open,
   .bp-frame .bp-open:not(.is-quiet),
+  .hv .hv-open,
   .tv:not(.is-entered) {
     height: 100svh;
     max-height: 100svh;
@@ -402,6 +403,7 @@ svg.glyph {
   .pv-live.phone .bf-root.is-fade,
   .pv-live.phone .bf-root.is-open,
   .bp-frame .bp-open:not(.is-quiet),
+  .hv .hv-open,
   .tv:not(.is-entered) {
     height: 100cqh;
     max-height: 100cqh;

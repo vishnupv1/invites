@@ -8,6 +8,7 @@ import { AnnaInvite } from "./AnnaInvite";
 import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
 import { BotanicaInvite } from "./BotanicaInvite";
+import { HeavenlyInvite } from "./HeavenlyInvite";
 import { HomeInvite } from "./HomeInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -317,7 +318,7 @@ export function InviteSite({
   template: Template;
   fields: InviteFields;
   onReply?: (reply: Reply) => void;
-  wishes?: GazalWish[];
+  wishes?: (GazalWish & { attending?: boolean })[];
   swatch?: string;
 }) {
   useFonts("Pinyon Script");
@@ -341,6 +342,9 @@ export function InviteSite({
   }
   if (template.style === "botanica") {
     return <BotanicaInvite fields={fields} wishes={wishes} onReply={onReply} theme={botanicaThemeOf(swatch)} />;
+  }
+  if (template.style === "heavenly") {
+    return <HeavenlyInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "home") {
     return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} />;

@@ -9,6 +9,7 @@ import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
+import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { InviteView } from "../components/InviteView";
 import { ShaadiInvite } from "../components/ShaadiInvite";
@@ -36,6 +37,7 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   blush: { cover: "#F8E6E4", dot: "#C27A78" },
   noir: { cover: "#1C1718", dot: "#E8C987" },
   sage: { cover: "#E4EBE3", dot: "#6E8A72" },
+  gold: { cover: "#1E120A", dot: "#E6C27A" },
 };
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
@@ -54,6 +56,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <BeachInvite fields={fields} quiet theme={beachThemeOf(swatch)} />;
     case "botanica":
       return <BotanicaInvite fields={fields} quiet theme={botanicaThemeOf(swatch)} />;
+    case "heavenly":
+      return <HeavenlyInvite fields={fields} quiet />;
     case "home":
       return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} />;
     case "shaadi":

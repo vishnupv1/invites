@@ -211,7 +211,7 @@ export function getInviteRecord(id: string) {
 }
 
 export function getPublicInvite(slug: string) {
-  return request<{ slug: string; templateId: string; fields: InviteFields; swatch?: string; greetings?: { name: string; note: string }[] }>(`/api/invites/${slug}`);
+  return request<{ slug: string; templateId: string; fields: InviteFields; swatch?: string; greetings?: { name: string; note: string; attending?: boolean }[] }>(`/api/invites/${slug}`);
 }
 
 export function sendGreeting(slug: string, body: { name: string; note: string; attending: boolean }) {

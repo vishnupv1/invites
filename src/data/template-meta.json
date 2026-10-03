@@ -372,5 +372,35 @@
       { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "heavenly": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [{ "id": "gold", "name": "Golden hour" }],
+    "defaultTheme": "gold",
+    "shots": [
+      { "label": "Just us" },
+      { "label": "Wild hearts" },
+      { "label": "How it began" },
+      { "label": "She said yes" },
+      { "label": "Family" },
+      { "label": "Golden hour" }
+    ],
+    "rsvp": { "meal": true, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "Palace doors", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Family line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Gallery", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Replies & wishes", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
   }
 }

@@ -18,6 +18,9 @@ export type CustomPack = {
   sangeetTime?: string;
   sangeetVenue?: string;
   caption?: string;
+  instagram?: string;
+  venueNote?: string;
+  venuePhone?: string;
   bonfireName?: string | null;
   bonfireWhen?: string;
   bonfireVenue?: string;

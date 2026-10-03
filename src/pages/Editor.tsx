@@ -5,6 +5,7 @@ import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
+import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
@@ -1302,6 +1303,8 @@ export function Editor({
                     <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} />
                   ) : template.style === "botanica" ? (
                     <BotanicaInvite fields={previewFields} theme={botanicaThemeOf(model.swatch)} />
+                  ) : template.style === "heavenly" ? (
+                    <HeavenlyInvite fields={previewFields} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

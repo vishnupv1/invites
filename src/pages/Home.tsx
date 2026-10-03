@@ -166,6 +166,7 @@ const RSVPS = [
 const TEMPLATES = [
   { name: "Royal Night", tag: "Animated", cover: "/covers/vivah.jpg", sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/create?template=vivah" },
   { name: "Sunset Shore", tag: "Animated", cover: "/covers/beach.jpg", sample: "Rohan & Alisha", kicker: "One shore", to: "/create?template=beach" },
+  { name: "Heavenly", tag: "Animated", cover: "/covers/heavenly.jpg", sample: "Aarav & Riya", kicker: "Wedding", to: "/create?template=heavenly" },
   { name: "Blush Botanica", tag: "Animated", cover: "/covers/botanica.jpg", sample: "Nila & Kiran", kicker: "Wedding", to: "/create?template=botanica" },
   { name: "Happy Home", tag: "Animated", cover: "/covers/hearth.jpg", sample: "Our new home", kicker: "Griha Pravesh", to: "/create?template=hearth" },
   { name: "Heavenly Halo", tag: "Animated", cover: "/covers/baptism.jpg", sample: "Ethan", kicker: "Baptism", to: "/create?template=baptism" },

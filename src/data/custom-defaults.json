@@ -106,5 +106,21 @@
       { "kick": "Evening", "title": "Dinner & toasts", "time": "Sat, 6 March · 7:00 PM", "text": "The Glass Conservatory" },
       { "kick": "Late night", "title": "Dancing under the stars", "time": "Sat, 6 March · 9:30 PM", "text": "The Terrace" }
     ]
+  },
+  "heavenly": {
+    "story": [
+      { "year": "2019", "title": "How it began", "text": "A rooftop party, a borrowed umbrella and a song neither of us could stop humming." },
+      { "year": "2022", "title": "Wild hearts", "text": "A road trip through the hills that turned two friends into something more." },
+      { "year": "2025", "title": "She said yes", "text": "Golden hour by the sea, a trembling question and the easiest answer ever." }
+    ],
+    "programme": [
+      { "kick": "Saturday evening", "title": "Welcome dinner", "time": "Sat, 13 Feb · 7:30 PM", "text": "The Garden Terrace", "note": "Smart casual" },
+      { "kick": "The main event", "title": "The wedding", "time": "Sun, 14 Feb · 5:00 PM", "text": "The Floral Pavilion", "note": "Festive formal" },
+      { "kick": "After sunset", "title": "Reception", "time": "Sun, 14 Feb · 8:30 PM", "text": "The Lantern Lawn", "note": "Black tie" }
+    ],
+    "caption": "#AaravWedsRiya",
+    "instagram": "@aarav.weds.riya",
+    "venueNote": "Tea Garden Road, Munnar, Kerala. Shuttles run from the Munnar town square every 30 minutes from 4 PM.",
+    "venuePhone": ""
   }
 }

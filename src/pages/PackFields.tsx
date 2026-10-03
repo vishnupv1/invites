@@ -183,6 +183,20 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
         <div className="ed-fn">
           <p className="ed-lead">Hashtag</p>
           <input className="ed-input" aria-label="Hashtag" value={pack.caption} onChange={(event) => write({ ...pack, caption: event.target.value })} />
+          {pack.instagram !== undefined ? (
+            <input className="ed-input" aria-label="Instagram handle" placeholder="@your.handle" value={pack.instagram} onChange={(event) => write({ ...pack, instagram: event.target.value })} />
+          ) : null}
+        </div>
+      ) : null}
+      {pack.venueNote !== undefined || pack.venuePhone !== undefined ? (
+        <div className="ed-fn">
+          <p className="ed-lead">Venue details</p>
+          {pack.venueNote !== undefined ? (
+            <textarea className="ed-input" aria-label="Venue note" placeholder="Directions, parking or shuttle times" rows={2} value={pack.venueNote} onChange={(event) => write({ ...pack, venueNote: event.target.value })} />
+          ) : null}
+          {pack.venuePhone !== undefined ? (
+            <input className="ed-input" aria-label="Venue phone" type="tel" placeholder="Venue phone (optional)" value={pack.venuePhone} onChange={(event) => write({ ...pack, venuePhone: event.target.value })} />
+          ) : null}
         </div>
       ) : null}
       {pack.airport !== undefined ? (
