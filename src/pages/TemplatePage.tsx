@@ -89,7 +89,8 @@ export function TemplatePage() {
   );
   const [swatchFor, setSwatchFor] = useState<{ id: string; swatch: string } | null>(null);
   const [lang, setLang] = useState<ThiruvizhaLang>("both");
-  const { signedIn, host } = useSession();
+  const { signedIn, host, ready } = useSession();
+  const account = ready && signedIn;
   const hostName = host?.name ?? "";
   const requested = params.get("event") as EventId | null;
   const [picked, setPicked] = useState<EventId | null>(null);
@@ -100,10 +101,12 @@ export function TemplatePage() {
         ? requested
         : template?.events[0];
 
-  if (!template || !event) return <Navigate to="/templates" replace />;
-  const owned = owns(template.id, template.free);
+  if (!template || !event) return <Navigate to="/browse" replace />;
+  const owned = account && owns(template.id, template.free);
   const createTo = `/create/${template.id}?event=${event}`;
   if (owned) return <Navigate to="/templates" replace />;
+  const catalogTo = account ? "/templates" : "/browse";
+  const previewTo = account ? `/preview/${template.id}?event=${event}` : `/browse/${template.id}`;
 
   const swatch = swatchFor?.id === template.id ? swatchFor.swatch : template.meta.defaultTheme;
   const themeName = template.meta.themes.find((item) => item.id === swatch)?.name;
@@ -112,13 +115,13 @@ export function TemplatePage() {
   const tamil = template.style === "thiruvizha";
 
   return (
-    <div className="board buy-board">
-      <AppMenu current="/templates" name={hostName} signedIn={signedIn} />
+    <div className={account ? "board buy-board is-account" : "board buy-board"}>
+      {account ? <AppMenu current="/templates" name={hostName} signedIn /> : null}
     <div className="buy">
       <div className="buy-bar">
       <header className="buy-head">
         <div className="buy-id">
-          <Link className="buy-back" to="/templates">
+          <Link className="buy-back" to={catalogTo}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
@@ -130,7 +133,7 @@ export function TemplatePage() {
           </div>
         </div>
         <div className="buy-head-actions">
-          <Link className="buy-ghost" to={`/preview/${template.id}?event=${event}`}>
+          <Link className="buy-ghost" to={previewTo}>
             Preview
           </Link>
           <button className="buy-solid" type="button" onClick={() => setOpen(true)}>
@@ -140,7 +143,9 @@ export function TemplatePage() {
       </header>
       <Breadcrumbs
         className="buy-crumbs"
-        items={[{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]}
+        items={account
+          ? [{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]
+          : [{ label: "Home", to: "/" }, { label: "Templates", to: "/browse" }, { label: template.name }]}
       />
       </div>
 
@@ -273,7 +278,7 @@ export function TemplatePage() {
               <button className="buy-solid" type="button" onClick={() => setOpen(true)}>
                 Buy once · {formatPrice(template)}
               </button>
-              <Link className="buy-ghost" to={`/preview/${template.id}?event=${event}`}>
+              <Link className="buy-ghost" to={previewTo}>
                 Open the full preview
               </Link>
             </div>

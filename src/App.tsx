@@ -31,6 +31,7 @@ function RequireAccount({ children }: { children: ReactNode }) {
 }
 
 function Shell({ children }: { children: ReactNode }) {
+  const { ready, signedIn } = useSession();
   return (
     <>
       <header className="nav">
@@ -38,7 +39,7 @@ function Shell({ children }: { children: ReactNode }) {
         <nav>
           <Link to="/occasions">Celebrations</Link>
           <Link to="/browse">Templates</Link>
-          <Link to="/studio">Dashboard</Link>
+          {ready && signedIn ? <Link to="/studio">Dashboard</Link> : <Link to="/login">Log in</Link>}
         </nav>
       </header>
       <main className="wrap">{children}</main>
@@ -66,7 +67,7 @@ export default function App() {
         <Route path="/browse/:id?" element={<AllTemplates />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/templates" element={<RequireAccount><Templates /></RequireAccount>} />
-        <Route path="/preview/:id" element={<TemplatePreview />} />
+        <Route path="/preview/:id" element={<RequireAccount><TemplatePreview /></RequireAccount>} />
         <Route path="/open/:id" element={<OpenInvite />} />
         <Route
           path="/c/:id"

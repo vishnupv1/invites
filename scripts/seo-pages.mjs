@@ -252,7 +252,7 @@ function pages(templates, events) {
       ? `Preview the ${template.name} invitation. This design is free to publish.`
       : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`;
     const image = `${SITE}/covers/${template.id}.jpg`;
-    for (const prefix of ["template", "preview"]) {
+    for (const prefix of ["template"]) {
       list.push({
         path: `/${prefix}/${template.id}`,
         canonical: `/template/${template.id}`,

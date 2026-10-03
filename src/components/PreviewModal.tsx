@@ -29,7 +29,7 @@ export function PreviewModal({ template, event, onEvent, onClose }: Props) {
         </div>
         <div className="shop-actions">
           {owned ? (
-            <Link className="solid" to={`/create/${template.id}?event=${active}`} onClick={onClose}>
+            <Link className="solid" to={`/create?template=${template.id}&event=${active}`} onClick={onClose}>
               Use this design
             </Link>
           ) : (

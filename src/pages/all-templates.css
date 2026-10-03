@@ -786,6 +786,11 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
 }
 
+@keyframes cat-pop {
+  0% { opacity: 0; transform: scale(0.6) translateY(10px); }
+  70% { transform: scale(1.05); }
+  100% { opacity: 1; transform: none; }
+}
 @keyframes cat-in {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -804,13 +809,14 @@
 }
 
 @media (max-width: 1100px) {
-  .cat-nav { padding: 0 20px; }
+  .cat-nav { height: 68px; padding: 0 20px; }
+  .cat-bar { top: 68px; }
   .cat-links { display: none; }
   .cat-burger {
     display: flex;
     width: 46px;
     height: 46px;
-    border-radius: 14px;
+    border-radius: 8px;
     border: 1px solid #ebe2dd;
     background: #fff;
     cursor: pointer;
@@ -819,19 +825,37 @@
   }
   .cat-menu {
     display: flex;
-    position: sticky;
-    top: 84px;
+    position: fixed;
+    top: 68px;
+    left: 12px;
+    right: 12px;
     z-index: 29;
-    margin: 8px 12px 0;
+    margin: 0;
     border-radius: 22px;
     background: #fff;
-    box-shadow: 0 24px 40px rgba(42, 21, 39, 0.16);
+    box-shadow: 0 24px 40px rgba(142, 21, 80, 0.18);
     padding: 10px 18px 18px;
     flex-direction: column;
-    gap: 4px;
+    animation: cat-pop 0.3s ease both;
   }
-  .cat-menu a { min-height: 44px; display: flex; align-items: center; font-weight: 700; }
-  .cat-menu .cat-create { justify-content: center; margin-top: 8px; }
+  .cat-menu a {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: #2a1527;
+    border-bottom: 1px solid #f1eae3;
+  }
+  .cat-menu a:last-of-type { border-bottom: none; }
+  .cat-menu .cat-create {
+    margin-top: 10px;
+    min-height: 54px;
+    justify-content: center;
+    font-size: 16px;
+    border-bottom: none;
+    border-radius: 6px;
+  }
   .cat-hero { align-items: stretch; flex-direction: column; gap: 18px; padding-top: 32px; }
   .cat-hero h1 { font-size: 44px; }
   .cat-search { width: auto; }

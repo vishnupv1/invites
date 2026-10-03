@@ -1158,7 +1158,8 @@ button.avatar {
   }
   .dash-nav a,
   .dash-nav button {
-    min-width: 60px;
+    min-width: 0;
+    flex: 1;
     min-height: 52px;
     display: flex;
     flex-direction: column;
@@ -1782,7 +1783,8 @@ button.avatar {
   .dv-bar-switch { flex-grow: 1; min-width: 0; }
   .dv-bar-btn .dv-switch-meta { color: #6b5a62; }
   .dv-bar-btn .dv-av { width: 36px; height: 36px; border-radius: 11px; }
-  .dv-mobile-bar .site-brand { padding: 0 8px; }
+  .dv-mobile-bar .site-brand { padding: 0 8px; flex-grow: 1; }
+  .dv-mobile-bar .acct-pop { left: auto; right: 0; }
   a.dv-plus { color: #fff; }
   .dv-plus {
     width: 44px;

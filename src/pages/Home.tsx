@@ -1148,6 +1148,22 @@ export function Home({ focus }: { focus?: string }) {
           <Link to="/refunds">Refunds</Link>
           <Link to="/contact">Contact</Link>
         </nav>
+        <nav className="lp-social" aria-label="Social">
+          <a href="https://www.facebook.com/profile.php?id=61594844762009" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14.5 8.5V6.8c0-.6.4-.8.8-.8H17V3.5h-2.4C12.1 3.5 11 4.9 11 7.1v1.4H9v2.7h2V20h2.8v-8.8h2.3l.4-2.7h-2.7z" />
+            </svg>
+            <span className="lp-sr">Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/invitesready/" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span className="lp-sr">Instagram</span>
+          </a>
+        </nav>
         <small>© 2026 InvitesReady.com</small>
       </footer>
     </div>

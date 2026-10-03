@@ -726,7 +726,7 @@ export function Editor({
       <header className="ed-top">
         <div className="ed-brand">
           {embedded ? null : (
-          <Link className="ed-back" to="/templates" aria-label="Back to templates">
+          <Link className="ed-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
@@ -789,11 +789,17 @@ export function Editor({
         <>
           <Breadcrumbs
             className="ed-crumbs"
-            items={[
-              { label: "Dashboard", to: "/studio" },
-              { label: "Templates", to: "/templates" },
-              { label: template.name },
-            ]}
+            items={signedIn
+              ? [
+                  { label: "Dashboard", to: "/studio" },
+                  { label: "Templates", to: "/templates" },
+                  { label: template.name },
+                ]
+              : [
+                  { label: "Home", to: "/" },
+                  { label: "Templates", to: "/browse" },
+                  { label: template.name },
+                ]}
           />
           {signedIn ? null : <div className="ed-guest-strip">Designing as a guest · {saveLabel === "Draft" ? "your changes save on this phone" : saveLabel.toLowerCase()}</div>}
         </>
@@ -1375,7 +1381,7 @@ export function Editor({
                   </button>
                 </div>
                 {showQr ? <img className="ed-qr" alt="QR code for the invitation" src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(link)}`} /> : null}
-                <Link className="ed-studio" to="/guests">Go to guest list</Link>
+                <Link className="ed-studio" to={signedIn ? "/guests" : "/browse"}>{signedIn ? "Go to guest list" : "Browse templates"}</Link>
               </div>
             ) : (
               <SmartButton className="ed-go" phase={pubPhase} idle="Publish invite" onClick={() => void publish()} />

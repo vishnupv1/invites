@@ -48,7 +48,7 @@ export function Category() {
                   <button type="button" className="ghost" onClick={() => setPreviewId(template.id)}>
                     Preview
                   </button>
-                  <Link className="solid" to={owned ? `/create/${template.id}?event=${id}` : `/template/${template.id}?event=${id}`}>
+                  <Link className="solid" to={owned ? `/create?template=${template.id}&event=${id}` : `/template/${template.id}?event=${id}`}>
                     {owned ? "Use" : "Details"}
                   </Link>
                 </div>

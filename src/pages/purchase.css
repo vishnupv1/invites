@@ -300,6 +300,7 @@
   .buy-dock-k { display: block; font-size: 12px; color: #6b5a62; }
   .buy-dock-v { font-family: Fraunces, Georgia, serif; font-size: 20px; font-weight: 600; }
   .buy-dock .buy-solid { flex: 1; min-height: 52px; font-size: 16px; }
-  .buy-board .buy-dock { bottom: 82px; }
-  .buy-board .buy-body { padding-bottom: 200px; }
+  .buy-board.is-account .buy-dock { bottom: 82px; }
+  .buy-board .buy-body { padding-bottom: 120px; }
+  .buy-board.is-account .buy-body { padding-bottom: 200px; }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { listGreetings, listTemplates, signOut } from "../api";
+import { listGreetings, listTemplates } from "../api";
 import { DashboardHome, EventSwitcher } from "./DashboardHome";
 import { useSession } from "../session";
 import { getEvent } from "../data/events";
@@ -8,6 +8,7 @@ import { formatPrice } from "../data/templates";
 import { formatShortDate } from "../lib/dates";
 import { useLibrary } from "../state";
 import { AccountMenu } from "../components/AccountMenu";
+import { MobileDock } from "../components/MobileDock";
 import { SkeletonGrid } from "../components/CardSkeleton";
 import { Spinner } from "../components/Loader";
 import { Brand } from "../components/Brand";
@@ -95,7 +96,6 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
   const [catalogReady, setCatalogReady] = useState(false);
   const [switchOpen, setSwitchOpen] = useState(false);
   const [evQuery, setEvQuery] = useState("");
-  const [accountOpen, setAccountOpen] = useState(false);
 
   useEffect(() => {
     if (!switchOpen) return;
@@ -245,6 +245,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
           ) : (
             <Brand />
           )}
+          <AccountMenu name={hostName} signedIn={signedIn}>{initialsOf(hostName) || "?"}</AccountMenu>
           <Link className="dv-plus" to="/templates" aria-label="Create invite">
             +
           </Link>
@@ -459,83 +460,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "events" |
         ) : null}
       </main>
 
-      {view === "dashboard" ? (
-        <nav className="dv-tabbar" aria-label="Main">
-          <Link to="/studio" aria-current="page">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M3 11l9-8 9 8v10H3z" />
-            </svg>
-            Home
-          </Link>
-          <Link to="/events">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" />
-            </svg>
-            Events
-          </Link>
-          <Link to="/guests">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c1-4 4-6 7-6s6 2 7 6" />
-            </svg>
-            Guests
-          </Link>
-          <button type="button" className={accountOpen ? "on" : ""} onClick={() => setAccountOpen((value) => !value)}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM3 22c1-5 5-7 9-7s8 2 9 7" />
-            </svg>
-            Account
-          </button>
-        </nav>
-      ) : null}
-      {accountOpen && view === "dashboard" ? (
-        <div className="dv-account">
-          <strong>{signedIn && hostName ? hostName : "Not signed in"}</strong>
-          {signedIn ? (
-            <button
-              type="button"
-              onClick={() => {
-                void signOut().finally(() => window.location.assign("/"));
-              }}
-            >
-              Log out
-            </button>
-          ) : (
-            <Link to="/login">Log in</Link>
-          )}
-        </div>
-      ) : null}
-      {view === "dashboard" ? null : <nav className="dash-nav" aria-label="Main">
-        <Link to="/studio">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M3 11l9-7 9 7v9H3z" />
-            <path d="M9 20v-6h6v6" />
-          </svg>
-          Home
-        </Link>
-        <Link to="/templates">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M4 4h16v16H4zM4 9h16M9 9v11" />
-          </svg>
-          Templates
-        </Link>
-        <Link className="dash-plus" to="/templates" aria-label="Create invite">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-        </Link>
-        <Link to="/guests" aria-current={view === "guests" ? "page" : undefined}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" />
-          </svg>
-          Guests
-        </Link>
-        <Link to="/purchases" aria-current={view === "purchases" ? "page" : undefined}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" />
-          </svg>
-          Purchases
-        </Link>
-      </nav>}
+      <MobileDock />
 
       {toast ? (
         <div className="toast" role="status">

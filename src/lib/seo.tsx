@@ -58,7 +58,7 @@ function describe(pathname: string): Meta {
     return {
       title: "Invitation templates | InvitesReady",
       description: "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy.",
-      index: true,
+      index: pathname === "/browse",
       image: BRAND_IMAGE,
     };
   }
@@ -100,12 +100,13 @@ function describe(pathname: string): Meta {
     const template = getTemplate(preview[1]);
     if (template) {
       const onBrowse = pathname.startsWith("/browse/");
+      const accountOnly = pathname.startsWith("/preview/");
       return {
         title: `${template.name} invitation template | InvitesReady`,
         description: template.free
           ? `Preview the ${template.name} invitation. This design is free to publish.`
           : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`,
-        index: true,
+        index: !accountOnly,
         image: `${SITE}/covers/${template.id}.jpg`,
         canonical: onBrowse ? `/browse/${template.id}` : `/template/${template.id}`,
       };

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { AccountMenu } from "./AccountMenu";
 import { Brand } from "./Brand";
+import { MobileDock } from "./MobileDock";
 import "../pages/studio.css";
 
 const NAV = [
@@ -44,38 +45,7 @@ export function AppMenu({ current, name, signedIn }: { current: string; name: st
         </div>
       </aside>
 
-      <nav className="dash-nav" aria-label="Main">
-        <Link to="/studio" aria-current={current === "/studio" ? "page" : undefined}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M3 11l9-7 9 7v9H3z" />
-            <path d="M9 20v-6h6v6" />
-          </svg>
-          Home
-        </Link>
-        <Link to="/templates" aria-current={current === "/templates" ? "page" : undefined}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M4 4h16v16H4zM4 9h16M9 9v11" />
-          </svg>
-          Templates
-        </Link>
-        <Link className="dash-plus" to="/templates" aria-label="Create invite">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-        </Link>
-        <Link to="/guests">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" />
-          </svg>
-          Guests
-        </Link>
-        <Link to="/purchases">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" />
-          </svg>
-          Purchases
-        </Link>
-      </nav>
+      <MobileDock />
     </>
   );
 }
