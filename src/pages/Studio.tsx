@@ -3,6 +3,7 @@ import { AccountTabs, LoggedInChrome, LoggedInFooter } from "../components/Logge
 import { listGreetings } from "../api";
 import { AccountHub, LoggedInHome } from "./LoggedInHome";
 import { Spinner } from "../components/Loader";
+import { Notice, type NoticeTone } from "../components/Notice";
 import { useSession } from "../session";
 import { useLibrary } from "../state";
 import "./studio.css";
@@ -37,14 +38,14 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "guests" |
   const { signedIn } = useSession();
   const [filter, setFilter] = useState<Filter>("All");
   const [query, setQuery] = useState("");
-  const [toast, setToast] = useState("");
+  const [toast, setToast] = useState<{ message: string; tone: NoticeTone } | null>(null);
   const [roster, setRoster] = useState<GuestRow[]>([]);
   const [rosterReady, setRosterReady] = useState(false);
   const [eventFilter, setEventFilter] = useState("all");
 
   useEffect(() => {
     if (!toast) return;
-    const timer = window.setTimeout(() => setToast(""), 4200);
+    const timer = window.setTimeout(() => setToast(null), 4200);
     return () => window.clearTimeout(timer);
   }, [toast]);
 
@@ -82,8 +83,8 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "guests" |
       <LoggedInChrome />
       <div className="li-page">
         <main className={view === "dashboard" ? "li-main" : "li-main is-account"}>
-          {view === "dashboard" ? <LoggedInHome onToast={setToast} /> : null}
-          {view !== "dashboard" && view !== "guests" ? <AccountHub view={view} onToast={setToast} /> : null}
+          {view === "dashboard" ? <LoggedInHome onToast={(message, tone) => setToast({ message, tone: tone ?? "ok" })} /> : null}
+          {view !== "dashboard" && view !== "guests" ? <AccountHub view={view} onToast={(message, tone) => setToast({ message, tone: tone ?? "ok" })} /> : null}
           {view === "guests" ? (
             <div className="li-guests">
               <div>
@@ -178,12 +179,7 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "guests" |
         </main>
         <LoggedInFooter />
       </div>
-      {toast ? (
-        <div className="li-toast" role="status">
-          <span>{toast}</span>
-          <button type="button" onClick={() => setToast("")}>OK</button>
-        </div>
-      ) : null}
+      {toast ? <Notice message={toast.message} tone={toast.tone} onClose={() => setToast(null)} /> : null}
     </div>
   );
 }

@@ -20,6 +20,8 @@ import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, Template } from "../types";
 import { useFonts } from "../lib/fonts";
+import { FavoriteHeart } from "../components/FavoriteHeart";
+import { Notice, type NoticeTone } from "../components/Notice";
 import { useFavs } from "../lib/favorites";
 import "./preview.css";
 
@@ -105,6 +107,11 @@ export function TemplatePreview() {
   const [venue, setVenue] = useState("");
   const { favs, toggle } = useFavs();
   const [toast, setToast] = useState("");
+  const [toastTone, setToastTone] = useState<NoticeTone>("ok");
+  function notify(message: string, tone: NoticeTone = "ok") {
+    setToastTone(tone);
+    setToast(message);
+  }
   const { signedIn, host } = useSession();
   const hostName = host?.name ?? "";
 
@@ -174,16 +181,16 @@ export function TemplatePreview() {
     if (!template) return;
     const templateId = template.id;
     toggle(templateId);
-    setToast(liked ? "Removed from favourites." : "Saved to your favourites.");
+    notify(liked ? "Removed from favorites." : "Saved to your favorites.");
   }
 
   async function share() {
     const url = window.location.href;
     try {
       await navigator.clipboard.writeText(url);
-      setToast("Preview link copied.");
+      notify("Preview link copied.");
     } catch {
-      setToast(url);
+      notify(url, "warn");
     }
   }
 
@@ -208,11 +215,7 @@ export function TemplatePreview() {
           </div>
         </div>
         <div className="pv-actions">
-          <button type="button" className="pv-icon" aria-pressed={liked} aria-label={liked ? "Remove from favourites" : "Save to favourites"} onClick={toggleFav}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill={liked ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
-              <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-            </svg>
-          </button>
+          <FavoriteHeart liked={liked} name={template.name} onClick={toggleFav} />
           <button type="button" className="pv-share" onClick={share}>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="18" cy="5" r="3" />
@@ -256,7 +259,7 @@ export function TemplatePreview() {
                 ))}
               </div>
               {template.asks.audio ? (
-                <button type="button" className="pv-music" aria-pressed={music} onClick={() => { setMusic((on) => !on); setToast(music ? "Music off." : "A song plays on the shared invite once you add one."); }}>
+                <button type="button" className="pv-music" aria-pressed={music} onClick={() => { setMusic((on) => !on); notify(music ? "Music off." : "A song plays on the shared invite once you add one.", music ? "ok" : "warn"); }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M9 18V5l12-2v13" />
                     <circle cx="6" cy="18" r="3" />
@@ -607,15 +610,7 @@ export function TemplatePreview() {
         <Link to={useTo}>{owned ? "Use this template" : useLabel}</Link>
       </div>
 
-      {toast ? (
-        <div className="pv-toast" role="status">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9DB8A2" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M5 12l4 4L19 7" />
-          </svg>
-          <span>{toast}</span>
-          <button type="button" onClick={() => setToast("")}>Dismiss</button>
-        </div>
-      ) : null}
+      {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
     </div>
     </div>
   );

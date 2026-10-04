@@ -1143,6 +1143,28 @@
   cursor: pointer;
 }
 
+.cg-wait {
+  flex: 1;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.cg-wait .spin {
+  width: 36px;
+  height: 36px;
+  border-width: 3px;
+}
+
+.cg-wait p {
+  margin: 0;
+  color: #6b5a62;
+}
+
 .cg-auth h2 {
   margin: 0;
   font-family: Fraunces, Georgia, serif;

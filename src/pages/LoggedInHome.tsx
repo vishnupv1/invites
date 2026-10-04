@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listTemplates } from "../api";
+import { listTemplates, updateHostName } from "../api";
 import { AccountTabs } from "../components/LoggedInChrome";
 import { getEvent } from "../data/events";
 import { formatPrice } from "../data/templates";
+import { FavoriteHeart } from "../components/FavoriteHeart";
+import type { NoticeTone } from "../components/Notice";
 import { useFavs } from "../lib/favorites";
 import { formatShortDate } from "../lib/dates";
 import { useSession } from "../session";
@@ -27,7 +29,7 @@ function replyLine(invite: SavedInvite) {
   return `${replies} replied · ${yes} attending · ${waiting} still waiting`;
 }
 
-export function LoggedInHome({ onToast }: { onToast: (message: string) => void }) {
+export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: NoticeTone) => void }) {
   const { host } = useSession();
   const { invites } = useLibrary();
   const { favs, toggle } = useFavs();
@@ -113,18 +115,15 @@ export function LoggedInHome({ onToast }: { onToast: (message: string) => void }
                   <Link to={`/template/${template.id}`}>
                     <img src={`/covers/${template.id}.jpg`} alt={`${template.name} template`} />
                   </Link>
-                  <button
-                    type="button"
-                    className={liked ? "li-heart on" : "li-heart"}
-                    aria-pressed={liked}
-                    aria-label={liked ? `Remove ${template.name} from favorites` : `Save ${template.name}`}
+                  <FavoriteHeart
+                    className="overlay"
+                    liked={liked}
+                    name={template.name}
                     onClick={() => {
                       const now = toggle(template.id);
                       onToast(now ? `${template.name} saved to My favorites.` : `${template.name} removed from favorites.`);
                     }}
-                  >
-                    ♥
-                  </button>
+                  />
                 </div>
                 <div className="li-card-meta">
                   <strong>{template.name}</strong>
@@ -191,13 +190,15 @@ export function AccountHub({
   onToast,
 }: {
   view: "events" | "drafts" | "favorites" | "purchases" | "settings";
-  onToast: (message: string) => void;
+  onToast: (message: string, tone?: NoticeTone) => void;
 }) {
   const { host } = useSession();
   const { invites, ready, owned } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>([]);
   const [catalogReady, setCatalogReady] = useState(false);
+  const [name, setName] = useState(host?.name ?? "");
+  const [saving, setSaving] = useState(false);
   const [phone, setPhone] = useState(() => readSettings().phone);
   const [toggles, setToggles] = useState(() => readSettings().toggles);
   const [lang, setLang] = useState(() => readSettings().lang);
@@ -213,6 +214,10 @@ export function AccountHub({
   const purchased = owned.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
 
   useEffect(() => {
+    setName(host?.name ?? "");
+  }, [host?.name]);
+
+  useEffect(() => {
     if (view !== "favorites" && view !== "purchases") return;
     listTemplates()
       .then(setCatalog)
@@ -226,7 +231,7 @@ export function AccountHub({
       await navigator.clipboard.writeText(url);
       onToast("Invite link copied.");
     } catch {
-      onToast(url);
+      onToast(url, "warn");
     }
   }
 
@@ -236,7 +241,7 @@ export function AccountHub({
         <h1 className="li-title">{titles[view][0]}</h1>
         <span className="li-sub">{titles[view][1]}</span>
       </div>
-      <AccountTabs />
+      {view === "settings" ? null : <AccountTabs />}
 
       {view === "events" ? (
         <div className="li-events">
@@ -307,17 +312,15 @@ export function AccountHub({
                 <article className="li-tile" key={template.id}>
                   <div className="li-shot">
                     <img src={`/covers/${template.id}.jpg`} alt="" />
-                    <button
-                      type="button"
-                      className="li-heart on"
-                      aria-label={`Remove ${template.name} from favorites`}
+                    <FavoriteHeart
+                      className="overlay"
+                      liked
+                      name={template.name}
                       onClick={() => {
                         toggle(template.id);
                         onToast(`${template.name} removed from favorites.`);
                       }}
-                    >
-                      ♥
-                    </button>
+                    />
                   </div>
                   <div className="li-tile-meta">
                     <strong>{template.name}</strong>
@@ -376,7 +379,7 @@ export function AccountHub({
               <h2>Profile</h2>
               <label className="li-field">
                 <span>Full name</span>
-                <input value={host?.name ?? ""} readOnly />
+                <input value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" maxLength={120} />
               </label>
               <label className="li-field">
                 <span>Email</span>
@@ -423,12 +426,28 @@ export function AccountHub({
             <button
               type="button"
               className="li-btn primary"
+              disabled={saving}
               onClick={() => {
-                localStorage.setItem(SETTINGS_KEY, JSON.stringify({ phone, toggles, lang }));
-                onToast("Settings saved.");
+                const next = name.trim();
+                if (!next) {
+                  onToast("Enter your full name.", "warn");
+                  return;
+                }
+                setSaving(true);
+                void (async () => {
+                  try {
+                    if (next !== (host?.name ?? "").trim()) await updateHostName(next);
+                    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ phone, toggles, lang }));
+                    onToast("Settings saved.");
+                  } catch (error) {
+                    onToast(error instanceof Error ? error.message : "Could not save your name.", "bad");
+                  } finally {
+                    setSaving(false);
+                  }
+                })();
               }}
             >
-              Save changes
+              {saving ? "Saving…" : "Save changes"}
             </button>
           </div>
         </>

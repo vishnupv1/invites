@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { formatPrice } from "../data/templates";
@@ -6,6 +6,7 @@ import { useLibrary } from "../state";
 import { LoggedInChrome } from "../components/LoggedInChrome";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { Breadcrumbs } from "../components/Breadcrumbs";
+import { FavoriteHeart } from "../components/FavoriteHeart";
 import { useFavs } from "../lib/favorites";
 import type { Template } from "../types";
 import "./studio.css";
@@ -54,9 +55,7 @@ export function Templates() {
         <div className="tpl-mobile-title">
           <h1>Templates</h1>
           <button type="button" className={favsOnly ? "tpl-fav on" : "tpl-fav"} aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill={favsOnly ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
-              <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-            </svg>
+            <span className="fav-mark" aria-hidden="true">♥</span>
             {favs.length}
           </button>
         </div>
@@ -66,9 +65,7 @@ export function Templates() {
             <p>Every design in the catalog. Preview one, then use it for an invitation.</p>
           </div>
           <button type="button" className="tpl-fav tpl-fav-mobile" aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill={favsOnly ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
-              <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-            </svg>
+            <span className="fav-mark" aria-hidden="true">♥</span>
             {favs.length}
           </button>
           <div className="tpl-search">
@@ -84,27 +81,12 @@ export function Templates() {
         </div>
 
         <div className="tpl-filters">
-          <div className="tpl-occ-scroll">
-            <button type="button" className={occasion === "all" ? "on" : ""} aria-pressed={occasion === "all"} onClick={() => setOccasion("all")}>
-              All
-            </button>
-            {events.map((event) => (
-              <button key={event.id} type="button" className={occasion === event.id ? "on" : ""} aria-pressed={occasion === event.id} onClick={() => setOccasion(event.id)}>
-                {event.label}
-              </button>
-            ))}
-          </div>
-          <div className="tpl-occasion">
-            <label htmlFor="t-occasion">Occasion</label>
-            <select id="t-occasion" value={occasion} onChange={(input) => setOccasion(input.target.value)}>
-              <option value="all">All</option>
-              {events.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <FilterMenu
+            label="Category"
+            value={occasion}
+            options={[{ id: "all", label: "All categories" }, ...events.map((event) => ({ id: event.id, label: event.label }))]}
+            onChange={setOccasion}
+          />
           <div className="tpl-row">
             <div className="tpl-chips">
               <div className="tpl-seg" role="group" aria-label="Price">
@@ -120,11 +102,16 @@ export function Templates() {
             </div>
             <div className="tpl-sort">
               <span className="tpl-count">{items.length === 1 ? "1 template" : `${items.length} templates`}</span>
-              <label htmlFor="t-sort">Sort</label>
-              <select id="t-sort" value={sort} onChange={(input) => setSort(input.target.value)}>
-                <option value="name">A–Z</option>
-                <option value="price">Price</option>
-              </select>
+              <FilterMenu
+                className="compact"
+                label="Sort"
+                value={sort}
+                options={[
+                  { id: "name", label: "A–Z" },
+                  { id: "price", label: "Price" },
+                ]}
+                onChange={setSort}
+              />
             </div>
           </div>
         </div>
@@ -137,7 +124,7 @@ export function Templates() {
         ) : items.length === 0 ? (
           <div className="tpl-empty">
             <h2>No templates match</h2>
-            <p>Try another occasion, or clear your filters.</p>
+            <p>Try another category, or clear your filters.</p>
             <button
               type="button"
               className="tpl-clear"
@@ -165,11 +152,7 @@ export function Templates() {
                       <img src={`/covers/${template.id}.jpg`} alt="" />
                     </button>
                     {bought ? <span className="tpl-owned">Purchased</span> : null}
-                    <button type="button" className="tpl-heart" aria-label={liked ? `Remove ${template.name} from favourites` : `Save ${template.name}`} aria-pressed={liked} onClick={() => toggle(template.id)}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill={liked ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
-                        <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-                      </svg>
-                    </button>
+                    <FavoriteHeart className="overlay" liked={liked} name={template.name} onClick={() => toggle(template.id)} />
                   </div>
                   <div className="tpl-meta">
                     <div>
@@ -188,6 +171,67 @@ export function Templates() {
           </div>
         )}
       </main>
+    </div>
+  );
+}
+
+function FilterMenu({
+  label,
+  value,
+  options,
+  onChange,
+  className = "",
+}: {
+  label: string;
+  value: string;
+  options: { id: string; label: string }[];
+  onChange: (id: string) => void;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const current = options.find((item) => item.id === value)?.label ?? "";
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(event: PointerEvent) {
+      if (!root.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className={`tpl-menu${className ? ` ${className}` : ""}${open ? " is-open" : ""}`} ref={root}>
+      <span className="tpl-menu-label">{label}</span>
+      <div className="tpl-menu-box">
+        <button type="button" aria-haspopup="listbox" aria-expanded={open} aria-label={label} onClick={() => setOpen((current) => !current)}>
+          <span>{current}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B5A62" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" />
+          </svg>
+        </button>
+        {open ? (
+          <div role="listbox" aria-label={label}>
+            {options.map((item) => {
+              const on = item.id === value;
+              return (
+                <button key={item.id} type="button" role="option" aria-selected={on} className={on ? "on" : ""} onClick={() => { onChange(item.id); setOpen(false); }}>
+                  <span aria-hidden="true">{on ? "✓" : ""}</span>
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

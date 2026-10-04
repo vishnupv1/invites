@@ -256,10 +256,36 @@
 }
 
 .auth form,
-.auth-done {
+.auth-done,
+.auth-wait {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+.auth-wait {
+  min-height: 280px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.auth-wait .spin {
+  width: 36px;
+  height: 36px;
+  border-width: 3px;
+}
+
+.auth-wait h2 {
+  margin: 8px 0 0;
+  font-size: 28px;
+  color: #2a1527;
+}
+
+.auth-wait p {
+  margin: 0;
+  color: #6b5a62;
 }
 
 .auth-tabs {

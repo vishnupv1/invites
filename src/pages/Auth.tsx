@@ -169,7 +169,13 @@ export function Auth() {
       <main>
         <div className="auth-card-form">
           <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: login ? "Log in" : "Sign up" }]} />
-          {done ? (
+          {googleBusy ? (
+            <div className="auth-wait" role="status" aria-live="polite">
+              <Spinner size="md" />
+              <h2>Signing you in</h2>
+              <p>Finishing with Google. This takes a moment.</p>
+            </div>
+          ) : done ? (
             <div className="auth-done">
               <span>
                 <Check />

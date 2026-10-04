@@ -124,6 +124,15 @@ export function getHost() {
   return request<Host>("/api/session");
 }
 
+export async function updateHostName(name: string) {
+  const host = await request<Host>("/api/session", {
+    method: "PATCH",
+    body: JSON.stringify({ name }),
+  });
+  notifySession();
+  return host;
+}
+
 export type CatalogEvent = {
   id: EventId;
   label: string;

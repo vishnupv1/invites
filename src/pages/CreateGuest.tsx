@@ -6,6 +6,7 @@ import { GoogleButton } from "../components/GoogleButton";
 import { signInWithGoogle } from "../lib/google";
 import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
 import { hold, SmartButton, Spinner } from "../components/Loader";
+import { Notice, type NoticeTone } from "../components/Notice";
 import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
@@ -110,12 +111,18 @@ export function CreateGuest() {
   const [authPassword, setAuthPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
   const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [liveCode, setLiveCode] = useState("");
   const [showQr, setShowQr] = useState(false);
   const [checkout, setCheckout] = useState(false);
   const [toast, setToast] = useState("");
+  const [toastTone, setToastTone] = useState<NoticeTone>("ok");
+  function notify(message: string, tone: NoticeTone = "ok") {
+    setToastTone(tone);
+    setToast(message);
+  }
   const [editorSummary, setEditorSummary] = useState({ names: "", date: "", time: "", venue: "" });
   const inviteIdRef = useRef("");
   const creatingRef = useRef<Promise<string> | null>(null);
@@ -285,7 +292,7 @@ export function CreateGuest() {
 
   async function onGoogle() {
     setAuthError("");
-    setBusy(true);
+    setGoogleBusy(true);
     try {
       await signInWithGoogle();
       inviteIdRef.current = "";
@@ -295,7 +302,7 @@ export function CreateGuest() {
     } catch (reason) {
       setAuthError(reason instanceof Error ? reason.message : "Could not sign in with Google.");
     } finally {
-      setBusy(false);
+      setGoogleBusy(false);
     }
   }
 
@@ -324,7 +331,7 @@ export function CreateGuest() {
   function finishAuth() {
     setAuthOpen(false);
     if (authMode === "publish") setStep(4);
-    else setToast(getToken() ? "Draft saved to your events. You can pick it up anytime." : "Draft kept on this device.");
+    else notify(getToken() ? "Draft saved to your events. You can pick it up anytime." : "Draft kept on this device.");
   }
 
   async function draftOnThisAccount() {
@@ -354,8 +361,8 @@ export function CreateGuest() {
     if (!template) return;
     const summaryNames = editorSummary.names.trim();
     const summaryDate = editorSummary.date;
-    if (!summaryNames && (!name1.trim() || (two && !name2.trim()))) return setToast("Add the names before you publish.");
-    if (!summaryDate && !date) return setToast("Add the date before you publish.");
+    if (!summaryNames && (!name1.trim() || (two && !name2.trim()))) return notify("Add the names before you publish.", "warn");
+    if (!summaryDate && !date) return notify("Add the date before you publish.", "warn");
     setBusy(true);
     setPubPhase("loading");
     try {
@@ -372,7 +379,7 @@ export function CreateGuest() {
       if (!savedInvite) {
         const id = await draftOnThisAccount();
         if (!id) {
-          setToast("Add the names and a date before you publish.");
+          notify("Add the names and a date before you publish.", "warn");
           return;
         }
         savedInvite = await publishSaved(id);
@@ -384,7 +391,7 @@ export function CreateGuest() {
       setLiveCode(savedInvite.code);
       setShowQr(false);
     } catch (reason) {
-      setToast(reason instanceof Error ? reason.message : "Could not publish.");
+      notify(reason instanceof Error ? reason.message : "Could not publish.", "bad");
     } finally {
       setBusy(false);
       setPubPhase("idle");
@@ -662,8 +669,8 @@ export function CreateGuest() {
                       type="button"
                       onClick={() => {
                         void navigator.clipboard.writeText(link).then(
-                          () => setToast("Link copied."),
-                          () => setToast(link),
+                          () => notify("Link copied."),
+                          () => notify(link, "warn"),
                         );
                       }}
                     >
@@ -701,7 +708,7 @@ export function CreateGuest() {
           </div>
           <div className="cg-bar-actions">
             {step === 3 ? (
-              <button type="button" className="cg-ghost" onClick={() => (host ? setToast("Draft kept on this device. Publish it to save the invitation to your account.") : openAuth("save"))}>
+              <button type="button" className="cg-ghost" onClick={() => (host ? notify("Draft kept on this device. Publish it to save the invitation to your account.", "warn") : openAuth("save"))}>
                 Save draft
               </button>
             ) : null}
@@ -740,7 +747,13 @@ export function CreateGuest() {
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </button>
-              {authDone ? (
+              {googleBusy ? (
+                <div className="cg-wait" role="status" aria-live="polite">
+                  <Spinner size="md" />
+                  <h2>Signing you in</h2>
+                  <p>Finishing with Google. This takes a moment.</p>
+                </div>
+              ) : authDone ? (
                 <>
                   <span className="cg-done-mark">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4E6853" strokeWidth="2.6" aria-hidden="true">
@@ -822,14 +835,7 @@ export function CreateGuest() {
         />
       ) : null}
 
-      {toast ? (
-        <div className="cg-toast" role="status">
-          <span>{toast}</span>
-          <button type="button" onClick={() => setToast("")}>
-            OK
-          </button>
-        </div>
-      ) : null}
+      {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
     </div>
   );
 }

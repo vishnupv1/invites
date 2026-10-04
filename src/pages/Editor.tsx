@@ -26,6 +26,7 @@ import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
 import { hold, SmartButton, Spinner } from "../components/Loader";
+import { Notice, type NoticeTone } from "../components/Notice";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import { trackOnce } from "../lib/analytics";
@@ -251,7 +252,7 @@ export function Editor({
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
-  const [toastTone, setToastTone] = useState<"ok" | "bad">("ok");
+  const [toastTone, setToastTone] = useState<NoticeTone>("ok");
   const [showQr, setShowQr] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [placeQuery, setPlaceQuery] = useState("");
@@ -478,7 +479,7 @@ export function Editor({
     return true;
   });
 
-  function notify(message: string, tone: "ok" | "bad" = "ok") {
+  function notify(message: string, tone: NoticeTone = "ok") {
     setToastTone(tone);
     setToast(message);
   }
@@ -513,7 +514,7 @@ export function Editor({
     const name = festivitiesOf(current.draft.lines)[index]?.name || "celebration";
     const notes = spliceNotes(current.draft.notes, shaadiPhotoShots(current.draft.lines, template.meta.shots), photoIndex, 1);
     patchDraft({ lines: JSON.stringify(items), photos, notes });
-    notify(`${name} removed. Use undo to bring it back.`);
+    notify(`${name} removed. Use undo to bring it back.`, "warn");
   }
 
   function addFestivity() {
@@ -639,7 +640,7 @@ export function Editor({
   function togglePlay() {
     const audio = audioRef.current;
     if (!audio || !draft.audio) {
-      notify("Add a song file first. These invitations don't include a recording.");
+      notify("Add a song file first. These invitations don't include a recording.", "warn");
       return;
     }
     if (audio.paused) {
@@ -655,7 +656,7 @@ export function Editor({
     if (!model) return;
     const section = model.sections.find((item) => item.id === id);
     if (!section?.configurable || !HIDEABLE.has(id)) {
-      notify(section?.configurable ? "Edit this piece in the other tabs. It stays on the invitation." : "This piece stays with the design.");
+      notify(section?.configurable ? "Edit this piece in the other tabs. It stays on the invitation." : "This piece stays with the design.", "warn");
       return;
     }
     const on = !section.on;
@@ -671,7 +672,7 @@ export function Editor({
       update({ swatch: swatchId });
       return;
     }
-    notify("This invitation keeps its own colours.");
+    notify("This invitation keeps its own colours.", "warn");
   }
 
   async function publish() {
@@ -914,8 +915,8 @@ export function Editor({
                   ) : (
                     <>
                       <button type="button" className="ed-chip" aria-pressed="true">English</button>
-                      <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.")}>മലയാളം</button>
-                      <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.")}>Bilingual</button>
+                      <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.", "warn")}>മലയാളം</button>
+                      <button type="button" className="ed-chip" aria-pressed="false" onClick={() => notify("Malayalam and bilingual wording aren't available on this design.", "warn")}>Bilingual</button>
                     </>
                   )}
                 </div>
@@ -955,7 +956,7 @@ export function Editor({
                               sections: model.sections.map((item) => (item.id === "reception" ? { ...item, on: false } : item)),
                               draft: { ...draft, receptionTime: "", receptionVenue: "", receptionAddress: "" },
                             });
-                            notify(`${template.meta.reception} removed. Use undo to bring it back.`);
+                            notify(`${template.meta.reception} removed. Use undo to bring it back.`, "warn");
                           }}
                         >
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C45B63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1023,7 +1024,7 @@ export function Editor({
                   className="ed-add"
                   onClick={() => {
                     if (model.receptionOn) {
-                      notify(`This invitation has ${template.meta.ceremony} and ${template.meta.reception}.`);
+                      notify(`This invitation has ${template.meta.ceremony} and ${template.meta.reception}.`, "warn");
                       return;
                     }
                     update({
@@ -1049,7 +1050,7 @@ export function Editor({
                         try {
                           setPlaces(await searchPlaces(placeQuery.trim()));
                         } catch (reason) {
-                          notify(reason instanceof Error ? reason.message : "Could not search places.");
+                          notify(reason instanceof Error ? reason.message : "Could not search places.", "bad");
                         } finally {
                           setSearching(false);
                         }
@@ -1390,12 +1391,7 @@ export function Editor({
         </div>
       ) : null}
 
-      {toast ? (
-        <div className={toastTone === "bad" ? "ed-toast bad" : "ed-toast"} role={toastTone === "bad" ? "alert" : "status"}>
-          <span>{toast}</span>
-          <button type="button" onClick={() => setToast("")}>OK</button>
-        </div>
-      ) : null}
+      {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
     </div>
   );
   if (embedded || !signedIn) return editor;
