@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { AccountTabs, LoggedInChrome, LoggedInFooter } from "../components/LoggedInChrome";
+import { LoggedInChrome, LoggedInFooter } from "../components/LoggedInChrome";
 import { listGreetings } from "../api";
 import { AccountHub, LoggedInHome } from "./LoggedInHome";
 import { Spinner } from "../components/Loader";
@@ -91,7 +91,6 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "guests" |
                 <h1 className="li-title">Guests</h1>
                 <span className="li-sub">Replies from every invitation.</span>
               </div>
-              <AccountTabs />
               {!ready ? null : invites.length === 0 ? (
                 <div className="li-empty">
                   <strong>Nothing here yet.</strong>

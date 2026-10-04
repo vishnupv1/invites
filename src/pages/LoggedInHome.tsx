@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { listTemplates, updateHostName } from "../api";
-import { AccountTabs } from "../components/LoggedInChrome";
 import { getEvent } from "../data/events";
 import { formatPrice } from "../data/templates";
 import { FavoriteHeart } from "../components/FavoriteHeart";
+import { CatalogDemo } from "./AllTemplates";
 import type { NoticeTone } from "../components/Notice";
 import { useFavs } from "../lib/favorites";
 import { formatShortDate } from "../lib/dates";
@@ -34,6 +35,7 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
   const { invites } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>([]);
+  const [demo, setDemo] = useState<Template | null>(null);
   const first = host?.name?.trim().split(/\s+/)[0];
   const live = invites.find((invite) => invite.status !== "draft");
   const trending = TRENDING.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
@@ -42,6 +44,20 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
   useEffect(() => {
     listTemplates().then(setCatalog).catch(() => setCatalog([]));
   }, []);
+
+  useEffect(() => {
+    if (!demo) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setDemo(null);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [demo]);
 
   return (
     <>
@@ -59,7 +75,9 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
           <img className="back" src="/covers/botanica.jpg" alt="" />
           <img className="front" src="/covers/peace.jpg" alt="" />
           {SPARKLES.map((spark) => (
-            <span key={spark.left} className="li-spark" style={{ left: spark.left, top: spark.top, fontSize: spark.size, animationDelay: spark.delay }}>♥</span>
+            <span key={spark.left} className="li-spark" style={{ left: spark.left, top: spark.top, animationDelay: spark.delay }}>
+              <Heart size={spark.size} fill="currentColor" aria-hidden="true" />
+            </span>
           ))}
         </div>
       </section>
@@ -90,17 +108,6 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
               <small>Hundreds of designs for every occasion, ready to personalise.</small>
             </span>
           </Link>
-          <Link className="li-way plain" to="/create">
-            <span className="li-way-icon">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-            </span>
-            <span>
-              <strong>Start from scratch</strong>
-              <small>A blank canvas with your names, dates and venue.</small>
-            </span>
-          </Link>
         </div>
       </section>
 
@@ -112,9 +119,9 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
             return (
               <article className="li-card" key={template.id}>
                 <div className="li-shot">
-                  <Link to={`/template/${template.id}`}>
+                  <button type="button" className="li-shot-hit" aria-label={`Open ${template.name}`} onClick={() => setDemo(template)}>
                     <img src={`/covers/${template.id}.jpg`} alt={`${template.name} template`} />
-                  </Link>
+                  </button>
                   <FavoriteHeart
                     className="overlay"
                     liked={liked}
@@ -135,6 +142,7 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
         </div>
         <Link className="li-btn ghost li-center" to="/templates">See all templates</Link>
       </section>
+      {demo ? <CatalogDemo template={demo} href={`/create/${demo.id}?event=${demo.events[0]}`} label="Customise this" onClose={() => setDemo(null)} /> : null}
     </>
   );
 }
@@ -177,7 +185,6 @@ function eventMeta(invite: SavedInvite) {
 }
 
 function rsvpLine(invite: SavedInvite) {
-  if (invite.status === "draft") return "Not published yet";
   const yes = invite.yes ?? 0;
   const replies = invite.replies ?? 0;
   const waiting = Math.max(0, replies - yes);
@@ -210,6 +217,7 @@ export function AccountHub({
     settings: ["Settings", "Your profile and notifications"],
   } as const;
   const drafts = invites.filter((invite) => invite.status === "draft");
+  const published = invites.filter((invite) => invite.status !== "draft");
   const favoriteTemplates = favs.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
   const purchased = owned.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
 
@@ -241,35 +249,25 @@ export function AccountHub({
         <h1 className="li-title">{titles[view][0]}</h1>
         <span className="li-sub">{titles[view][1]}</span>
       </div>
-      {view === "settings" ? null : <AccountTabs />}
 
       {view === "events" ? (
         <div className="li-events">
           {ready
-            ? invites.map((invite) => {
-                const draft = invite.status === "draft";
-                return (
-                  <article className="li-event" key={invite.id}>
-                    <img src={invite.cover || `/covers/${invite.templateId}.jpg`} alt="" />
-                    <div>
-                      <span className={draft ? "li-pill draft" : "li-pill live"}>{draft ? "Draft" : "Live"}</span>
-                      <strong>{invite.names || "Untitled event"}</strong>
-                      <span className="li-muted">{eventMeta(invite)}</span>
-                      <span>{rsvpLine(invite)}</span>
-                      <div className="li-actions-row">
-                        <Link className="li-btn-sm primary" to={`/create/${invite.templateId}?invite=${invite.id}`}>
-                          {draft ? "Continue editing" : "Manage"}
-                        </Link>
-                        {draft ? (
-                          <Link className="li-btn-sm ghost" to={`/preview/${invite.templateId}`}>Preview</Link>
-                        ) : (
-                          <button type="button" className="li-btn-sm ghost" onClick={() => void share(invite)}>Share</button>
-                        )}
-                      </div>
+            ? published.map((invite) => (
+                <article className="li-event" key={invite.id}>
+                  <img src={invite.cover || `/covers/${invite.templateId}.jpg`} alt="" />
+                  <div>
+                    <span className="li-pill live">Live</span>
+                    <strong>{invite.names || "Untitled event"}</strong>
+                    <span className="li-muted">{eventMeta(invite)}</span>
+                    <span>{rsvpLine(invite)}</span>
+                    <div className="li-actions-row">
+                      <Link className="li-btn-sm primary" to={`/create/${invite.templateId}?invite=${invite.id}`}>Manage</Link>
+                      <button type="button" className="li-btn-sm ghost" onClick={() => void share(invite)}>Share</button>
                     </div>
-                  </article>
-                );
-              })
+                  </div>
+                </article>
+              ))
             : null}
           <Link className="li-new" to="/templates">
             <b>+</b>
@@ -307,7 +305,7 @@ export function AccountHub({
           <div className="li-tiles">
             {favoriteTemplates.map((template) => {
               const event = template.events[0] ?? "marriage";
-              const destination = template.free || owned.includes(template.id) ? `/create/${template.id}?event=${event}` : `/template/${template.id}`;
+              const destination = `/create/${template.id}?event=${event}`;
               return (
                 <article className="li-tile" key={template.id}>
                   <div className="li-shot">
@@ -334,7 +332,7 @@ export function AccountHub({
         ) : (
           <div className="li-empty">
             <strong>No favorites yet</strong>
-            <p>Tap the ♥ on any template to save it here.</p>
+            <p>Tap the <Heart size={15} fill="currentColor" aria-hidden="true" /> on any template to save it here.</p>
             <Link className="li-btn-sm primary" to="/studio">Explore trending</Link>
           </div>
         )

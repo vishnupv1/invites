@@ -65,7 +65,7 @@ export function LoggedInChrome() {
   const name = host?.name?.trim() || "Your account";
   const initials = initialsOf(host?.name ?? "") || "?";
   const counts: Record<string, number> = {
-    events: invites.length,
+    events: invites.filter((invite) => invite.status !== "draft").length,
     drafts: invites.filter((invite) => invite.status === "draft").length,
     favorites: favs.length,
     purchases: owned.length,
@@ -254,30 +254,6 @@ export function LoggedInChrome() {
         </div>
       ) : null}
     </header>
-  );
-}
-
-export const ACCOUNT_TABS = [
-  { label: "My events", to: "/events" },
-  { label: "Saved drafts", to: "/drafts" },
-  { label: "My favorites", to: "/favorites" },
-  { label: "Purchases", to: "/purchases" },
-  { label: "Settings", to: "/settings" },
-] as const;
-
-export function AccountTabs() {
-  const { pathname } = useLocation();
-  return (
-    <div className="li-tabs" role="tablist" aria-label="Account sections">
-      {ACCOUNT_TABS.map((tab) => {
-        const on = pathname === tab.to;
-        return (
-          <Link key={tab.to} role="tab" aria-selected={on} to={tab.to} className={on ? "on" : ""}>
-            {tab.label}
-          </Link>
-        );
-      })}
-    </div>
   );
 }
 

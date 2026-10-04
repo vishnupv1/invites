@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Check, Heart } from "lucide-react";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { formatPrice } from "../data/templates";
 import { useLibrary } from "../state";
 import { LoggedInChrome } from "../components/LoggedInChrome";
+import { CatalogDemo } from "./AllTemplates";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { FavoriteHeart } from "../components/FavoriteHeart";
@@ -22,8 +23,8 @@ export function Templates() {
   const [price, setPrice] = useState<"All" | "Free" | "Paid">("All");
   const [favsOnly, setFavsOnly] = useState(false);
   const [sort, setSort] = useState("name");
+  const [demo, setDemo] = useState<Template | null>(null);
   const { favs, toggle } = useFavs();
-  const navigate = useNavigate();
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => setEvents([]));
@@ -32,6 +33,20 @@ export function Templates() {
       .catch(() => setCatalog([]))
       .finally(() => setCatalogReady(true));
   }, []);
+
+  useEffect(() => {
+    if (!demo) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setDemo(null);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [demo]);
 
   const items = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -55,7 +70,7 @@ export function Templates() {
         <div className="tpl-mobile-title">
           <h1>Templates</h1>
           <button type="button" className={favsOnly ? "tpl-fav on" : "tpl-fav"} aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
-            <span className="fav-mark" aria-hidden="true">♥</span>
+            <Heart className="fav-mark" size={16} aria-hidden="true" fill={favsOnly ? "currentColor" : "none"} />
             {favs.length}
           </button>
         </div>
@@ -65,7 +80,7 @@ export function Templates() {
             <p>Every design in the catalog. Preview one, then use it for an invitation.</p>
           </div>
           <button type="button" className="tpl-fav tpl-fav-mobile" aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
-            <span className="fav-mark" aria-hidden="true">♥</span>
+            <Heart className="fav-mark" size={16} aria-hidden="true" fill={favsOnly ? "currentColor" : "none"} />
             {favs.length}
           </button>
           <div className="tpl-search">
@@ -155,7 +170,7 @@ export function Templates() {
               return (
                 <article className={bought ? "tpl-card bought" : "tpl-card"} key={template.id}>
                   <div className="tpl-cover">
-                    <button type="button" className="tpl-shot" aria-label={`Preview ${template.name}`} onClick={() => navigate(`/preview/${template.id}`)}>
+                    <button type="button" className="tpl-shot" aria-label={`Open ${template.name}`} onClick={() => setDemo(template)}>
                       <img src={`/covers/${template.id}.jpg`} alt="" />
                     </button>
                     {bought ? <span className="tpl-owned">Purchased</span> : null}
@@ -168,8 +183,8 @@ export function Templates() {
                         {label} · {bought ? "Purchased" : formatPrice(template)}
                       </span>
                     </div>
-                    <button type="button" onClick={() => navigate(`/preview/${template.id}`)}>
-                      Preview
+                    <button type="button" onClick={() => setDemo(template)}>
+                      Live demo
                     </button>
                   </div>
                 </article>
@@ -178,6 +193,7 @@ export function Templates() {
           </div>
         )}
       </main>
+      {demo ? <CatalogDemo template={demo} href={`/create/${demo.id}?event=${demo.events[0]}`} label="Customise this" onClose={() => setDemo(null)} /> : null}
     </div>
   );
 }
@@ -242,7 +258,7 @@ function FilterMenu({
               const on = item.id === value;
               return (
                 <button key={item.id} type="button" role="option" aria-selected={on} className={on ? "on" : ""} onClick={() => { onChange(item.id); setOpen(false); }}>
-                  <span aria-hidden="true">{on ? "✓" : ""}</span>
+                  <span aria-hidden="true">{on ? <Check size={14} strokeWidth={2.8} /> : null}</span>
                   {item.label}
                 </button>
               );

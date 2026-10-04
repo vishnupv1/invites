@@ -366,7 +366,6 @@
 .li-way:hover { transform: translateY(-4px); box-shadow: 0 18px 30px rgba(42, 21, 39, 0.12); color: inherit; }
 .li-way.hero { background: linear-gradient(120deg, #f23f78, #b0174f); border: none; color: #fff; }
 .li-way.hero:hover { color: #fff; }
-.li-way.plain { background: #fff; border: 1px solid #efe6ea; }
 .li-way-icon {
   width: 52px;
   height: 52px;
@@ -377,17 +376,24 @@
   justify-content: center;
 }
 .li-way.hero .li-way-icon { background: rgba(255, 255, 255, 0.18); }
-.li-way.plain .li-way-icon { background: #fdf2f6; }
 .li-way strong { display: block; font-size: 18px; }
 .li-way small { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; }
 .li-way.hero small { color: #ffe1ec; }
-.li-way.plain small { color: #6b5a62; }
 .li-trend { display: flex; flex-direction: column; gap: 36px; }
 .li-trend-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
 .li-card { display: flex; flex-direction: column; color: inherit; text-decoration: none; }
 .li-card:hover { color: inherit; }
 .li-shot { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 16px; }
 .li-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.li-shot-hit {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 .li-card-meta, .li-tile-meta {
   display: flex;
   justify-content: space-between;
@@ -401,25 +407,6 @@
 
 .li-title { margin: 0; font-size: 44px; font-weight: 700; letter-spacing: -0.02em; }
 .li-sub { font-size: 16px; color: #6b5a62; }
-.li-tabs { display: flex; gap: 8px; overflow-x: auto; }
-.li-tabs a {
-  flex-shrink: 0;
-  min-height: 42px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid #e3d6dc;
-  background: #fff;
-  color: #4e3e47;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-}
-.li-tabs a.on { background: #2a1527; color: #fff; border-color: #2a1527; }
-.li-tabs a:hover { color: #4e3e47; }
-.li-tabs a.on:hover { color: #fff; }
 .li-events { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .li-event {
   display: flex;
@@ -492,6 +479,7 @@
 }
 .li-empty strong { font-size: 18px; }
 .li-empty p { margin: 0; font-size: 15px; color: #6b5a62; }
+.li-empty p svg { display: inline-block; vertical-align: -3px; margin: 0 1px; color: #d81b60; }
 .li-purchases { border-radius: 20px; border: 1px solid #efe6ea; overflow: hidden; }
 .li-purchase {
   display: flex;
@@ -706,7 +694,6 @@
   .li-way-row { flex-direction: column; gap: 12px; }
   .li-trend { gap: 22px; }
   .li-title { font-size: 32px; }
-  .li-tabs { margin: 0 -16px; padding: 0 16px; }
   .li-events { grid-template-columns: 1fr; gap: 14px; }
   .li-event { gap: 14px; padding: 14px; }
   .li-event img { width: 88px; height: 118px; }
@@ -736,13 +723,7 @@
 .board .li-btn.dark,
 .board .li-btn.dark:hover,
 .board .li-btn-sm.primary,
-.board .li-btn-sm.primary:hover,
-.board .li-tabs a.on,
-.board .li-tabs a.on:hover { color: #fff; }
-.board .li-tabs a,
-.board .li-tabs a:hover { color: #4e3e47; }
-.board .li-tabs a.on,
-.board .li-tabs a.on:hover { color: #fff; }
+.board .li-btn-sm.primary:hover { color: #fff; }
 .board .li-menu a,
 .board .li-menu a:hover { color: #2a1527; }
 .board .li-menu a.on,

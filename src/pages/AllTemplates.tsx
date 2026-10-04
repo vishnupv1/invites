@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Heart } from "lucide-react";
+import { Check, Heart, Sparkle } from "lucide-react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, eventLabels, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
-import type { Template } from "../types";
+import { TEMPLATES, eventLabels, formatPrice, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
+import type { InviteFields, Template } from "../types";
 import "./all-templates.css";
 
 type StyleTag = "Animated" | "Traditional" | "Royal" | "Modern" | "Minimal";
@@ -376,7 +376,7 @@ export function AllTemplates() {
               </button>
             ))}
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <span aria-hidden="true">♥</span> {saved.length}
+              <Heart size={14} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> {saved.length}
             </button>
             <div className="cat-sort-wrap">
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
@@ -409,7 +409,7 @@ export function AllTemplates() {
               {activeCount > 0 ? <span>{activeCount}</span> : null}
             </button>
             <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <span aria-hidden="true">♥</span> {saved.length}
+              <Heart size={14} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> {saved.length}
             </button>
             <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
           </div>
@@ -466,7 +466,6 @@ export function AllTemplates() {
               <strong>Can’t find your style?</strong>
               <span>Every template can be recoloured, re-fonted and translated in the editor.</span>
             </div>
-            <Link to="/create">Start from scratch</Link>
           </div>
         </section>
       </main>
@@ -523,13 +522,7 @@ export function AllTemplates() {
       ) : null}
 
       {preview && demo ? (
-        <div className="cat-demo" role="dialog" aria-label={`${preview.name} live demo`}>
-          <div className="cat-demo-bar">
-            <Link className="cat-demo-use" to={useHref(preview, occasion)}>Use this template</Link>
-            <button type="button" className="cat-demo-x" aria-label="Close" onClick={() => setDemo(false)}>×</button>
-          </div>
-          <InviteView template={preview} fields={sampleFor(preview, preview.events[0])} live demo />
-        </div>
+        <CatalogDemo template={preview} href={useHref(preview, occasion)} label="Use this template" onClose={() => setDemo(false)} />
       ) : null}
 
       {preview ? (
@@ -544,17 +537,17 @@ export function AllTemplates() {
             <div className="cat-modal-copy">
               <div className="cat-badges static">
                 <span className={preview.free ? "free" : "prem"}>{preview.free ? "Free" : "Premium"}</span>
-                {look(preview.id).styles.includes("Animated") ? <span className="anim">✦ Animated</span> : null}
+                {look(preview.id).styles.includes("Animated") ? <span className="anim"><Sparkle size={12} aria-hidden="true" /> Animated</span> : null}
               </div>
               <h2>{preview.name}</h2>
               <span className="cat-modal-meta">{eventLabels(preview)}</span>
               <p>{preview.description}</p>
               <ul>
                 {look(preview.id).styles.map((style) => (
-                  <li key={style}>{FEAT[style]}</li>
+                  <li key={style}><Check size={15} strokeWidth={2.6} aria-hidden="true" />{FEAT[style]}</li>
                 ))}
-                <li>RSVP, maps, countdown and wishes</li>
-                <li>Share on WhatsApp — no app for guests</li>
+                <li><Check size={15} strokeWidth={2.6} aria-hidden="true" />RSVP, maps, countdown and wishes</li>
+                <li><Check size={15} strokeWidth={2.6} aria-hidden="true" />Share on WhatsApp — no app for guests</li>
               </ul>
               <div className="cat-swatches">
                 <span>Colour themes</span>
@@ -574,6 +567,20 @@ export function AllTemplates() {
           </div>
         </div>
       ) : null}
+    </div>
+  );
+}
+
+export function CatalogDemo({ template, onClose, href, label, fields }: { template: Template; onClose: () => void; href?: string; label?: string; fields?: InviteFields }) {
+  const source = getTemplate(template.id) ?? template;
+  const shown = fields ?? sampleFor(source, source.events[0]);
+  return (
+    <div className="cat-demo" role="dialog" aria-label={`${source.name} live demo`}>
+      <div className="cat-demo-bar">
+        {href && label ? <Link className="cat-demo-use" to={href}>{label}</Link> : null}
+        <button type="button" className="cat-demo-x" aria-label="Close" onClick={onClose}>×</button>
+      </div>
+      <InviteView template={source} fields={shown} live demo />
     </div>
   );
 }

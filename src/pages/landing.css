@@ -273,6 +273,8 @@
   animation: lp-up 0.8s ease both;
   animation-delay: 1.7s;
 }
+.lp-checks span { display: inline-flex; align-items: center; gap: 6px; }
+.lp-checks svg { color: #1f6b42; flex-shrink: 0; }
 .lp-petal {
   position: absolute;
   top: 0;
@@ -1002,8 +1004,10 @@
 }
 .lp-chat-out p { margin: 6px 6px 0; font-size: 13px; color: #2a1527; line-height: 1.35;}
 .lp-chat-out em {
-  display: block;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
   font-style: normal;
   font-size: 10px;
   color: #4e6853;

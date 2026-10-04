@@ -549,20 +549,6 @@
 }
 .cat-help strong { display: block; font-size: 24px; }
 .cat-help span { display: block; margin-top: 4px; font-size: 14px; color: #6b5a62; }
-.cat-help a {
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 22px;
-  border-radius: 999px;
-  background: #2a1527;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-.cat-help a:hover { color: #fff; }
 
 .cat-foot {
   padding: 36px clamp(20px, 8vw, 120px);
@@ -710,7 +696,7 @@
 .cat-modal-copy p { margin: 0; font-size: 16px; line-height: 1.6; color: #4e3e47; }
 .cat-modal-copy ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .cat-modal-copy li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #4e3e47; }
-.cat-modal-copy li::before { content: "✓"; color: #2e8b57; font-weight: 800; }
+.cat-modal-copy li svg { color: #2e8b57; flex-shrink: 0; }
 .cat-swatches { display: flex; align-items: center; gap: 10px; }
 .cat-swatches span { font-size: 13px; font-weight: 700; color: #6b5a62; }
 .cat-swatches i {
@@ -760,7 +746,8 @@
   align-items: center;
   gap: 10px;
 }
-.cat-demo-use {
+.cat-demo-use,
+.board .cat-demo-use {
   min-height: 48px;
   display: flex;
   align-items: center;
@@ -770,9 +757,11 @@
   color: #fff;
   font-size: 15px;
   font-weight: 800;
+  text-decoration: none;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
 }
-.cat-demo-use:hover { color: #fff; }
+.cat-demo-use:hover,
+.board .cat-demo-use:hover { color: #fff; }
 .cat-demo-x {
   width: 48px;
   height: 48px;
@@ -902,7 +891,6 @@
   .cat-actions a { min-height: 38px; }
   .cat-help { flex-direction: column; align-items: stretch; padding: 20px; }
   .cat-help strong { font-size: 20px; }
-  .cat-help a { width: 100%; box-sizing: border-box; }
   .cat-modal { flex-direction: column; gap: 16px; padding: 20px 18px 24px; border-radius: 24px; }
   .cat-modal-copy { padding-right: 0; }
   .cat-modal h2 { font-size: 28px; }

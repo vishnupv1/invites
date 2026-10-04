@@ -735,6 +735,7 @@
 .sh-leaf { stroke: #9ccc65; stroke-width: 1.6; fill: none; stroke-dasharray: 300; animation: sh-leaf 2.4s ease-in-out infinite alternate; }
 .sh-dhol { animation: sh-dhol 0.5s ease-in-out infinite; }
 .sh-note { position: absolute; color: #f5d77a; animation: sh-note 1.6s ease-out infinite; }
+.sh-note svg, .sh-spark svg { width: 1em; height: 1em; display: block; }
 .sh-note-a { right: 8px; top: 8px; font-size: 16px; }
 .sh-note-b { left: 8px; top: 14px; font-size: 13px; animation-delay: 0.8s; }
 .sh-spark { position: absolute; color: #fff1b8; animation: sh-sparkle 1.6s ease-in-out infinite; }

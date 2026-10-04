@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { Check } from "lucide-react";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
 import type { InviteFields } from "../types";
@@ -791,7 +792,7 @@ export function HeavenlyInvite({
                   </div>
                 </div>
                 <div className="hv-ig-btns">
-                  <button type="button" className="hv-ghost" onClick={() => void copyTag()}>{tagCopied ? "Copied ✓" : `Copy ${hashtag}`}</button>
+                  <button type="button" className="hv-ghost" onClick={() => void copyTag()}>{tagCopied ? <>Copied <Check size={14} strokeWidth={2.6} aria-hidden="true" /></> : `Copy ${hashtag}`}</button>
                   {handleId ? (
                     <a className="hv-gold" href={`https://www.instagram.com/${encodeURIComponent(handleId)}/`} target="_blank" rel="noopener noreferrer">
                       Follow on Instagram

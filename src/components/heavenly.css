@@ -398,7 +398,7 @@
   cursor: pointer;
 }
 .hv-gold { padding: 0 18px; border: none; background: linear-gradient(110deg, #a97b33, #e8c987, #b8893f); color: #2e1a0a; font-weight: 600; }
-.hv-ghost { padding: 0 16px; border: 1px solid rgba(230, 194, 122, 0.6); background: transparent; color: #f3d9a0; }
+.hv-ghost { gap: 6px; padding: 0 16px; border: 1px solid rgba(230, 194, 122, 0.6); background: transparent; color: #f3d9a0; }
 
 .hv-cd-kick { font-family: "Pinyon Script", cursive; font-size: 34px; line-height: 1.1; color: #f3d9a0; padding: 0.15em 0.2em 0; }
 .hv-cd-row { display: flex; justify-content: center; gap: 10px; }

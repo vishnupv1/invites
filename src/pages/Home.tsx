@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react";
+import { Check, CheckCheck } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { InviteView } from "../components/InviteView";
@@ -501,9 +502,9 @@ export function Home({ focus }: { focus?: string }) {
             </Link>
           </div>
           <div className="lp-checks">
-            <span>✓ No app for guests</span>
-            <span>{narrow ? "✓ Design free" : "✓ Design free, no sign-up"}</span>
-            <span>✓ Pay once per event</span>
+            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> No app for guests</span>
+            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> {narrow ? "Design free" : "Design free, no sign-up"}</span>
+            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> Pay once per event</span>
           </div>
         </div>
 
@@ -708,7 +709,7 @@ export function Home({ focus }: { focus?: string }) {
                         <small>invitesready.com/anna-joel</small>
                       </div>
                       <p>You're invited — tap to RSVP</p>
-                      <em>10:24 ✓✓</em>
+                      <em>10:24 <CheckCheck size={13} strokeWidth={2.4} aria-hidden="true" /></em>
                     </div>
                     <div className="lp-chat-in" style={{ animationDelay: "0.55s" }}>
                       So beautiful. We'll be there.
@@ -1130,9 +1131,9 @@ export function Home({ focus }: { focus?: string }) {
             </Link>
           </div>
           <div className="lp-checks">
-            <span>✓ Free to design</span>
-            <span>✓ No sign-up</span>
-            <span>✓ Share on WhatsApp</span>
+            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> Free to design</span>
+            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> No sign-up</span>
+            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> Share on WhatsApp</span>
           </div>
         </div>
       </section>

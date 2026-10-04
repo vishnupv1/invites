@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { Scissors } from "lucide-react";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem } from "../data/custom";
 import { calendarUrl, formatTime } from "../lib/dates";
@@ -235,7 +236,7 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
                 <span className="il-addrline">PIN 682 005</span>
               </div>
               <div className="il-openhere">OPEN HERE</div>
-              <div className="il-strip"><span>✂ TEAR HERE TO OPEN</span></div>
+              <div className="il-strip"><span><Scissors size={12} aria-hidden="true" /> TEAR HERE TO OPEN</span></div>
             </div>
             <div className="il-back"><span>NO ENCLOSURES ALLOWED</span></div>
           </div>

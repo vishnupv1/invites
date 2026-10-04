@@ -238,6 +238,7 @@
 .il.is-desk .il-strip { width: 34px; }
 .il.is-open .il-strip { animation: il-tear 0.7s ease-in both; }
 .il-strip span { writing-mode: vertical-rl; font-family: "Special Elite", monospace; font-size: 10px; letter-spacing: 2px; color: #1f3a5f; }
+.il-strip span svg { display: inline-block; width: 12px; height: 12px; margin-bottom: 4px; vertical-align: -2px; }
 .il-hit { position: absolute; inset: 0; z-index: 6; border: none; background: transparent; cursor: pointer; }
 .il-hint {
   z-index: 2;

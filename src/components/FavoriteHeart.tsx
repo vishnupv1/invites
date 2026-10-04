@@ -1,3 +1,4 @@
+import { Heart } from "lucide-react";
 import "./favorite-heart.css";
 
 export function FavoriteHeart({
@@ -22,7 +23,7 @@ export function FavoriteHeart({
         onClick();
       }}
     >
-      <span aria-hidden="true">♥</span>
+      <Heart size={18} aria-hidden="true" fill={liked ? "currentColor" : "none"} />
     </button>
   );
 }

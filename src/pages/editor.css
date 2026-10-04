@@ -663,6 +663,12 @@
   font-weight: 700;
   cursor: pointer;
 }
+.ed-go.quiet {
+  background: #fff;
+  color: #2a1527;
+  border: 1.5px solid #2a1527;
+}
+.ed-board .modal-back { z-index: 80; }
 .ed-toast {
   position: absolute;
   left: 50%;

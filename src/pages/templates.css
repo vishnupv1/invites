@@ -117,7 +117,7 @@
   text-align: left;
   cursor: pointer;
 }
-.tpl-menu [role="option"] > span { width: 16px; color: #d81b60; font-weight: 800; flex-shrink: 0; }
+.tpl-menu [role="option"] > span { width: 16px; height: 16px; color: #d81b60; flex-shrink: 0; display: inline-flex; align-items: center; }
 .tpl-menu [role="option"]:hover,
 .tpl-menu [role="option"].on { background: #fce7ef; }
 .tpl-menu [role="option"].on { color: #b0174f; }

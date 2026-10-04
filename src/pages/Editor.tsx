@@ -17,10 +17,12 @@ import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
 import { InviteView } from "../components/InviteView";
+import { Checkout } from "../components/Checkout";
+import { CatalogDemo } from "./AllTemplates";
 import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
 import { PackFields } from "./PackFields";
-import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
+import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
@@ -225,7 +227,7 @@ export function Editor({
   const template = getTemplate(id);
   const inviteQuery = embedded ? "" : (params.get("invite") ?? "");
   const eventQuery = eventIdProp || params.get("event") || undefined;
-  const { owns, remember, invites, ready: libraryReady } = useLibrary();
+  const { owns, purchase, remember, invites, ready: libraryReady } = useLibrary();
   useEffect(() => {
     if (embedded || !template) return;
     if (!template.free && !libraryReady) return;
@@ -252,6 +254,8 @@ export function Editor({
   const [device, setDevice] = useState<"phone" | "desktop">("phone");
   const [expanded, setExpanded] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
+  const [payOpen, setPayOpen] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
   const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
@@ -344,12 +348,14 @@ export function Editor({
   }, [template, signedIn, libraryReady, inviteQuery, invites, navigate, params, remember]);
 
   useEffect(() => {
-    if (!model || !dirtyRef.current) return;
+    if (!model) return;
+    if (signedIn && !inviteQuery && !inviteIdRef.current) dirtyRef.current = true;
+    if (!dirtyRef.current) return;
     const timer = window.setTimeout(() => {
       void persistRef.current();
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [model, signedIn]);
+  }, [model, signedIn, inviteQuery]);
 
   useEffect(() => {
     const flush = () => {
@@ -461,9 +467,10 @@ export function Editor({
   };
 
   if (!template) return embedded ? null : <Navigate to="/" replace />;
-  if (!embedded && !owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
+  if (!embedded && !signedIn && !owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
   if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
 
+  const needsPay = signedIn && !owns(template.id, template.free);
   const draft = model.draft;
   const event = getEvent(draft.event);
   const couple = template.meta.names === "couple";
@@ -772,6 +779,8 @@ export function Editor({
           {embedded ? null : (
           <button type="button" className="ed-publish" onClick={() => {
             setError("");
+            dirtyRef.current = true;
+            void persistRef.current();
             if (statusRef.current === "live" && codeRef.current) setLink(`${window.location.origin}/i/${codeRef.current}`);
             setPublishOpen(true);
           }}>
@@ -1357,8 +1366,8 @@ export function Editor({
           <div className="ed-dialog" role="dialog" aria-label="Publish and share">
             <div className="ed-dialog-head">
               <div>
-                <h2>{link ? "Your invitation is live" : "Publish your invitation"}</h2>
-                <p className="ed-lead">{link ? "Share it with your guests now." : "Publish when the preview looks right."}</p>
+                <h2>{link ? "Your invitation is live" : needsPay ? "Pay and publish" : "Publish your invitation"}</h2>
+                <p className="ed-lead">{link ? "Share it with your guests now." : needsPay ? "Your draft is saved in My drafts. Watch it as a guest, then pay once to publish." : "Publish when the preview looks right."}</p>
               </div>
               <button type="button" className="ed-x" aria-label="Close" onClick={() => { setPublishOpen(false); setPubPhase("idle"); }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
@@ -1393,13 +1402,21 @@ export function Editor({
                 <Link className="ed-studio" to={signedIn ? "/guests" : "/browse"}>{signedIn ? "Go to guest list" : "Browse templates"}</Link>
               </div>
             ) : (
-              <SmartButton className="ed-go" phase={pubPhase} idle="Publish invite" onClick={() => void publish()} />
+              needsPay ? (
+                <div className="ed-stack">
+                  <button type="button" className="ed-go quiet" onClick={() => { setPublishOpen(false); setDemoOpen(true); }}>See your demo</button>
+                  <button type="button" className="ed-go" onClick={() => setPayOpen(true)}>Pay {formatPrice(template)} and publish</button>
+                </div>
+              ) : (
+                <SmartButton className="ed-go" phase={pubPhase} idle="Publish invite" onClick={() => void publish()} />
+              )
             )}
           </div>
         </div>
       ) : null}
 
       {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
+      {demoOpen ? <CatalogDemo template={template} fields={previewFields} onClose={() => { setDemoOpen(false); setPublishOpen(true); }} /> : null}
     </div>
   );
   if (embedded || !signedIn) return editor;
@@ -1407,6 +1424,17 @@ export function Editor({
     <div className="board ed-board">
       <AppMenu current="/templates" name={hostName} signedIn />
       {editor}
+      {payOpen ? (
+        <Checkout
+          template={template}
+          onClose={() => setPayOpen(false)}
+          onPurchased={async (coupon, payment) => {
+            await purchase(template.id, coupon, payment);
+            setPayOpen(false);
+            await publish();
+          }}
+        />
+      ) : null}
     </div>
   );
 }
