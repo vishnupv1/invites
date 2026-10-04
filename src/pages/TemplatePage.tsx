@@ -24,6 +24,7 @@ import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
+import { formatShortDate } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
 import { trackOnce } from "../lib/analytics";
 import "./purchase.css";
@@ -331,6 +332,7 @@ export function TemplatePage() {
       {open ? (
         <Checkout
           template={template}
+          detail={[fields.names, getEvent(event).label, fields.date ? formatShortDate(fields.date) : ""].filter(Boolean).join(" · ")}
           onClose={() => setOpen(false)}
           onPurchased={async (coupon, payment) => {
             await purchase(template.id, coupon, payment);

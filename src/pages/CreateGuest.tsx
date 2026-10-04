@@ -12,7 +12,7 @@ import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { Editor } from "./Editor";
 import { trackOnce } from "../lib/analytics";
-import { formatLongDate, formatTime } from "../lib/dates";
+import { formatLongDate, formatShortDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields } from "../types";
@@ -824,6 +824,7 @@ export function CreateGuest() {
       {checkout && template ? (
         <Checkout
           template={template}
+          detail={[shownNames, event.label, editorSummary.date || date ? formatShortDate(editorSummary.date || date) : ""].filter(Boolean).join(" · ")}
           onClose={() => setCheckout(false)}
           onPurchased={async (coupon, payment) => {
             await library.purchase(template.id, coupon, payment);

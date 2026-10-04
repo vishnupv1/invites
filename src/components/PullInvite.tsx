@@ -29,7 +29,7 @@ const MEALS = [
 const SAMPLE_REPLIES: Row[] = [
   { key: "s1", name: "Meera & Karthik", attending: true, guests: 2, msg: "We have been waiting for this day forever! See you in Jaipur.", when: "2 days ago" },
   { key: "s2", name: "Sanjana Iyer", attending: true, guests: 1, msg: "That curtain reveal gave me goosebumps. Saving my best moves for the sangeet!", when: "3 days ago" },
-  { key: "s3", name: "The Menon family", attending: true, guests: 4, msg: "Wishing you a lifetime of love and laughter.", when: "4 days ago" },
+  { key: "s3", name: "The Kumars family", attending: true, guests: 4, msg: "Wishing you a lifetime of love and laughter.", when: "4 days ago" },
   { key: "s4", name: "Rahul Varma", attending: false, guests: 0, msg: "So sorry to miss it — sending all my love from Toronto.", when: "5 days ago" },
 ];
 

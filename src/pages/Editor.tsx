@@ -34,6 +34,7 @@ import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Notice, type NoticeTone } from "../components/Notice";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
+import { formatShortDate } from "../lib/dates";
 import { trackOnce } from "../lib/analytics";
 import { useFonts } from "../lib/fonts";
 import "./editor.css";
@@ -1426,6 +1427,7 @@ export function Editor({
       {payOpen ? (
         <Checkout
           template={template}
+          detail={[draft.names.trim(), event.label, draft.date ? formatShortDate(draft.date) : ""].filter(Boolean).join(" · ")}
           onClose={() => setPayOpen(false)}
           onPurchased={async (coupon, payment) => {
             await purchase(template.id, coupon, payment);
