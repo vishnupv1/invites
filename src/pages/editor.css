@@ -204,10 +204,10 @@
 .ed-stack { display: flex; flex-direction: column; gap: 16px; }
 .ed-lead { margin: 4px 0 0; font-size: 13px; color: #6b5a62; }
 .ed-label { font-size: 13px; font-weight: 600; }
-.ed-field { display: flex; flex-direction: column; gap: 6px; }
+.ed-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .ed-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .ed-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.ed-date { grid-template-columns: 1.5fr 1fr; }
+.ed-date { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
 .ed-input,
 .ed-panel textarea {
   width: 100%;

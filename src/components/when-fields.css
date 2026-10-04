@@ -1,0 +1,200 @@
+.when {
+  min-width: 0;
+  width: 100%;
+}
+.when-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border: 1.5px solid #ebe2dd;
+  border-radius: 12px;
+  background: #fff;
+  color: #2a1527;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+.when-btn span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.when-ph { color: #a08b93; }
+.when-btn[aria-expanded="true"] {
+  border-color: #d81b60;
+  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.12);
+}
+.when-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #6b5a62;
+}
+.when-pop {
+  position: fixed;
+  z-index: 120;
+  width: min(292px, calc(100vw - 24px));
+  max-height: min(440px, calc(100vh - 24px));
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1.5px solid #ebe2dd;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(42, 21, 39, 0.16);
+}
+.when-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.when-month {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #2a1527;
+}
+.when-nav {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1.5px solid #ebe2dd;
+  border-radius: 10px;
+  background: #fff;
+  color: #2a1527;
+  cursor: pointer;
+}
+.when-nav:hover { background: #fceff4; }
+.when-week,
+.when-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+.when-week {
+  margin-bottom: 4px;
+}
+.when-week span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #a08b93;
+}
+.when-day {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #2a1527;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.when-day:hover { background: #fceff4; }
+.when-day.is-today { box-shadow: inset 0 0 0 1.5px #d81b60; }
+.when-day.is-on,
+.when-day.is-on:hover {
+  background: #d81b60;
+  color: #fff;
+  box-shadow: none;
+}
+.when-read {
+  margin: 0 0 10px;
+  text-align: center;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #2a1527;
+}
+.when-read.is-empty {
+  font-family: Manrope, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #a08b93;
+}
+.when-period {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #f6f1ee;
+}
+.when-period button {
+  min-height: 36px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #6b5a62;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.when-period button[aria-pressed="true"] {
+  background: #fff;
+  color: #d81b60;
+  box-shadow: 0 1px 4px rgba(42, 21, 39, 0.08);
+}
+.when-cap {
+  margin: 12px 0 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a08b93;
+}
+.when-hours {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+.when-choice {
+  min-height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: #fbf8f5;
+  color: #2a1527;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.when-choice:hover { background: #fceff4; }
+.when-choice[aria-pressed="true"],
+.when-choice[aria-pressed="true"]:hover {
+  background: #d81b60;
+  color: #fff;
+}
+.when-done {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 999px;
+  background: #fceff4;
+  color: #8e1550;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.when-btn:focus-visible,
+.when-nav:focus-visible,
+.when-day:focus-visible,
+.when-choice:focus-visible,
+.when-period button:focus-visible,
+.when-done:focus-visible {
+  outline: 2px solid #d81b60;
+  outline-offset: 2px;
+}

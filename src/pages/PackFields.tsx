@@ -1,3 +1,4 @@
+import { TimeField } from "../components/WhenFields";
 import { linesFor, packOf, type CustomPack, type FactItem, type FaqItem, type PersonItem, type ProgrammeItem, type RoomItem, type StoryBeat } from "../data/custom";
 
 function RemoveButton({ label, onClick }: { label: string; onClick: () => void }) {
@@ -56,7 +57,7 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
             <RemoveButton label={`Remove ${pack.sangeetName || "evening gathering"}`} onClick={() => write({ ...pack, sangeetName: null })} />
           </div>
           <div className="ed-grid-2">
-            <input className="ed-input" aria-label="Sangeet time" type="time" value={pack.sangeetTime ?? ""} onChange={(event) => write({ ...pack, sangeetTime: event.target.value })} />
+            <TimeField label="Sangeet time" value={pack.sangeetTime ?? ""} onChange={(sangeetTime) => write({ ...pack, sangeetTime })} />
             <input className="ed-input" aria-label="Sangeet venue" placeholder="Venue" value={pack.sangeetVenue ?? ""} onChange={(event) => write({ ...pack, sangeetVenue: event.target.value })} />
           </div>
           <input className="ed-input" aria-label="Photo caption" placeholder="Caption under the photographs" value={pack.caption ?? ""} onChange={(event) => write({ ...pack, caption: event.target.value })} />

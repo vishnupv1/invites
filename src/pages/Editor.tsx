@@ -21,6 +21,7 @@ import { Checkout } from "../components/Checkout";
 import { CatalogDemo } from "./AllTemplates";
 import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
+import { DateField, TimeField } from "../components/WhenFields";
 import { PackFields } from "./PackFields";
 import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
@@ -901,11 +902,11 @@ export function Editor({
                 <div className="ed-grid-2 ed-date">
                   <div className="ed-field">
                     <label className="ed-label" htmlFor="ed-date">Date</label>
-                    <input id="ed-date" className="ed-input" type="date" value={draft.date} onChange={(change) => patchDraft({ date: change.target.value })} />
+                    <DateField id="ed-date" label="Date" value={draft.date} onChange={(date) => patchDraft({ date })} />
                   </div>
                   <div className="ed-field">
                     <label className="ed-label" htmlFor="ed-time">Time</label>
-                    <input id="ed-time" className="ed-input" type="time" value={draft.time} onChange={(change) => patchDraft({ time: change.target.value })} />
+                    <TimeField id="ed-time" label="Time" value={draft.time} onChange={(time) => patchDraft({ time })} />
                   </div>
                 </div>
               ) : null}
@@ -979,13 +980,11 @@ export function Editor({
                       )}
                     </div>
                     <div className="ed-grid-2">
-                      <input className="ed-input" aria-label="Date" type="date" value={draft.date} onChange={(change) => patchDraft({ date: change.target.value })} />
-                      <input
-                        className="ed-input"
-                        aria-label="Time"
-                        type="time"
+                      <DateField label="Date" value={draft.date} onChange={(date) => patchDraft({ date })} />
+                      <TimeField
+                        label="Time"
                         value={isMain ? draft.time : draft.receptionTime}
-                        onChange={(change) => patchDraft(isMain ? { time: change.target.value } : { receptionTime: change.target.value })}
+                        onChange={(time) => patchDraft(isMain ? { time } : { receptionTime: time })}
                       />
                     </div>
                     <input
@@ -1215,7 +1214,7 @@ export function Editor({
               </div>
               <div className="ed-field">
                 <label className="ed-label" htmlFor="ed-dl">Reply by</label>
-                <input id="ed-dl" className="ed-input" type="date" value={draft.rsvpBy} onChange={(change) => patchDraft({ rsvpBy: change.target.value })} />
+                <DateField id="ed-dl" label="Reply by" value={draft.rsvpBy} onChange={(rsvpBy) => patchDraft({ rsvpBy })} />
               </div>
               <div className="ed-field">
                 <label className="ed-label" htmlFor="ed-email">Your email for replies</label>
