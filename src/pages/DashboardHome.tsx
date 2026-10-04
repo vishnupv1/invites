@@ -17,6 +17,7 @@ const THUMBS: Record<string, { bg: string; fg: string }> = {
   beach: { bg: "#F7B38A", fg: "#1E3A44" },
   botanica: { bg: "#F3E3D6", fg: "#3A2E2A" },
   heavenly: { bg: "#1E120A", fg: "#F3D9A0" },
+  grandoor: { bg: "#120608", fg: "#F3DDA8" },
   pull: { bg: "#4A0716", fg: "#F3DDA8" },
   inland: { bg: "#CFE2F2", fg: "#C8342B" },
   shaadi: { bg: "#4A0D1F", fg: "#F5D77A" },

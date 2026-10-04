@@ -465,5 +465,30 @@
       { "id": "rsvp", "label": "Will you come?", "configurable": true, "fields": ["rsvpBy"] },
       { "id": "wishes", "label": "Birthday wishes", "configurable": false, "fields": [] }
     ]
+  },
+  "grandoor": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [{ "id": "blush", "name": "Blush & gold" }],
+    "defaultTheme": "blush",
+    "shots": [
+      { "label": "First meeting" },
+      { "label": "The proposal" },
+      { "label": "Forever" }
+    ],
+    "rsvp": { "meal": true, "song": false, "maxGuests": 2 },
+    "components": [
+      { "id": "opening", "label": "The grand door", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Opening line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebration", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

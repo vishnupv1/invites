@@ -436,6 +436,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "grandoor",
+    name: "The Grand Door",
+    style: "grandoor",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Guests tap the palace doors, the leaves swing open, and a blush-and-gold invitation rises over the lake.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.grandoor,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "A story worth celebrating",
+        names: "Anjali & Rohan",
+        title: "invite you to celebrate their love",
+        detail: "",
+        date: "2026-12-12",
+        time: "17:00",
+        venue: "The Riviera Palace",
+        address: "Lake Pichola · Udaipur, Rajasthan",
+        message: "",
+        dress: "",
+        lines: linesFor("grandoor"),
+        rsvpBy: "2026-11-20",
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

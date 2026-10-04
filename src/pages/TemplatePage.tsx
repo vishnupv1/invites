@@ -9,6 +9,7 @@ import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
+import { GrandDoorInvite } from "../components/GrandDoorInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { PullInvite } from "../components/PullInvite";
 import { InlandInvite } from "../components/InlandInvite";
@@ -64,6 +65,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <BotanicaInvite fields={fields} quiet theme={botanicaThemeOf(swatch)} />;
     case "heavenly":
       return <HeavenlyInvite fields={fields} quiet demo />;
+    case "grandoor":
+      return <GrandDoorInvite fields={fields} quiet demo />;
     case "pull":
       return <PullInvite fields={fields} theme={pullThemeOf(swatch)} demo />;
     case "inland":

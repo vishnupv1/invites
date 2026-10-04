@@ -150,6 +150,8 @@
 .buy-screen .tv.is-entered { height: auto; min-height: 100%; overflow: visible; }
 .buy-screen .hv:has(.hv-open),
 .buy-screen .hv-open { height: 100%; }
+.buy-screen .gd { height: 100%; }
+.buy-screen .gd-stage { height: 100%; min-height: 0; }
 
 .buy-panel {
   background: #fff;

@@ -117,7 +117,8 @@ export type TemplateStyle =
   | "botanica"
   | "heavenly"
   | "pull"
-  | "inland";
+  | "inland"
+  | "grandoor";
 
 export type Template = {
   id: string;

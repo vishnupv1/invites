@@ -151,5 +151,18 @@
     "caption": "#AadiTurns5",
     "venueNote": "Free parking at the back",
     "venuePhone": ""
+  },
+  "grandoor": {
+    "story": [
+      { "year": "2020", "title": "First meet", "text": "A friend’s rooftop dinner in Mumbai, and a conversation that never ended." },
+      { "year": "2024", "title": "The proposal", "text": "On a boat on Lake Pichola, at sunset, he asked. She said yes before he finished." },
+      { "year": "2026", "title": "Forever", "text": "Now we begin our greatest chapter, and we want you there." }
+    ],
+    "programme": [
+      { "kick": "11 DECEMBER", "title": "Mehendi", "time": "Friday · 4:00 PM", "text": "The Garden Courtyard" },
+      { "kick": "12 DECEMBER", "title": "The Wedding", "time": "Saturday · 5:00 PM", "text": "Lakeside Mandap" },
+      { "kick": "13 DECEMBER", "title": "Reception", "time": "Sunday · 8:00 PM", "text": "The Grand Terrace" }
+    ],
+    "venueNote": "Lake Palace Road, Udaipur 313001"
   }
 }
