@@ -21,7 +21,6 @@ export type CustomPack = {
   instagram?: string;
   venueNote?: string;
   venuePhone?: string;
-  addressee?: string;
   bonfireName?: string | null;
   bonfireWhen?: string;
   bonfireVenue?: string;

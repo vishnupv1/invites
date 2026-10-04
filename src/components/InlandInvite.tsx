@@ -21,7 +21,7 @@ const PLAN_ICONS = [
 const PLAN_TILT = [-1.5, 1, -1, 1.5, -0.5];
 const ALBUM = [
   ["Turning 4", "M4 21h16M5 21v-7h14v7M12 14V9M12 6v1"],
-  ["First bicycle", "M5 18a3 3 0 1 0 0-.01M19 18a3 3 0 1 0 0-.01M5 18l4-8h6l4 8M9 10l3-4h3"],
+  ["First bicycle", "M4.2 15.5a2.3 2.3 0 0 1 4.6 0 2.3 2.3 0 0 1-4.6 0M15.2 15.5a2.3 2.3 0 0 1 4.6 0 2.3 2.3 0 0 1-4.6 0M6.5 15.5l3.4-6h4.2l2.4 6M9.9 9.5l2.2-3.4h2.6"],
   ["Beach day", "M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9zM12 12v9M8 21h8"],
   ["Best friends", "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 21c0-4 3-6 6-6s6 2 6 6M10 21c0-4 3-6 6-6s6 2 6 6"],
 ];
@@ -176,7 +176,7 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
         {open ? null : <span className="il-kicker">You’ve got mail!</span>}
         <div className="il-letter">
           <div className="il-panel il-top">
-            <span className="il-post">BIRTHDAY POST · {city.toUpperCase()}</span>
+            <span className="il-post">BIRTHDAY POST</span>
             <span className="il-dear">Dear friend,</span>
             <span className="il-big">You’re invited!</span>
             <span className="il-sub">{child} is turning</span>
@@ -231,9 +231,7 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
               </div>
               <div className="il-addr">
                 <span className="il-to">TO,</span>
-                <span className="il-addrline">{pack.addressee || "Little Riya & family"}</span>
-                <span className="il-addrline">Party Lane, Happy Town</span>
-                <span className="il-addrline">PIN 682 005</span>
+                <span className="il-addrline">Our beloved guest</span>
               </div>
               <div className="il-openhere">OPEN HERE</div>
               <div className="il-strip"><span><Scissors size={12} aria-hidden="true" /> TEAR HERE TO OPEN</span></div>

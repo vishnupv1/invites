@@ -141,7 +141,6 @@
     "venuePhone": ""
   },
   "inland": {
-    "addressee": "Little Riya & family",
     "programme": [
       { "time": "4:00 PM", "title": "Welcome & games", "text": "Treasure hunt, balloon pop" },
       { "time": "4:45 PM", "title": "Magic show", "text": "Mr. Wonder & his rabbit" },

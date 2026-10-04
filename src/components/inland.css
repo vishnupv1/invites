@@ -133,8 +133,20 @@
   text-decoration: none;
   cursor: pointer;
 }
-.il-red { border: none; background: #c8342b; color: #fff; box-shadow: 0 4px 0 #8e1f18; }
-.il-ghost { border: 2px solid #1f3a5f; background: #fff; color: #1f3a5f; }
+.il-red,
+.il a.il-red,
+.il a.il-red:hover,
+.cat .il a.il-red,
+.cat .il a.il-red:hover,
+.board .il a.il-red,
+.board .il a.il-red:hover { border: none; background: #c8342b; color: #fff; box-shadow: 0 4px 0 #8e1f18; }
+.il-ghost,
+.il a.il-ghost,
+.il a.il-ghost:hover,
+.cat .il a.il-ghost,
+.cat .il a.il-ghost:hover,
+.board .il a.il-ghost,
+.board .il a.il-ghost:hover { border: 2px solid #1f3a5f; background: #fff; color: #1f3a5f; }
 
 .il-cover {
   position: absolute;

@@ -747,6 +747,7 @@
   gap: 10px;
 }
 .cat-demo-use,
+.cat a.cat-demo-use,
 .board .cat-demo-use {
   min-height: 48px;
   display: flex;
@@ -761,6 +762,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
 }
 .cat-demo-use:hover,
+.cat a.cat-demo-use:hover,
 .board .cat-demo-use:hover { color: #fff; }
 .cat-demo-x {
   width: 48px;
