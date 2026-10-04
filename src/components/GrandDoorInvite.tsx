@@ -26,8 +26,8 @@ const ART = {
 };
 
 const FRAME_RATIO = 1536 / 1024;
-const SLOTS: { box: [number, number, number, number]; turn: number }[] = [
-  { box: [0.446, 0.177, 0.771, 0.54], turn: 0 },
+const SLOTS: { box: [number, number, number, number]; turn: number; arch?: boolean }[] = [
+  { box: [0.461, 0.195, 0.756, 0.519], turn: 0, arch: true },
   { box: [0.104, 0.517, 0.504, 0.731], turn: -10 },
   { box: [0.495, 0.56, 0.842, 0.789], turn: 5.5 },
 ];
@@ -119,6 +119,16 @@ function geometry(W: number, H: number) {
   const fx = (f: number) => oX + f * dW;
   const fy = (f: number) => oY + f * dH;
   const [L, R, C, T, Sh, B] = [fx(G.f[0]), fx(G.f[1]), fx(G.f[2]), fy(G.f[3]), fy(G.f[4]), fy(G.f[5])];
+  const worldSize = wide ? { IW: 1200, IH: 675 } : { IW: 941, IH: 1672 };
+  const wsc = Math.max(W / worldSize.IW, H / worldSize.IH);
+  const wdW = worldSize.IW * wsc;
+  const wdH = worldSize.IH * wsc;
+  const woX = (W - wdW) / 2;
+  const woY = (H - wdH) / 2;
+  const we = 1.15 / G.CE;
+  const midY = (T + B) / 2;
+  const boxLeft = C + (0 - C) / we;
+  const boxTop = midY + (0 - midY) / we;
   const curve: [number, number][] = [];
   for (let k = 0; k <= 14; k += 1) {
     const u = k / 14;
@@ -147,8 +157,18 @@ function geometry(W: number, H: number) {
     world: G.world,
     rsvp: G.rsvp,
     ce: String(G.CE),
-    we: (1.15 / G.CE).toFixed(3),
+    we: String(we),
     door: { clipPath: poly(full, 0, 0) } as CSSProperties,
+    worldImg: {
+      left: boxLeft,
+      top: boxTop,
+      width: W / we,
+      height: H / we,
+      backgroundImage: `url(${G.world})`,
+      backgroundSize: `${wdW.toFixed(1)}px ${wdH.toFixed(1)}px`,
+      backgroundPosition: `${(woX - boxLeft).toFixed(1)}px ${(woY - boxTop).toFixed(1)}px`,
+      transformOrigin: `${(C - boxLeft).toFixed(1)}px ${(midY - boxTop).toFixed(1)}px`,
+    } as CSSProperties,
     light: { clipPath: poly(full, 0, 0), background: `radial-gradient(ellipse at ${origin}, #FFF, #FFF3D0 30%, rgba(255,214,140,.85) 65%, rgba(255,190,110,.6))` } as CSSProperties,
     leaves: { perspective: `${Math.round((R - L) * 3)}px`, perspectiveOrigin: origin } as CSSProperties,
     leafL: { left: L, top: T, width: C - L, height: B - T, clipPath: poly([[L, B], ...curve, [C, B]], L, T), ...leaf(L) } as CSSProperties,
@@ -324,7 +344,9 @@ export function GrandDoorInvite({
                 <span key={index} className="gd-lantern" style={{ left: lamp.left, top: lamp.top, animationDuration: `${1.2 + index * 0.3}s` }} />
               ))}
               {opening ? (
-                <div className="gd-world is-open" style={{ ...g.door, backgroundImage: `url(${g.world})`, ["--o" as string]: g.origin, ["--we" as string]: g.we }} />
+                <div className="gd-world" style={g.door}>
+                  <div className="gd-world-img is-open" style={{ ...g.worldImg, ["--we" as string]: g.we }} />
+                </div>
               ) : null}
               {opening ? <div className="gd-light" style={g.light} /> : null}
               {opening ? (
@@ -454,8 +476,8 @@ export function GrandDoorInvite({
           <h2 className="gd-h2 wine">Our story</h2>
           <div className="gd-story">
             <div className="gd-frame">
-              {SLOTS.map(({ box, turn }, index) => (
-                <span key={story[index]?.title || index} className={turn ? "slot-tilt" : "slot-flat"} style={slotStyle(box, turn)}>
+              {SLOTS.map(({ box, turn, arch }, index) => (
+                <span key={story[index]?.title || index} className={arch ? "slot-arch" : turn ? "slot-tilt" : "slot-flat"} style={slotStyle(box, turn)}>
                   <img src={photos[index] || ART.story[index]} alt={story[index]?.title || ""} />
                 </span>
               ))}

@@ -50,12 +50,15 @@
 .gd-world {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  transform-origin: var(--o);
+  overflow: hidden;
 }
 
-.gd-world.is-open {
+.gd-world-img {
+  position: absolute;
+  background-repeat: no-repeat;
+}
+
+.gd-world-img.is-open {
   animation: gd-wloc 3.2s cubic-bezier(0.55, 0.02, 0.78, 0.35) both;
 }
 
@@ -531,18 +534,28 @@
 }
 
 .gd-frame .slot-flat,
-.gd-frame .slot-tilt {
+.gd-frame .slot-tilt,
+.gd-frame .slot-arch {
   position: absolute;
   overflow: hidden;
   transform-origin: center center;
 }
 
+.gd-frame .slot-arch {
+  border-radius: 50% 50% 0 0 / 30.4% 30.4% 0 0;
+}
+
 .gd-frame .slot-flat img,
-.gd-frame .slot-tilt img {
+.gd-frame .slot-tilt img,
+.gd-frame .slot-arch img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.gd-frame .slot-arch img {
+  object-position: center 28%;
 }
 
 .gd-frame img.ornament {
