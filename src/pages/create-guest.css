@@ -1176,6 +1176,11 @@
   gap: 10px;
 }
 
+.cg-google:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
 .cg-otp {
   border: none;
   border-radius: 999px;

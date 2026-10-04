@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { Brand } from "../components/Brand";
+import { GoogleButton } from "../components/GoogleButton";
+import { signInWithGoogle } from "../lib/google";
 import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
 import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Checkout } from "../components/Checkout";
@@ -279,6 +281,22 @@ export function CreateGuest() {
     setHost({ name: person.name, email: person.email });
     const purchases = await listPurchases().catch(() => [] as string[]);
     setOwned(purchases);
+  }
+
+  async function onGoogle() {
+    setAuthError("");
+    setBusy(true);
+    try {
+      await signInWithGoogle();
+      inviteIdRef.current = "";
+      await refreshHost();
+      setAuthDone(true);
+      setJustLoggedIn(true);
+    } catch (reason) {
+      setAuthError(reason instanceof Error ? reason.message : "Could not sign in with Google.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function submitAuth(kind: "login" | "signup") {
@@ -751,8 +769,9 @@ export function CreateGuest() {
                             ? "Log in to save your draft"
                             : "Log in to InvitesReady"}
                     </h2>
-                    <p>Use email. Your design stays as it is.</p>
+                    <p>Use Google or email. Your design stays as it is.</p>
                   </div>
+                  <GoogleButton className="cg-google" disabled={busy} onClick={() => void onGoogle()} />
                   <div className="cg-tabs" role="tablist" aria-label="Account">
                     <button type="button" role="tab" aria-selected={authTab === "login"} className={authTab === "login" ? "on" : ""} onClick={() => { setAuthTab("login"); setAuthError(""); }}>
                       Log in

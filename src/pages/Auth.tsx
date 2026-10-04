@@ -3,6 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackEvent } from "../lib/analytics";
 import { Brand } from "../components/Brand";
+import { GoogleButton } from "../components/GoogleButton";
+import { signInWithGoogle } from "../lib/google";
 import { Spinner } from "../components/Loader";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import "./auth.css";
@@ -23,6 +25,7 @@ export function Auth() {
   const [notice, setNotice] = useState("");
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
 
   const login = mode === "login";
 
@@ -66,6 +69,24 @@ export function Auth() {
     const next = params.get("next");
     const safe = next && next.startsWith("/") && !next.startsWith("//") ? next : "/studio";
     window.location.assign(safe);
+  }
+
+  async function onGoogle() {
+    setNotice("");
+    if (!login && !agreed) {
+      setErrors({ agree: "Please accept the terms to continue." });
+      return;
+    }
+    setErrors({});
+    setGoogleBusy(true);
+    try {
+      await signInWithGoogle();
+      trackEvent("login", { method: "google" });
+      continueOn();
+    } catch (error) {
+      setErrors({ form: error instanceof Error ? error.message : "Could not sign you in with Google." });
+      setGoogleBusy(false);
+    }
   }
 
   return (
@@ -179,6 +200,12 @@ export function Auth() {
               <div className="auth-head">
                 <h2>{login ? "Welcome back" : "Create your account"}</h2>
                 <p>{login ? "Log in to manage your invites and replies." : "Your first invite is free. No card needed."}</p>
+              </div>
+              <GoogleButton disabled={busy || googleBusy} onClick={() => void onGoogle()} />
+              <div className="or" aria-hidden="true">
+                <i />
+                or
+                <i />
               </div>
               {!login ? (
                 <label>

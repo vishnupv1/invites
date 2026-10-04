@@ -67,6 +67,27 @@ export async function logIn(email: string, password: string) {
   storeToken(session.token);
 }
 
+export async function logInWithGoogle(code: string) {
+  const session = await request<{ token: string }>("/api/auth/google", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+  storeToken(session.token);
+}
+
+export async function googleClientId() {
+  const configured = (import.meta.env.VITE_GOOGLE_CLIENT_ID || "").trim();
+  if (configured) return configured;
+  try {
+    const response = await fetch(`${API_URL}/api/auth/google`);
+    if (!response.ok) return "";
+    const payload = (await response.json().catch(() => ({}))) as { clientId?: string };
+    return payload.clientId?.trim() || "";
+  } catch {
+    throw new Error("Could not reach sign-in. Try again.");
+  }
+}
+
 export async function ensureSession(email: string, name: string) {
   const session = await request<{ token: string }>("/api/session", {
     method: "POST",

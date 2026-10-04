@@ -324,6 +324,12 @@
   background: #fff;
   font-weight: 600;
   color: #2a1527;
+  cursor: pointer;
+}
+
+.google:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 
 .or {
