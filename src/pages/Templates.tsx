@@ -81,21 +81,28 @@ export function Templates() {
         </div>
 
         <div className="tpl-filters">
-          <FilterMenu
-            label="Category"
-            value={occasion}
-            options={[{ id: "all", label: "All categories" }, ...events.map((event) => ({ id: event.id, label: event.label }))]}
-            onChange={setOccasion}
-          />
+          <div className="tpl-filter-line">
+            <FilterMenu
+              label="Category"
+              value={occasion}
+              options={[{ id: "all", label: "All categories" }, ...events.map((event) => ({ id: event.id, label: event.label }))]}
+              onChange={setOccasion}
+            />
+            <FilterMenu
+              icon
+              className="icon"
+              label="Price"
+              value={price.toLowerCase()}
+              options={[
+                { id: "all", label: "All" },
+                { id: "free", label: "Free" },
+                { id: "paid", label: "Paid" },
+              ]}
+              onChange={(id) => setPrice(id === "free" ? "Free" : id === "paid" ? "Paid" : "All")}
+            />
+          </div>
           <div className="tpl-row">
             <div className="tpl-chips">
-              <div className="tpl-seg" role="group" aria-label="Price">
-                {(["All", "Free", "Paid"] as const).map((label) => (
-                  <button key={label} type="button" className={price === label ? "on" : ""} aria-pressed={price === label} onClick={() => setPrice(label)}>
-                    {label}
-                  </button>
-                ))}
-              </div>
               <button type="button" className={favsOnly ? "tpl-fav on" : "tpl-fav"} aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
                 Favourites · {favs.length}
               </button>
@@ -181,12 +188,14 @@ function FilterMenu({
   options,
   onChange,
   className = "",
+  icon = false,
 }: {
   label: string;
   value: string;
   options: { id: string; label: string }[];
   onChange: (id: string) => void;
   className?: string;
+  icon?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
@@ -208,15 +217,24 @@ function FilterMenu({
     };
   }, [open]);
 
+  const set = icon && value !== options[0]?.id;
   return (
-    <div className={`tpl-menu${className ? ` ${className}` : ""}${open ? " is-open" : ""}`} ref={root}>
+    <div className={`tpl-menu${className ? ` ${className}` : ""}${open ? " is-open" : ""}${set ? " is-set" : ""}`} ref={root}>
       <span className="tpl-menu-label">{label}</span>
       <div className="tpl-menu-box">
-        <button type="button" aria-haspopup="listbox" aria-expanded={open} aria-label={label} onClick={() => setOpen((current) => !current)}>
-          <span>{current}</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B5A62" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M7 10l5 5 5-5" />
-          </svg>
+        <button type="button" aria-haspopup="listbox" aria-expanded={open} aria-label={icon ? `${label}, ${current}` : label} onClick={() => setOpen((current) => !current)}>
+          {icon ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+              <path d="M4 6h16M7 12h10M10 18h4" />
+            </svg>
+          ) : (
+            <>
+              <span>{current}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B5A62" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" />
+              </svg>
+            </>
+          )}
         </button>
         {open ? (
           <div role="listbox" aria-label={label}>
