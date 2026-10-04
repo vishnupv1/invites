@@ -319,6 +319,7 @@
 
 .hv-hero { position: relative; height: 760px; flex-shrink: 0; overflow: hidden; }
 .hv-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center 40%; animation: hv-p-kb 18s ease-in-out infinite alternate; }
+.hv-hero-img.is-wide { background-position: center center; }
 .hv-hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30, 18, 10, 0.25) 0%, rgba(30, 18, 10, 0.15) 40%, rgba(30, 18, 10, 0.85) 100%); }
 .hv-p-petal { position: absolute; z-index: 2; top: 0; pointer-events: none; animation-name: hv-p-petal; animation-timing-function: linear; animation-iteration-count: infinite; }
 .hv-p-petal > span { display: block; animation-name: hv-p-sway; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }

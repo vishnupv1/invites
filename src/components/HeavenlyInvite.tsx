@@ -16,6 +16,7 @@ const ART = {
   doors: "/heavenly/doors.jpg",
   glow: "/heavenly/doors-glow.jpg",
   world: "/heavenly/world.jpg",
+  worldWide: "/heavenly/world-wide.jpg",
   gate: "/heavenly/gate.jpg",
   portal: "/heavenly/portal.jpg",
 };
@@ -36,7 +37,7 @@ const EVENT_ICONS = [
 const SAMPLE_REPLIES: Row[] = [
   { key: "s1", name: "Meera & Karthik", attending: true, guests: 2, msg: "We have been waiting for this day forever! See you in Munnar.", when: "2 days ago" },
   { key: "s2", name: "Sanjana Iyer", attending: true, guests: 1, msg: "The doors gave me goosebumps. Cannot wait to dance at the reception!", when: "3 days ago" },
-  { key: "s3", name: "The Menon family", attending: true, guests: 4, msg: "Wishing you a lifetime of love and laughter.", when: "4 days ago" },
+  { key: "s3", name: "The Kumars family", attending: true, guests: 4, msg: "Wishing you a lifetime of love and laughter.", when: "4 days ago" },
   { key: "s4", name: "Rahul Varma", attending: false, guests: 0, msg: "So sorry to miss it — sending all my love from Toronto.", when: "5 days ago" },
 ];
 const OPENING_MS = 3200;
@@ -177,23 +178,27 @@ function geometry(W: number, H: number) {
   const cx = C;
   const cy = (T + B) / 2;
   const origin = `${cx.toFixed(1)}px ${cy.toFixed(1)}px`;
-  // The world picture is framed by another doorway. The phone design (390×844)
-  // finishes at scale 1.72, which leaves that frame outside the screen so the
-  // card sits in the garden. Match that crop at every window size, or a wide
-  // screen stops at the second doorway.
-  const worldCover = Math.max(W / 760, H / 1350);
-  const phoneCover = Math.max(390 / 760, 844 / 1350);
+  // Portrait frames use the tall picture. Landscape frames use the wide one,
+  // which already fills the screen, so the walk only eases in a little.
+  // The phone crop finishes at scale 1.72 so the doorway falls outside the
+  // screen and the card sits in the garden.
+  const wideWorld = W / Math.max(H, 1) >= 1;
+  const worldArt = wideWorld
+    ? { src: ART.worldWide, IW: 1672, IH: 941 }
+    : { src: ART.world, IW: 941, IH: 1672 };
+  const worldCover = Math.max(W / worldArt.IW, H / worldArt.IH);
+  const phoneCover = Math.max(390 / 941, 844 / 1672);
   const arrivedWidth = 390 / phoneCover / 1.72;
-  const WT = W / worldCover / arrivedWidth;
-  const WS = WT / (1.72 / 1.32);
+  const WT = wideWorld ? 1.41 : W / worldCover / arrivedWidth;
+  const WS = wideWorld ? 1.08 : WT / (1.72 / 1.32);
   const leafBg = (x0: number): CSSProperties => ({
     backgroundImage: `url(${G.glow})`,
     backgroundSize: `${dW.toFixed(1)}px ${dH.toFixed(1)}px`,
     backgroundPosition: `${(oX - x0).toFixed(1)}px ${(oY - T).toFixed(1)}px`,
   });
-  const wsc = Math.max(W / 760, H / 1350);
-  const wdW = 760 * wsc;
-  const wdH = 1350 * wsc;
+  const wsc = Math.max(W / worldArt.IW, H / worldArt.IH);
+  const wdW = worldArt.IW * wsc;
+  const wdH = worldArt.IH * wsc;
   const woX = (W - wdW) / 2;
   const woY = (H - wdH) / 2;
   const flash = `radial-gradient(circle at ${origin}, #FFFBEF 0%, #FFE6B0 45%, #F5C77A 100%)`;
@@ -206,7 +211,9 @@ function geometry(W: number, H: number) {
     flash,
     cam: { transformOrigin: origin, ["--ce" as string]: String(G.CE) } as CSSProperties,
     doorWorld: { clipPath: poly(full, 0, 0) } as CSSProperties,
-    doorWorldImg: { backgroundImage: `url(${ART.world})`, transformOrigin: origin, ["--we" as string]: (WS / G.CE).toFixed(3) } as CSSProperties,
+    wideWorld,
+    worldSrc: worldArt.src,
+    doorWorldImg: { backgroundImage: `url(${worldArt.src})`, transformOrigin: origin, ["--we" as string]: (WS / G.CE).toFixed(3) } as CSSProperties,
     doorLight: {
       clipPath: poly(full, 0, 0),
       background: `radial-gradient(ellipse at ${origin}, #FFFFFF 0%, #FFF3D0 30%, rgba(255,214,140,0.85) 65%, rgba(255,190,110,0.6) 100%)`,
@@ -218,7 +225,10 @@ function geometry(W: number, H: number) {
     floor: { left: Math.round(cx - W * 0.6), top: Math.round(B - 40), width: Math.round(W * 1.2), height: Math.round(H - B + 80) } as CSSProperties,
     glowLine: { left: C - 4, top: T, height: B - T } as CSSProperties,
     doorLanterns: G.lan.map(([x, y]) => lantern((fx(x) / W) * 100, (fy(y) / H) * 100, D ? 70 : 80)),
-    worldLanterns: [[0.08, 0.68], [0.18, 0.62], [0.35, 0.57], [0.68, 0.57], [0.87, 0.63], [0.08, 0.88]].map(([x, y]) =>
+    worldLanterns: (wideWorld
+      ? [[0.1, 0.62], [0.2, 0.55], [0.32, 0.64], [0.7, 0.64], [0.82, 0.55], [0.91, 0.7]]
+      : [[0.08, 0.68], [0.18, 0.62], [0.35, 0.57], [0.68, 0.57], [0.87, 0.63], [0.08, 0.88]]
+    ).map(([x, y]) =>
       lantern(((woX + x * wdW) / W) * 100, ((woY + y * wdH) / H) * 100, D ? 110 : 60),
     ),
     glints: Array.from({ length: 8 }, (_, i) => ({
@@ -361,14 +371,21 @@ export function HeavenlyInvite({
   const yes = attend === "yes";
 
   useLayoutEffect(() => {
-    const element = openRef.current;
-    if (!element) return;
+    const root = rootRef.current;
+    if (!root) return;
     const measure = () => {
-      if (element.offsetWidth && element.offsetHeight) setSize({ W: element.offsetWidth, H: element.offsetHeight });
+      const open = openRef.current;
+      const node = open ?? root;
+      const W = node.offsetWidth;
+      if (!W) return;
+      // After the doors, the hero is a fixed band, so its shape picks the picture.
+      const H = open ? open.offsetHeight : W >= DESK_MIN ? 900 : 760;
+      if (H) setSize({ W, H });
     };
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(element);
+    observer.observe(root);
+    if (openRef.current) observer.observe(openRef.current);
     return () => observer.disconnect();
   }, [stage]);
 
@@ -514,7 +531,7 @@ export function HeavenlyInvite({
           {phase === "world" || phase === "invite" ? (
             <>
               <div className="hv-world" style={g.world}>
-                <div className="hv-cover" style={{ backgroundImage: `url(${ART.world})` }} />
+                <div className="hv-cover" style={{ backgroundImage: `url(${g.worldSrc})` }} />
                 <div className="hv-world-pin" aria-hidden="true">
                   <div className="hv-world-rays" />
                 </div>
@@ -676,7 +693,7 @@ export function HeavenlyInvite({
 
           <section className="hv-hero">
             <div className="hv-layer">
-              <div className="hv-hero-img" style={{ backgroundImage: `url(${ART.world})` }} />
+              <div className={g.wideWorld ? "hv-hero-img is-wide" : "hv-hero-img"} style={{ backgroundImage: `url(${g.worldSrc})` }} />
             </div>
             <div className="hv-hero-shade" />
             <span className="hv-only-phone">
