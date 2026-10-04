@@ -11,6 +11,7 @@ import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { PullInvite } from "../components/PullInvite";
+import { InlandInvite } from "../components/InlandInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { InviteView } from "../components/InviteView";
 import { ShaadiInvite } from "../components/ShaadiInvite";
@@ -41,6 +42,7 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   sage: { cover: "#E4EBE3", dot: "#6E8A72" },
   gold: { cover: "#1E120A", dot: "#E6C27A" },
   burgundy: { cover: "#4A0716", dot: "#F3DDA8" },
+  post: { cover: "#CFE2F2", dot: "#C8342B" },
 };
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
@@ -63,6 +65,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <HeavenlyInvite fields={fields} quiet demo />;
     case "pull":
       return <PullInvite fields={fields} theme={pullThemeOf(swatch)} demo />;
+    case "inland":
+      return <InlandInvite fields={fields} demo />;
     case "home":
       return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} demo />;
     case "shaadi":

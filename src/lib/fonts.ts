@@ -5,12 +5,12 @@ const FAMILIES = {
   Allura: "Allura",
   Amiri: "Amiri:wght@400;700",
   "Bodoni Moda": "Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;1,6..96,500",
-  Caveat: "Caveat:wght@600;700",
+  Caveat: "Caveat:wght@500;600;700",
   Cinzel: "Cinzel:wght@500;600;700",
   "Cinzel Decorative": "Cinzel+Decorative:wght@400;700",
   "Cormorant Garamond": "Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500",
   "DM Sans": "DM+Sans:wght@400;500;700",
-  Fredoka: "Fredoka:wght@500;600;700",
+  Fredoka: "Fredoka:wght@400;500;600;700",
   Gloock: "Gloock",
   "Great Vibes": "Great+Vibes",
   "Instrument Sans": "Instrument+Sans:wght@400;500;600;700",
@@ -26,6 +26,7 @@ const FAMILIES = {
   Parisienne: "Parisienne",
   "Pinyon Script": "Pinyon+Script",
   "Playfair Display": "Playfair+Display:ital,wght@0,500;0,600;0,700;1,500",
+  "Special Elite": "Special+Elite",
   "Tiro Devanagari Hindi": "Tiro+Devanagari+Hindi",
 } as const;
 

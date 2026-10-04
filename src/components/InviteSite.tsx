@@ -10,6 +10,7 @@ import { BeachInvite } from "./BeachInvite";
 import { BotanicaInvite } from "./BotanicaInvite";
 import { HeavenlyInvite } from "./HeavenlyInvite";
 import { PullInvite } from "./PullInvite";
+import { InlandInvite } from "./InlandInvite";
 import { HomeInvite } from "./HomeInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -351,6 +352,9 @@ export function InviteSite({
   }
   if (template.style === "pull") {
     return <PullInvite fields={fields} wishes={wishes} onReply={onReply} theme={pullThemeOf(swatch)} demo={demo} />;
+  }
+  if (template.style === "inland") {
+    return <InlandInvite fields={fields} wishes={wishes} onReply={onReply} demo={demo} />;
   }
   if (template.style === "home") {
     return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} demo={demo} />;

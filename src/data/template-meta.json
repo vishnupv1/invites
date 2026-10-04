@@ -437,5 +437,33 @@
       { "id": "wishes", "label": "Replies & wishes", "configurable": false, "fields": [] },
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "inland": {
+    "names": "child",
+    "ceremony": "The party",
+    "themes": [{ "id": "post", "name": "Inland post" }],
+    "defaultTheme": "post",
+    "shots": [
+      { "label": "Turning 4" },
+      { "label": "First bicycle" },
+      { "label": "Beach day" },
+      { "label": "Best friends" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 9 },
+    "components": [
+      { "id": "opening", "label": "The letter", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Hosted by", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Birthday child", "configurable": true, "fields": ["names"] },
+      { "id": "detail", "label": "Turning", "configurable": true, "fields": ["detail"] },
+      { "id": "line", "label": "Party line", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "Party day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The party", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "Party plan", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Little album", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Will you come?", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Birthday wishes", "configurable": false, "fields": [] }
+    ]
   }
 }

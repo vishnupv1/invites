@@ -7,6 +7,7 @@ import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { PullInvite } from "../components/PullInvite";
+import { InlandInvite } from "../components/InlandInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
@@ -70,6 +71,7 @@ const SWATCHES = [
   { id: "noir", name: "Noir", cover: "#1C1718", dot: "#E8C987" },
   { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
   { id: "burgundy", name: "Burgundy & gold", cover: "#4A0716", dot: "#F3DDA8" },
+  { id: "post", name: "Inland post", cover: "#CFE2F2", dot: "#C8342B" },
 ];
 
 function ceremonyLabel(template: Template, draft: InviteFields) {
@@ -1323,6 +1325,8 @@ export function Editor({
                     <HeavenlyInvite fields={previewFields} />
                   ) : template.style === "pull" ? (
                     <PullInvite fields={previewFields} theme={pullThemeOf(model.swatch)} />
+                  ) : template.style === "inland" ? (
+                    <InlandInvite fields={previewFields} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (
