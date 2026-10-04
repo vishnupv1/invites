@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { listTemplates, updateHostName } from "../api";
 import { getEvent } from "../data/events";
-import { formatPrice } from "../data/templates";
+import { TEMPLATES, formatPrice } from "../data/templates";
 import { FavoriteHeart } from "../components/FavoriteHeart";
 import { CatalogDemo } from "./AllTemplates";
 import type { NoticeTone } from "../components/Notice";
@@ -14,6 +14,28 @@ import { useLibrary } from "../state";
 import type { SavedInvite, Template } from "../types";
 
 const TRENDING = ["botanica", "peace", "shaadi", "beach"];
+
+function coversOf(templates: Template[]) {
+  return new Promise<Template[]>((resolve) => {
+    if (!templates.length) {
+      resolve([]);
+      return;
+    }
+    const ready = new Set<string>();
+    let left = templates.length;
+    templates.forEach((template) => {
+      const image = new Image();
+      const finish = (ok: boolean) => {
+        if (ok) ready.add(template.id);
+        left -= 1;
+        if (left === 0) resolve(templates.filter((item) => ready.has(item.id)));
+      };
+      image.onload = () => finish(true);
+      image.onerror = () => finish(false);
+      image.src = `/covers/${template.id}.jpg`;
+    });
+  });
+}
 const SPARKLES = [
   { left: "8%", top: "20%", size: 22, delay: "0s" },
   { left: "88%", top: "12%", size: 18, delay: "0.4s" },
@@ -35,6 +57,14 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
   const { invites } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>([]);
+  const [lineup, setLineup] = useState<Template[]>(() =>
+    ["botanica", "peace"].flatMap((id) => {
+      const template = TEMPLATES.find((item) => item.id === id);
+      return template ? [template] : [];
+    }),
+  );
+  const [pair, setPair] = useState({ back: 0, front: 1 });
+  const [tick, setTick] = useState(0);
   const [demo, setDemo] = useState<Template | null>(null);
   const first = host?.name?.trim().split(/\s+/)[0];
   const live = invites.find((invite) => invite.status !== "draft");
@@ -44,6 +74,35 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
   useEffect(() => {
     listTemplates().then(setCatalog).catch(() => setCatalog([]));
   }, []);
+
+  useEffect(() => {
+    let cancel = false;
+    coversOf(catalog.length ? catalog : TEMPLATES).then((templates) => {
+      if (!cancel) setLineup(templates);
+    });
+    return () => {
+      cancel = true;
+    };
+  }, [catalog]);
+
+  useEffect(() => {
+    if (lineup.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setTick((current) => current + 1), 4200);
+    return () => window.clearInterval(timer);
+  }, [lineup.length]);
+
+  useEffect(() => {
+    if (!tick || lineup.length < 2) return;
+    setPair((current) => {
+      const moveFront = tick % 2 === 1;
+      const from = moveFront ? current.front : current.back;
+      const other = (moveFront ? current.back : current.front) % lineup.length;
+      let next = (from + 1) % lineup.length;
+      if (next === other) next = (next + 1) % lineup.length;
+      return moveFront ? { ...current, front: next } : { ...current, back: next };
+    });
+  }, [tick, lineup.length]);
 
   useEffect(() => {
     if (!demo) return;
@@ -70,10 +129,22 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
             <Link className="li-btn ghost" to="/events">My events</Link>
           </div>
         </div>
-        <div className="li-art" aria-hidden="true">
-          <div className="li-blob" />
-          <img className="back" src="/covers/botanica.jpg" alt="" />
-          <img className="front" src="/covers/peace.jpg" alt="" />
+        <div className="li-art">
+          <div className="li-blob" aria-hidden="true" />
+          {([
+            ["back", lineup.length ? lineup[pair.back % lineup.length] : undefined] as const,
+            ["front", lineup.length ? lineup[pair.front % lineup.length] : undefined] as const,
+          ]).map(([place, template]) => template ? (
+            <button
+              key={place}
+              type="button"
+              className={place}
+              aria-label={`See the ${template.name} demo`}
+              onClick={() => setDemo(template)}
+            >
+              <img key={template.id} src={`/covers/${template.id}.jpg`} alt="" />
+            </button>
+          ) : null)}
           {SPARKLES.map((spark) => (
             <span key={spark.left} className="li-spark" style={{ left: spark.left, top: spark.top, animationDelay: spark.delay }}>
               <Heart size={spark.size} fill="currentColor" aria-hidden="true" />
