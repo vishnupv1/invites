@@ -1048,3 +1048,6 @@ body:has(.ed-root.is-expanded) .cg-step3 {
 body:has(.ed-root.is-expanded) .cg-bar {
   display: none;
 }
+@media (max-width: 720px) {
+  .ed-board:has(.li-bar) .ed-rail { bottom: 12px; }
+}

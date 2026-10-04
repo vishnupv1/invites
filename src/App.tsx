@@ -82,8 +82,11 @@ export default function App() {
         <Route path="/create/:id" element={<Editor />} />
         <Route path="/studio" element={<RequireAccount><Studio view="dashboard" /></RequireAccount>} />
         <Route path="/events" element={<RequireAccount><Studio view="events" /></RequireAccount>} />
+        <Route path="/drafts" element={<RequireAccount><Studio view="drafts" /></RequireAccount>} />
+        <Route path="/favorites" element={<RequireAccount><Studio view="favorites" /></RequireAccount>} />
         <Route path="/guests" element={<RequireAccount><Studio view="guests" /></RequireAccount>} />
         <Route path="/purchases" element={<RequireAccount><Studio view="purchases" /></RequireAccount>} />
+        <Route path="/settings" element={<RequireAccount><Studio view="settings" /></RequireAccount>} />
         <Route path="/i/:code" element={<InvitePage />} />
       </Routes>
     </>

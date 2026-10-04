@@ -392,4 +392,7 @@
   .pv-board .pv-dock { bottom: 82px; }
   .pv-board .pv-body { padding-bottom: 200px; }
   .pv-board .pv-toast { bottom: 186px; }
+  .pv-board:has(.li-bar) .pv-dock { bottom: 0; }
+  .pv-board:has(.li-bar) .pv-body { padding-bottom: 120px; }
+  .pv-board:has(.li-bar) .pv-toast { bottom: 96px; }
 }

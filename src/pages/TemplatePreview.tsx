@@ -20,9 +20,8 @@ import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, Template } from "../types";
 import { useFonts } from "../lib/fonts";
+import { useFavs } from "../lib/favorites";
 import "./preview.css";
-
-const FAVS = "invitesready.template-favs.v1";
 
 const VARIANTS = [
   { name: "Ivory & gold", bg: "#FAF7F2", fg: "#4A263E", accent: "#C89B5B" },
@@ -39,15 +38,6 @@ const VIEWS = [
 
 type ViewId = (typeof VIEWS)[number]["id"];
 type Lang = "en" | "ml" | "both";
-
-function readFavs() {
-  try {
-    const raw = localStorage.getItem(FAVS);
-    return raw ? (JSON.parse(raw) as string[]) : [];
-  } catch {
-    return [];
-  }
-}
 
 function splitNames(names: string) {
   const parts = names.split(/\s+&\s+/);
@@ -113,7 +103,7 @@ export function TemplatePreview() {
   const [second, setSecond] = useState("");
   const [date, setDate] = useState("");
   const [venue, setVenue] = useState("");
-  const [favs, setFavs] = useState<string[]>(readFavs);
+  const { favs, toggle } = useFavs();
   const [toast, setToast] = useState("");
   const { signedIn, host } = useSession();
   const hostName = host?.name ?? "";
@@ -136,10 +126,6 @@ export function TemplatePreview() {
       })
       .catch(() => setMissing(true));
   }, [id]);
-
-  useEffect(() => {
-    localStorage.setItem(FAVS, JSON.stringify(favs));
-  }, [favs]);
 
   const colour = VARIANTS[variant];
   const showEn = lang !== "ml";
@@ -187,7 +173,7 @@ export function TemplatePreview() {
   function toggleFav() {
     if (!template) return;
     const templateId = template.id;
-    setFavs((current) => (current.includes(templateId) ? current.filter((item) => item !== templateId) : [...current, templateId]));
+    toggle(templateId);
     setToast(liked ? "Removed from favourites." : "Saved to your favourites.");
   }
 

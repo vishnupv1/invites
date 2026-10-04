@@ -159,6 +159,7 @@
 @media (max-width: 720px) {
   .side { display: none; }
   .tpl-main { padding: 16px 16px 110px; gap: 16px; }
+  .board:has(.li-bar) .tpl-main { padding-bottom: 32px; }
   .tpl-head { flex-direction: row; align-items: center; justify-content: space-between; }
   .tpl-mobile-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .tpl-who { display: flex; align-items: center; gap: 4px; }

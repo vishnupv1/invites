@@ -2,43 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { formatPrice } from "../data/templates";
-import { useSession } from "../session";
 import { useLibrary } from "../state";
-import { AccountMenu } from "../components/AccountMenu";
-import { MobileDock } from "../components/MobileDock";
-import { Brand } from "../components/Brand";
+import { LoggedInChrome } from "../components/LoggedInChrome";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { Breadcrumbs } from "../components/Breadcrumbs";
+import { useFavs } from "../lib/favorites";
 import type { Template } from "../types";
 import "./studio.css";
 import "./templates.css";
 
-const FAVS = "invitesready.template-favs.v1";
-
-const NAV = [
-  { label: "Dashboard", href: "/studio", icon: "M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z" },
-  { label: "My events", href: "/events", icon: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18" },
-  { label: "Guests", href: "/guests", icon: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6" },
-  { label: "Purchases", href: "/purchases", icon: "M6 7h12l-1.2 13H7.2zM9 7V6a3 3 0 0 1 6 0v1" },
-  { label: "Templates", href: "/templates", icon: "M4 4h16v16H4zM4 9h16M9 9v11" },
-];
-
-function initialsOf(name: string) {
-  return name.split(/[\s&]+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
-}
-
-function readFavs() {
-  try {
-    const raw = localStorage.getItem(FAVS);
-    return raw ? (JSON.parse(raw) as string[]) : [];
-  } catch {
-    return [];
-  }
-}
-
 export function Templates() {
-  const { signedIn, host } = useSession();
-  const hostName = host?.name ?? "";
   const { owned } = useLibrary();
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>([]);
@@ -48,12 +21,8 @@ export function Templates() {
   const [price, setPrice] = useState<"All" | "Free" | "Paid">("All");
   const [favsOnly, setFavsOnly] = useState(false);
   const [sort, setSort] = useState("name");
-  const [favs, setFavs] = useState<string[]>(readFavs);
+  const { favs, toggle } = useFavs();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    localStorage.setItem(FAVS, JSON.stringify(favs));
-  }, [favs]);
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => setEvents([]));
@@ -77,41 +46,12 @@ export function Templates() {
     return [...list].sort((a, b) => a.name.localeCompare(b.name));
   }, [catalog, events, query, occasion, price, favsOnly, favs, sort]);
 
-  function toggleFav(id: string) {
-    setFavs((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
-  }
-
   return (
     <div className="board">
-      <aside className="side">
-        <Brand light />
-        <nav aria-label="Main">
-          {NAV.map((item) => (
-            <Link key={item.label} className={item.href === "/templates" ? "nav-item on" : "nav-item"} to={item.href} aria-current={item.href === "/templates" ? "page" : undefined}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={item.href === "/templates" ? "#2A1527" : "#F3BBCF"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d={item.icon} />
-              </svg>
-              <span>{item.label}</span>
-            </Link>
-          ))}
-        </nav>
-        <div className="side-foot">
-          <div className="account">
-            <AccountMenu name={hostName} signedIn={signedIn}>{initialsOf(hostName) || "?"}</AccountMenu>
-            <div className="who">
-              <strong>{signedIn && hostName ? hostName : "Log in"}</strong>
-              <small>{signedIn ? "Your account" : "Not signed in"}</small>
-            </div>
-          </div>
-        </div>
-      </aside>
-
+      <LoggedInChrome />
       <main className="tpl-main">
         <Breadcrumbs items={[{ label: "Dashboard", to: "/studio" }, { label: "Templates" }]} />
         <div className="tpl-mobile-title">
-          <div className="tpl-who">
-            <AccountMenu name={hostName} signedIn={signedIn}>{initialsOf(hostName) || "?"}</AccountMenu>
-          </div>
           <h1>Templates</h1>
           <button type="button" className={favsOnly ? "tpl-fav on" : "tpl-fav"} aria-pressed={favsOnly} onClick={() => setFavsOnly((value) => !value)}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill={favsOnly ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
@@ -225,7 +165,7 @@ export function Templates() {
                       <img src={`/covers/${template.id}.jpg`} alt="" />
                     </button>
                     {bought ? <span className="tpl-owned">Purchased</span> : null}
-                    <button type="button" className="tpl-heart" aria-label={liked ? `Remove ${template.name} from favourites` : `Save ${template.name}`} aria-pressed={liked} onClick={() => toggleFav(template.id)}>
+                    <button type="button" className="tpl-heart" aria-label={liked ? `Remove ${template.name} from favourites` : `Save ${template.name}`} aria-pressed={liked} onClick={() => toggle(template.id)}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill={liked ? "#C45B63" : "none"} stroke="#C45B63" strokeWidth="2" aria-hidden="true">
                         <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
                       </svg>
@@ -248,8 +188,6 @@ export function Templates() {
           </div>
         )}
       </main>
-
-      <MobileDock />
     </div>
   );
 }

@@ -132,7 +132,7 @@ function describe(pathname: string): Meta {
   if (pathname === "/create" || pathname.startsWith("/create/")) {
     return { title: "Design your invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
   }
-  if (pathname === "/studio" || pathname === "/events" || pathname === "/guests" || pathname === "/purchases") {
+  if (pathname === "/studio" || pathname === "/events" || pathname === "/drafts" || pathname === "/favorites" || pathname === "/guests" || pathname === "/purchases" || pathname === "/settings") {
     return { title: "Your invitations | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
   }
   if (pathname.startsWith("/i/")) {

@@ -303,4 +303,7 @@
   .buy-board.is-account .buy-dock { bottom: 82px; }
   .buy-board .buy-body { padding-bottom: 120px; }
   .buy-board.is-account .buy-body { padding-bottom: 200px; }
+  .buy-board:has(.li-bar) .buy-dock { bottom: 0; }
+  .buy-board:has(.li-bar) .buy-body,
+  .buy-board.is-account:has(.li-bar) .buy-body { padding-bottom: 120px; }
 }
