@@ -115,7 +115,8 @@ export type TemplateStyle =
   | "thiruvizha"
   | "peace"
   | "botanica"
-  | "heavenly";
+  | "heavenly"
+  | "pull";
 
 export type Template = {
   id: string;

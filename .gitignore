@@ -27,3 +27,4 @@ dist-ssr
 *.sln
 *.sw?
 .cursor/rules/push-as-vishnupv1.mdc
+.env.example

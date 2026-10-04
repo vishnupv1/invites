@@ -10,6 +10,7 @@ import { BotanicaInvite } from "../components/BotanicaInvite";
 import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
+import { PullInvite } from "../components/PullInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { InviteView } from "../components/InviteView";
 import { ShaadiInvite } from "../components/ShaadiInvite";
@@ -19,7 +20,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import { useFonts } from "../lib/fonts";
@@ -39,6 +40,7 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   noir: { cover: "#1C1718", dot: "#E8C987" },
   sage: { cover: "#E4EBE3", dot: "#6E8A72" },
   gold: { cover: "#1E120A", dot: "#E6C27A" },
+  burgundy: { cover: "#4A0716", dot: "#F3DDA8" },
 };
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
@@ -59,6 +61,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <BotanicaInvite fields={fields} quiet theme={botanicaThemeOf(swatch)} />;
     case "heavenly":
       return <HeavenlyInvite fields={fields} quiet demo />;
+    case "pull":
+      return <PullInvite fields={fields} theme={pullThemeOf(swatch)} demo />;
     case "home":
       return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} demo />;
     case "shaadi":

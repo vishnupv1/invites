@@ -6,6 +6,7 @@ import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
+import { PullInvite } from "../components/PullInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
@@ -21,7 +22,7 @@ import { PackFields } from "./PackFields";
 import { getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
@@ -68,6 +69,7 @@ const SWATCHES = [
   { id: "blush", name: "Blush", cover: "#F8E6E4", dot: "#C27A78" },
   { id: "noir", name: "Noir", cover: "#1C1718", dot: "#E8C987" },
   { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
+  { id: "burgundy", name: "Burgundy & gold", cover: "#4A0716", dot: "#F3DDA8" },
 ];
 
 function ceremonyLabel(template: Template, draft: InviteFields) {
@@ -1319,6 +1321,8 @@ export function Editor({
                     <BotanicaInvite fields={previewFields} theme={botanicaThemeOf(model.swatch)} />
                   ) : template.style === "heavenly" ? (
                     <HeavenlyInvite fields={previewFields} />
+                  ) : template.style === "pull" ? (
+                    <PullInvite fields={previewFields} theme={pullThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

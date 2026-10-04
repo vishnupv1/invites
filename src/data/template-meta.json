@@ -402,5 +402,40 @@
       { "id": "wishes", "label": "Replies & wishes", "configurable": false, "fields": [] },
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
+  },
+  "pull": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [
+      { "id": "burgundy", "name": "Burgundy & gold" },
+      { "id": "midnight", "name": "Midnight & champagne" },
+      { "id": "emerald", "name": "Emerald & gold" },
+      { "id": "plum", "name": "Plum & rose" }
+    ],
+    "defaultTheme": "burgundy",
+    "shots": [
+      { "label": "Just us" },
+      { "label": "The night we met" },
+      { "label": "Wild hearts" },
+      { "label": "She said yes" },
+      { "label": "Family" },
+      { "label": "The palace" }
+    ],
+    "rsvp": { "meal": true, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The curtain", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Family line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The functions", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Gallery", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Replies & wishes", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
   }
 }

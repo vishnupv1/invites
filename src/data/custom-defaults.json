@@ -122,5 +122,22 @@
     "instagram": "@aarav.weds.riya",
     "venueNote": "Tea Garden Road, Munnar, Kerala. Shuttles run from the Munnar town square every 30 minutes from 4 PM.",
     "venuePhone": ""
+  },
+  "pull": {
+    "story": [
+      { "year": "2019", "title": "How it began", "text": "A rooftop party, a borrowed umbrella and a song neither of us could stop humming." },
+      { "year": "2022", "title": "Wild hearts", "text": "A road trip through the hills that turned two friends into something more." },
+      { "year": "2025", "title": "She said yes", "text": "Golden hour by the sea, a trembling question and the easiest answer ever." }
+    ],
+    "programme": [
+      { "kick": "Friday evening", "title": "Mehendi night", "time": "Fri, 19 Nov · 6:00 PM", "text": "The Courtyard", "note": "Colourful & festive" },
+      { "kick": "Friday night", "title": "Sangeet", "time": "Fri, 19 Nov · 9:00 PM", "text": "The Mirror Hall", "note": "Glam & sparkle" },
+      { "kick": "The main event", "title": "The wedding", "time": "Sat, 20 Nov · 7:00 PM", "text": "The Grand Ballroom", "note": "Traditional formal" },
+      { "kick": "Sunday night", "title": "Reception", "time": "Sun, 21 Nov · 8:00 PM", "text": "The Rooftop Terrace", "note": "Black tie" }
+    ],
+    "caption": "#VihaanWedsMeera",
+    "instagram": "@vihaan.weds.meera",
+    "venueNote": "Amer Road, Jaipur, Rajasthan. Valet parking at the palace gates; shuttles from the city hotels every 30 minutes from 5 PM.",
+    "venuePhone": ""
   }
 }

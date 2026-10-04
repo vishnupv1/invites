@@ -4,6 +4,7 @@ import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
+import { PullInvite } from "../components/PullInvite";
 import { HomeInvite } from "../components/HomeInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
@@ -32,6 +33,7 @@ export function OpenInvite() {
       {template.style === "beach" ? <BeachInvite fields={fields} /> : null}
       {template.style === "botanica" ? <BotanicaInvite fields={fields} /> : null}
       {template.style === "heavenly" ? <HeavenlyInvite fields={fields} demo /> : null}
+      {template.style === "pull" ? <PullInvite fields={fields} demo /> : null}
       {template.style === "home" ? <HomeInvite fields={fields} demo /> : null}
       {template.style === "thiruvizha" ? <ThiruvizhaInvite fields={fields} /> : null}
       {template.style === "peace" ? <PeaceInvite fields={fields} demo /> : null}

@@ -9,6 +9,7 @@ import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
 import { BotanicaInvite } from "./BotanicaInvite";
 import { HeavenlyInvite } from "./HeavenlyInvite";
+import { PullInvite } from "./PullInvite";
 import { HomeInvite } from "./HomeInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -17,7 +18,7 @@ import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useFonts } from "../lib/fonts";
 
 type Reply = { name: string; note: string; attending: boolean };
@@ -347,6 +348,9 @@ export function InviteSite({
   }
   if (template.style === "heavenly") {
     return <HeavenlyInvite fields={fields} wishes={wishes} onReply={onReply} demo={demo} />;
+  }
+  if (template.style === "pull") {
+    return <PullInvite fields={fields} wishes={wishes} onReply={onReply} theme={pullThemeOf(swatch)} demo={demo} />;
   }
   if (template.style === "home") {
     return <HomeInvite fields={fields} wishes={wishes} onReply={onReply} theme={homeThemeOf(swatch)} demo={demo} />;

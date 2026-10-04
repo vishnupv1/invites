@@ -41,6 +41,7 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
   gazal: { styles: ["Traditional"], pop: 87, added: 2, tags: "emerald nikah gold seal walima", swatches: ["#12352B", "#C6A15B", "#F6F0E6"] },
   beach: { styles: ["Animated", "Modern"], pop: 86, added: 9, tags: "beach sunset sea waves bottle coral shore", swatches: ["#F7B38A", "#BCE4F3", "#C88BA8"] },
   heavenly: { styles: ["Animated", "Royal"], pop: 92, added: 14, isNew: true, tags: "palace doors lanterns gold petals world walk through", swatches: ["#1E120A", "#E6C27A", "#F7A8B8"] },
+  pull: { styles: ["Animated", "Royal"], pop: 94, added: 15, isNew: true, tags: "curtain rope velvet gold wedding pull", swatches: ["#4A0716", "#10243F", "#0E3424", "#3A1638"] },
   botanica: { styles: ["Animated", "Minimal"], pop: 82, added: 13, isNew: true, tags: "floral frames roses sage blush", swatches: ["#FBF3EA", "#EEF2E8", "#1E2238"] },
   baptism: { styles: ["Animated", "Minimal"], pop: 79, added: 7, tags: "baptism dove sky blue clouds baby", swatches: ["#DCEBF7", "#F6DCE2", "#DCE8D9"] },
   hearth: { styles: ["Animated", "Modern"], pop: 77, added: 8, tags: "house home mint door key", swatches: ["#DDEFE8", "#FBD9B6", "#34456E"] },

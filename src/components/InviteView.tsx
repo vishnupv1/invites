@@ -4,6 +4,7 @@ import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
 import { BotanicaInvite } from "./BotanicaInvite";
 import { HeavenlyInvite } from "./HeavenlyInvite";
+import { PullInvite } from "./PullInvite";
 import { HomeInvite } from "./HomeInvite";
 import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
@@ -204,6 +205,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <BotanicaInvite fields={fields} quiet={quiet} />;
     case "heavenly":
       return <HeavenlyInvite fields={fields} quiet={quiet} demo={demo} />;
+    case "pull":
+      return <PullInvite fields={fields} quiet={quiet} demo={demo} />;
     case "home":
       return <HomeInvite fields={fields} quiet={quiet} demo={demo} />;
     case "shaadi":
