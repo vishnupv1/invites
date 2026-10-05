@@ -152,6 +152,14 @@
     "venueNote": "Free parking at the back",
     "venuePhone": ""
   },
+  "grandenvelope": {
+    "story": [
+      { "year": "2019", "title": "Two hearts.", "text": "One beautiful journey.\nFrom strangers to forever" }
+    ],
+    "ceremonyName": "The Wedding",
+    "receptionName": "The Reception",
+    "venueNote": "Tea country estate\nShuttles from Munnar town"
+  },
   "grandoor": {
     "story": [
       { "year": "2020", "title": "First meet", "text": "A friend’s rooftop dinner in Mumbai, and a conversation that never ended." },

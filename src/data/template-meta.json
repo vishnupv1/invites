@@ -490,5 +490,33 @@
       { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
+  },
+  "grandenvelope": {
+    "names": "couple",
+    "ceremony": "The Wedding",
+    "reception": "The reception",
+    "themes": [{ "id": "wine", "name": "Wine & gold" }],
+    "defaultTheme": "wine",
+    "shots": [
+      { "label": "Our story" },
+      { "label": "Together" },
+      { "label": "Forever" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 9 },
+    "components": [
+      { "id": "opening", "label": "The envelope", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Opening line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Closing line", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "detail", "label": "Ceremony place", "configurable": true, "fields": ["detail"] },
+      { "id": "reception", "label": "The reception", "configurable": true, "fields": ["receptionTime", "receptionVenue", "receptionAddress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

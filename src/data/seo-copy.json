@@ -125,6 +125,12 @@
       "title": "Palace door wedding invitation | The Grand Door",
       "description": "Guests tap the palace doors and a blush-and-gold wedding invitation rises over the lake. Share one link for RSVPs.",
       "lead": "The Grand Door is a palace wedding invitation. Guests tap the doors, the leaves swing open, and a blush-and-gold invitation rises over the lake."
+    },
+    "grandenvelope": {
+      "heading": "Wax-seal wedding invitation",
+      "title": "Wax-seal wedding invitation | Grand Envelope",
+      "description": "Guests break the wax seal and a gold-edged wedding invitation rises from the envelope. Share one link for RSVPs.",
+      "lead": "Grand Envelope is a sealed wedding invitation. Guests break the wax seal, the flap lifts, and a gold-edged invitation rises from the envelope."
     }
   },
   "topics": [
@@ -169,7 +175,7 @@
       "title": "Digital wedding invitations | InvitesReady",
       "description": "Digital wedding invitations for a garden, beach, floral, or palace celebration. Share one link. Guests RSVP with no app.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
-      "templates": ["aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor"],
+      "templates": ["aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor", "grandenvelope"],
       "related": ["/nikah", "/shaadi", "/tamil-wedding"]
     },
     {

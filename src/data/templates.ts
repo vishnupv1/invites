@@ -464,6 +464,37 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "grandenvelope",
+    name: "Grand Envelope",
+    style: "grandenvelope",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Guests break the wax seal, the flap lifts, and a gold-edged invitation rises from the envelope.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.grandenvelope,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Aarav & Riya",
+        title: "invite you to celebrate their wedding",
+        detail: "Hilltop Mandap",
+        date: "2027-02-14",
+        time: "17:00",
+        venue: "The Royal Orchid",
+        address: "Munnar, Kerala",
+        message: "Your love story deserves\na beautiful beginning",
+        dress: "",
+        rsvpBy: "2027-01-15",
+        receptionTime: "19:00",
+        receptionVenue: "The Garden Pavilion",
+        receptionAddress: "The Royal Orchid, Munnar",
+        lines: linesFor("grandenvelope"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

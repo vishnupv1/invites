@@ -6,6 +6,7 @@ import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { GrandDoorInvite } from "../components/GrandDoorInvite";
+import { GrandEnvelopeInvite } from "../components/GrandEnvelopeInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { PullInvite } from "../components/PullInvite";
 import { InlandInvite } from "../components/InlandInvite";
@@ -77,6 +78,7 @@ const SWATCHES = [
   { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
   { id: "burgundy", name: "Burgundy & gold", cover: "#4A0716", dot: "#F3DDA8" },
   { id: "post", name: "Inland post", cover: "#CFE2F2", dot: "#C8342B" },
+  { id: "wine", name: "Wine & gold", cover: "#1A0C0A", dot: "#E8C987" },
 ];
 
 function ceremonyLabel(template: Template, draft: InviteFields) {
@@ -1335,6 +1337,8 @@ export function Editor({
                     <HeavenlyInvite fields={previewFields} />
                   ) : template.style === "grandoor" ? (
                     <GrandDoorInvite fields={previewFields} />
+                  ) : template.style === "grandenvelope" ? (
+                    <GrandEnvelopeInvite fields={previewFields} />
                   ) : template.style === "pull" ? (
                     <PullInvite fields={previewFields} theme={pullThemeOf(model.swatch)} />
                   ) : template.style === "inland" ? (

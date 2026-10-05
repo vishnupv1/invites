@@ -10,6 +10,7 @@ import { BotanicaInvite } from "../components/BotanicaInvite";
 import { Checkout } from "../components/Checkout";
 import { GazalInvite } from "../components/GazalInvite";
 import { GrandDoorInvite } from "../components/GrandDoorInvite";
+import { GrandEnvelopeInvite } from "../components/GrandEnvelopeInvite";
 import { HeavenlyInvite } from "../components/HeavenlyInvite";
 import { PullInvite } from "../components/PullInvite";
 import { InlandInvite } from "../components/InlandInvite";
@@ -46,6 +47,7 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   gold: { cover: "#1E120A", dot: "#E6C27A" },
   burgundy: { cover: "#4A0716", dot: "#F3DDA8" },
   post: { cover: "#CFE2F2", dot: "#C8342B" },
+  wine: { cover: "#1A0C0A", dot: "#E8C987" },
 };
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
@@ -68,6 +70,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <HeavenlyInvite fields={fields} quiet demo />;
     case "grandoor":
       return <GrandDoorInvite fields={fields} quiet demo />;
+    case "grandenvelope":
+      return <GrandEnvelopeInvite fields={fields} quiet demo />;
     case "pull":
       return <PullInvite fields={fields} theme={pullThemeOf(swatch)} demo />;
     case "inland":

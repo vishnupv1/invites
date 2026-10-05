@@ -43,6 +43,7 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
   beach: { styles: ["Animated", "Modern"], pop: 86, added: 9, tags: "beach sunset sea waves bottle coral shore", swatches: ["#F7B38A", "#BCE4F3", "#C88BA8"] },
   heavenly: { styles: ["Animated", "Royal"], pop: 92, added: 14, isNew: true, tags: "palace doors lanterns gold petals world walk through", swatches: ["#1E120A", "#E6C27A", "#F7A8B8"] },
   grandoor: { styles: ["Animated", "Royal"], pop: 96, added: 17, isNew: true, tags: "palace doors blush lanterns udaipur lake grand door", swatches: ["#120608", "#E8C987", "#F7A8B8"] },
+  grandenvelope: { styles: ["Animated", "Royal"], pop: 97, added: 18, isNew: true, tags: "envelope wax seal burgundy gold munnar flap parchment", swatches: ["#1A0C0A", "#6E2032", "#E8C987"] },
   pull: { styles: ["Animated", "Royal"], pop: 94, added: 15, isNew: true, tags: "curtain rope velvet gold wedding pull", swatches: ["#4A0716", "#10243F", "#0E3424", "#3A1638"] },
   inland: { styles: ["Animated"], pop: 91, added: 16, isNew: true, tags: "birthday inland letter tear balloons party kochi", swatches: ["#CFE2F2", "#C8342B", "#F2B33D"] },
   botanica: { styles: ["Animated", "Minimal"], pop: 82, added: 13, isNew: true, tags: "floral frames roses sage blush", swatches: ["#FBF3EA", "#EEF2E8", "#1E2238"] },

@@ -9,6 +9,7 @@ import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
 import { BotanicaInvite } from "./BotanicaInvite";
 import { GrandDoorInvite } from "./GrandDoorInvite";
+import { GrandEnvelopeInvite } from "./GrandEnvelopeInvite";
 import { HeavenlyInvite } from "./HeavenlyInvite";
 import { PullInvite } from "./PullInvite";
 import { InlandInvite } from "./InlandInvite";
@@ -353,6 +354,9 @@ export function InviteSite({
   }
   if (template.style === "grandoor") {
     return <GrandDoorInvite fields={fields} wishes={wishes} onReply={onReply} demo={demo} />;
+  }
+  if (template.style === "grandenvelope") {
+    return <GrandEnvelopeInvite fields={fields} wishes={wishes} onReply={onReply} demo={demo} />;
   }
   if (template.style === "pull") {
     return <PullInvite fields={fields} wishes={wishes} onReply={onReply} theme={pullThemeOf(swatch)} demo={demo} />;
