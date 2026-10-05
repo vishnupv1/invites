@@ -19,27 +19,28 @@ const CHIPS = [
 ] as const;
 
 type Design = { id: string; name: string; kicker: string; cover: string };
+type PickCard = Design & { category: string };
 
-const SETS: Record<"wedding" | "birthday" | "baby" | "home", Design[]> = {
+const SETS: Record<"wedding" | "birthday" | "baby" | "home", PickCard[]> = {
   wedding: [
-    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg" },
-    { id: "shaadi", name: "Shaadi", kicker: "SHAADI · VEIL", cover: "/covers/shaadi.jpg" },
-    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg" },
+    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg", category: "Wedding" },
+    { id: "shaadi", name: "Shaadi", kicker: "SHAADI · VEIL", cover: "/covers/shaadi.jpg", category: "Wedding" },
+    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg", category: "Wedding" },
   ],
   birthday: [
-    { id: "inland", name: "Inland Letter", kicker: "INLAND LETTER", cover: "/covers/inland.jpg" },
-    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg" },
-    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg" },
+    { id: "inland", name: "Inland Letter", kicker: "INLAND LETTER", cover: "/covers/inland.jpg", category: "Birthday" },
+    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg", category: "Wedding" },
+    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg", category: "Wedding" },
   ],
   baby: [
-    { id: "baptism", name: "Little Blessing", kicker: "LITTLE BLESSING", cover: "/covers/baptism.jpg" },
-    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg" },
-    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg" },
+    { id: "baptism", name: "Little Blessing", kicker: "LITTLE BLESSING", cover: "/covers/baptism.jpg", category: "Baptism" },
+    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg", category: "Wedding" },
+    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg", category: "Wedding" },
   ],
   home: [
-    { id: "hearth", name: "Hearth", kicker: "HEARTH", cover: "/covers/hearth.jpg" },
-    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg" },
-    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg" },
+    { id: "hearth", name: "Hearth", kicker: "HEARTH", cover: "/covers/hearth.jpg", category: "Housewarming" },
+    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg", category: "Wedding" },
+    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg", category: "Wedding" },
   ],
 };
 
@@ -166,10 +167,6 @@ function occasionOf(query: string) {
   if (/baby|baptism|naming|shower/i.test(query)) return "baby" as const;
   if (/house|home/i.test(query)) return "home" as const;
   return "wedding" as const;
-}
-
-function celebrationName(query: string) {
-  return query.split(/[·,]| on | in |'s|’s/)[0]?.trim().slice(0, 30) || "Your celebration";
 }
 
 function useWide() {
@@ -311,7 +308,6 @@ export function Home({ focus }: { focus?: string }) {
   }
 
   const picks = SETS[occasionOf(query)];
-  const names = celebrationName(query);
   const current = CARDS[ci];
   const shift = wide ? 210 : 120;
 
@@ -438,8 +434,8 @@ export function Home({ focus }: { focus?: string }) {
                     <div className="lv-pick-shot">
                       <img src={pick.cover} alt={`${pick.name} design`} />
                       <div>
-                        <span>{names}</span>
-                        <span className="lv-mono">{pick.kicker}</span>
+                        <span>{pick.name}</span>
+                        <span className="lv-mono">{pick.category}</span>
                       </div>
                     </div>
                     <Link className="lv-use" to={`/create?template=${pick.id}`}>Use this design</Link>

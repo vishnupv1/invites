@@ -1,7 +1,7 @@
 .admin-login {
   min-height: 100vh;
   box-sizing: border-box;
-  background: #8e1550;
+  background: #111113;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,8 +9,8 @@
   gap: 28px;
   position: relative;
   overflow: hidden;
-  font-family: Manrope, "Helvetica Neue", sans-serif;
-  color: #2a1527;
+  font-family: Geist, "Segoe UI", sans-serif;
+  color: #fafafa;
 }
 .admin-login .rings {
   position: absolute;
@@ -28,14 +28,14 @@
   position: relative;
   text-decoration: none;
 }
-.admin-mark span { font-family: Fraunces, Georgia, serif; font-size: 26px; font-weight: 700; }
-.admin-mark em { color: #f23f78; font-style: italic; }
+.admin-mark span { font-family: Geist, "Segoe UI", sans-serif; font-size: 26px; font-weight: 700; }
+.admin-mark em { color: #7dd3fc; font-style: italic; }
 .admin-chip {
   margin-left: 6px;
   padding: 5px 12px;
   border-radius: 999px;
-  border: 1px solid #d81b60;
-  color: #f23f78;
+  border: 1px solid #7dd3fc;
+  color: #7dd3fc;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -44,7 +44,7 @@
 .admin-card {
   width: min(440px, calc(100% - 32px));
   box-sizing: border-box;
-  background: #fff;
+  background: #111113;
   border-radius: 24px;
   padding: 40px;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
@@ -55,29 +55,29 @@
 }
 .admin-card h1 {
   margin: 0;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 30px;
   font-weight: 600;
   letter-spacing: 0;
 }
-.admin-card p { margin: 0; font-size: 15px; color: #6b5a62; line-height: 1.55; }
+.admin-card p { margin: 0; font-size: 15px; color: #a1a1aa; line-height: 1.55; }
 .admin-card label { display: flex; flex-direction: column; gap: 7px; font-size: 14px; font-weight: 600; }
 .admin-card input, .admin-card select {
   width: 100%;
   box-sizing: border-box;
   min-height: 50px;
   padding: 0 16px;
-  border: 1.5px solid #ebe2dd;
+  border: 1.5px solid #27272a;
   border-radius: 12px;
-  font-family: Manrope, sans-serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 15px;
-  color: #2a1527;
-  background: #fff;
+  color: #fafafa;
+  background: #111113;
 }
 .admin-card input:focus, .admin-card select:focus {
   outline: none;
-  border-color: #d81b60;
-  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.15);
+  border-color: #7dd3fc;
+  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.15);
 }
 .code-input {
   min-height: 60px !important;
@@ -94,21 +94,21 @@
   justify-content: center;
   gap: 10px;
   border-radius: 999px;
-  font-family: Manrope, sans-serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
 }
-.admin-go { border: none; background: #d81b60; color: #fff; }
-.admin-go:disabled { background: #ebe2dd; color: #6b5a62; cursor: default; }
-.admin-sso, .admin-line { border: 1.5px solid #ebe2dd; background: #fff; color: #2a1527; }
+.admin-go { border: none; background: #7dd3fc; color: #09090b; }
+.admin-go:disabled { background: #27272a; color: #a1a1aa; cursor: default; }
+.admin-sso, .admin-line { border: 1.5px solid #27272a; background: #111113; color: #fafafa; }
 .admin-alert {
   display: flex;
   gap: 10px;
   padding: 12px 14px;
   border-radius: 12px;
-  background: #f7e3e5;
+  background: #18181b;
   border: 1px solid #e7b9bd;
   font-size: 14px;
   color: #8a333b;
@@ -116,10 +116,10 @@
 .admin-back {
   border: none;
   background: none;
-  font-family: Manrope, sans-serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #6b5a62;
+  color: #a1a1aa;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -129,14 +129,14 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #d9c6d1;
+  color: #a1a1aa;
   position: relative;
 }
 .shield {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: #fceff4;
+  background: #111113;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,17 +145,17 @@
 .console {
   min-height: 100vh;
   display: flex;
-  background: #fbf8f5;
-  color: #2a1527;
-  font-family: Manrope, "Helvetica Neue", sans-serif;
+  background: #09090b;
+  color: #fafafa;
+  font-family: Geist, "Segoe UI", sans-serif;
 }
 .console-side {
   width: 248px;
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 26px 18px;
-  background: #2a1527;
-  color: #fff;
+  background: #111113;
+  color: #fafafa;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -166,14 +166,14 @@
 .console-brand { display: flex; flex-direction: column; gap: 10px; padding: 0 8px; color: #fff; text-decoration: none; }
 .console-brand .brand-mark { width: 32px; height: 32px; }
 .console-brand .brand-name { height: 20px; }
-.console-brand div { display: flex; align-items: center; gap: 10px; font-family: Fraunces, Georgia, serif; font-size: 20px; font-weight: 700; }
-.console-brand em { color: #f23f78; font-style: italic; }
+.console-brand div { display: flex; align-items: center; gap: 10px; font-family: Geist, "Segoe UI", sans-serif; font-size: 20px; font-weight: 700; }
+.console-brand em { color: #7dd3fc; font-style: italic; }
 .console-tag {
   align-self: flex-start;
   padding: 3px 10px;
   border-radius: 999px;
-  background: #3a3235;
-  color: #f23f78;
+  background: #27272a;
+  color: #7dd3fc;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -188,7 +188,7 @@
   padding: 0 14px;
   border: none;
   border-radius: 12px;
-  font-family: Manrope, sans-serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -197,7 +197,7 @@
   width: 100%;
   text-align: left;
 }
-.console-nav.on { background: #fbf8f5; color: #2a1527; }
+.console-nav.on { background: #7dd3fc; color: #09090b; }
 .console-nav span { flex-grow: 1; }
 .console-account {
   margin-top: auto;
@@ -205,10 +205,10 @@
   align-items: center;
   gap: 10px;
   padding: 12px 8px 0;
-  border-top: 1px solid #3a3235;
+  border-top: 1px solid #27272a;
 }
 .console-account strong { display: block; font-size: 14px; }
-.console-account small { font-size: 12px; color: #b5adb0; }
+.console-account small { font-size: 12px; color: #71717a; }
 .console-main {
   flex-grow: 1;
   min-width: 0;
@@ -220,39 +220,39 @@
 }
 .console-main h1 {
   margin: 0;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 32px;
   font-weight: 600;
 }
-.console-main .sub { margin: 4px 0 0; font-size: 15px; color: #6b5a62; }
+.console-main .sub { margin: 4px 0 0; font-size: 15px; color: #a1a1aa; }
 .kpis, .pay-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .pay-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .kpi, .panel {
-  background: #fff;
-  border: 1px solid #ebe2dd;
+  background: #111113;
+  border: 1px solid #27272a;
   border-radius: 18px;
 }
 .kpi { padding: 22px; display: flex; flex-direction: column; gap: 6px; }
-.kpi em, .pay-kpi em { font-style: normal; font-size: 13px; font-weight: 600; color: #6b5a62; }
-.kpi strong, .pay-kpi strong { font-family: Fraunces, Georgia, serif; font-size: 36px; font-weight: 600; line-height: 1.1; }
+.kpi em, .pay-kpi em { font-style: normal; font-size: 13px; font-weight: 600; color: #a1a1aa; }
+.kpi strong, .pay-kpi strong { font-family: Geist, "Segoe UI", sans-serif; font-size: 36px; font-weight: 600; line-height: 1.1; }
 .panel { border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
 .panel h2, .panel h3 { margin: 0; font-size: 18px; font-weight: 700; }
 .split { display: flex; gap: 20px; align-items: flex-start; }
 .split .grow { flex-grow: 1; min-width: 0; }
 .side-card { width: 360px; flex-shrink: 0; }
-.bars { height: 220px; display: flex; align-items: flex-end; gap: 18px; border-bottom: 1px solid #ebe2dd; }
+.bars { height: 220px; display: flex; align-items: flex-end; gap: 18px; border-bottom: 1px solid #27272a; }
 .bars div { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; height: 100%; }
-.bars i { display: block; width: 100%; border-radius: 8px 8px 0 0; background: #d81b60; min-height: 4px; }
+.bars i { display: block; width: 100%; border-radius: 8px 8px 0 0; background: #7dd3fc; min-height: 4px; }
 .weeks { display: flex; gap: 18px; }
-.weeks span, .bars span { flex: 1; text-align: center; font-size: 12px; color: #6b5a62; }
-.bars span { color: #8e1550; font-weight: 700; }
+.weeks span, .bars span { flex: 1; text-align: center; font-size: 12px; color: #a1a1aa; }
+.bars span { color: #fafafa; font-weight: 700; }
 .tpl-row, .user-row, .event-row, .pay-row {
   display: grid;
   gap: 12px;
   align-items: center;
   padding: 12px 8px;
   font-size: 14px;
-  border-bottom: 1px solid #f1eae3;
+  border-bottom: 1px solid #18181b;
 }
 .user-row { grid-template-columns: 2.2fr 0.7fr 1fr; }
 .event-row { grid-template-columns: 2fr 1.3fr 1fr 0.7fr 0.8fr auto; }
@@ -263,38 +263,38 @@
   padding: 0 8px 10px;
   font-size: 12px;
   font-weight: 700;
-  color: #6b5a62;
+  color: #a1a1aa;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  border-bottom: 1px solid #ebe2dd;
+  border-bottom: 1px solid #27272a;
 }
 .filters { display: flex; gap: 8px; flex-wrap: wrap; }
 .chip {
   min-height: 38px;
   padding: 0 16px;
   border-radius: 999px;
-  border: 1.5px solid #ebe2dd;
-  background: #fff;
-  font-family: Manrope, sans-serif;
+  border: 1.5px solid #27272a;
+  background: #111113;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
-.chip.on { background: #d81b60; color: #fff; border-color: #d81b60; }
+.chip.on { background: #7dd3fc; color: #09090b; border-color: #7dd3fc; }
 .tpl-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-.tpl-card { background: #fff; border: 1px solid #ebe2dd; border-radius: 18px; overflow: hidden; }
+.tpl-card { background: #111113; border: 1px solid #27272a; border-radius: 18px; overflow: hidden; }
 .tpl-card a { display: block; padding: 28px 16px; color: #fff; text-decoration: none; }
 .tpl-card a span { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
-.tpl-card a strong { display: block; font-family: Fraunces, Georgia, serif; font-size: 22px; font-weight: 600; }
-.tpl-card div { padding: 14px 16px; font-size: 13px; color: #6b5a62; }
-.tpl-card div strong { display: block; color: #2a1527; font-size: 15px; }
-.muted { color: #6b5a62; }
-.empty { text-align: center; color: #6b5a62; padding: 28px 0; }
+.tpl-card a strong { display: block; font-family: Geist, "Segoe UI", sans-serif; font-size: 22px; font-weight: 600; }
+.tpl-card div { padding: 14px 16px; font-size: 13px; color: #a1a1aa; }
+.tpl-card div strong { display: block; color: #fafafa; font-size: 15px; }
+.muted { color: #a1a1aa; }
+.empty { text-align: center; color: #a1a1aa; padding: 28px 0; }
 .tools { display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap; }
 .search { position: relative; width: 260px; }
-.search input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 0 14px 0 40px; border: 1.5px solid #ebe2dd; border-radius: 12px; font: inherit; }
+.search input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 0 14px 0 40px; border: 1.5px solid #27272a; border-radius: 12px; font: inherit; }
 .search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); }
-.pay-kpi { border-radius: 16px; background: #fbf8f5; padding: 18px; }
+.pay-kpi { border-radius: 16px; background: #09090b; padding: 18px; }
 .console .avatar {
   width: 38px;
   height: 38px;
@@ -307,8 +307,8 @@
   flex-shrink: 0;
 }
 .console .pill { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
-.console .pill.live { background: #e6ede7; color: #3f5a45; }
-.console .pill.completed { background: #efeaec; color: #564f52; }
+.console .pill.live { background: #12261c; color: #86efac; }
+.console .pill.completed { background: #27272a; color: #a1a1aa; }
 .console .logout { border: none; background: transparent; cursor: pointer; }
 
 .adm-bar,
@@ -343,21 +343,21 @@
     padding: 0 16px;
     align-items: center;
     justify-content: space-between;
-    background: #2a1527;
-    color: #fff;
+    background: #09090b;
+    color: #fafafa;
     position: sticky;
     top: 0;
     z-index: 4;
   }
   .adm-bar div { display: flex; align-items: center; gap: 10px; }
-  .adm-bar span { font-family: Fraunces, Georgia, serif; font-size: 19px; font-weight: 700; }
-  .adm-bar em { color: #f23f78; font-style: italic; }
+  .adm-bar span { font-family: Geist, "Segoe UI", sans-serif; font-size: 19px; font-weight: 700; }
+  .adm-bar em { color: #7dd3fc; font-style: italic; }
   .adm-bar .adm-badge {
     padding: 3px 8px;
     border-radius: 999px;
-    background: #3a3235;
-    color: #f23f78;
-    font-family: Manrope, sans-serif;
+    background: #e4e4e7;
+    color: #7dd3fc;
+    font-family: Geist, "Segoe UI", sans-serif;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.2px;
@@ -367,11 +367,11 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #d81b60;
+    background: #7dd3fc;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Manrope, sans-serif;
+    font-family: Geist, "Segoe UI", sans-serif;
     font-size: 13px;
     font-weight: 700;
   }
@@ -405,10 +405,10 @@
   .tpl-card a strong { font-size: 13px; }
   .tpl-card div { padding: 0; }
   .console-main > .panel { background: transparent; border: none; padding: 0; }
-  .split .panel { background: #fff; border: 1px solid #ebe2dd; padding: 16px; border-radius: 20px; }
+  .split .panel { background: #111113; border: 1px solid #27272a; padding: 16px; border-radius: 20px; }
   .user-row, .event-row, .pay-row {
-    background: #fff;
-    border: 1px solid #ebe2dd;
+    background: #111113;
+    border: 1px solid #27272a;
     border-radius: 16px;
     padding: 14px;
   }
@@ -420,9 +420,9 @@
     justify-content: center;
     border-radius: 999px;
     border: 1.5px solid #e7b9bd;
-    background: #fff;
+    background: #111113;
     color: #9a3b43;
-    font-family: Manrope, sans-serif;
+    font-family: Geist, "Segoe UI", sans-serif;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -437,7 +437,8 @@
     height: 82px;
     box-sizing: border-box;
     padding: 0 6px 10px;
-    background: #2a1527;
+    background: #09090b;
+    border-top: 1px solid #27272a;
     align-items: center;
     justify-content: space-around;
   }
@@ -451,11 +452,11 @@
     gap: 4px;
     border: none;
     background: none;
-    color: #b5adb0;
-    font-family: Manrope, sans-serif;
+    color: #71717a;
+    font-family: Geist, "Segoe UI", sans-serif;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
   }
-  .adm-nav button.on { color: #f23f78; }
+  .adm-nav button.on { color: #7dd3fc; }
 }

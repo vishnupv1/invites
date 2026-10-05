@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./brand.css";
 
-export function Brand({ light = false, linked = true }: { light?: boolean; linked?: boolean }) {
+export function Brand({ light = true, linked = true }: { light?: boolean; linked?: boolean }) {
   const mark = (
     <>
       <img className="brand-mark" src="/brand/mark.png" alt="" />

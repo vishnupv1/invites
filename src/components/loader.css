@@ -4,8 +4,8 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid #f6dde5;
-  border-top-color: #d81b60;
+  border: 2px solid #27272a;
+  border-top-color: #7dd3fc;
   animation: spin-turn 0.8s linear infinite;
   flex-shrink: 0;
   vertical-align: -3px;
@@ -52,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 20px rgba(216, 27, 96, 0.25);
+  box-shadow: 0 10px 20px rgba(125, 211, 252, 0.25);
 }
 
 .smart-face {

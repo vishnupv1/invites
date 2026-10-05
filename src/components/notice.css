@@ -10,11 +10,11 @@
   gap: 12px;
   padding: 12px 12px 12px 14px;
   border-radius: 18px;
-  background: #fff;
+  background: #111113;
   border: 1px solid #e7e2e4;
-  color: #2a1527;
+  color: #fafafa;
   box-shadow: 0 18px 40px rgba(42, 21, 39, 0.16);
-  font-family: Outfit, Manrope, "Helvetica Neue", sans-serif;
+  font-family: Outfit, Geist, "Segoe UI", sans-serif;
   translate: -50% 0;
   animation: notice-in 0.22s ease;
 }
@@ -54,19 +54,19 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #6b5a62;
+  color: #a1a1aa;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
-.notice button:hover { background: #f7f1f3; }
+.notice button:hover { background: #111113; }
 
 .board .notice button:focus,
 .board .notice button:focus-visible {
   outline: none;
-  background: #f7f1f3;
+  background: #111113;
 }
 
 @keyframes notice-in {

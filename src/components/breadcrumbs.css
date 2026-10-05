@@ -7,15 +7,15 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: Manrope, "Helvetica Neue", sans-serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #6b5a62;
+  color: #a1a1aa;
 }
 .crumbs li { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .crumbs a,
 .crumbs button {
-  color: #d81b60;
+  color: #7dd3fc;
   text-decoration: none;
   background: none;
   border: none;
@@ -27,7 +27,7 @@
 .crumbs a:hover,
 .crumbs button:hover { text-decoration: underline; }
 .crumbs [aria-current="page"] {
-  color: #2a1527;
+  color: #fafafa;
   font-weight: 700;
   max-width: 36ch;
   overflow: hidden;
@@ -36,7 +36,7 @@
 }
 .crumbs-sep { color: #c4b8bc; font-weight: 500; }
 .crumbs--on-dark,
-.crumbs--on-dark [aria-current="page"] { color: rgba(255, 255, 255, 0.82); }
+.crumbs--on-dark [aria-current="page"] { color: rgba(255, 255, 255, 0.05); }
 .crumbs--on-dark a,
 .crumbs--on-dark button { color: #fff; }
 .crumbs--on-dark .crumbs-sep { color: rgba(255, 255, 255, 0.45); }

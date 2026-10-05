@@ -12,10 +12,10 @@
   min-height: 46px;
   box-sizing: border-box;
   padding: 10px 14px;
-  border: 1.5px solid #ebe2dd;
+  border: 1.5px solid #27272a;
   border-radius: 12px;
-  background: #fff;
-  color: #2a1527;
+  background: #111113;
+  color: #fafafa;
   font-size: 15px;
   text-align: left;
   cursor: pointer;
@@ -26,16 +26,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.when-ph { color: #a08b93; }
+.when-ph { color: #71717a; }
 .when-btn[aria-expanded="true"] {
-  border-color: #d81b60;
-  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.12);
+  border-color: #7dd3fc;
+  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.12);
 }
 .when-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #6b5a62;
+  color: #a1a1aa;
 }
 .when-pop {
   position: fixed;
@@ -45,9 +45,9 @@
   overflow: auto;
   box-sizing: border-box;
   padding: 12px;
-  border: 1.5px solid #ebe2dd;
+  border: 1.5px solid #27272a;
   border-radius: 18px;
-  background: #fff;
+  background: #111113;
   box-shadow: 0 16px 40px rgba(42, 21, 39, 0.16);
 }
 .when-head {
@@ -58,11 +58,11 @@
   margin-bottom: 8px;
 }
 .when-month {
-  font-family: Fraunces, Georgia, serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #2a1527;
+  color: #fafafa;
 }
 .when-nav {
   display: grid;
@@ -70,13 +70,13 @@
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1.5px solid #ebe2dd;
+  border: 1.5px solid #27272a;
   border-radius: 10px;
-  background: #fff;
-  color: #2a1527;
+  background: #111113;
+  color: #fafafa;
   cursor: pointer;
 }
-.when-nav:hover { background: #fceff4; }
+.when-nav:hover { background: #111113; }
 .when-week,
 .when-days {
   display: grid;
@@ -90,40 +90,40 @@
   text-align: center;
   font-size: 11px;
   font-weight: 700;
-  color: #a08b93;
+  color: #71717a;
 }
 .when-day {
   aspect-ratio: 1;
   border: none;
   border-radius: 10px;
   background: transparent;
-  color: #2a1527;
+  color: #fafafa;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
-.when-day:hover { background: #fceff4; }
-.when-day.is-today { box-shadow: inset 0 0 0 1.5px #d81b60; }
+.when-day:hover { background: #111113; }
+.when-day.is-today { box-shadow: inset 0 0 0 1.5px #7dd3fc; }
 .when-day.is-on,
 .when-day.is-on:hover {
-  background: #d81b60;
-  color: #fff;
+  background: #7dd3fc;
+  color: #09090b;
   box-shadow: none;
 }
 .when-read {
   margin: 0 0 10px;
   text-align: center;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: #2a1527;
+  color: #fafafa;
 }
 .when-read.is-empty {
-  font-family: Manrope, "Helvetica Neue", sans-serif;
+  font-family: Geist, "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #a08b93;
+  color: #71717a;
 }
 .when-period {
   display: grid;
@@ -131,21 +131,21 @@
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
-  background: #f6f1ee;
+  background: #18181b;
 }
 .when-period button {
   min-height: 36px;
   border: none;
   border-radius: 9px;
   background: transparent;
-  color: #6b5a62;
+  color: #a1a1aa;
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
 }
 .when-period button[aria-pressed="true"] {
-  background: #fff;
-  color: #d81b60;
+  background: #111113;
+  color: #7dd3fc;
   box-shadow: 0 1px 4px rgba(42, 21, 39, 0.08);
 }
 .when-cap {
@@ -154,7 +154,7 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #a08b93;
+  color: #71717a;
 }
 .when-hours {
   display: grid;
@@ -165,17 +165,17 @@
   min-height: 36px;
   border: none;
   border-radius: 10px;
-  background: #fbf8f5;
-  color: #2a1527;
+  background: #09090b;
+  color: #fafafa;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
-.when-choice:hover { background: #fceff4; }
+.when-choice:hover { background: #111113; }
 .when-choice[aria-pressed="true"],
 .when-choice[aria-pressed="true"]:hover {
-  background: #d81b60;
-  color: #fff;
+  background: #7dd3fc;
+  color: #09090b;
 }
 .when-done {
   width: 100%;
@@ -183,8 +183,8 @@
   margin-top: 12px;
   border: none;
   border-radius: 999px;
-  background: #fceff4;
-  color: #8e1550;
+  background: #7dd3fc;
+  color: #09090b;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
@@ -195,6 +195,6 @@
 .when-choice:focus-visible,
 .when-period button:focus-visible,
 .when-done:focus-visible {
-  outline: 2px solid #d81b60;
+  outline: 2px solid #7dd3fc;
   outline-offset: 2px;
 }

@@ -4,7 +4,7 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.06);
   box-shadow: 0 4px 10px rgba(42, 21, 39, 0.12);
   color: #c9bfc3;
   font-size: 18px;
@@ -16,7 +16,7 @@
   flex-shrink: 0;
 }
 
-.fav-heart.on { color: #d81b60; }
+.fav-heart.on { color: #7dd3fc; }
 
 .fav-heart.overlay {
   position: absolute;
