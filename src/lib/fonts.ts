@@ -11,6 +11,8 @@ const FAMILIES = {
   "Cormorant Garamond": "Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500",
   "DM Sans": "DM+Sans:wght@400;500;700",
   Fredoka: "Fredoka:wght@400;500;600;700",
+  Geist: "Geist:wght@400;500;600;700",
+  "Geist Mono": "Geist+Mono:wght@400;500",
   Gloock: "Gloock",
   "Great Vibes": "Great+Vibes",
   "Instrument Sans": "Instrument+Sans:wght@400;500;600;700",

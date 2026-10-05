@@ -1,1174 +1,592 @@
-import { Fragment, useEffect, useRef, useState } from "react";
-import { Check, CheckCheck } from "lucide-react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Brand } from "../components/Brand";
-import { InviteView } from "../components/InviteView";
-import { getTemplate, sampleFor } from "../data/templates";
-import { TOPICS } from "../data/topics";
-import type { EventId } from "../types";
 import { useFonts } from "../lib/fonts";
 import "./landing.css";
 
-const WORDS = ["Invitations", "your", "guests", "open,", "answer", "and"];
-const OCCASION_GROUPS = [
-  ["Weddings", "Engagements", "Receptions"],
-  ["Birthdays", "Anniversaries"],
-  ["Baptisms", "Naming ceremonies"],
-  ["Housewarmings", "Festivals"],
-  ["Corporate events"],
+const PLACEHOLDERS = [
+  "Aarav & Riya’s wedding · 14 Feb · Munnar",
+  "Aadi turns 5 · superhero party · Kochi",
+  "Meera & Dev’s engagement · sunset terrace",
+  "Our housewarming · Sunday brunch",
 ] as const;
-const PETAL_COLORS = ["#F23F78", "#FF7380", "#D81B60", "#FCEFF4"];
-const QR = [1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1];
-const CONFETTI = ["#D81B60", "#F23F78", "#FF7380", "#FFFFFF", "#FCEFF4"];
 
-const DEMO_SLIDES = [
-  { id: "vivah", event: "marriage" as EventId, reply: "Vishnu's family · 4 guests" },
-  { id: "baptism", event: "baptism" as EventId, reply: "Joseph Mathew · 3 guests" },
-  { id: "hearth", event: "housewarming" as EventId, reply: "Priya & Vivek · 2 guests" },
-  { id: "beach", event: "marriage" as EventId, reply: "Fathima & Arif · 2 guests" },
-  { id: "anna", event: "marriage" as EventId, reply: "Nisha · attending" },
-  { id: "gazal", event: "marriage" as EventId, reply: "Imran's family · 5 guests" },
+const CHIPS = [
+  ["Wedding", "Aarav & Riya’s wedding · 14 Feb · Munnar"],
+  ["Birthday", "Aadi turns 5 · superhero party · Kochi"],
+  ["Engagement", "Meera & Dev’s engagement · sunset terrace"],
+  ["Baby shower", "Baby Sara’s naming ceremony · Thrissur"],
+  ["Housewarming", "Our housewarming · Sunday brunch"],
+] as const;
+
+type Design = { id: string; name: string; kicker: string; cover: string };
+
+const SETS: Record<"wedding" | "birthday" | "baby" | "home", Design[]> = {
+  wedding: [
+    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg" },
+    { id: "shaadi", name: "Shaadi", kicker: "SHAADI · VEIL", cover: "/covers/shaadi.jpg" },
+    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg" },
+  ],
+  birthday: [
+    { id: "inland", name: "Inland Letter", kicker: "INLAND LETTER", cover: "/covers/inland.jpg" },
+    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg" },
+    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg" },
+  ],
+  baby: [
+    { id: "baptism", name: "Little Blessing", kicker: "LITTLE BLESSING", cover: "/covers/baptism.jpg" },
+    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg" },
+    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg" },
+  ],
+  home: [
+    { id: "hearth", name: "Hearth", kicker: "HEARTH", cover: "/covers/hearth.jpg" },
+    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg" },
+    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg" },
+  ],
+};
+
+const CARDS: Design[] = [
+  { id: "heavenly", name: "Enchanted Doors", kicker: "WEDDING · DOORS OF LIGHT", cover: "/covers/heavenly.jpg" },
+  { id: "grandoor", name: "The Grand Door", kicker: "WEDDING · CINEMATIC ENTRANCE", cover: "/covers/grandoor.jpg" },
+  { id: "grandenvelope", name: "The Sealed Invitation", kicker: "WEDDING · WAX SEAL", cover: "/covers/grandenvelope.jpg" },
+  { id: "pull", name: "Curtain Call", kicker: "WEDDING · PULL THE ROPE", cover: "/covers/pull.jpg" },
+  { id: "shaadi", name: "Shaadi", kicker: "WEDDING · VEIL REVEAL", cover: "/covers/shaadi.jpg" },
+  { id: "beach", name: "Sunset Shore", kicker: "BEACH · MESSAGE IN A BOTTLE", cover: "/covers/beach.jpg" },
+  { id: "inland", name: "Inland Letter", kicker: "BIRTHDAY · TEAR TO OPEN", cover: "/covers/inland.jpg" },
+  { id: "botanica", name: "Blush Botanica", kicker: "ENGAGEMENT · FLORAL FRAMES", cover: "/covers/botanica.jpg" },
+];
+
+const TILES = [
+  { k: "01 · OPENING", t: "Openings guests remember", d: "Doors, curtains, wax seals and gift boxes — every invitation opens like a short film.", stage: true },
+  { k: "02 · RSVP", t: "Every reply, live", d: "Headcount, meal choices and messages in one dashboard. Nudge late replies in a tap.", stage: false },
+  { k: "03 · SHARE", t: "One link, everywhere", d: "WhatsApp, Instagram, email. No app, no login for guests.", stage: false },
+  { k: "04 · FUNCTIONS", t: "Haldi to reception", d: "Every function with its own time, venue and dress code.", stage: false },
+  { k: "05 · LANGUAGE", t: "Your language", d: "English, Malayalam, Hindi and Tamil — mixed as you like.", stage: false },
+  { k: "06 · PRICING", t: "Pay once, from ₹299", d: "Design and preview free. Pay only when you publish — no subscription.", stage: false },
 ] as const;
 
 const STEPS = [
-  ["01", "Pick & personalise", "Choose a template and add names, photos and every function — no sign-up needed."],
-  ["02", "Share on WhatsApp", "Send one link from your own WhatsApp. Guests open it instantly — no app."],
-  ["03", "Watch replies arrive", "Headcounts, meals and wishes land in your dashboard in real time."],
-] as const;
-
-const LANG_DEMOS = [
-  {
-    chip: "English",
-    invite: "You're invited",
-    names: ["Anna", "Joel"],
-    joiner: "&",
-    date: "Saturday · 14 December",
-    place: "Goa",
-    venue: "Candolim · North Goa",
-    event: "Wedding",
-    script: "latin",
-    theme: {
-      wash: "rgba(68, 42, 58, 0.7)",
-      deep: "rgba(36, 22, 32, 0.45)",
-      accent: "#e6c893",
-      soft: "#f3e2b8",
-      orb: "rgba(200, 155, 91, 0.5)",
-      orb2: "rgba(230, 183, 195, 0.35)",
-      petal: "#e6c893",
-      petal2: "#e7b7c3",
-      petal3: "#f0e6d8",
-    },
-  },
-  {
-    chip: "മലയാളം",
-    invite: "സ്വാഗതം",
-    names: ["അന്ന", "ജോയൽ"],
-    joiner: "&",
-    date: "ശനി · ഡിസംബർ 14",
-    place: "കൊച്ചി",
-    venue: "ഫോർട്ട് കൊച്ചി",
-    event: "വിവാഹം",
-    script: "ml",
-    theme: {
-      wash: "rgba(34, 78, 68, 0.72)",
-      deep: "rgba(18, 42, 40, 0.42)",
-      accent: "#9fd4c0",
-      soft: "#f4f0e6",
-      orb: "rgba(111, 168, 148, 0.55)",
-      orb2: "rgba(200, 155, 91, 0.32)",
-      petal: "#9fd4c0",
-      petal2: "#e6c893",
-      petal3: "#f0e6d8",
-    },
-  },
-  {
-    chip: "हिन्दी",
-    invite: "आप आमंत्रित हैं",
-    names: ["अन्ना", "जोएल"],
-    joiner: "और",
-    date: "शनिवार · 14 दिसंबर",
-    place: "जयपुर",
-    venue: "सिटी पैलेस · जयपुर",
-    event: "विवाह",
-    script: "hi",
-    theme: {
-      wash: "rgba(92, 36, 28, 0.72)",
-      deep: "rgba(48, 18, 16, 0.45)",
-      accent: "#f0b27a",
-      soft: "#fce8d4",
-      orb: "rgba(212, 110, 62, 0.45)",
-      orb2: "rgba(230, 200, 147, 0.35)",
-      petal: "#f0b27a",
-      petal2: "#e6c893",
-      petal3: "#f8d9b8",
-    },
-  },
-  {
-    chip: "বাংলা",
-    invite: "আপনি আমন্ত্রিত",
-    names: ["আনা", "জোয়েল"],
-    joiner: "ও",
-    date: "শনিবার · ১৪ ডিসেম্বর",
-    place: "কলকাতা",
-    venue: "ভিক্টোরিয়া · কলকাতা",
-    event: "বিবাহ",
-    script: "bn",
-    theme: {
-      wash: "rgba(42, 48, 92, 0.72)",
-      deep: "rgba(20, 24, 52, 0.45)",
-      accent: "#a8b8f0",
-      soft: "#e8ecf8",
-      orb: "rgba(96, 118, 196, 0.5)",
-      orb2: "rgba(230, 183, 195, 0.32)",
-      petal: "#a8b8f0",
-      petal2: "#e7b7c3",
-      petal3: "#e8ecf8",
-    },
-  },
-  {
-    chip: "தமிழ்",
-    invite: "வரவேற்கிறோம்",
-    names: ["அன்னா", "ஜோயல்"],
-    joiner: "&",
-    date: "சனி · 14 டிசம்பர்",
-    place: "மதுரை",
-    venue: "மீனாட்சி அம்மன் · மதுரை",
-    event: "திருமணம்",
-    script: "ta",
-    theme: {
-      wash: "rgba(58, 32, 78, 0.72)",
-      deep: "rgba(28, 16, 42, 0.45)",
-      accent: "#d4a8f0",
-      soft: "#f2e8f8",
-      orb: "rgba(148, 96, 186, 0.5)",
-      orb2: "rgba(200, 155, 91, 0.32)",
-      petal: "#d4a8f0",
-      petal2: "#e6c893",
-      petal3: "#f2e8f8",
-    },
-  },
-] as const;
-
-const LANG_CHIPS = ["English", "മലയാളം", "हिन्दी", "বাংলা", "தமிழ்", "ગુજરાતી", "ಕನ್ನಡ", "తెలుగు"] as const;
-
-const HOW_CARDS = [
-  { id: "vivah", name: "Karthik & Nandana", cover: "/covers/vivah.jpg", rot: -12, dx: -118 },
-  { id: "baptism", name: "Ethan", cover: "/covers/baptism.jpg", rot: -5, dx: -40 },
-  { id: "hearth", name: "Our new home", cover: "/covers/hearth.jpg", rot: 12, dx: 118 },
-  { id: "anna", name: "Anna & Joel", cover: "/covers/anna.jpg", rot: 0, dx: 0 },
-] as const;
-
-const RSVPS = [
-  ["MF", "Vishnu's family", "Attending", "#D81B60", "All 3 functions"],
-  ["PV", "Priya & Vivek", "Attending", "#F23F78", "Wedding + Reception"],
-  ["JM", "Joseph Mathew", "Pending", "#6F8B74", "No reply yet"],
-  ["AR", "Aisha & Rafi", "Attending", "#8E1550", "Wedding only"],
-] as const;
-
-const TEMPLATES = [
-  { name: "Royal Night", tag: "Animated", cover: "/covers/vivah.jpg", sample: "Karthik & Nandana", kicker: "Shubh Vivah", to: "/create?template=vivah" },
-  { name: "Sunset Shore", tag: "Animated", cover: "/covers/beach.jpg", sample: "Rohan & Alisha", kicker: "One shore", to: "/create?template=beach" },
-  { name: "Heavenly", tag: "Animated", cover: "/covers/heavenly.jpg", sample: "Aarav & Riya", kicker: "Wedding", to: "/create?template=heavenly" },
-  { name: "The Grand Door", tag: "Animated", cover: "/covers/grandoor.jpg", sample: "Anjali & Rohan", kicker: "Wedding", to: "/create?template=grandoor" },
-  { name: "Grand Envelope", tag: "Animated", cover: "/covers/grandenvelope.jpg", sample: "Aarav & Riya", kicker: "Wedding", to: "/create?template=grandenvelope" },
-  { name: "Blush Botanica", tag: "Animated", cover: "/covers/botanica.jpg", sample: "Nila & Kiran", kicker: "Wedding", to: "/create?template=botanica" },
-  { name: "Happy Home", tag: "Animated", cover: "/covers/hearth.jpg", sample: "Our new home", kicker: "Griha Pravesh", to: "/create?template=hearth" },
-  { name: "Heavenly Halo", tag: "Animated", cover: "/covers/baptism.jpg", sample: "Ethan", kicker: "Baptism", to: "/create?template=baptism" },
-  { name: "Emerald Nikah", tag: "Premium", cover: "/covers/gazal.jpg", sample: "Imran & Safa", kicker: "Nikah", to: "/create?template=gazal" },
-  { name: "Garden Editorial", tag: "Free", cover: "/covers/anna.jpg", sample: "Anna & Joel", kicker: "Save the date", to: "/create?template=anna" },
-  { name: "Aurelia", tag: "Premium", cover: "/covers/aurelia.jpg", sample: "Aisha & Kabir", kicker: "Wedding", to: "/create?template=aurelia" },
-  { name: "Thiruvizha", tag: "Animated", cover: "/covers/thiruvizha.jpg", sample: "Family feast", kicker: "Celebration", to: "/create?template=thiruvizha" },
-] as const;
-
-const BARS = [
-  ["Mehendi · 118 / 150", 79, "#F23F78"],
-  ["Wedding · 186 / 320", 58, "#D81B60"],
-  ["Reception · 204 / 300", 68, "#2E8B57"],
+  ["01 — DESCRIBE", "Tell us the moment", "Names, date, place — one sentence is enough to start."],
+  ["02 — PERSONALISE", "Make it yours", "Pick a design, add photos, functions and music. See it live."],
+  ["03 — SHARE", "Send one link", "Publish, share on WhatsApp and watch replies arrive."],
 ] as const;
 
 const FAQS = [
-  ["Do my guests need an app or an account?", "No. Guests open your link in any browser and RSVP in one tap — it works on basic phones too."],
-  ["Can I design before signing up?", "Yes. Pick a template and customise it as a guest. We only ask you to log in when you publish, and your draft comes with you."],
-  ["Can different guests see different functions?", "Yes. Put guests into groups and choose which functions each group sees."],
-  ["Is our family information private?", "Pages can be password-protected, and the address can stay hidden until a guest says yes."],
-  ["Can I edit after sending?", "Of course — every guest sees the latest version through the same link."],
+  ["Do guests need an app?", "No. They tap your link on WhatsApp and the invitation opens instantly in their browser."],
+  ["When do I pay?", "Only when you publish. Describing, designing and previewing are free."],
+  ["Can I add every function?", "Yes — Haldi, Mehendi, Sangeet, wedding and reception, each with its own details."],
+  ["Can I edit after sharing?", "Anytime. Your link stays the same and guests always see the latest version."],
+  ["Which languages work?", "English, Malayalam, Hindi and Tamil — mix them on one invitation."],
 ] as const;
 
-const NAV = [
-  { href: "/browse", label: "Templates" },
-  { href: "/how", label: "How it works" },
-  { href: "/features", label: "Features" },
-  { href: "/faq", label: "FAQ" },
+const LOG = ["Reading your celebration…", "Matching designs to the mood…", "Writing your invitation…"] as const;
+
+const GLINTS = Array.from({ length: 22 }, (_, i) => ({
+  left: (i * 41 + 7) % 94,
+  top: (i * 29 + 5) % 82,
+  size: 8 + (i % 4) * 4,
+  color: ["#E0F2FE", "#BAE6FD", "#C7D2FE", "#FFFFFF"][i % 4],
+  delay: `${i * 0.37}s`,
+  dur: `${2.2 + (i % 5) * 0.5}s`,
+}));
+
+const SHOOTS = [
+  { x: 78, y: 8, delay: "0s" },
+  { x: 92, y: 26, delay: "3.5s" },
+  { x: 64, y: 4, delay: "7s" },
 ];
 
-function useNarrow() {
-  const [narrow, setNarrow] = useState(false);
+const DUST = Array.from({ length: 14 }, (_, i) => ({
+  left: (i * 37 + 11) % 96,
+  top: 30 + ((i * 23) % 60),
+  size: 2 + (i % 3),
+  color: i % 3 ? "#BAE6FD" : "#C7D2FE",
+  delay: `${i * 0.6}s`,
+  dur: `${6 + (i % 5)}s`,
+}));
+
+const SPARKS = [
+  [14, 30, 4],
+  [86, 22, 3],
+  [92, 70, 5],
+  [8, 74, 3],
+  [50, 6, 3],
+  [62, 94, 4],
+] as const;
+
+const DOOR_SPARKS = [
+  [22, 20, 12],
+  [78, 18, 9],
+  [84, 52, 14],
+  [16, 56, 8],
+  [30, 78, 10],
+  [70, 80, 8],
+] as const;
+
+const KINDS = [
+  ["Doors", "M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M12 3v18M9 12h.01M15 12h.01"],
+  ["Curtains", "M3 3h18M5 3c0 8 2 14 6 18M19 3c0 8-2 14-6 18"],
+  ["Wax seal", "M12 3l2.4 2.1 3.1-.4.7 3.1 2.7 1.6-1.3 2.9 1.3 2.9-2.7 1.6-.7 3.1-3.1-.4L12 21l-2.4-2.1-3.1.4-.7-3.1-2.7-1.6 1.3-2.9-1.3-2.9 2.7-1.6.7-3.1 3.1.4z"],
+  ["Gift box", "M3 8h18v4H3zM5 12v9h14v-9M12 8v13M12 8c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"],
+] as const;
+
+const AUTH = [
+  ["Continue with Google", "M21 12.2c0-.7-.1-1.4-.2-2H12v3.8h5a4.3 4.3 0 0 1-1.9 2.8v2.3h3A9 9 0 0 0 21 12.2zM12 21a8.9 8.9 0 0 0 6.1-2.2l-3-2.3a5.5 5.5 0 0 1-8.2-2.9H3.8v2.4A9 9 0 0 0 12 21z"],
+  ["Continue with WhatsApp", "M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"],
+  ["Continue with Email", "M3 6h18v12H3zM3 6l9 7 9-7"],
+] as const;
+
+const FOOTER = [
+  {
+    h: "PRODUCT",
+    links: [
+      { label: "Templates", to: "/browse" },
+      { label: "Pricing", to: "/#pricing" },
+      { label: "How it works", to: "/how" },
+    ],
+  },
+  {
+    h: "OCCASIONS",
+    links: [
+      { label: "Weddings", to: "/wedding" },
+      { label: "Birthdays", to: "/birthday" },
+      { label: "Baby & kids", to: "/baptism" },
+    ],
+  },
+  {
+    h: "COMPANY",
+    links: [
+      { label: "Contact", to: "/contact" },
+      { label: "Terms", to: "/terms" },
+      { label: "Privacy", to: "/privacy" },
+    ],
+  },
+] as const;
+
+function occasionOf(query: string) {
+  if (/birthday|turns|bday/i.test(query)) return "birthday" as const;
+  if (/baby|baptism|naming|shower/i.test(query)) return "baby" as const;
+  if (/house|home/i.test(query)) return "home" as const;
+  return "wedding" as const;
+}
+
+function celebrationName(query: string) {
+  return query.split(/[·,]| on | in |'s|’s/)[0]?.trim().slice(0, 30) || "Your celebration";
+}
+
+function useWide() {
+  const [wide, setWide] = useState(false);
   useEffect(() => {
-    const query = window.matchMedia("(max-width: 720px)");
-    const apply = () => setNarrow(query.matches);
+    const query = window.matchMedia("(min-width: 960px)");
+    const apply = () => setWide(query.matches);
     apply();
     query.addEventListener("change", apply);
     return () => query.removeEventListener("change", apply);
   }, []);
-  return narrow;
+  return wide;
+}
+
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduced(query.matches);
+    apply();
+    query.addEventListener("change", apply);
+    return () => query.removeEventListener("change", apply);
+  }, []);
+  return reduced;
+}
+
+function Spark({ size, color }: { size: number; color: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M10 0C10.8 6 14 9.2 20 10C14 10.8 10.8 14 10 20C9.2 14 6 10.8 0 10C6 9.2 9.2 6 10 0Z" fill={color} />
+    </svg>
+  );
+}
+
+function Mark() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 512 512" aria-hidden="true">
+      <rect width="512" height="512" rx="132" fill="#FAFAFA" />
+      <path d="M256 244C256 244 176 182 176 140C176 110 199 90 225 90C242 90 252 101 256 110C260 101 270 90 287 90C313 90 336 110 336 140C336 182 256 244 256 244Z" fill="#09090B" />
+      <path d="M104 236L256 348L408 236" fill="none" stroke="#09090B" strokeWidth="58" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function Emblem({ id }: { id: string }) {
+  return (
+    <svg viewBox="0 0 120 120" aria-hidden="true">
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#E0F2FE" />
+          <stop offset=".5" stopColor="#7DD3FC" />
+          <stop offset="1" stopColor="#A5B4FC" />
+        </linearGradient>
+      </defs>
+      <path d="M60 52C60 52 42 38 42 28C42 21 47 16 53 16C57 16 59 19 60 21C61 19 63 16 67 16C73 16 78 21 78 28C78 38 60 52 60 52Z" fill={`url(#${id})`} />
+      <path d="M18 50L60 80L102 50" fill="none" stroke={`url(#${id})`} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="14" y="44" width="92" height="62" rx="14" fill="none" stroke="rgba(224,242,254,.35)" strokeWidth="2" />
+    </svg>
+  );
 }
 
 export function Home({ focus }: { focus?: string }) {
-  useFonts("Alex Brush", "Allura", "Caveat", "Cormorant Garamond", "Great Vibes", "Parisienne", "Pinyon Script");
-  const narrow = useNarrow();
-  const { hash, pathname } = useLocation();
-  const tplRow = useRef<HTMLDivElement>(null);
-  const tplDragged = useRef(false);
-  const [tick, setTick] = useState(0);
-  const [how, setHow] = useState(0);
-  const [howT, setHowT] = useState(0);
-  const [spot, setSpot] = useState({ x: 70, y: 30 });
+  useFonts("Geist", "Geist Mono");
+  const wide = useWide();
+  const reduced = useReducedMotion();
+  const { hash } = useLocation();
+  const held = useRef(false);
+  const [query, setQuery] = useState("");
+  const [ph, setPh] = useState(0);
+  const [mode, setMode] = useState<"idle" | "working" | "done">("idle");
   const [faq, setFaq] = useState(0);
-  const [burst, setBurst] = useState(0);
-  const [menu, setMenu] = useState(false);
-  const [lang, setLang] = useState(0);
+  const [ci, setCi] = useState(1);
 
   useEffect(() => {
-    const id = focus || hash.replace(/^#/, "");
+    const previous = document.body.style.background;
+    document.body.style.background = "#09090B";
+    return () => {
+      document.body.style.background = previous;
+    };
+  }, []);
+
+  useEffect(() => {
+    const id = focus === "occasions" ? "templates" : focus || hash.replace(/^#/, "");
     if (!id) return;
-    document.getElementById(id)?.scrollIntoView();
+    document.getElementById(id)?.scrollIntoView({ block: "start" });
   }, [focus, hash]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setTick((value) => value + 1);
-      setHowT((value) => {
-        if (value + 1 >= 8) {
-          setHow((step) => (step + 1) % 3);
-          return 0;
-        }
-        return value + 1;
-      });
-    }, 500);
-    return () => window.clearInterval(timer);
-  }, []);
+    if (reduced || mode !== "idle") return;
+    const id = window.setInterval(() => setPh((value) => (value + 1) % PLACEHOLDERS.length), 2600);
+    return () => window.clearInterval(id);
+  }, [reduced, mode]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setLang((value) => (value + 1) % LANG_DEMOS.length);
-    }, 2400);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  const slide = DEMO_SLIDES[Math.floor(tick / 7) % DEMO_SLIDES.length];
-  const template = getTemplate(slide.id);
-  const fields = template ? sampleFor(template, slide.event) : null;
-  const head = 140 + (tick % 60) * 0.8;
-  const headcount = String(Math.round(head));
-  const pct = Math.round((head / 220) * 100);
-  const reply = slide.reply;
-  const cards = [...TEMPLATES, ...TEMPLATES];
+    if (reduced) return;
+    const id = window.setInterval(() => {
+      if (!held.current) setCi((value) => (value + 1) % CARDS.length);
+    }, 3200);
+    return () => window.clearInterval(id);
+  }, [reduced]);
 
   useEffect(() => {
-    const row = tplRow.current;
-    if (!row) return;
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-    let paused = false;
-    let idle = 0;
-    let dragging = false;
-    let startX = 0;
-    let startScroll = 0;
-    let moved = false;
-    let wrapping = false;
+    if (mode !== "working") return;
+    const id = window.setTimeout(() => setMode("done"), reduced ? 400 : 2800);
+    return () => window.clearTimeout(id);
+  }, [mode, reduced]);
 
-    const pause = () => {
-      paused = true;
-      window.clearTimeout(idle);
-    };
-    const resume = () => {
-      window.clearTimeout(idle);
-      idle = window.setTimeout(() => {
-        paused = false;
-      }, 900);
-    };
-    const span = () => row.scrollWidth / 2;
-    const wrap = (value: number) => {
-      const width = span();
-      if (width < 1) return value;
-      return ((value % width) + width) % width;
-    };
-
-    const step = () => {
-      if (!paused && !dragging && !media.matches && !document.hidden) {
-        const width = span();
-        if (width > 1) row.scrollLeft += width / (50 * 60);
-      }
-      frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-
-    const onPointerDown = (event: PointerEvent) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      pause();
-      if (event.pointerType !== "mouse") return;
-      dragging = true;
-      moved = false;
-      startX = event.clientX;
-      startScroll = row.scrollLeft;
-      row.classList.add("is-dragging");
-      row.setPointerCapture(event.pointerId);
-    };
-    const onPointerMove = (event: PointerEvent) => {
-      if (!dragging) return;
-      const dx = event.clientX - startX;
-      if (Math.abs(dx) > 5) moved = true;
-      row.scrollLeft = wrap(startScroll - dx);
-    };
-    const onPointerUp = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") {
-        resume();
-        return;
-      }
-      if (!dragging) return;
-      dragging = false;
-      row.classList.remove("is-dragging");
-      if (row.hasPointerCapture(event.pointerId)) row.releasePointerCapture(event.pointerId);
-      tplDragged.current = moved;
-      resume();
-    };
-    const onClick = (event: MouseEvent) => {
-      if (!tplDragged.current) return;
-      event.preventDefault();
-      event.stopPropagation();
-      tplDragged.current = false;
-    };
-    const onWheel = (event: WheelEvent) => {
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      if (!delta) return;
-      event.preventDefault();
-      pause();
-      row.scrollLeft = wrap(row.scrollLeft + delta);
-      resume();
-    };
-    const onScroll = () => {
-      if (wrapping) return;
-      const width = span();
-      if (width > 1 && row.scrollLeft >= width) {
-        wrapping = true;
-        row.scrollLeft -= width;
-        wrapping = false;
-      }
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-      event.preventDefault();
-      pause();
-      row.scrollLeft = wrap(row.scrollLeft + (event.key === "ArrowRight" ? 304 : -304));
-      resume();
-    };
-
-    row.addEventListener("pointerdown", onPointerDown);
-    row.addEventListener("pointermove", onPointerMove);
-    row.addEventListener("pointerup", onPointerUp);
-    row.addEventListener("pointercancel", onPointerUp);
-    row.addEventListener("click", onClick, true);
-    row.addEventListener("wheel", onWheel, { passive: false });
-    row.addEventListener("scroll", onScroll);
-    row.addEventListener("keydown", onKey);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(idle);
-      row.classList.remove("is-dragging");
-      row.removeEventListener("pointerdown", onPointerDown);
-      row.removeEventListener("pointermove", onPointerMove);
-      row.removeEventListener("pointerup", onPointerUp);
-      row.removeEventListener("pointercancel", onPointerUp);
-      row.removeEventListener("click", onClick, true);
-      row.removeEventListener("wheel", onWheel);
-      row.removeEventListener("scroll", onScroll);
-      row.removeEventListener("keydown", onKey);
-    };
-  }, []);
-
-  function closeMenu() {
-    setMenu(false);
+  function go(text?: string) {
+    const next = (text ?? query).trim() || PLACEHOLDERS[0];
+    setQuery(next);
+    setMode("working");
   }
 
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
+    go();
+  }
+
+  function choose(index: number) {
+    held.current = true;
+    setCi(index);
+  }
+
+  const picks = SETS[occasionOf(query)];
+  const names = celebrationName(query);
+  const current = CARDS[ci];
+  const shift = wide ? 210 : 120;
+
   return (
-    <div className="lp">
-      <header className="lp-nav">
-        <Brand />
-        <nav className="lp-links" aria-label="Main">
-          {NAV.map((item) => (
-            <Link key={item.href} to={item.href} aria-current={pathname === item.href ? "page" : undefined}>
-              {item.label}
-            </Link>
-          ))}
+    <div className="lv">
+      <header className="lv-nav">
+        <Link className="lv-logo" to="/" aria-label="InvitesReady">
+          <Mark />
+          <span>invitesready</span>
+        </Link>
+        <nav className="lv-nav-links" aria-label="Main">
+          <a href="#templates">Templates</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQs</a>
         </nav>
-        <div className="lp-nav-actions">
-          <Link className="lp-login" to="/login">
-            Log in
-          </Link>
-          <Link className="lp-create lp-btn" to="/create">
-            Create invite
-          </Link>
-        </div>
-        <button type="button" className="lp-burger" aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} onClick={() => setMenu((open) => !open)}>
-          {menu ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-              <path d="M4 7h16M4 12h16M4 17h10" />
-            </svg>
-          )}
-        </button>
+        <a className="lv-pill" href="#start">Get started</a>
       </header>
-      {menu ? (
-        <nav className="lp-menu" aria-label="Menu">
-          {NAV.map((item) => (
-            <Link key={item.href} to={item.href} onClick={closeMenu}>
-              {item.label}
-            </Link>
-          ))}
-          <Link to="/login" onClick={closeMenu}>Log in</Link>
-          <Link className="lp-create" to="/create" onClick={closeMenu}>
-            Create invite — free
-          </Link>
-        </nav>
-      ) : null}
 
       <main>
-      <section
-        id="top"
-        className="lp-hero"
-        style={{ background: `radial-gradient(${narrow ? 360 : 600}px circle at ${spot.x}% ${spot.y}%, rgba(216,27,96,0.16), rgba(251,248,245,0) 70%), #FBF8F5` }}
-        onMouseMove={(event) => {
-          const box = event.currentTarget.getBoundingClientRect();
-          setSpot({ x: Math.round(((event.clientX - box.left) / box.width) * 100), y: Math.round(((event.clientY - box.top) / box.height) * 100) });
-        }}
-      >
-        {Array.from({ length: narrow ? 10 : 14 }, (_, i) => (
-          <span
-            key={i}
-            className="lp-petal"
-            aria-hidden="true"
-            style={{ left: `${(i * 7.2) % 100}%`, animationDuration: `${12 + (i % 5) * 2}s`, animationDelay: `-${i * 1.3}s` }}
-          >
-            <span style={{ animationDuration: `${3 + (i % 3)}s` }}>
-              <svg width={12 + (i % 3) * 6} height={12 + (i % 3) * 6} viewBox="0 0 20 20">
-                <path d="M10 1C15 5 17 11 10 19 3 11 5 5 10 1z" fill={PETAL_COLORS[i % 4]} />
-              </svg>
-            </span>
-          </span>
-        ))}
-        <svg className="lp-mandala" width="760" height="760" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-          <g stroke="#F23F78" strokeWidth="0.4">
-            <circle cx="100" cy="100" r="96" />
-            <circle cx="100" cy="100" r="70" />
-            <circle cx="100" cy="100" r="40" />
-            <path d="M100 4c12 30 12 62 0 96-12-34-12-66 0-96zM196 100c-30 12-62 12-96 0 34-12 66-12 96 0zM100 196c-12-30-12-62 0-96 12 34 12 66 0 96zM4 100c30-12 62-12 96 0-34 12-66 12-96 0z" />
-          </g>
-        </svg>
-
-        <div className="lp-hero-copy">
-          <span className="lp-pill">
-            <b>NEW</b>
-            Animated templates for every celebration
-          </span>
-          <h1>
-            {WORDS.map((word, index) => (
-              <span key={word}>
-                <span className="lp-word">
-                  <span style={{ animationDelay: `${0.1 + index * 0.12}s` }}>{word}</span>
-                </span>{" "}
-              </span>
-            ))}
-            <span className="lp-word">
-              <span className="lp-remember">
-                remember.
-                <svg viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M4 12C60 4 120 16 180 8s90 4 112 2" stroke="#D81B60" strokeWidth="4" strokeLinecap="round" fill="none" />
-                </svg>
-              </span>
-            </span>
-          </h1>
-          <p className="lp-lede">
-            {narrow
-              ? "A digital invitation for a wedding, nikah, baptism, or housewarming. Share one link. Guests RSVP with no app."
-              : "Design a digital invitation for a wedding, nikah, baptism, or housewarming. Share one link on WhatsApp. Guests open it and RSVP with no app."}
-          </p>
-          <div className="lp-ctas">
-            <Link className="lp-cta lp-btn" to="/create">
-              Create your invitation — free <span aria-hidden="true">→</span>
-            </Link>
-            <Link className="lp-cta-line lp-btn" to="/browse">
-              Browse templates
-            </Link>
-          </div>
-          <div className="lp-checks">
-            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> No app for guests</span>
-            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> {narrow ? "Design free" : "Design free, no sign-up"}</span>
-            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> Pay once per event</span>
-          </div>
-        </div>
-
-        <div className="lp-stage">
-          <div className="lp-phone">
-            <div className="lp-phone-screen">
-              {template && fields ? (
-                <div className="lp-phone-live" key={slide.id}>
-                  <div className="lp-phone-live-stage">
-                    <InviteView template={template} fields={fields} demo />
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </div>
-          <div className="lp-float-card lp-rsvp">
-            <i>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4E6853" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M5 12l4 4L19 7" />
-              </svg>
-            </i>
-            <div key={reply}>
-              <strong>New reply</strong>
-              <small>{reply}</small>
-            </div>
-          </div>
-          <div className="lp-float-card lp-head">
-            <em>HEADCOUNT</em>
-            <div>
-              <strong>{headcount}</strong> <span>attending</span>
-            </div>
-            <div className="lp-bar">
-              <i style={{ width: `${pct}%` }} />
-            </div>
-          </div>
-          <div className="lp-wa"><img src="/whatsapp.png" alt="" width={16} height={16} /> Shared on WhatsApp</div>
-          <div className="lp-dots" aria-hidden="true">
-            {DEMO_SLIDES.map((item) => (
-              <i key={item.id} style={{ width: item.id === slide.id ? 28 : 8, background: item.id === slide.id ? "#D81B60" : "#D8CCBF" }} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="occasions" className="lp-marquee" aria-label="Occasions">
-        <div className="lp-occasion-viewport">
-          <div className="lp-occasion-row">
-            {[0, 1].map((copy) => (
-              <span key={copy} className="lp-occasion-copy" aria-hidden={copy === 1}>
-                {OCCASION_GROUPS.map((group) => (
-                  <Fragment key={group[0]}>
-                    <i className="lp-occasion-rule" aria-hidden="true" />
-                    <span className="lp-occasion-group">
-                      {group.map((label, itemIndex) => (
-                        <Fragment key={label}>
-                          {itemIndex > 0 ? <i aria-hidden="true" /> : null}
-                          {label}
-                        </Fragment>
-                      ))}
-                    </span>
-                  </Fragment>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="lp-occasions" aria-label="Celebrations">
-        <div className="lp-occasions-glow" aria-hidden="true">
-          <i className="a" />
-          <i className="b" />
-          {Array.from({ length: 7 }, (_, n) => (
+        <section id="start" className="lv-hero">
+          <span className="lv-aur lv-aur-a" aria-hidden="true" />
+          <span className="lv-aur lv-aur-b" aria-hidden="true" />
+          <span className="lv-aur lv-aur-c" aria-hidden="true" />
+          <span className="lv-beam" aria-hidden="true" />
+          <span className="lv-grid" aria-hidden="true" />
+          <span className="lv-horizon" aria-hidden="true" />
+          {GLINTS.map((glint, index) => (
             <span
-              key={n}
-              className="lp-occasions-petal"
+              key={index}
+              className={index >= 14 ? "lv-glint lv-glint-wide" : "lv-glint"}
+              style={{ left: `${glint.left}%`, top: `${glint.top}%`, animationDelay: glint.delay, animationDuration: glint.dur }}
+              aria-hidden="true"
+            >
+              <Spark size={glint.size} color={glint.color} />
+            </span>
+          ))}
+          {SHOOTS.map((shoot) => (
+            <span key={shoot.delay} className="lv-shoot" style={{ left: `${shoot.x}%`, top: `${shoot.y}%`, animationDelay: shoot.delay }} aria-hidden="true" />
+          ))}
+          {DUST.map((speck, index) => (
+            <span
+              key={index}
+              className="lv-dust"
               style={{
-                left: `${6 + n * 14}%`,
-                animationDuration: `${13 + (n % 4) * 2.5}s`,
-                animationDelay: `${-n * 1.8}s`,
+                left: `${speck.left}%`,
+                top: `${speck.top}%`,
+                width: speck.size,
+                height: speck.size,
+                background: speck.color,
+                animationDelay: speck.delay,
+                animationDuration: speck.dur,
               }}
+              aria-hidden="true"
             />
           ))}
-        </div>
-        <span className="lp-kicker-label">Celebrations</span>
-        <h2>
-          An invitation for every <em>celebration.</em>
-        </h2>
-        <nav aria-label="Celebrations">
-          {TOPICS.map((topic) => (
-            <Link key={topic.id} to={topic.path}>{topic.label}</Link>
-          ))}
-        </nav>
-      </section>
 
-      <section id="how" className="lp-how">
-        <div className="lp-how-glow" aria-hidden="true">
-          <i className="a" />
-          <i className="b" />
-          <span />
-        </div>
-        <div className="lp-how-copy">
-          <span className="lp-kicker-label">How it works</span>
-          <h2>
-            From idea to replies in <em>three steps.</em>
-          </h2>
-          <p className="lp-how-lede">Design once, share one link, and keep every reply in one place.</p>
-          <div className="lp-steps" role="tablist" aria-label="Steps">
-            {STEPS.map(([n, title, text], index) => {
-              const on = how === index;
+          <div className="lv-orb" aria-hidden="true">
+            <span className="lv-orb-glow" />
+            <span className="lv-ring" />
+            <span className="lv-ring lv-ring-inner" />
+            <span className="lv-orbit lv-orbit-a"><span className="lv-glint-dot" /></span>
+            <span className="lv-orbit lv-orbit-b"><span className="lv-glint-dot" /></span>
+            <div className="lv-emblem"><Emblem id="lv-em" /></div>
+            {SPARKS.map(([x, y, size], index) => (
+              <span key={index} className="lv-spark" style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, animationDelay: `${index * 0.3}s`, animationDuration: `${2 + index * 0.4}s` }} />
+            ))}
+          </div>
+
+          <span className="lv-mono">DESCRIBE YOUR CELEBRATION</span>
+          <h1>Beautiful invitations,<br /><span className="lv-sheen">ready in seconds.</span></h1>
+
+          {mode === "idle" ? (
+            <>
+              <form className="lv-prompt" onSubmit={onSubmit}>
+                <input
+                  type="text"
+                  aria-label="Describe your celebration"
+                  value={query}
+                  placeholder={PLACEHOLDERS[ph]}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                <button type="submit" className="lv-go" aria-label="Create my invitations">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#09090B" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </button>
+              </form>
+              <div className="lv-chips">
+                {CHIPS.map(([label, text]) => (
+                  <button key={label} type="button" className="lv-chip" onClick={() => go(text)}>{label}</button>
+                ))}
+              </div>
+              <div className="lv-auth">
+                {AUTH.map(([label, icon]) => (
+                  <Link key={label} className="lv-auth-btn" to="/login">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d={icon} />
+                    </svg>
+                    {label}
+                  </Link>
+                ))}
+              </div>
+              <span className="lv-fine">Free to design · pay only when you publish</span>
+            </>
+          ) : null}
+
+          {mode === "working" ? (
+            <div className="lv-panel" aria-live="polite">
+              <span className="lv-mono lv-quote">“{query}”</span>
+              {LOG.map((line, index) => (
+                <span key={line} className="lv-log" style={{ animationDelay: `${index * 0.8}s` }}>
+                  <span>›</span> {line}
+                </span>
+              ))}
+              <div className="lv-bar" aria-hidden="true"><div /></div>
+            </div>
+          ) : null}
+
+          {mode === "done" ? (
+            <>
+              <div className="lv-picks">
+                {picks.map((pick, index) => (
+                  <article key={pick.id} className="lv-pick" style={{ animationDelay: `${index * 0.15}s` }}>
+                    <div className="lv-pick-shot">
+                      <img src={pick.cover} alt={`${pick.name} design`} />
+                      <div>
+                        <span>{names}</span>
+                        <span className="lv-mono">{pick.kicker}</span>
+                      </div>
+                    </div>
+                    <Link className="lv-use" to={`/create?template=${pick.id}`}>Use this design</Link>
+                  </article>
+                ))}
+              </div>
+              <button type="button" className="lv-reset" onClick={() => { setMode("idle"); setQuery(""); }}>
+                Try another celebration
+              </button>
+            </>
+          ) : null}
+        </section>
+
+        <section id="templates" className="lv-car" aria-roledescription="carousel" aria-label="Invitation designs">
+          <span className="lv-mono">MADE WITH INVITESREADY</span>
+          <h2>Designs that open <span>like a film.</span></h2>
+          <div className="lv-flow">
+            <span className="lv-flow-glow" aria-hidden="true" />
+            {CARDS.map((card, index) => {
+              let off = index - ci;
+              if (off > 4) off -= CARDS.length;
+              if (off < -4) off += CARDS.length;
+              const distance = Math.abs(off);
               return (
                 <button
-                  key={n}
+                  key={card.id}
                   type="button"
-                  role="tab"
-                  aria-selected={on}
-                  className={on ? "lp-step on" : "lp-step"}
-                  onClick={() => {
-                    setHow(index);
-                    setHowT(0);
+                  className={distance === 0 ? "lv-slide is-front" : "lv-slide"}
+                  aria-label={`Show ${card.name}`}
+                  aria-hidden={distance > 2}
+                  tabIndex={distance > 2 ? -1 : 0}
+                  onClick={() => choose(index)}
+                  style={{
+                    transform: `translateX(${off * shift}px) translateZ(${-distance * 120}px) rotateY(${-off * 22}deg) scale(${1 - distance * 0.08})`,
+                    zIndex: 10 - distance,
+                    opacity: distance > 3 ? 0 : 1 - distance * 0.22,
+                    filter: `brightness(${1 - distance * 0.25})`,
+                    pointerEvents: distance > 3 ? "none" : "auto",
                   }}
                 >
-                  <b>{n}</b>
-                  <span>
-                    <strong>{title}</strong>
-                    <p>{text}</p>
-                  </span>
-                  <u aria-hidden="true">
-                    <i style={{ width: `${on ? Math.min(100, (howT + 1) * 12.5) : 0}%` }} />
-                  </u>
+                  <img src={card.cover} alt="" />
                 </button>
               );
             })}
           </div>
-        </div>
-        <div className="lp-how-stage">
-          <div className="lp-how-aura" aria-hidden="true">
-            <span className="lp-how-ribbon lp-how-ribbon-a" />
-            <span className="lp-how-ribbon lp-how-ribbon-b" />
-            <span className="lp-how-ribbon lp-how-ribbon-c" />
-            <svg className="lp-how-ornament lp-how-ornament-tl" viewBox="0 0 120 120" fill="none">
-              <path d="M8 112C18 72 48 42 88 28" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M28 112C36 84 58 58 92 44" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-              <path d="M88 28c8-4 16-6 24-6M88 28c2 10 0 20-6 28" stroke="currentColor" strokeWidth="1" />
-              <circle cx="88" cy="28" r="2.5" fill="currentColor" />
-            </svg>
-            <svg className="lp-how-ornament lp-how-ornament-br" viewBox="0 0 120 120" fill="none">
-              <path d="M112 8C102 48 72 78 32 92" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M92 8C84 36 62 62 28 76" stroke="currentColor" strokeWidth="1" opacity="0.7" />
-              <path d="M32 92c-8 4-16 6-24 6M32 92c-2-10 0-20 6-28" stroke="currentColor" strokeWidth="1" />
-              <circle cx="32" cy="92" r="2.5" fill="currentColor" />
-            </svg>
-            {Array.from({ length: narrow ? 10 : 16 }, (_, i) => (
-              <span
-                key={i}
-                className={`lp-how-foil lp-how-foil-${(i % 3) + 1}`}
-                style={{
-                  left: `${8 + ((i * 11.7) % 84)}%`,
-                  animationDuration: `${7 + (i % 5) * 1.6}s`,
-                  animationDelay: `-${i * 0.7}s`,
-                }}
+          <div className="lv-cap" key={current.id}>
+            <span>{current.name}</span>
+            <span className="lv-mono">{current.kicker}</span>
+          </div>
+          <div className="lv-car-nav">
+            <button type="button" className="lv-arrow" aria-label="Previous design" onClick={() => choose((ci + CARDS.length - 1) % CARDS.length)}>‹</button>
+            <Link className="lv-preview" to={`/open/${current.id}`}>Preview this invitation</Link>
+            <button type="button" className="lv-arrow" aria-label="Next design" onClick={() => choose((ci + 1) % CARDS.length)}>›</button>
+          </div>
+          <div className="lv-dots">
+            {CARDS.map((card, index) => (
+              <button
+                key={card.id}
+                type="button"
+                className={index === ci ? "is-on" : undefined}
+                aria-label={`Design ${index + 1}`}
+                aria-current={index === ci ? "true" : undefined}
+                onClick={() => choose(index)}
               />
             ))}
           </div>
-          {how === 0 ? (
-            <div className="lp-how-panel" key="pick">
-              <div className="lp-how-fan">
-                {HOW_CARDS.map((card, index) => (
-                  <div
-                    key={card.id}
-                    className="lp-how-slot"
-                    style={{
-                      transform: `translate(${Math.round(card.dx * (narrow ? 0.52 : 1))}px, 0) rotate(${card.rot}deg)`,
-                      zIndex: index === 3 ? 2 : 1,
-                    }}
-                  >
-                    <div className="lp-how-card" style={{ animationDelay: `${index * 0.12}s` }}>
-                      <img src={card.cover} alt="" />
-                      <span>{card.name}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <span className="lp-typing">Personalising Anna &amp; Joel…</span>
-            </div>
-          ) : null}
-          {how === 1 ? (
-            <div className="lp-how-panel" key="share">
-              <div className="lp-chat-shell">
-                <div className="lp-chat">
-                  <div className="lp-chat-head">
-                    <img src="/whatsapp.png" alt="" width={16} height={16} />
-                    <span>WhatsApp</span>
-                  </div>
-                  <div className="lp-chat-body">
-                    <div className="lp-chat-out">
-                      <div className="lp-chat-card">
-                        <img src="/covers/anna.jpg" alt="" />
-                        <strong>
-                          Anna <em>&amp;</em> Joel
-                        </strong>
-                        <small>invitesready.com/anna-joel</small>
+        </section>
+
+        <section id="features" className="lv-sec">
+          <h2>Everything a celebration needs.<br /><span>Nothing it doesn’t.</span></h2>
+          <div className="lv-bento">
+            {TILES.map((tile) => (
+              <article key={tile.k} id={tile.k.startsWith("06") ? "pricing" : undefined} className={tile.stage ? "lv-tile lv-tile-stage" : "lv-tile"}>
+                <span className="lv-mono lv-kicker">{tile.k}</span>
+                <h3>{tile.t}</h3>
+                <p>{tile.d}</p>
+                {tile.stage ? (
+                  <div className="lv-stage" aria-hidden="true">
+                    <span className="lv-stage-glow" />
+                    <div className="lv-door">
+                      <div className="lv-door-in">
+                        <span className="lv-door-card"><Emblem id="lv-door-em" /></span>
                       </div>
-                      <p>You're invited — tap to RSVP</p>
-                      <em>10:24 <CheckCheck size={13} strokeWidth={2.4} aria-hidden="true" /></em>
+                      <div className="lv-door-l"><span /></div>
+                      <div className="lv-door-r"><span /></div>
                     </div>
-                    <div className="lp-chat-in" style={{ animationDelay: "0.55s" }}>
-                      So beautiful. We'll be there.
-                    </div>
-                    <div className="lp-chat-in" style={{ animationDelay: "0.95s" }}>
-                      RSVP'd for all three functions.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : null}
-          {how === 2 ? (
-            <div className="lp-how-panel lp-how-panel-live" key="replies">
-              <div className="lp-live-invite" aria-hidden="true">
-                <img src="/covers/anna.jpg" alt="" />
-                <span>Anna &amp; Joel</span>
-              </div>
-              <div className="lp-live">
-                <div className="lp-live-top">
-                  <div>
-                    <span>Live RSVPs</span>
-                    <small>Updating as guests reply</small>
-                  </div>
-                  <strong>{headcount}</strong>
-                </div>
-                <div className="lp-live-list">
-                  {RSVPS.map(([initials, name, status, color, detail], index) => (
-                    <div className="lp-live-row" key={name} style={{ animationDelay: `${0.15 + index * 0.18}s` }}>
-                      <b style={{ background: color }}>{initials}</b>
-                      <span>
-                        <strong>{name}</strong>
-                        <small>{detail}</small>
+                    {DOOR_SPARKS.map(([x, y, size], index) => (
+                      <span key={index} className="lv-door-spark" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${index * 0.35}s`, animationDuration: `${2.4 + index * 0.4}s` }}>
+                        <Spark size={size} color="#E0F2FE" />
                       </span>
-                      <em className={status === "Pending" ? "wait" : "yes"}>{status}</em>
+                    ))}
+                    <div className="lv-kinds">
+                      {KINDS.map(([label, icon]) => (
+                        <span key={label}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d={icon} />
+                          </svg>
+                          {label}
+                        </span>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <div className="lp-live-foot">
-                  <i style={{ width: `${pct}%` }} />
-                </div>
-              </div>
-            </div>
-          ) : null}
-        </div>
-      </section>
-
-      <section id="templates" className="lp-templates">
-        <div className="lp-templates-glow" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          {Array.from({ length: 18 }, (_, i) => (
-            <em
-              key={i}
-              style={{
-                left: `${4 + ((i * 13.7) % 92)}%`,
-                animationDuration: `${8 + (i % 6) * 1.4}s`,
-                animationDelay: `-${i * 0.55}s`,
-              }}
-            />
-          ))}
-        </div>
-        <div className="lp-templates-head">
-          <div>
-            <span className="lp-kicker-label lp-kicker-gold">Templates</span>
-            <h2>
-              Invitations that <em>move.</em>
-            </h2>
-            <p>
-              {narrow
-                ? "Doors that open, sunsets that settle, homes that build themselves."
-                : "Palace doors that open, sunsets that set, houses that build themselves. Hover to peek."}
-            </p>
-          </div>
-          <Link className="lp-gold-link lp-btn" to="/browse">
-            See all templates
-          </Link>
-        </div>
-        <div className="lp-tpl-row" ref={tplRow} tabIndex={0} role="region" aria-label="Invitation templates">
-          <div className="lp-tpl-track">
-            {cards.map((template, index) => (
-              <Link draggable={false} className="lp-tpl" to={template.to} key={`${template.name}-${index}`}>
-                <span className={`lp-tpl-badge${template.tag === "Free" ? " free" : template.tag === "Premium" ? " premium" : ""}`}>
-                  {template.tag}
-                </span>
-                <div className="lp-tpl-media">
-                  <img src={template.cover} alt="" loading="lazy" />
-                  <div className="lp-tpl-veil">
-                    <small>{template.kicker}</small>
-                    <strong>{template.sample}</strong>
                   </div>
-                </div>
-                <span className="lp-tpl-name">{template.name}</span>
-              </Link>
+                ) : null}
+              </article>
             ))}
           </div>
-        </div>
-        <div className="lp-tpl-more">
-          <Link to="/browse">See all templates</Link>
-        </div>
-      </section>
+        </section>
 
-      <section id="features" className="lp-features">
-        <div className="lp-features-glow" aria-hidden="true">
-          <i className="orb a" />
-          <i className="orb b" />
-          <i className="orb c" />
-          <span className="lp-features-wave w1" />
-          <span className="lp-features-wave w2" />
-          {Array.from({ length: 12 }, (_, n) => (
-            <em
-              key={n}
-              className="lp-features-dot"
-              style={{
-                left: `${8 + ((n * 15.5) % 84)}%`,
-                top: `${12 + ((n * 23) % 70)}%`,
-                animationDelay: `${-n * 0.7}s`,
-                animationDuration: `${5 + (n % 4)}s`,
-              }}
-            />
-          ))}
-        </div>
-        <div className="lp-features-intro">
-          <span className="lp-kicker-label">Everything, ready</span>
-          <h2>
-            Everything around the invite, <em>handled.</em>
-          </h2>
-          <p className="lp-features-lede">
-            {narrow
-              ? "The details hosts forget — already designed in."
-              : "Languages, privacy, RSVPs, venue check-in and the guest-page details hosts usually forget — already designed in."}
-          </p>
-        </div>
+        <section id="how" className="lv-sec">
+          <div className="lv-steps">
+            {STEPS.map(([n, title, text]) => (
+              <div key={n}>
+                <span className="lv-mono">{n}</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <div className="lp-feat-stage">
-          <article className="lp-feat lp-feat-lang">
-            <div className="lp-feat-lang-bg" aria-hidden="true">
-              <b />
-              <b />
-              <b className="teal" />
-              <span className="lp-feat-ring r1" />
-              <span className="lp-feat-ring r2" />
-              <span className="lp-feat-ring r3" />
-            </div>
-            <div className="lp-feat-copy">
-              <span>01 — Languages</span>
-              <h3>Invites in every language</h3>
-              <p>
-                {narrow
-                  ? "English, Malayalam, Hindi, Bengali and more Indian languages — side by side."
-                  : "English, Malayalam, Hindi, Bengali, Tamil and more Indian languages — so every relative reads the invite in their own script."}
-              </p>
-            </div>
-            <div
-              className="lp-lang-stage"
-              aria-hidden="true"
-              style={{
-                ["--lang-accent" as string]: LANG_DEMOS[lang].theme.accent,
-                ["--lang-soft" as string]: LANG_DEMOS[lang].theme.soft,
-              }}
-            >
-              <div className="lp-lang-chips">
-                {LANG_CHIPS.map((chip) => (
-                  <i key={chip} className={LANG_DEMOS[lang].chip === chip ? "on" : undefined}>
-                    {chip}
-                  </i>
-                ))}
-              </div>
-              <div
-                className={`lp-lang-sheet script-${LANG_DEMOS[lang].script}`}
-                key={lang}
-                style={{
-                  ["--lang-wash" as string]: LANG_DEMOS[lang].theme.wash,
-                  ["--lang-deep" as string]: LANG_DEMOS[lang].theme.deep,
-                  ["--lang-accent" as string]: LANG_DEMOS[lang].theme.accent,
-                  ["--lang-soft" as string]: LANG_DEMOS[lang].theme.soft,
-                  ["--lang-orb" as string]: LANG_DEMOS[lang].theme.orb,
-                  ["--lang-orb2" as string]: LANG_DEMOS[lang].theme.orb2,
-                  ["--lang-petal" as string]: LANG_DEMOS[lang].theme.petal,
-                  ["--lang-petal2" as string]: LANG_DEMOS[lang].theme.petal2,
-                  ["--lang-petal3" as string]: LANG_DEMOS[lang].theme.petal3,
-                }}
-              >
-                <div className="lp-lang-aura" aria-hidden="true">
-                  <span className="lp-lang-orb o1" />
-                  <span className="lp-lang-orb o2" />
-                  <span className="lp-lang-orb o3" />
-                  <span className="lp-lang-halo h1" />
-                  <span className="lp-lang-halo h2" />
-                  <span className="lp-lang-halo h3" />
-                  {Array.from({ length: 7 }, (_, n) => (
-                    <em
-                      key={n}
-                      className={`lp-lang-petal p${(n % 3) + 1}`}
-                      style={{
-                        left: `${-8 + ((n * 18) % 110)}%`,
-                        animationDelay: `${-n * 0.9}s`,
-                        animationDuration: `${7 + (n % 4)}s`,
-                      }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 20 20">
-                        <path d="M10 1C15 5 17 11 10 19 3 11 5 5 10 1z" fill="currentColor" />
-                      </svg>
-                    </em>
-                  ))}
-                </div>
-                <div className="lp-lang-sheet-inner">
-                  <small>{LANG_DEMOS[lang].invite}</small>
-                  <strong className="lp-lang-names">
-                    <b>{LANG_DEMOS[lang].names[0]}</b>
-                    <em className={LANG_DEMOS[lang].joiner === "&" ? "amp" : undefined}>{LANG_DEMOS[lang].joiner}</em>
-                    <b>{LANG_DEMOS[lang].names[1]}</b>
-                  </strong>
-                  <i className="lp-lang-goldline" />
-                  <span>{LANG_DEMOS[lang].date}</span>
-                  <em className="lp-lang-venue">{LANG_DEMOS[lang].venue}</em>
-                  <div className="lp-lang-meta">
-                    <i>{LANG_DEMOS[lang].event}</i>
-                    <i>{LANG_DEMOS[lang].place}</i>
-                  </div>
-                  <div className="lp-lang-dots" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <div className="lp-feat-side">
-            <article className="lp-feat lp-feat-rsvp">
-              <div className="lp-feat-copy">
-                <span>02 — RSVP</span>
-                <h3>One-tap reply</h3>
-                <p>{narrow ? "No login, no app." : "No login, no app — even on older phones."}</p>
-              </div>
-              <div className="lp-rsvp-sheet" aria-hidden="true">
-                <b>Will you join?</b>
-                <div>
-                  <button type="button" tabIndex={-1}>Joyfully joining</button>
-                  <button type="button" tabIndex={-1} className="ghost">
-                    Regretfully decline
+        <section id="faq" className="lv-sec">
+          <h2>FAQs</h2>
+          <div className="lv-faqs">
+            {FAQS.map(([question, answer], index) => {
+              const open = faq === index;
+              return (
+                <div key={question}>
+                  <button type="button" aria-expanded={open} onClick={() => setFaq(open ? -1 : index)}>
+                    {question}
+                    <span style={{ transform: open ? "rotate(45deg)" : undefined }}>+</span>
                   </button>
+                  {open ? <p>{answer}</p> : null}
                 </div>
-                <small>Mehendi · Wedding · Reception</small>
-              </div>
-            </article>
-
-            <article className="lp-feat lp-feat-lock">
-              <div className="lp-feat-copy">
-                <span>03 — Privacy</span>
-                <h3>Private by default</h3>
-                <p>{narrow ? "Address after a yes." : "Venue address appears only after a guest says yes."}</p>
-              </div>
-              <div className="lp-seal" aria-hidden="true">
-                <div className="lp-seal-card">
-                  <strong>The Grand Pavilion</strong>
-                  <em className="blur">12 Orchid Lane, Kochi</em>
-                  <u>Unlocks after RSVP</u>
-                </div>
-                <i>
-                  <svg width="22" height="26" viewBox="0 0 22 26" fill="none">
-                    <path d="M5 11V8a6 6 0 0 1 12 0v3" stroke="currentColor" strokeWidth="1.8" />
-                    <rect x="2" y="11" width="18" height="13" rx="2" fill="currentColor" />
-                    <circle cx="11" cy="17" r="1.6" fill="#F23F78" />
-                  </svg>
-                </i>
-              </div>
-            </article>
+              );
+            })}
           </div>
-        </div>
+        </section>
 
-        <div className="lp-feat-row">
-          <article className="lp-feat lp-feat-fns">
-            <div className="lp-feat-copy">
-              <span>04 — Functions</span>
-              <h3>Every function, one link</h3>
-            </div>
-            <div className="lp-fns-board" aria-hidden="true">
-              {BARS.map(([name, width, color]) => (
-                <div key={name}>
-                  <div className="lp-fns-meta">
-                    <span>{name.split(" · ")[0]}</span>
-                    <em>{name.split(" · ")[1]}</em>
-                  </div>
-                  <div className="lp-bar">
-                    <i style={{ width: `${width}%`, background: color }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="lp-feat lp-feat-qr">
-            <div className="lp-feat-copy">
-              <span>05 — Venue</span>
-              <h3>QR check-in</h3>
-            </div>
-            <div className="lp-qr-board" aria-hidden="true">
-              <div className="lp-qr-frame">
-                <div className="lp-qr">
-                  {QR.map((cell, index) => (
-                    <i key={index} style={{ background: cell ? "#2A1527" : "transparent" }} />
-                  ))}
-                  <u />
-                </div>
-                <div className="lp-qr-meta">
-                  <strong>Gate A</strong>
-                  <small>42 checked in</small>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article className="lp-feat lp-feat-music">
-            <img className="lp-music-cover" src="/covers/beach.jpg" alt="" aria-hidden="true" />
-            <div className="lp-feat-copy">
-              <span>06 — Guest page</span>
-              <h3>{narrow ? "Music & more" : "Music, maps & wishes"}</h3>
-            </div>
-            <div className="lp-music-player" aria-hidden="true">
-              <div className="lp-music-meta">
-                <strong>Golden Hour</strong>
-                <small>Now playing</small>
-              </div>
-              <div className="lp-eq">
-                {Array.from({ length: 10 }, (_, i) => (
-                  <i key={i} style={{ background: i % 2 ? "#F23F78" : "#D81B60", animationDuration: `${0.5 + (i % 5) * 0.11}s`, animationDelay: `${i * 0.04}s` }} />
-                ))}
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="faq" className="lp-faq">
-        <div className="lp-faq-stage" aria-hidden="true">
-          <div className="lp-faq-rules" />
-          <div className="lp-faq-wash" />
-          <i className="lp-faq-pen" />
-          <i className="lp-faq-pen late" />
-          {["tr", "bl"].map((corner) => (
-            <span key={corner} className={`lp-faq-corner ${corner}`} />
-          ))}
-          {Array.from({ length: narrow ? 4 : 7 }, (_, i) => (
-            <i
-              key={i}
-              className="lp-faq-gem"
-              style={{ left: i % 2 === 0 ? "2.2%" : "96%", top: `${18 + (i * 16) % 64}%`, animationDelay: `-${i * 0.45}s`, animationDuration: `${3 + (i % 3) * 0.8}s` }}
-            />
-          ))}
-        </div>
-        <div className="lp-faq-intro">
-          <span className="lp-kicker-label">FAQ</span>
-          <h2>
-            A few answers,
-            <em>before you share.</em>
-          </h2>
-          <p>The practical details, before the first invitation goes out.</p>
-        </div>
-        <div className="lp-faq-list">
-          {FAQS.map(([question, answer], index) => {
-            const open = faq === index;
-            return (
-              <div className={open ? "lp-faq-item on" : "lp-faq-item"} key={question}>
-                <button type="button" aria-expanded={open} onClick={() => setFaq(open ? -1 : index)}>
-                  <b>{String(index + 1).padStart(2, "0")}</b>
-                  <span>{question}</span>
-                  <i className={open ? "on" : ""}>+</i>
-                </button>
-                <p hidden={!open}>{answer}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <section
-        className="lp-finale"
-        onMouseEnter={() => setBurst((value) => value + 1)}
-        onClick={() => setBurst((value) => value + 1)}
-      >
-        {burst > 0
-          ? Array.from({ length: 24 }, (_, i) => (
-              <span
-                key={`${burst}-${i}`}
-                className="lp-confetti"
-                aria-hidden="true"
-                style={{
-                  left: `${(i * 41) % 100}%`,
-                  width: 8 + (i % 3) * 4,
-                  height: 12 + (i % 2) * 6,
-                  background: CONFETTI[i % 5],
-                  animationDuration: `${2 + (i % 4) * 0.4}s`,
-                  animationDelay: `${(i % 6) * 0.1}s`,
-                }}
-              />
-            ))
-          : null}
-        <div className="lp-finale-copy">
-          <span className="lp-kicker-label">Start today</span>
-          <h2>
-            {narrow ? (
-              <>
-                More than a <em>forwarded PDF.</em>
-              </>
-            ) : (
-              <>
-                Your celebration deserves more than a <em>forwarded PDF.</em>
-              </>
-            )}
-          </h2>
-          <p>{narrow ? "Your first invite in about ten minutes. Free to design." : "Create your first invite in about ten minutes. Free to design — no sign-up needed."}</p>
-          <div className="lp-ctas">
-            <Link className="lp-cta" to="/create">
-              Create your invitation — free <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-          <div className="lp-checks">
-            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> Free to design</span>
-            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> No sign-up</span>
-            <span><Check size={15} strokeWidth={2.6} aria-hidden="true" /> Share on WhatsApp</span>
-          </div>
-        </div>
-      </section>
+        <section className="lv-cta">
+          <span aria-hidden="true" />
+          <h2>Your celebration starts with a sentence.</h2>
+          <a href="#start">Describe yours</a>
+        </section>
       </main>
 
-      <footer className="lp-foot">
-        <Brand light />
-        <nav aria-label="Footer">
-          <Link to="/browse">Templates</Link>
-          <Link to="/faq">FAQ</Link>
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/terms">Terms</Link>
-          <Link to="/refunds">Refunds</Link>
-          <Link to="/contact">Contact</Link>
-        </nav>
-        <nav className="lp-social" aria-label="Social">
-          <a href="https://www.facebook.com/profile.php?id=61594844762009" target="_blank" rel="noopener noreferrer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M14.5 8.5V6.8c0-.6.4-.8.8-.8H17V3.5h-2.4C12.1 3.5 11 4.9 11 7.1v1.4H9v2.7h2V20h2.8v-8.8h2.3l.4-2.7h-2.7z" />
-            </svg>
-            <span className="lp-sr">Facebook</span>
-          </a>
-          <a href="https://www.instagram.com/invitesready/" target="_blank" rel="noopener noreferrer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-            </svg>
-            <span className="lp-sr">Instagram</span>
-          </a>
-        </nav>
-        <small>© 2026 InvitesReady.com</small>
+      <footer className="lv-foot">
+        <div className="lv-foot-brand">
+          <span>invitesready</span>
+          <p>Beautiful digital invitations for life’s moments. Designed to be opened, shared and remembered.</p>
+        </div>
+        <div className="lv-foot-cols">
+          {FOOTER.map((column) => (
+            <div key={column.h}>
+              <span className="lv-mono">{column.h}</span>
+              {column.links.map((link) => (
+                <Link key={link.label} to={link.to}>{link.label}</Link>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="lv-foot-end">
+          <span className="lv-mono">© INVITESREADY 2026</span>
+          <span className="lv-mono">DESIGNED WITH LOVE IN KOCHI</span>
+        </div>
       </footer>
     </div>
   );
