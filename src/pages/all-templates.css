@@ -141,6 +141,18 @@
   line-height: 1.6;
   color: #6b5a62;
 }
+.cat-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 16px;
+}
+.cat-topics a {
+  color: #d81b60;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
 .cat-search {
   flex-shrink: 0;
   width: 460px;

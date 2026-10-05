@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Brand } from "../components/Brand";
 import { InviteView } from "../components/InviteView";
 import { getTemplate, sampleFor } from "../data/templates";
+import { TOPICS } from "../data/topics";
 import type { EventId } from "../types";
 import { useFonts } from "../lib/fonts";
 import "./landing.css";
@@ -491,8 +492,8 @@ export function Home({ focus }: { focus?: string }) {
           </h1>
           <p className="lp-lede">
             {narrow
-              ? "Design a beautiful invitation in minutes, share one link on WhatsApp, and watch replies arrive."
-              : "Design a beautiful invitation in minutes, share one link on WhatsApp, and watch replies arrive — for a wedding, a housewarming, or the evening after."}
+              ? "A digital invitation for a wedding, nikah, baptism, or housewarming. Share one link. Guests RSVP with no app."
+              : "Design a digital invitation for a wedding, nikah, baptism, or housewarming. Share one link on WhatsApp. Guests open it and RSVP with no app."}
           </p>
           <div className="lp-ctas">
             <Link className="lp-cta lp-btn" to="/create">
@@ -595,9 +596,9 @@ export function Home({ focus }: { focus?: string }) {
           An invitation for every <em>celebration.</em>
         </h2>
         <nav aria-label="Celebrations">
-          <Link to="/c/marriage">Marriage</Link>
-          <Link to="/c/engagement">Engagements</Link>
-          <Link to="/c/housewarming">Housewarming</Link>
+          {TOPICS.map((topic) => (
+            <Link key={topic.id} to={topic.path}>{topic.label}</Link>
+          ))}
         </nav>
       </section>
 

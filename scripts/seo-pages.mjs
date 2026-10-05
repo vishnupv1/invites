@@ -4,8 +4,8 @@ import path from "node:path";
 const SITE = "https://invitesready.com";
 const root = path.resolve(import.meta.dirname, "..");
 const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
-const HOME_DESCRIPTION =
-  "Design a digital invitation for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
+const seoCopy = JSON.parse(fs.readFileSync(path.join(root, "src/data/seo-copy.json"), "utf8"));
+const HOME_DESCRIPTION = seoCopy.pages["/"].description;
 
 const FAQS = [
   ["Do my guests need an app or an account?", "No. Guests open your link in any browser and RSVP in one tap — it works on basic phones too."],
@@ -16,12 +16,12 @@ const FAQS = [
 ];
 
 const STATIC = [
-  ["/", "Digital invitations your guests can open and reply to | InvitesReady", HOME_DESCRIPTION],
+  ["/", seoCopy.pages["/"].title, HOME_DESCRIPTION],
   ["/how", "How digital invitations work | InvitesReady", "Pick a template, add your details, and share one link. Guests open it in the browser and RSVP without an app."],
   ["/features", "Invitation features | InvitesReady", "RSVPs, guest groups, reminders, a photo wall, and password-protected pages for wedding and family invitations."],
   ["/faq", "Invitation questions | InvitesReady", "Guests do not need an app. You can design before you sign up, edit after sending, and keep the address private."],
-  ["/occasions", "Wedding, baptism, and housewarming invitations | InvitesReady", "Digital invitations for weddings, nikah, engagements, baptisms, birthdays, anniversaries, and housewarmings."],
-  ["/browse", "Invitation templates | InvitesReady", "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy."],
+  ["/occasions", seoCopy.pages["/occasions"].title, seoCopy.pages["/occasions"].description],
+  ["/browse", seoCopy.pages["/browse"].title, seoCopy.pages["/browse"].description],
   ["/privacy", "Privacy policy | InvitesReady", "How InvitesReady collects, uses, and stores account details, invitation content, guest replies, and payments."],
   ["/terms", "Terms of use | InvitesReady", "The terms for creating an account, designing an invitation, and buying a template on InvitesReady."],
   ["/refunds", "Refunds | InvitesReady", "When a one-time InvitesReady template purchase can be refunded, and how to ask."],
@@ -112,6 +112,21 @@ function bodyFor(page, templates, events) {
         `<li><a href="/template/${escapeAttr(template.id)}">${escapeText(template.name)}</a> — ${escapeText(template.description || priceText(template))}</li>`,
     );
     parts.push("<h2>Templates</h2>", `<ul>${items.join("")}</ul>`);
+  } else if (page.topic) {
+    const templatesForTopic = page.topic.templates
+      .map((id) => templates.find((template) => template.id === id))
+      .filter(Boolean);
+    const items = templatesForTopic.map(
+      (template) =>
+        `<li><a href="/template/${escapeAttr(template.id)}">${escapeText(template.name)}</a> — ${escapeText(template.description || priceText(template))}</li>`,
+    );
+    parts.push("<h2>Templates</h2>", `<ul>${items.join("")}</ul>`);
+    const related = (page.topic.related ?? [])
+      .map((itemPath) => seoCopy.topics.find((topic) => topic.path === itemPath))
+      .filter(Boolean);
+    if (related.length) {
+      parts.push("<h2>Related</h2>", linkList(related.map((topic) => [topic.path, topic.heading])));
+    }
   } else if (page.path === "/" || page.path === "/browse") {
     parts.push("<h2>Invitation templates</h2>", templateLinks(templates));
   }
@@ -153,7 +168,7 @@ function graphFor(page, templates) {
       "@type": "WebSite",
       name: "InvitesReady",
       url: `${SITE}/`,
-      description: "Digital invitations for weddings and other celebrations. Design one, share the link, and collect replies.",
+      description: "Digital invitations for a wedding, nikah, shaadi, Tamil wedding, baptism, or housewarming. Design one, share the link, and collect replies.",
     });
     graph.push(faqEntity());
     graph.push({
@@ -248,28 +263,40 @@ function pages(templates, events) {
     image: BRAND_IMAGE,
   }));
   for (const template of templates) {
-    const description = template.free
+    const line = seoCopy.templates[template.id];
+    const description = line?.description ?? (template.free
       ? `Preview the ${template.name} invitation. This design is free to publish.`
-      : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`;
+      : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`);
     const image = `${SITE}/covers/${template.id}.jpg`;
     for (const prefix of ["template"]) {
       list.push({
         path: `/${prefix}/${template.id}`,
         canonical: `/template/${template.id}`,
-        title: `${template.name} invitation template | InvitesReady`,
-        heading: `${template.name} invitation template`,
+        title: line?.title ?? `${template.name} invitation template | InvitesReady`,
+        heading: line?.heading ?? `${template.name} invitation template`,
         description,
         image,
         template,
       });
     }
   }
+  for (const topic of seoCopy.topics) {
+    list.push({
+      path: topic.path,
+      title: topic.title,
+      heading: topic.heading,
+      description: topic.lead,
+      image: BRAND_IMAGE,
+      topic,
+    });
+  }
   for (const event of events) {
     if (!templates.some((template) => template.events.includes(event.id))) continue;
+    const line = seoCopy.categories[event.id];
     list.push({
       path: `/c/${event.id}`,
-      title: `${event.label} invitations | InvitesReady`,
-      description: `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
+      title: line?.title ?? `${event.label} invitations | InvitesReady`,
+      description: line?.lead ?? `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
       image: BRAND_IMAGE,
       event,
     });

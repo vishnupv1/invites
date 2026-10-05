@@ -1,0 +1,209 @@
+{
+  "pages": {
+    "/": {
+      "title": "Digital wedding, nikah, baptism and housewarming invitations | InvitesReady",
+      "description": "Design a digital invitation for a wedding, nikah, shaadi, Tamil wedding, baptism, or housewarming. Share one link. Guests RSVP in the browser, with no app."
+    },
+    "/browse": {
+      "title": "Wedding, nikah, baptism and housewarming invitation templates | InvitesReady",
+      "description": "Preview wedding, nikah, shaadi, Tamil wedding, baptism, birthday, and housewarming invitation templates. Share one link for RSVPs."
+    },
+    "/occasions": {
+      "title": "Wedding, nikah, baptism, and housewarming invitations | InvitesReady",
+      "description": "Digital invitations for a wedding, nikah, shaadi, Tamil wedding, baptism, birthday, or housewarming. Guests open one link and RSVP with no app."
+    }
+  },
+  "categories": {
+    "marriage": {
+      "title": "Digital wedding invitations | InvitesReady",
+      "description": "Digital wedding invitations for a nikah, shaadi, Tamil wedding, garden, beach, or palace celebration. Preview a design and share one link for RSVPs.",
+      "lead": "Digital wedding invitations for a nikah, a Hindu shaadi, a Tamil wedding, or a garden, beach, or palace celebration. Guests open one link and RSVP with no app."
+    },
+    "baptism": {
+      "title": "Baptism invitations | InvitesReady",
+      "description": "A digital baptism invitation with the day, the godparents, and a blessing. Guests open one link and reply in the browser, with no app.",
+      "lead": "A digital baptism invitation with the day, the godparents, and a blessing. Guests open one link and reply in the browser, with no app."
+    },
+    "housewarming": {
+      "title": "Housewarming invitations | InvitesReady",
+      "description": "A digital housewarming invitation for a griha pravesh. Guests open one link, see the new home, and RSVP with no app.",
+      "lead": "A digital housewarming invitation for a griha pravesh. Guests open one link, see the new home, and RSVP with no app."
+    },
+    "birthday": {
+      "title": "Birthday invitations | InvitesReady",
+      "description": "A digital birthday invitation your guests open from one link. They RSVP in the browser, with no app.",
+      "lead": "A digital birthday invitation your guests open from one link. They RSVP in the browser, with no app."
+    }
+  },
+  "templates": {
+    "gazal": {
+      "heading": "Nikah and walima invitation",
+      "title": "Nikah and walima invitation | Gazal",
+      "description": "A digital nikah invitation for the ceremony and walima. Guests open one link and RSVP in the browser, with no app. Gazal is free to publish.",
+      "lead": "Gazal is a digital nikah invitation. Guests see the ceremony, the walima, and reply on the same page. Share one link. They do not need an app."
+    },
+    "aurelia": {
+      "heading": "Wedding invitation",
+      "title": "Wedding invitation | Aurelia",
+      "description": "A navy and gold digital wedding invitation. Guests open one link for the ceremony, the reception, and their reply. Free to publish.",
+      "lead": "Aurelia is a digital wedding invitation in navy and gold. Guests open one link for the ceremony, the reception, and their reply. It is free to publish."
+    },
+    "anna": {
+      "heading": "Garden wedding invitation",
+      "title": "Garden wedding invitation | Anna",
+      "description": "A cream garden-wedding invitation. Guests flip the card for the date, then reply on the page. No app.",
+      "lead": "Anna is a garden wedding invitation. Guests flip the card for the date, then see the day, the venues, and reply on the page."
+    },
+    "baptism": {
+      "heading": "Baptism invitation",
+      "title": "Baptism invitation | Baptism",
+      "description": "A digital baptism invitation with the day, the godparents, and a blessing. Guests open one link and reply in the browser.",
+      "lead": "A digital baptism invitation. A dove opens the page, then guests see the day, the godparents, and leave a blessing. They reply from the link, with no app."
+    },
+    "vivah": {
+      "heading": "Muhurtham wedding invitation",
+      "title": "Muhurtham wedding invitation | Vivah",
+      "description": "A digital wedding invitation that opens onto the muhurtham and the celebrations. Guests reply on the page, with no app.",
+      "lead": "Vivah is a digital wedding invitation. The doors open onto the muhurtham and the celebrations, and guests reply on the page."
+    },
+    "beach": {
+      "heading": "Beach wedding invitation",
+      "title": "Beach wedding invitation | Beach",
+      "description": "A beach wedding invitation that opens onto sunset vows and a reception by the sea. Share one link for RSVPs.",
+      "lead": "A beach wedding invitation. A bottle on the shore opens onto sunset vows, a reception by the sea, and a reply."
+    },
+    "botanica": {
+      "heading": "Floral wedding invitation",
+      "title": "Floral wedding invitation | Blush Botanica",
+      "description": "A floral wedding invitation in gold and blush. Guests open one link and RSVP with no app.",
+      "lead": "Blush Botanica is a floral wedding invitation. Gold rings draw themselves, a wreath opens, and guests reply from the link."
+    },
+    "heavenly": {
+      "heading": "Palace wedding invitation",
+      "title": "Palace wedding invitation | Heavenly",
+      "description": "Guests tap the palace doors and the wedding invitation rises in gold. Share one link for RSVPs.",
+      "lead": "Heavenly is a palace wedding invitation. Guests tap the doors, walk into a lantern-lit world, and the invitation rises in gold."
+    },
+    "pull": {
+      "heading": "Wedding invitation",
+      "title": "Wedding invitation | Pull of Love",
+      "description": "Guests pull a velvet rope and a gold scroll unrolls into the wedding. Share one link. They RSVP with no app.",
+      "lead": "Pull of Love is a digital wedding invitation. Guests pull a velvet rope, the curtains part, and a gold scroll unrolls into the day."
+    },
+    "inland": {
+      "heading": "Birthday invitation",
+      "title": "Birthday invitation | Inland Letter",
+      "description": "A digital birthday invitation that opens like a letter. Share one link for the party. Guests RSVP with no app.",
+      "lead": "Inland Letter is a digital birthday invitation. The letter tears open, balloons rise, and guests reply from the same link."
+    },
+    "hearth": {
+      "heading": "Housewarming invitation",
+      "title": "Housewarming invitation | Hearth",
+      "description": "A digital housewarming invitation for a griha pravesh. Guests open one link, see the new home, and RSVP with no app.",
+      "lead": "Hearth is a digital housewarming invitation for a griha pravesh. The front door opens onto the new home, and guests reply on the page."
+    },
+    "shaadi": {
+      "heading": "Hindu wedding invitation",
+      "title": "Hindu wedding invitation | Shaadi",
+      "description": "A digital shaadi invitation with six festivities and a photograph for every frame. Share one link. Guests RSVP with no app.",
+      "lead": "Shaadi is a digital Hindu wedding invitation. The veil lifts onto six festivities, with a photograph for every frame, and a reply on the page."
+    },
+    "thiruvizha": {
+      "heading": "Tamil wedding invitation",
+      "title": "Tamil wedding invitation | Thiruvizha",
+      "description": "A Tamil wedding invitation for the muhurtham and rituals, in English, Tamil, or both. Guests open one link and reply on the page.",
+      "lead": "Thiruvizha is a Tamil wedding invitation. The kolam opens onto the muhurtham and the rituals, in English, Tamil, or both, with one nadaswaram."
+    },
+    "peace": {
+      "heading": "Wedding invitation",
+      "title": "Wedding invitation | Peace",
+      "description": "A gift-hamper wedding invitation. The ribbon opens onto the day and a reply. Guests need no app.",
+      "lead": "Peace is a gift-hamper wedding invitation. The ribbon opens onto the day, the story, the celebrations, and a reply."
+    },
+    "grandoor": {
+      "heading": "Palace door wedding invitation",
+      "title": "Palace door wedding invitation | The Grand Door",
+      "description": "Guests tap the palace doors and a blush-and-gold wedding invitation rises over the lake. Share one link for RSVPs.",
+      "lead": "The Grand Door is a palace wedding invitation. Guests tap the doors, the leaves swing open, and a blush-and-gold invitation rises over the lake."
+    }
+  },
+  "topics": [
+    {
+      "id": "nikah",
+      "path": "/nikah",
+      "label": "Nikah",
+      "heading": "Nikah invitations",
+      "title": "Nikah invitations with RSVP | InvitesReady",
+      "description": "A digital nikah invitation for the ceremony and walima. Guests open one link and RSVP in the browser, with no app.",
+      "lead": "A digital nikah invitation for the ceremony and the walima. Guests open one link, see the details, and RSVP in the browser. They do not need an app or an account.",
+      "templates": ["gazal"],
+      "related": ["/wedding", "/shaadi"]
+    },
+    {
+      "id": "shaadi",
+      "path": "/shaadi",
+      "label": "Shaadi",
+      "heading": "Hindu wedding invitations",
+      "title": "Hindu wedding invitations | InvitesReady",
+      "description": "Digital shaadi invitations for the muhurtham and the festivities. Share one link. Guests RSVP with no app.",
+      "lead": "Digital invitations for a Hindu wedding. One design opens onto the muhurtham. Another lifts a veil onto six festivities. Guests reply from the link.",
+      "templates": ["shaadi", "vivah"],
+      "related": ["/wedding", "/tamil-wedding"]
+    },
+    {
+      "id": "tamil-wedding",
+      "path": "/tamil-wedding",
+      "label": "Tamil wedding",
+      "heading": "Tamil wedding invitations",
+      "title": "Tamil wedding invitations | InvitesReady",
+      "description": "A Tamil wedding invitation for the muhurtham and rituals, in English, Tamil, or both. Guests open one link and reply on the page.",
+      "lead": "A Tamil wedding invitation for the muhurtham and the rituals. The page can be in English, Tamil, or both, with one nadaswaram. Guests open the link and reply there.",
+      "templates": ["thiruvizha"],
+      "related": ["/shaadi", "/wedding"]
+    },
+    {
+      "id": "wedding",
+      "path": "/wedding",
+      "label": "Wedding",
+      "heading": "Wedding invitations",
+      "title": "Digital wedding invitations | InvitesReady",
+      "description": "Digital wedding invitations for a garden, beach, floral, or palace celebration. Share one link. Guests RSVP with no app.",
+      "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
+      "templates": ["aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor"],
+      "related": ["/nikah", "/shaadi", "/tamil-wedding"]
+    },
+    {
+      "id": "baptism",
+      "path": "/baptism",
+      "label": "Baptism",
+      "heading": "Baptism invitations",
+      "title": "Baptism invitations | InvitesReady",
+      "description": "A digital baptism invitation with the day, the godparents, and a blessing. Guests open one link and reply in the browser.",
+      "lead": "A digital baptism invitation. Guests see the day, the godparents, and leave a blessing. They open one link and reply with no app.",
+      "templates": ["baptism"],
+      "related": ["/birthday"]
+    },
+    {
+      "id": "housewarming",
+      "path": "/housewarming",
+      "label": "Housewarming",
+      "heading": "Housewarming invitations",
+      "title": "Housewarming invitations | InvitesReady",
+      "description": "A digital housewarming invitation for a griha pravesh. Guests open one link, see the new home, and RSVP with no app.",
+      "lead": "A digital housewarming invitation for a griha pravesh. The front door opens onto the new home, and guests RSVP from the link.",
+      "templates": ["hearth"],
+      "related": ["/wedding"]
+    },
+    {
+      "id": "birthday",
+      "path": "/birthday",
+      "label": "Birthday",
+      "heading": "Birthday invitations",
+      "title": "Birthday invitations | InvitesReady",
+      "description": "A digital birthday invitation that opens like a letter. Share one link. Guests RSVP with no app.",
+      "lead": "A digital birthday invitation that opens like a letter. Share one link for the party. Guests reply in the browser, with no app.",
+      "templates": ["inland"],
+      "related": ["/baptism"]
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getEvent } from "../data/events";
+import { SEO_CATEGORIES, SEO_PAGES, topicByPath, templateSeo } from "../data/topics";
 import { getTemplate, templatesFor } from "../data/templates";
 import { trackPageView } from "./analytics";
 
 export const SITE = "https://invitesready.com";
 
-const HOME_DESCRIPTION =
-  "Design a digital invitation for a wedding, nikah, baptism, or housewarming. Start free, or pick a premium design, then share one link for RSVPs.";
+const HOME_DESCRIPTION = SEO_PAGES["/"].description;
 
 const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
 
@@ -16,7 +16,7 @@ type Meta = { title: string; description: string; index: boolean; image: string;
 function describe(pathname: string): Meta {
   if (pathname === "/") {
     return {
-      title: "Digital invitations your guests can open and reply to | InvitesReady",
+      title: SEO_PAGES["/"].title,
       description: HOME_DESCRIPTION,
       index: true,
       image: BRAND_IMAGE,
@@ -48,16 +48,16 @@ function describe(pathname: string): Meta {
   }
   if (pathname === "/occasions") {
     return {
-      title: "Wedding, baptism, and housewarming invitations | InvitesReady",
-      description: "Digital invitations for weddings, nikah, engagements, baptisms, birthdays, anniversaries, and housewarmings.",
+      title: SEO_PAGES["/occasions"].title,
+      description: SEO_PAGES["/occasions"].description,
       index: true,
       image: BRAND_IMAGE,
     };
   }
   if (pathname === "/browse" || pathname === "/templates") {
     return {
-      title: "Invitation templates | InvitesReady",
-      description: "Browse wedding, engagement, baptism, birthday, and housewarming invitation templates. Preview each design before you buy.",
+      title: SEO_PAGES["/browse"].title,
+      description: SEO_PAGES["/browse"].description,
       index: pathname === "/browse",
       image: BRAND_IMAGE,
     };
@@ -101,11 +101,12 @@ function describe(pathname: string): Meta {
     if (template) {
       const onBrowse = pathname.startsWith("/browse/");
       const accountOnly = pathname.startsWith("/preview/");
+      const line = templateSeo(template.id);
       return {
-        title: `${template.name} invitation template | InvitesReady`,
-        description: template.free
+        title: line?.title ?? `${template.name} invitation template | InvitesReady`,
+        description: line?.description ?? (template.free
           ? `Preview the ${template.name} invitation. This design is free to publish.`
-          : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`,
+          : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`),
         index: !accountOnly,
         image: `${SITE}/covers/${template.id}.jpg`,
         canonical: onBrowse ? `/browse/${template.id}` : `/template/${template.id}`,
@@ -117,9 +118,10 @@ function describe(pathname: string): Meta {
   if (category) {
     const event = getEvent(category[1]);
     if (event.id === category[1] && templatesFor(event.id).length > 0) {
+      const line = SEO_CATEGORIES[event.id];
       return {
-        title: `${event.label} invitations | InvitesReady`,
-        description: `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
+        title: line?.title ?? `${event.label} invitations | InvitesReady`,
+        description: line?.description ?? `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
         index: true,
         image: BRAND_IMAGE,
       };
@@ -137,6 +139,11 @@ function describe(pathname: string): Meta {
   }
   if (pathname.startsWith("/i/")) {
     return { title: "Guest invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+  }
+
+  const topic = topicByPath(pathname);
+  if (topic) {
+    return { title: topic.title, description: topic.description, index: true, image: BRAND_IMAGE };
   }
 
   return {

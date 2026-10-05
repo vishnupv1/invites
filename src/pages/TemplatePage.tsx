@@ -22,6 +22,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
+import { templateSeo, topicForTemplate } from "../data/topics";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
@@ -125,6 +126,8 @@ export function TemplatePage() {
   const fields = sampleFor(template, event);
   const others = templatesFor(event).filter((item) => item.id !== template.id).slice(0, 4);
   const tamil = template.style === "thiruvizha";
+  const seo = templateSeo(template.id);
+  const topic = topicForTemplate(template.id);
 
   return (
     <div className={account ? "board buy-board is-account" : "board buy-board"}>
@@ -157,7 +160,7 @@ export function TemplatePage() {
         className="buy-crumbs"
         items={account
           ? [{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]
-          : [{ label: "Home", to: "/" }, { label: "Templates", to: "/browse" }, { label: template.name }]}
+          : [{ label: "Home", to: "/" }, ...(topic ? [{ label: topic.label, to: topic.path }] : [{ label: "Templates", to: "/browse" }]), { label: template.name }]}
       />
       </div>
 
@@ -182,10 +185,12 @@ export function TemplatePage() {
 
           <aside className="buy-panel">
             <div>
+              {seo ? <p className="buy-search">{seo.heading}</p> : null}
               <p className="buy-kicker">One-time purchase</p>
               <p className="buy-price">{formatPrice(template)}</p>
             </div>
             <p className="buy-lede">{template.description}</p>
+            {seo ? <p className="buy-note">{seo.lead}</p> : null}
             <dl className="buy-facts">
               <div>
                 <dt>Best for</dt>

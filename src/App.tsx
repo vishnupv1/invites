@@ -16,6 +16,8 @@ import { OpenInvite } from "./pages/OpenInvite";
 import { TemplatePreview } from "./pages/TemplatePreview";
 import { AllTemplates } from "./pages/AllTemplates";
 import { Templates } from "./pages/Templates";
+import { Topic } from "./pages/Topic";
+import { TOPICS } from "./data/topics";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 import { Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
@@ -69,6 +71,17 @@ export default function App() {
         <Route path="/templates" element={<RequireAccount><Templates /></RequireAccount>} />
         <Route path="/preview/:id" element={<RequireAccount><TemplatePreview /></RequireAccount>} />
         <Route path="/open/:id" element={<OpenInvite />} />
+        {TOPICS.map((topic) => (
+          <Route
+            key={topic.id}
+            path={topic.path}
+            element={
+              <Shell>
+                <Topic />
+              </Shell>
+            }
+          />
+        ))}
         <Route
           path="/c/:id"
           element={

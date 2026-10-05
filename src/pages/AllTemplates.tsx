@@ -7,6 +7,7 @@ import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, eventLabels, formatPrice, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
+import { TOPICS } from "../data/topics";
 import type { InviteFields, Template } from "../types";
 import "./all-templates.css";
 
@@ -288,8 +289,13 @@ export function AllTemplates() {
               Find the invite that feels like <em>you.</em>
             </h1>
             <p>
-              {catalog.length} hand-crafted designs for weddings, nikahs, baptisms and housewarmings. Preview any one free, customise it in minutes.
+              {catalog.length} designs for weddings, nikahs, shaadi, Tamil weddings, baptisms, birthdays and housewarmings. Preview any one free. Guests RSVP from the link, with no app.
             </p>
+            <nav className="cat-topics" aria-label="Occasions">
+              {TOPICS.map((topic) => (
+                <Link key={topic.id} to={topic.path}>{topic.label}</Link>
+              ))}
+            </nav>
           </div>
           <div className="cat-search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A7880" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">

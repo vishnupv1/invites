@@ -9,6 +9,7 @@ Disallow: /guests
 Disallow: /purchases
 Disallow: /templates
 Disallow: /unauthorized
+Disallow: /preview
 Disallow: /i/
 Disallow: /api/
 
