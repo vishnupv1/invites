@@ -491,7 +491,11 @@
   height: 382px;
   perspective: 1400px;
   transform-style: preserve-3d;
+  touch-action: pan-y;
+  cursor: grab;
 }
+.lv-flow:active { cursor: grabbing; }
+.lv-slide img { pointer-events: none; user-select: none; -webkit-user-drag: none; }
 .lv-flow-glow {
   position: absolute;
   left: 50%;

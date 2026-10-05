@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useFonts } from "../lib/fonts";
 import "./landing.css";
@@ -236,7 +236,8 @@ export function Home({ focus }: { focus?: string }) {
   const wide = useWide();
   const reduced = useReducedMotion();
   const { hash } = useLocation();
-  const held = useRef(false);
+  const drag = useRef({ x: 0, active: false });
+  const swiped = useRef(false);
   const [query, setQuery] = useState("");
   const [ph, setPh] = useState(0);
   const [mode, setMode] = useState<"idle" | "working" | "done">("idle");
@@ -266,10 +267,10 @@ export function Home({ focus }: { focus?: string }) {
   useEffect(() => {
     if (reduced) return;
     const id = window.setInterval(() => {
-      if (!held.current) setCi((value) => (value + 1) % CARDS.length);
+      setCi((value) => (value + 1) % CARDS.length);
     }, 3200);
     return () => window.clearInterval(id);
-  }, [reduced]);
+  }, [reduced, ci]);
 
   useEffect(() => {
     if (mode !== "working") return;
@@ -289,8 +290,24 @@ export function Home({ focus }: { focus?: string }) {
   }
 
   function choose(index: number) {
-    held.current = true;
+    if (swiped.current) {
+      swiped.current = false;
+      return;
+    }
     setCi(index);
+  }
+
+  function onStripDown(event: ReactPointerEvent<HTMLDivElement>) {
+    drag.current = { x: event.clientX, active: true };
+  }
+
+  function onStripUp(event: ReactPointerEvent<HTMLDivElement>) {
+    if (!drag.current.active) return;
+    const dx = event.clientX - drag.current.x;
+    drag.current.active = false;
+    if (Math.abs(dx) < 48) return;
+    swiped.current = true;
+    setCi((value) => (value + (dx < 0 ? 1 : CARDS.length - 1)) % CARDS.length);
   }
 
   const picks = SETS[occasionOf(query)];
@@ -439,7 +456,7 @@ export function Home({ focus }: { focus?: string }) {
         <section id="templates" className="lv-car" aria-roledescription="carousel" aria-label="Invitation designs">
           <span className="lv-mono">MADE WITH INVITESREADY</span>
           <h2>Designs that open <span>like a film.</span></h2>
-          <div className="lv-flow">
+          <div className="lv-flow" onPointerDown={onStripDown} onPointerUp={onStripUp} onPointerCancel={() => { drag.current.active = false; }}>
             <span className="lv-flow-glow" aria-hidden="true" />
             {CARDS.map((card, index) => {
               let off = index - ci;
