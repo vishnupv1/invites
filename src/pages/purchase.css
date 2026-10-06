@@ -144,6 +144,7 @@
 .buy-under {
   margin: 14px auto 0;
 }
+.buy-screen.is-desk { width: 100%; }
 @media (max-width: 980px) {
   .buy-screen.is-desk > * { width: 960px; max-width: none; }
 }
@@ -252,6 +253,7 @@
   font-size: 14px;
   font-weight: 700;
 }
+.buy-lock {
   display: flex;
   gap: 10px;
   align-items: flex-start;
