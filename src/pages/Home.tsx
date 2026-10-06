@@ -323,7 +323,7 @@ export function Home({ focus }: { focus?: string }) {
       </header>
 
       <main>
-        <section id="start" className="lv-hero">
+        <div className="lv-sky">
           <span className="lv-aur lv-aur-a" aria-hidden="true" />
           <span className="lv-aur lv-aur-b" aria-hidden="true" />
           <span className="lv-aur lv-aur-c" aria-hidden="true" />
@@ -360,6 +360,67 @@ export function Home({ focus }: { focus?: string }) {
             />
           ))}
 
+        <section id="templates" className="lv-car" aria-roledescription="carousel" aria-label="Invitation designs">
+          <span className="lv-mono">MADE WITH INVITESREADY</span>
+          <h2>Designs that open <span>like a film.</span></h2>
+          <div className="lv-flow" onPointerDown={onStripDown} onPointerUp={onStripUp} onPointerCancel={() => { drag.current.active = false; }}>
+            <span className="lv-flow-glow" aria-hidden="true" />
+            {CARDS.map((card, index) => {
+              let off = index - ci;
+              if (off > 4) off -= CARDS.length;
+              if (off < -4) off += CARDS.length;
+              const distance = Math.abs(off);
+              return (
+                <button
+                  key={card.id}
+                  type="button"
+                  className={distance === 0 ? "lv-slide is-front" : "lv-slide"}
+                  aria-label={`Show ${card.name}`}
+                  aria-hidden={distance > 2}
+                  tabIndex={distance > 2 ? -1 : 0}
+                  onClick={() => choose(index)}
+                  style={{
+                    transform: `translateX(${off * shift}px) translateZ(${-distance * 120}px) rotateY(${-off * 22}deg) scale(${1 - distance * 0.08})`,
+                    zIndex: 10 - distance,
+                    opacity: distance > 3 ? 0 : 1 - distance * 0.22,
+                    filter: `brightness(${1 - distance * 0.25})`,
+                    pointerEvents: distance > 3 ? "none" : "auto",
+                  }}
+                >
+                  <img src={card.cover} alt="" />
+                </button>
+              );
+            })}
+          </div>
+          <div className="lv-cap" key={current.id}>
+            <span>{current.name}</span>
+            <span className="lv-mono">{current.kicker}</span>
+          </div>
+          <div className="lv-car-nav">
+            <button type="button" className="lv-arrow" aria-label="Previous design" onClick={() => choose((ci + CARDS.length - 1) % CARDS.length)}>‹</button>
+            {currentTemplate ? (
+              <Link className="lv-preview" to={`/create/${current.id}`}>{designCtaLabel(currentTemplate)}</Link>
+            ) : (
+              <Link className="lv-preview" to={`/open/${current.id}`}>Preview this invitation</Link>
+            )}
+            <button type="button" className="lv-arrow" aria-label="Next design" onClick={() => choose((ci + 1) % CARDS.length)}>›</button>
+          </div>
+          {currentTemplate ? <Link className="lv-fine" to={`/open/${current.id}`}>Watch the opening</Link> : null}
+          <div className="lv-dots">
+            {CARDS.map((card, index) => (
+              <button
+                key={card.id}
+                type="button"
+                className={index === ci ? "is-on" : undefined}
+                aria-label={`Design ${index + 1}`}
+                aria-current={index === ci ? "true" : undefined}
+                onClick={() => choose(index)}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section id="start" className="lv-hero">
           <div className="lv-orb" aria-hidden="true">
             <span className="lv-orb-glow" />
             <span className="lv-ring" />
@@ -435,66 +496,7 @@ export function Home({ focus }: { focus?: string }) {
             </>
           ) : null}
         </section>
-
-        <section id="templates" className="lv-car" aria-roledescription="carousel" aria-label="Invitation designs">
-          <span className="lv-mono">MADE WITH INVITESREADY</span>
-          <h2>Designs that open <span>like a film.</span></h2>
-          <div className="lv-flow" onPointerDown={onStripDown} onPointerUp={onStripUp} onPointerCancel={() => { drag.current.active = false; }}>
-            <span className="lv-flow-glow" aria-hidden="true" />
-            {CARDS.map((card, index) => {
-              let off = index - ci;
-              if (off > 4) off -= CARDS.length;
-              if (off < -4) off += CARDS.length;
-              const distance = Math.abs(off);
-              return (
-                <button
-                  key={card.id}
-                  type="button"
-                  className={distance === 0 ? "lv-slide is-front" : "lv-slide"}
-                  aria-label={`Show ${card.name}`}
-                  aria-hidden={distance > 2}
-                  tabIndex={distance > 2 ? -1 : 0}
-                  onClick={() => choose(index)}
-                  style={{
-                    transform: `translateX(${off * shift}px) translateZ(${-distance * 120}px) rotateY(${-off * 22}deg) scale(${1 - distance * 0.08})`,
-                    zIndex: 10 - distance,
-                    opacity: distance > 3 ? 0 : 1 - distance * 0.22,
-                    filter: `brightness(${1 - distance * 0.25})`,
-                    pointerEvents: distance > 3 ? "none" : "auto",
-                  }}
-                >
-                  <img src={card.cover} alt="" />
-                </button>
-              );
-            })}
-          </div>
-          <div className="lv-cap" key={current.id}>
-            <span>{current.name}</span>
-            <span className="lv-mono">{current.kicker}</span>
-          </div>
-          <div className="lv-car-nav">
-            <button type="button" className="lv-arrow" aria-label="Previous design" onClick={() => choose((ci + CARDS.length - 1) % CARDS.length)}>‹</button>
-            {currentTemplate ? (
-              <Link className="lv-preview" to={`/create/${current.id}`}>{designCtaLabel(currentTemplate)}</Link>
-            ) : (
-              <Link className="lv-preview" to={`/open/${current.id}`}>Preview this invitation</Link>
-            )}
-            <button type="button" className="lv-arrow" aria-label="Next design" onClick={() => choose((ci + 1) % CARDS.length)}>›</button>
-          </div>
-          {currentTemplate ? <Link className="lv-fine" to={`/open/${current.id}`}>Watch the opening</Link> : null}
-          <div className="lv-dots">
-            {CARDS.map((card, index) => (
-              <button
-                key={card.id}
-                type="button"
-                className={index === ci ? "is-on" : undefined}
-                aria-label={`Design ${index + 1}`}
-                aria-current={index === ci ? "true" : undefined}
-                onClick={() => choose(index)}
-              />
-            ))}
-          </div>
-        </section>
+        </div>
 
         <section id="features" className="lv-sec">
           <h2>Everything a celebration needs.<br /><span>Nothing it doesn’t.</span></h2>
