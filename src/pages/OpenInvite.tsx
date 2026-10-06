@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
@@ -15,11 +16,15 @@ import { GazalInvite } from "../components/GazalInvite";
 import { ThiruvizhaInvite } from "../components/ThiruvizhaInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { getTemplate, sampleFor } from "../data/templates";
+import { trackTemplatePreview } from "../lib/analytics";
 import "./open-invite.css";
 
 export function OpenInvite() {
   const { id } = useParams();
   const template = getTemplate(id);
+  useEffect(() => {
+    if (template) trackTemplatePreview(template);
+  }, [template]);
   if (!template) return <Navigate to="/" replace />;
   const fields = sampleFor(template, template.events[0]);
 
@@ -37,9 +42,9 @@ export function OpenInvite() {
       {template.style === "botanica" ? <BotanicaInvite fields={fields} /> : null}
       {template.style === "heavenly" ? <HeavenlyInvite fields={fields} demo /> : null}
       {template.style === "grandoor" ? <GrandDoorInvite fields={fields} demo /> : null}
-      {template.style === "grandenvelope" ? <GrandEnvelopeInvite fields={fields} demo /> : null}
+      {template.style === "grandenvelope" ? <GrandEnvelopeInvite fields={fields} demo autoPlay /> : null}
       {template.style === "pull" ? <PullInvite fields={fields} demo /> : null}
-      {template.style === "inland" ? <InlandInvite fields={fields} demo /> : null}
+      {template.style === "inland" ? <InlandInvite fields={fields} demo autoOpen /> : null}
       {template.style === "home" ? <HomeInvite fields={fields} demo /> : null}
       {template.style === "thiruvizha" ? <ThiruvizhaInvite fields={fields} /> : null}
       {template.style === "peace" ? <PeaceInvite fields={fields} demo /> : null}

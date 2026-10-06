@@ -5,6 +5,8 @@ import { SkeletonGrid } from "../components/CardSkeleton";
 import { getEvent } from "../data/events";
 import { getTemplate } from "../data/templates";
 import { formatShortDate, formatTime } from "../lib/dates";
+import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
+import { trackShareWhatsApp } from "../lib/analytics";
 import type { SavedInvite } from "../types";
 import { useFonts } from "../lib/fonts";
 
@@ -81,12 +83,12 @@ function ago(iso: string) {
   return formatShortDate(iso.slice(0, 10));
 }
 
-function publicUrl(code: string) {
-  return `${window.location.origin}/i/${code}`;
+function publicUrl(code: string, campaign?: string) {
+  return guestInviteUrl(code, campaign);
 }
 
-function publicPath(code: string) {
-  return `${window.location.host}/i/${code}`;
+function publicPath(code: string, campaign?: string) {
+  return guestInviteUrl(code, campaign).replace(/^https?:\/\//, "");
 }
 
 function scheduleOf(invite: SavedInvite) {
@@ -304,8 +306,8 @@ export function DashboardHome({
   const light = tone.fg !== "#FFFFFF" && tone.fg !== "#F5D77A";
   const finished = (daysUntil(invite.date) ?? 0) < 0;
   const cover = invite.cover ? assetUrl(invite.cover) : "";
-  const url = publicUrl(invite.code);
-  const path = publicPath(invite.code);
+  const url = publicUrl(invite.code, invite.templateId);
+  const path = publicPath(invite.code, invite.templateId);
   const functions = scheduleOf(invite);
   const activity = [...replies].sort((a, b) => (a.at < b.at ? 1 : -1)).slice(0, 4);
   const tabs: { id: GuestFilter; label: string; count: number }[] = [
@@ -326,7 +328,8 @@ export function DashboardHome({
   }
 
   function shareWhatsApp() {
-    window.open(`https://wa.me/?text=${encodeURIComponent(`You're invited: ${url}`)}`, "_blank", "noopener");
+    trackShareWhatsApp(template?.name);
+    window.open(whatsAppShareHref(url), "_blank", "noopener");
     onToast("Opening WhatsApp with your invitation…");
   }
 

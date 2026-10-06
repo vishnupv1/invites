@@ -20,6 +20,10 @@
   letter-spacing: -0.04em;
 }
 .lv a { color: inherit; text-decoration: none; }
+.lv main {
+  display: flex;
+  flex-direction: column;
+}
 .lv button,
 .lv input { font-family: inherit; }
 .lv button:focus-visible,
@@ -468,12 +472,12 @@
 }
 
 .lv-car {
-  padding: 60px 0;
+  order: -1;
+  padding: 40px 0 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  border-top: 1px solid #18181b;
   overflow: hidden;
 }
 .lv-car h2,
@@ -870,7 +874,7 @@
 @media (min-width: 960px) {
   .lv-nav { padding: 0 40px; }
   .lv-nav-links { display: flex; }
-  .lv-hero { padding: 60px 20px 90px; gap: 22px; min-height: 820px; }
+  .lv-hero { padding: 48px 20px 80px; gap: 22px; min-height: 560px; }
   .lv-hero h1 { font-size: 68px; }
   .lv-aur-c { top: 380px; width: 900px; margin-left: -450px; }
   .lv-beam { width: 700px; height: 520px; margin-left: -350px; }

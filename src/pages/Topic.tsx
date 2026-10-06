@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { PreviewModal } from "../components/PreviewModal";
 import { Breadcrumbs } from "../components/Breadcrumbs";
-import { formatPrice, getTemplate } from "../data/templates";
+import { formatPrice, getTemplate, sampleFor, designCtaLabel } from "../data/templates";
 import { topicByPath, TOPICS } from "../data/topics";
+import { InlandInvite } from "../components/InlandInvite";
 import { useLibrary } from "../state";
 import type { EventId } from "../types";
 
@@ -27,6 +28,12 @@ export function Topic() {
           <p className="topic-lead">{topic.lead}</p>
         </div>
       </div>
+      {topic.id === "birthday" && templates[0] ? (
+        <div className="topic-demo">
+          <InlandInvite fields={sampleFor(templates[0], "birthday")} demo autoOpen />
+          <Link className="solid" to={`/create/${templates[0].id}`}>{designCtaLabel(templates[0])}</Link>
+        </div>
+      ) : null}
       {related.length ? (
         <nav className="topic-links" aria-label="Related celebrations">
           {related.map((item) => (

@@ -52,6 +52,7 @@ export function Auth() {
     try {
       if (login) {
         await logIn(email.trim(), password);
+        trackEvent("login", { method: "email" });
         window.location.assign("/studio");
         return;
       }
@@ -81,7 +82,7 @@ export function Auth() {
     setGoogleBusy(true);
     try {
       await signInWithGoogle();
-      trackEvent("login", { method: "google" });
+      trackEvent(login ? "login" : "sign_up", { method: "google" });
       continueOn();
     } catch (error) {
       setErrors({ form: error instanceof Error ? error.message : "Could not sign you in with Google." });

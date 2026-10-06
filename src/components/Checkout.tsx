@@ -4,7 +4,7 @@ import { Check, Lock, Tag } from "lucide-react";
 import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { Brand } from "./Brand";
 import { Spinner } from "./Loader";
-import { trackEvent } from "../lib/analytics";
+import { trackEvent, trackSignUp } from "../lib/analytics";
 import { useSession } from "../session";
 import type { Template } from "../types";
 import "./checkout.css";
@@ -149,10 +149,19 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
       items: checkoutItems(total),
     });
     try {
-      if (!getToken()) await ensureSession(email.trim(), name.trim());
+      if (!getToken()) {
+        await ensureSession(email.trim(), name.trim());
+        trackSignUp("email");
+      }
       if (applied || template.free) {
         await onPurchased(applied || undefined);
-        trackEvent("purchase", { currency: "INR", value: 0, items: checkoutItems(0) });
+        trackEvent("purchase", {
+          currency: "INR",
+          value: 0,
+          template_name: template.name,
+          coupon: applied || undefined,
+          items: checkoutItems(0),
+        });
         return;
       }
       const order = await createPaymentOrder(template.id);
@@ -182,6 +191,8 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
         currency: "INR",
         value: template.price,
         transaction_id: payment.razorpay_payment_id,
+        template_name: template.name,
+        coupon: applied || undefined,
         items: checkoutItems(template.price),
       });
     } catch (reason) {

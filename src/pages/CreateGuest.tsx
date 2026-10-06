@@ -11,7 +11,8 @@ import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { Editor } from "./Editor";
-import { trackOnce } from "../lib/analytics";
+import { trackLogin, trackPublish, trackShareWhatsApp, trackSignUp, trackStartDesign } from "../lib/analytics";
+import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
 import { formatLongDate, formatShortDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -193,7 +194,7 @@ export function CreateGuest() {
   const template = templates.find((item) => item.id === templateId && item.events.includes(event.id)) ?? matching[0] ?? templates[0];
   useEffect(() => {
     if (step < 3 || !template) return;
-    trackOnce("create_started", template.id, { template_id: template.id });
+    trackStartDesign(template);
   }, [step, template]);
   const two = template?.meta.names === "couple";
   const sample = template ? sampleFor(template, event.id) : null;
@@ -259,7 +260,7 @@ export function CreateGuest() {
     ? `${formatLongDate(editorSummary.date)}${editorSummary.time ? ` · ${formatTime(editorSummary.time)}` : ""}`
     : previewWhen;
   const ownsTemplate = Boolean(template && (template.free || owned.includes(template.id) || library.owns(template.id, template.free)));
-  const link = liveCode ? `${window.location.origin}/i/${liveCode}` : "";
+  const link = liveCode ? guestInviteUrl(liveCode, template?.id) : "";
 
   function pickEvent(id: EventId) {
     const next = templates.find((item) => item.events.includes(id));
@@ -297,6 +298,8 @@ export function CreateGuest() {
       await signInWithGoogle();
       inviteIdRef.current = "";
       await refreshHost();
+      if (authTab === "signup") trackSignUp("google");
+      else trackLogin("google");
       setAuthDone(true);
       setJustLoggedIn(true);
     } catch (reason) {
@@ -314,8 +317,13 @@ export function CreateGuest() {
     if (kind === "login" && !authPassword) return setAuthError("Add your password.");
     setBusy(true);
     try {
-      if (kind === "signup") await signUp(authName.trim(), authEmail.trim(), authPassword);
-      else await logIn(authEmail.trim(), authPassword);
+      if (kind === "signup") {
+        await signUp(authName.trim(), authEmail.trim(), authPassword);
+        trackSignUp("email");
+      } else {
+        await logIn(authEmail.trim(), authPassword);
+        trackLogin("email");
+      }
       inviteIdRef.current = "";
       await refreshHost();
       setAuthPassword("");
@@ -390,6 +398,7 @@ export function CreateGuest() {
       await hold();
       setLiveCode(savedInvite.code);
       setShowQr(false);
+      trackPublish(template);
     } catch (reason) {
       notify(reason instanceof Error ? reason.message : "Could not publish.", "bad");
     } finally {
@@ -661,7 +670,11 @@ export function CreateGuest() {
                   <h1>Your invitation is live!</h1>
                   <div className="cg-linkbox">{link.replace(/^https?:\/\//, "")}</div>
                   <div className="cg-shares">
-                    <button type="button" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`You're invited: ${link}`)}`, "_blank", "noopener")}>
+                    <button type="button" onClick={() => {
+                      if (!link) return;
+                      trackShareWhatsApp(template?.name);
+                      window.open(whatsAppShareHref(link), "_blank", "noopener");
+                    }}>
                       <img src="/whatsapp.png" alt="" width={22} height={22} />
                       WhatsApp
                     </button>
@@ -739,7 +752,7 @@ export function CreateGuest() {
                 </div>
               ) : null}
               <p>{template ? template.name : "Your invitation"}</p>
-              <small>{authDone ? "You can publish it from this page." : "Log in or create an account with email. The draft stays on this device until you publish."}</small>
+              <small>{authDone ? "You can publish it from this page." : "Sign in to save your invitation. The draft stays on this device until you publish."}</small>
             </div>
             <form className="cg-auth" onSubmit={onAuth}>
               <button type="button" className="cg-close" aria-label="Close" onClick={() => setAuthOpen(false)}>

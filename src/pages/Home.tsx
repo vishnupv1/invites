@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useFonts } from "../lib/fonts";
+import { getTemplate, designCtaLabel } from "../data/templates";
 import "./landing.css";
 
 const PLACEHOLDERS = [
@@ -129,12 +130,6 @@ const KINDS = [
   ["Gift box", "M3 8h18v4H3zM5 12v9h14v-9M12 8v13M12 8c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"],
 ] as const;
 
-const AUTH = [
-  ["Continue with Google", "M21 12.2c0-.7-.1-1.4-.2-2H12v3.8h5a4.3 4.3 0 0 1-1.9 2.8v2.3h3A9 9 0 0 0 21 12.2zM12 21a8.9 8.9 0 0 0 6.1-2.2l-3-2.3a5.5 5.5 0 0 1-8.2-2.9H3.8v2.4A9 9 0 0 0 12 21z"],
-  ["Continue with WhatsApp", "M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"],
-  ["Continue with Email", "M3 6h18v12H3zM3 6l9 7 9-7"],
-] as const;
-
 const FOOTER = [
   {
     h: "PRODUCT",
@@ -149,7 +144,7 @@ const FOOTER = [
     links: [
       { label: "Weddings", to: "/wedding" },
       { label: "Birthdays", to: "/birthday" },
-      { label: "Baby & kids", to: "/baptism" },
+      { label: "Baby & kids", to: "/baby-shower" },
     ],
   },
   {
@@ -309,6 +304,7 @@ export function Home({ focus }: { focus?: string }) {
 
   const picks = SETS[occasionOf(query)];
   const current = CARDS[ci];
+  const currentTemplate = getTemplate(current.id);
   const shift = wide ? 210 : 120;
 
   return (
@@ -323,7 +319,7 @@ export function Home({ focus }: { focus?: string }) {
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQs</a>
         </nav>
-        <a className="lv-pill" href="#start">Get started</a>
+          <Link className="lv-pill" to="/browse">See the designs</Link>
       </header>
 
       <main>
@@ -400,16 +396,7 @@ export function Home({ focus }: { focus?: string }) {
                   <button key={label} type="button" className="lv-chip" onClick={() => go(text)}>{label}</button>
                 ))}
               </div>
-              <div className="lv-auth">
-                {AUTH.map(([label, icon]) => (
-                  <Link key={label} className="lv-auth-btn" to="/login">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d={icon} />
-                    </svg>
-                    {label}
-                  </Link>
-                ))}
-              </div>
+              <Link className="lv-preview" to="/browse">See all designs</Link>
               <span className="lv-fine">Free to design · pay only when you publish</span>
             </>
           ) : null}
@@ -438,7 +425,7 @@ export function Home({ focus }: { focus?: string }) {
                         <span className="lv-mono">{pick.category}</span>
                       </div>
                     </div>
-                    <Link className="lv-use" to={`/create?template=${pick.id}`}>Use this design</Link>
+                    <Link className="lv-use" to={`/create/${pick.id}`}>{getTemplate(pick.id) ? designCtaLabel(getTemplate(pick.id)!) : "Use this design"}</Link>
                   </article>
                 ))}
               </div>
@@ -487,9 +474,14 @@ export function Home({ focus }: { focus?: string }) {
           </div>
           <div className="lv-car-nav">
             <button type="button" className="lv-arrow" aria-label="Previous design" onClick={() => choose((ci + CARDS.length - 1) % CARDS.length)}>‹</button>
-            <Link className="lv-preview" to={`/open/${current.id}`}>Preview this invitation</Link>
+            {currentTemplate ? (
+              <Link className="lv-preview" to={`/create/${current.id}`}>{designCtaLabel(currentTemplate)}</Link>
+            ) : (
+              <Link className="lv-preview" to={`/open/${current.id}`}>Preview this invitation</Link>
+            )}
             <button type="button" className="lv-arrow" aria-label="Next design" onClick={() => choose((ci + 1) % CARDS.length)}>›</button>
           </div>
+          {currentTemplate ? <Link className="lv-fine" to={`/open/${current.id}`}>Watch the opening</Link> : null}
           <div className="lv-dots">
             {CARDS.map((card, index) => (
               <button

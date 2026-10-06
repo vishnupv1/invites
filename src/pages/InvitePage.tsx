@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPublicInvite, sendGreeting } from "../api";
+import { GuestCta } from "../components/GuestCta";
 import { InviteSite } from "../components/InviteSite";
 import { Spinner } from "../components/Loader";
 import { getTemplate } from "../data/templates";
-import { trackEvent } from "../lib/analytics";
+import { trackRsvpSubmit } from "../lib/analytics";
 import { decodeInvite } from "../lib/codec";
 import type { InviteFields, Template } from "../types";
 
@@ -40,18 +41,18 @@ export function InvitePage() {
   if (!loaded) return <main className="public missing" aria-busy="true"><p className="wait-line"><Spinner size="md" /> Opening the invitation…</p></main>;
 
   return (
-    <InviteSite
-      template={loaded.template}
-      fields={loaded.fields}
-      swatch={loaded.swatch}
-      wishes={loaded.greetings}
-      onReply={legacy ? undefined : async (reply) => {
-        await sendGreeting(code, reply);
-        trackEvent("rsvp_sent", {
-          template_id: loaded.template.id,
-          attending: reply.attending ? "yes" : "no",
-        });
-      }}
-    />
+    <div className="guest-page">
+      <InviteSite
+        template={loaded.template}
+        fields={loaded.fields}
+        swatch={loaded.swatch}
+        wishes={loaded.greetings}
+        onReply={legacy ? undefined : async (reply) => {
+          await sendGreeting(code, reply);
+          trackRsvpSubmit(reply.attending ? "yes" : "no", loaded.template);
+        }}
+      />
+      <GuestCta templateName={loaded.template.name} campaign={loaded.template.id} />
+    </div>
   );
 }

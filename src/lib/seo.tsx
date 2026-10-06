@@ -103,7 +103,7 @@ function describe(pathname: string): Meta {
       const accountOnly = pathname.startsWith("/preview/");
       const line = templateSeo(template.id);
       return {
-        title: line?.title ?? `${template.name} invitation template | InvitesReady`,
+        title: line?.title ?? `${template.name} — Animated Invitation | InvitesReady`,
         description: line?.description ?? (template.free
           ? `Preview the ${template.name} invitation. This design is free to publish.`
           : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`),

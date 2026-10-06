@@ -8,6 +8,7 @@ import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, eventLabels, formatPrice, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
 import { TOPICS } from "../data/topics";
+import { trackTemplatePreview } from "../lib/analytics";
 import type { InviteFields, Template } from "../types";
 import "./all-templates.css";
 
@@ -77,7 +78,7 @@ function useHref(template: Template, occasion = "all") {
   const event = occasion !== "all" && template.events.includes(occasion as Template["events"][number])
     ? occasion
     : template.events[0];
-  return `/create?template=${template.id}&event=${event}`;
+  return `/create/${template.id}?event=${event}`;
 }
 
 export function AllTemplates() {
@@ -124,6 +125,11 @@ export function AllTemplates() {
     }
     navigate("/browse", { replace: true });
   }, [routeId, catalog, catalogReady, navigate]);
+
+  useEffect(() => {
+    const preview = previewId ? catalog.find((item) => item.id === previewId) ?? getTemplate(previewId) : undefined;
+    if (preview) trackTemplatePreview(preview);
+  }, [previewId, catalog]);
 
   useEffect(() => {
     localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
@@ -568,7 +574,7 @@ export function AllTemplates() {
                 <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span>
               </div>
               <div className="cat-modal-actions">
-                <Link to={useHref(preview)}>Use this template</Link>
+                <Link to={useHref(preview)}>{preview.free ? "Use this design — Free" : `Use this design — ${formatPrice(preview)}`}</Link>
                 <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
               </div>
             </div>

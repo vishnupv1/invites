@@ -22,14 +22,14 @@ import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
-import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
+import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor, designCtaLabel } from "../data/templates";
 import { templateSeo, topicForTemplate } from "../data/topics";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import { formatShortDate } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
-import { trackOnce } from "../lib/analytics";
+import { trackTemplatePreview } from "../lib/analytics";
 import "./purchase.css";
 
 const TONES: Record<string, { cover: string; dot: string }> = {
@@ -53,31 +53,31 @@ const TONES: Record<string, { cover: string; dot: string }> = {
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
   switch (template.style) {
     case "gazal":
-      return <GazalInvite fields={fields} quiet />;
+      return <GazalInvite fields={fields} />;
     case "aurelia":
-      return <AureliaInvite fields={fields} quiet />;
+      return <AureliaInvite fields={fields} />;
     case "anna":
-      return <AnnaInvite fields={fields} quiet theme={annaThemeOf(swatch)} />;
+      return <AnnaInvite fields={fields} theme={annaThemeOf(swatch)} />;
     case "baptism":
-      return <BaptismInvite fields={fields} quiet theme={baptismThemeOf(swatch)} demo />;
+      return <BaptismInvite fields={fields} demo />;
     case "vivah":
-      return <VivahInvite fields={fields} quiet theme={vivahThemeOf(swatch)} demo />;
+      return <VivahInvite fields={fields} theme={vivahThemeOf(swatch)} demo />;
     case "beach":
-      return <BeachInvite fields={fields} quiet theme={beachThemeOf(swatch)} />;
+      return <BeachInvite fields={fields} theme={beachThemeOf(swatch)} />;
     case "botanica":
-      return <BotanicaInvite fields={fields} quiet theme={botanicaThemeOf(swatch)} />;
+      return <BotanicaInvite fields={fields} theme={botanicaThemeOf(swatch)} />;
     case "heavenly":
-      return <HeavenlyInvite fields={fields} quiet demo />;
+      return <HeavenlyInvite fields={fields} demo />;
     case "grandoor":
-      return <GrandDoorInvite fields={fields} quiet demo />;
+      return <GrandDoorInvite fields={fields} demo />;
     case "grandenvelope":
-      return <GrandEnvelopeInvite fields={fields} quiet demo />;
+      return <GrandEnvelopeInvite fields={fields} demo autoPlay />;
     case "pull":
       return <PullInvite fields={fields} theme={pullThemeOf(swatch)} demo />;
     case "inland":
-      return <InlandInvite fields={fields} demo />;
+      return <InlandInvite fields={fields} demo autoOpen />;
     case "home":
-      return <HomeInvite fields={fields} quiet theme={homeThemeOf(swatch)} demo />;
+      return <HomeInvite fields={fields} theme={homeThemeOf(swatch)} demo />;
     case "shaadi":
       return <ShaadiInvite fields={fields} theme={shaadiThemeOf(swatch)} />;
     case "thiruvizha":
@@ -96,7 +96,7 @@ export function TemplatePage() {
   const template = getTemplate(id);
   useEffect(() => {
     if (!template) return;
-    trackOnce("template_opened", template.id, { template_id: template.id, item_name: template.name });
+    trackTemplatePreview(template);
   }, [template]);
   const { owns, purchase } = useLibrary();
   const navigate = useNavigate();
@@ -152,12 +152,18 @@ export function TemplatePage() {
           </div>
         </div>
         <div className="buy-head-actions">
+          <Link className="buy-ghost" to="/faq">
+            FAQ
+          </Link>
+          <Link className="buy-ghost" to="/#pricing">
+            Pricing
+          </Link>
           <Link className="buy-ghost" to={previewTo}>
             Preview
           </Link>
-          <button className="buy-solid" type="button" onClick={() => setOpen(true)}>
-            Buy once · {formatPrice(template)}
-          </button>
+          <Link className="buy-solid" to={createTo}>
+            {designCtaLabel(template)}
+          </Link>
         </div>
       </header>
       <Breadcrumbs
@@ -185,6 +191,9 @@ export function TemplatePage() {
             <div className={device === "desk" ? "buy-screen is-desk" : "buy-screen"}>
               <GuestPreview template={template} fields={fields} swatch={swatch} lang={lang} />
             </div>
+            <Link className="buy-solid buy-under" to={createTo}>
+              {designCtaLabel(template)}
+            </Link>
           </section>
 
           <aside className="buy-panel">
@@ -287,21 +296,26 @@ export function TemplatePage() {
               </ul>
             </div>
 
+            <p className="buy-help">
+              <Link to="/#pricing">Pricing</Link>
+              <Link to="/faq">FAQ</Link>
+            </p>
+
             <div className="buy-lock">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A5A26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="4" y="10" width="16" height="11" rx="2" />
                 <path d="M8 10V7a4 4 0 0 1 8 0v3" />
               </svg>
-              <span>Pay {formatPrice(template)} once, then add your names, photos and wording. Razorpay collects the payment.</span>
+              <span>Design free. Pay {formatPrice(template)} once when you publish. Razorpay collects the payment.</span>
             </div>
 
             <div className="buy-actions">
-              <button className="buy-solid" type="button" onClick={() => setOpen(true)}>
-                Buy once · {formatPrice(template)}
-              </button>
-              <Link className="buy-ghost" to={previewTo}>
-                Open the full preview
+              <Link className="buy-solid" to={createTo}>
+                {designCtaLabel(template)}
               </Link>
+              <button className="buy-ghost" type="button" onClick={() => setOpen(true)}>
+                Buy now · {formatPrice(template)}
+              </button>
             </div>
           </aside>
         </div>
@@ -335,9 +349,9 @@ export function TemplatePage() {
             <span className="buy-dock-k">One-time</span>
             <span className="buy-dock-v">{formatPrice(template)}</span>
           </div>
-          <button className="buy-solid" type="button" onClick={() => setOpen(true)}>
-            Buy once
-          </button>
+          <Link className="buy-solid" to={createTo}>
+            {designCtaLabel(template)}
+          </Link>
         </div>
       )}
 

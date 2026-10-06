@@ -8,6 +8,7 @@ import { FavoriteHeart } from "../components/FavoriteHeart";
 import { CatalogDemo } from "./AllTemplates";
 import type { NoticeTone } from "../components/Notice";
 import { useFavs } from "../lib/favorites";
+import { guestInviteUrl } from "../lib/share";
 import { formatShortDate } from "../lib/dates";
 import { useSession } from "../session";
 import { useLibrary } from "../state";
@@ -305,7 +306,7 @@ export function AccountHub({
   }, [view]);
 
   async function share(invite: SavedInvite) {
-    const url = `${window.location.origin}/i/${invite.code}`;
+    const url = guestInviteUrl(invite.code, invite.templateId);
     try {
       await navigator.clipboard.writeText(url);
       onToast("Invite link copied.");

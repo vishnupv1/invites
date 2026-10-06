@@ -111,12 +111,14 @@ export function GrandEnvelopeInvite({
   fields,
   quiet = false,
   onReply,
+  autoPlay = false,
 }: {
   fields: InviteFields;
   quiet?: boolean;
   wishes?: { name: string; note: string; attending?: boolean }[];
   onReply?: (reply: Reply) => void | Promise<unknown>;
   demo?: boolean;
+  autoPlay?: boolean;
 }) {
   useFonts("Pinyon Script", "Cinzel", "Cormorant Garamond", "Jost");
   const nameId = useId();
@@ -209,6 +211,14 @@ export function GrandEnvelopeInvite({
   }
 
   useEffect(() => () => clearTimers(), []);
+
+  useEffect(() => {
+    if (!autoPlay || quiet) return;
+    const timer = window.setTimeout(() => openSeal(), 800);
+    return () => window.clearTimeout(timer);
+    // Opening runs once on marketing surfaces.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoPlay, quiet]);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

@@ -20,6 +20,7 @@ import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
 import { InviteView } from "../components/InviteView";
 import { Checkout } from "../components/Checkout";
+import { GuestAuthDialog } from "../components/GuestAuthDialog";
 import { CatalogDemo } from "./AllTemplates";
 import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
@@ -37,7 +38,8 @@ import { Notice, type NoticeTone } from "../components/Notice";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import { formatShortDate } from "../lib/dates";
-import { trackOnce } from "../lib/analytics";
+import { trackPublish, trackShareWhatsApp, trackStartDesign } from "../lib/analytics";
+import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
 import { useFonts } from "../lib/fonts";
 import "./editor.css";
 
@@ -235,10 +237,8 @@ export function Editor({
   const { owns, purchase, remember, invites, ready: libraryReady } = useLibrary();
   useEffect(() => {
     if (embedded || !template) return;
-    if (!template.free && !libraryReady) return;
-    if (!owns(template.id, template.free)) return;
-    trackOnce("create_started", template.id, { template_id: template.id });
-  }, [embedded, template, libraryReady, owns]);
+    trackStartDesign(template);
+  }, [embedded, template]);
   const onInviteRef = useRef(onInvite);
   const onSummaryRef = useRef(onSummary);
   onInviteRef.current = onInvite;
@@ -267,6 +267,8 @@ export function Editor({
   const [toast, setToast] = useState("");
   const [toastTone, setToastTone] = useState<NoticeTone>("ok");
   const [showQr, setShowQr] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authIntent, setAuthIntent] = useState<"save" | "publish">("publish");
   const [playing, setPlaying] = useState(false);
   const [placeQuery, setPlaceQuery] = useState("");
   const [places, setPlaces] = useState<PlaceHit[]>([]);
@@ -308,7 +310,7 @@ export function Editor({
         dirtyRef.current = false;
         setModel(modelFromSaved(template, record.fields, record.editor));
         setSaveLabel(statusRef.current === "live" ? "Saved" : "Draft saved");
-        if (statusRef.current === "live") setLink(`${window.location.origin}/i/${record.code}`);
+        if (statusRef.current === "live") setLink(guestInviteUrl(record.code, template.id));
       })
       .catch(() => {
         if (cancel) return;
@@ -472,10 +474,9 @@ export function Editor({
   };
 
   if (!template) return embedded ? null : <Navigate to="/" replace />;
-  if (!embedded && !signedIn && !owns(template.id, template.free)) return <Navigate to={`/template/${template.id}`} replace />;
   if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
 
-  const needsPay = signedIn && !owns(template.id, template.free);
+  const needsPay = !owns(template.id, template.free);
   const draft = model.draft;
   const event = getEvent(draft.event);
   const couple = template.meta.names === "couple";
@@ -694,6 +695,11 @@ export function Editor({
   async function publish() {
     const current = modelRef.current;
     if (!current || !template) return;
+    if (!getToken()) {
+      setAuthIntent("publish");
+      setAuthOpen(true);
+      return;
+    }
     const fields = shownFields(current);
     if (!fields.names.trim() || !fields.date) {
       setError("Add the names and a date before publishing.");
@@ -701,7 +707,6 @@ export function Editor({
     }
     setPubPhase("loading");
     try {
-      await ensureHost();
       dirtyRef.current = true;
       await persistRef.current();
       if (!inviteIdRef.current) {
@@ -710,7 +715,7 @@ export function Editor({
       }
       if (statusRef.current === "live") {
         setError("");
-        setLink(`${window.location.origin}/i/${codeRef.current}`);
+        setLink(guestInviteUrl(codeRef.current, template.id));
         setShowQr(false);
         return;
       }
@@ -722,13 +727,28 @@ export function Editor({
       setSaveLabel("Saved");
       setPubPhase("done");
       await hold();
-      setLink(`${window.location.origin}/i/${saved.code}`);
+      setLink(guestInviteUrl(saved.code, template.id));
       setShowQr(false);
       setSaveLabel("Saved");
+      trackPublish(template);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not publish.");
     } finally {
       setPubPhase("idle");
+    }
+  }
+
+  function askToSignIn(intent: "save" | "publish") {
+    setAuthIntent(intent);
+    setAuthOpen(true);
+  }
+
+  function onSignedIn() {
+    setAuthOpen(false);
+    dirtyRef.current = true;
+    void persistRef.current();
+    if (authIntent === "publish") {
+      setPublishOpen(true);
     }
   }
 
@@ -780,13 +800,24 @@ export function Editor({
           </div>
         </div>
         <div className="ed-actions">
-          {signedIn || embedded ? null : <span className="ed-guest">Guest view</span>}
+          {signedIn || embedded ? null : (
+            <>
+              <span className="ed-guest">Guest view</span>
+              <button type="button" className="ed-iconbtn" onClick={() => askToSignIn("save")}>
+                Save
+              </button>
+            </>
+          )}
           {embedded ? null : (
           <button type="button" className="ed-publish" onClick={() => {
             setError("");
             dirtyRef.current = true;
             void persistRef.current();
-            if (statusRef.current === "live" && codeRef.current) setLink(`${window.location.origin}/i/${codeRef.current}`);
+            if (!getToken()) {
+              askToSignIn("publish");
+              return;
+            }
+            if (statusRef.current === "live" && codeRef.current) setLink(guestInviteUrl(codeRef.current, template.id));
             setPublishOpen(true);
           }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1392,7 +1423,10 @@ export function Editor({
                   <span>{link.replace(/^https?:\/\//, "")}</span>
                 </div>
                 <div className="ed-shares">
-                  <button type="button" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`You're invited: ${link}`)}`, "_blank", "noopener")}>
+                  <button type="button" onClick={() => {
+                    trackShareWhatsApp(template.name);
+                    window.open(whatsAppShareHref(link), "_blank", "noopener");
+                  }}>
                     <img src="/whatsapp.png" alt="" width={22} height={22} />
                     WhatsApp
                   </button>
@@ -1424,13 +1458,13 @@ export function Editor({
 
       {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
       {demoOpen ? <CatalogDemo template={template} fields={previewFields} onClose={() => { setDemoOpen(false); setPublishOpen(true); }} /> : null}
-    </div>
-  );
-  if (embedded || !signedIn) return editor;
-  return (
-    <div className="board ed-board">
-      <AppMenu current="/templates" name={hostName} signedIn />
-      {editor}
+      {authOpen ? (
+        <GuestAuthDialog
+          heading="Sign in to save your invitation"
+          onClose={() => setAuthOpen(false)}
+          onDone={onSignedIn}
+        />
+      ) : null}
       {payOpen ? (
         <Checkout
           template={template}
@@ -1443,6 +1477,13 @@ export function Editor({
           }}
         />
       ) : null}
+    </div>
+  );
+  if (embedded || !signedIn) return editor;
+  return (
+    <div className="board ed-board">
+      <AppMenu current="/templates" name={hostName} signedIn />
+      {editor}
     </div>
   );
 }

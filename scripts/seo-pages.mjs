@@ -272,7 +272,7 @@ function pages(templates, events) {
       list.push({
         path: `/${prefix}/${template.id}`,
         canonical: `/template/${template.id}`,
-        title: line?.title ?? `${template.name} invitation template | InvitesReady`,
+        title: line?.title ?? `${template.name} — Animated Invitation | InvitesReady`,
         heading: line?.heading ?? `${template.name} invitation template`,
         description,
         image,

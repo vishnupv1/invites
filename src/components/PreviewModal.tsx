@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getEvent } from "../data/events";
-import { sampleFor } from "../data/templates";
-import { useLibrary } from "../state";
+import { sampleFor, designCtaLabel } from "../data/templates";
+import { trackTemplatePreview } from "../lib/analytics";
 import type { EventId, Template } from "../types";
 import { InviteSite } from "./InviteSite";
 
@@ -13,9 +14,10 @@ type Props = {
 };
 
 export function PreviewModal({ template, event, onEvent, onClose }: Props) {
-  const { owns } = useLibrary();
-  const owned = owns(template.id, template.free);
   const active = template.events.includes(event) ? event : template.events[0];
+  useEffect(() => {
+    trackTemplatePreview(template);
+  }, [template]);
 
   return (
     <div className="site-preview" role="dialog" aria-modal="true" aria-label={`${template.name} preview`}>
@@ -28,15 +30,9 @@ export function PreviewModal({ template, event, onEvent, onClose }: Props) {
           ))}
         </div>
         <div className="shop-actions">
-          {owned ? (
-            <Link className="solid" to={`/create?template=${template.id}&event=${active}`} onClick={onClose}>
-              Use this design
-            </Link>
-          ) : (
-            <Link className="solid" to={`/template/${template.id}?event=${active}`} onClick={onClose}>
-              Buy once · ${template.price}
-            </Link>
-          )}
+          <Link className="solid" to={`/create/${template.id}?event=${active}`} onClick={onClose}>
+            {designCtaLabel(template)}
+          </Link>
           <button type="button" className="ghost" onClick={onClose}>
             Close
           </button>

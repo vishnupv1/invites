@@ -542,6 +542,10 @@ export function formatPrice(template: Template) {
   return template.free ? "Free" : `₹${template.price.toLocaleString("en-IN")}`;
 }
 
+export function designCtaLabel(template: Template) {
+  return `Use this design — ${formatPrice(template)}`;
+}
+
 export function eventLabels(template: Template) {
   return template.events.map((id) => getEvent(id).label).join(" · ");
 }

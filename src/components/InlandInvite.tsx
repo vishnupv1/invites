@@ -58,12 +58,13 @@ function cityOf(address: string) {
   return city || "Kochi";
 }
 
-export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = false }: {
+export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = false, autoOpen = false }: {
   fields: InviteFields;
   quiet?: boolean;
   wishes?: Wish[];
   onReply?: (reply: Reply) => void | Promise<unknown>;
   demo?: boolean;
+  autoOpen?: boolean;
 }) {
   useFonts("Caveat", "Fredoka", "Special Elite");
   const uid = useId();
@@ -112,6 +113,12 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
   }, [open]);
+
+  useEffect(() => {
+    if (!autoOpen || quiet) return;
+    const timer = window.setTimeout(() => setOpen(true), 1500);
+    return () => window.clearTimeout(timer);
+  }, [autoOpen, quiet]);
 
   const target = new Date(`${fields.date || "2027-12-12"}T${fields.time || "16:00"}:00+05:30`).getTime();
   let left = Math.max(0, Math.floor((target - now) / 1000));
