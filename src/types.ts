@@ -119,7 +119,8 @@ export type TemplateStyle =
   | "pull"
   | "inland"
   | "grandoor"
-  | "grandenvelope";
+  | "grandenvelope"
+  | "pastal";
 
 export type Template = {
   id: string;

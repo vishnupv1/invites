@@ -6,6 +6,7 @@ import type { HomeTheme } from "../components/HomeInvite";
 import type { PeaceTheme } from "../components/PeaceInvite";
 import type { ShaadiTheme } from "../components/ShaadiInvite";
 import type { ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
+import type { PastalTheme } from "../components/PastalInvite";
 import type { PullTheme } from "../components/PullInvite";
 import type { VivahTheme } from "../components/VivahInvite";
 
@@ -55,6 +56,12 @@ export function thiruThemeOf(swatch: string): ThiruvizhaTheme {
   if (swatch === "ivory") return "ivory";
   if (swatch === "emerald") return "emerald";
   return "rani";
+}
+
+export function pastalThemeOf(swatch: string): PastalTheme {
+  if (swatch === "blush") return "blush";
+  if (swatch === "sage") return "sage";
+  return "ivory";
 }
 
 export function pullThemeOf(swatch: string): PullTheme {

@@ -495,6 +495,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "pastal",
+    name: "Pastal party",
+    style: "pastal",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A pressed-paper wedding. Tap the wax seal, the ribbon falls, and a palace garden opens onto the celebrations.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.pastal,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Isha & Kabir",
+        title: "",
+        detail: "",
+        date: "2027-01-23",
+        time: "18:00",
+        venue: "Sheesh Mahal Gardens",
+        address: "Amer Road, Jaipur, Rajasthan",
+        message: "With joy in our hearts and the blessings of our families, we invite you to celebrate the beginning of our forever.",
+        dress: "",
+        rsvpBy: "2026-12-20",
+        lines: linesFor("pastal"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

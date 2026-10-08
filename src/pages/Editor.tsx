@@ -15,6 +15,7 @@ import { VivahInvite } from "../components/VivahInvite";
 import { GazalInvite } from "../components/GazalInvite";
 import { ShaadiInvite } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite, type ThiruvizhaLang } from "../components/ThiruvizhaInvite";
+import { PastalInvite } from "../components/PastalInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -29,7 +30,7 @@ import { PackFields } from "./PackFields";
 import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
@@ -1374,6 +1375,8 @@ export function Editor({
                     <PullInvite fields={previewFields} theme={pullThemeOf(model.swatch)} />
                   ) : template.style === "inland" ? (
                     <InlandInvite fields={previewFields} />
+                  ) : template.style === "pastal" ? (
+                    <PastalInvite fields={previewFields} theme={pastalThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

@@ -154,7 +154,7 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
         <>
           {pack.people.map((item, index) => (
             <div className="ed-fn" key={`person-${index}`}>
-              {index === 0 ? <p className="ed-lead">Godparents</p> : null}
+              {index === 0 ? <p className="ed-lead">{/god/i.test(item.role) ? "Godparents" : "Families"}</p> : null}
               <div className="ed-fn-head">
                 <input className="ed-input" aria-label="Name" value={item.name} onChange={(event) => patchList<PersonItem>("people", index, { name: event.target.value })} />
                 <RemoveButton label={`Remove ${item.name || "person"}`} onClick={() => dropItem("people", index)} />

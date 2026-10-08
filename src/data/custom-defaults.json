@@ -172,5 +172,24 @@
       { "kick": "13 DECEMBER", "title": "Reception", "time": "Sunday · 8:00 PM", "text": "The Grand Terrace" }
     ],
     "venueNote": "Lake Palace Road, Udaipur 313001"
+  },
+  "pastal": {
+    "people": [
+      { "name": "Mrs. Anjali & Mr. Rohan Mehra", "role": "Daughter of" },
+      { "name": "Mrs. Nisha & Mr. Vikram Kapoor", "role": "Son of" }
+    ],
+    "story": [
+      { "year": "2019", "title": "First hello", "text": "A rooftop party in Mumbai and a conversation that never ended." },
+      { "year": "2025", "title": "The question", "text": "At sunrise over Udaipur’s lakes, he asked. She said yes before he finished." },
+      { "year": "2027", "title": "Forever", "text": "Now we begin our favourite chapter — and we want you there." }
+    ],
+    "programme": [
+      { "kick": "Friday · 22 January", "title": "Haldi", "time": "10:00 AM", "text": "The Courtyard", "note": "Shades of yellow" },
+      { "kick": "Friday · 22 January", "title": "Mehendi", "time": "4:00 PM", "text": "Garden Terrace", "note": "Greens & florals" },
+      { "kick": "Friday · 22 January", "title": "Sangeet", "time": "8:00 PM", "text": "The Durbar Hall", "note": "Glam & sparkle" },
+      { "kick": "Saturday · 23 January", "title": "The Wedding", "time": "6:00 PM", "text": "Lotus Lawns", "note": "Traditional" },
+      { "kick": "Sunday · 24 January", "title": "Reception", "time": "8:00 PM", "text": "Sheesh Mahal", "note": "Black tie" }
+    ],
+    "venueNote": "Valet parking · shuttles from city hotels from 5 pm"
   }
 }
