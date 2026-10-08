@@ -23,16 +23,23 @@
 
 .mj-stage {
   position: relative;
+  width: 100%;
+  aspect-ratio: 390 / 844;
+  overflow: hidden;
+  background: #070c1c;
+}
+
+.mj.is-desk .mj-stage {
   height: 100svh;
   max-height: 900px;
   min-height: 640px;
-  overflow: hidden;
-  background: #070c1c;
+  aspect-ratio: auto;
 }
 
 .mj-scene {
   position: absolute;
   inset: 0;
+  container-type: size;
   background: url("/moonlit/sky.jpg") center top / cover no-repeat;
   transform-origin: 50% 47%;
 }
@@ -167,6 +174,7 @@
   width: 59%;
 }
 
+.mj-lot img { width: 100%; height: auto; }
 .mj-lot.l { left: -40px; }
 .mj-lot.r { right: -40px; }
 .mj-lot.r img { transform: scaleX(-1); }

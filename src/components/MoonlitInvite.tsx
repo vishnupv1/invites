@@ -112,7 +112,9 @@ export function MoonlitInvite({
   const parents = pack.people ?? [];
   const wishes = [...extraWishes, ...(pack.wishes ?? [])].slice(0, 3);
   const place = [fields.venue, fields.address].filter(Boolean).join(", ");
-  const heroPlace = [fields.venue, cityOf(fields.address, fields.venue)].filter(Boolean).join(", ");
+  const addressParts = fields.address.split(",").map((part) => part.trim()).filter(Boolean);
+  const locality = addressParts.length > 2 ? addressParts.slice(0, -1).join(", ") : addressParts.join(", ");
+  const heroPlace = [fields.venue, locality].filter(Boolean).join(", ");
   const mapQuery = fields.lat && fields.lng ? `${fields.lat},${fields.lng}` : place;
   const names = pairOf(fields.names);
   const tag = (pack.caption || "#MeeraArjunUnderTheMoon").replace(/\s+/g, "");
@@ -247,7 +249,7 @@ export function MoonlitInvite({
               className="mj-lantern"
               src="/moonlit/lantern.webp"
               alt=""
-              style={{ ["--left" as string]: lantern.left, ["--top" as string]: lantern.top, ["--size" as string]: lantern.size, ["--dx" as string]: lantern.dx, ["--dy" as string]: "-75%", ["--dur" as string]: lantern.duration, ["--delay" as string]: lantern.delay }}
+              style={{ ["--left" as string]: lantern.left, ["--top" as string]: lantern.top, ["--size" as string]: lantern.size, ["--dx" as string]: lantern.dx, ["--dy" as string]: "-62cqh", ["--dur" as string]: lantern.duration, ["--delay" as string]: lantern.delay }}
             />
           ))}
           <span className="mj-water" aria-hidden="true" />
