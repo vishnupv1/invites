@@ -17,6 +17,7 @@ import { ShaadiInvite } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite, type ThiruvizhaLang } from "../components/ThiruvizhaInvite";
 import { PastalInvite } from "../components/PastalInvite";
 import { PalaceInvite } from "../components/PalaceInvite";
+import { MoonlitInvite } from "../components/MoonlitInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -31,7 +32,7 @@ import { PackFields } from "./PackFields";
 import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
 import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { AppMenu } from "../components/AppMenu";
@@ -84,6 +85,7 @@ const SWATCHES = [
   { id: "post", name: "Inland post", cover: "#CFE2F2", dot: "#C8342B" },
   { id: "wine", name: "Wine & gold", cover: "#1A0C0A", dot: "#E8C987" },
   { id: "paper", name: "Blush paper", cover: "#F3E2D8", dot: "#6E4A42" },
+  { id: "night", name: "Moonlit gold", cover: "#0B1226", dot: "#E9BE6A" },
 ];
 
 function ceremonyLabel(template: Template, draft: InviteFields) {
@@ -1381,6 +1383,8 @@ export function Editor({
                     <PastalInvite fields={previewFields} theme={pastalThemeOf(model.swatch)} />
                   ) : template.style === "palace" ? (
                     <PalaceInvite fields={previewFields} theme={palaceThemeOf(model.swatch)} />
+                  ) : template.style === "moonlit" ? (
+                    <MoonlitInvite fields={previewFields} theme={moonlitThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

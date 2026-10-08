@@ -551,6 +551,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "moonlit",
+    name: "Moonlit Jharokha",
+    style: "moonlit",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A moonlit wedding. Tap the lantern, the jharokha shutters open, and the lake palace rises under the December moon.",
+    asks: { photos: 7, audio: false, location: true },
+    meta: META.moonlit,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "With the blessings of",
+        names: "Meera & Arjun",
+        title: "",
+        detail: "",
+        date: "2026-12-12",
+        time: "19:00",
+        venue: "The Moonlit Ghats",
+        address: "Lake Pichola, Udaipur, Rajasthan",
+        message: "we invite you to witness two hearts become one, beneath the December moon",
+        dress: "",
+        rsvpBy: "2026-11-20",
+        lines: linesFor("moonlit"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

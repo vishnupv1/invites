@@ -47,6 +47,7 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
   grandenvelope: { styles: ["Animated", "Royal"], pop: 97, added: 18, isNew: true, tags: "envelope wax seal burgundy gold munnar flap parchment", swatches: ["#1A0C0A", "#6E2032", "#E8C987"] },
   pastal: { styles: ["Animated", "Royal"], pop: 98, added: 19, isNew: true, tags: "pressed paper palace wax seal ivory blush sage jaipur lotus", swatches: ["#EFE7DA", "#EEDCD6", "#E1E6D8"] },
   palace: { styles: ["Animated", "Royal"], pop: 99, added: 20, isNew: true, tags: "paper palace drapes roses jaipur plaque ribbon doors", swatches: ["#F3E2D8", "#6E4A42"] },
+  moonlit: { styles: ["Animated", "Royal"], pop: 100, added: 21, isNew: true, tags: "moonlit jharokha lantern lake udaipur night gold diya", swatches: ["#0B1226", "#E9BE6A"] },
   pull: { styles: ["Animated", "Royal"], pop: 94, added: 15, isNew: true, tags: "curtain rope velvet gold wedding pull", swatches: ["#4A0716", "#10243F", "#0E3424", "#3A1638"] },
   inland: { styles: ["Animated"], pop: 91, added: 16, isNew: true, tags: "birthday inland letter tear balloons party kochi", swatches: ["#CFE2F2", "#C8342B", "#F2B33D"] },
   botanica: { styles: ["Animated", "Minimal"], pop: 82, added: 13, isNew: true, tags: "floral frames roses sage blush", swatches: ["#FBF3EA", "#EEF2E8", "#1E2238"] },

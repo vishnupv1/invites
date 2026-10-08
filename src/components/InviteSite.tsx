@@ -21,9 +21,10 @@ import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PastalInvite } from "./PastalInvite";
 import { PalaceInvite } from "./PalaceInvite";
+import { MoonlitInvite } from "./MoonlitInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useFonts } from "../lib/fonts";
 
 type Reply = { name: string; note: string; attending: boolean };
@@ -383,6 +384,9 @@ export function InviteSite({
   }
   if (template.style === "palace") {
     return <PalaceInvite fields={fields} onReply={onReply} theme={palaceThemeOf(swatch)} />;
+  }
+  if (template.style === "moonlit") {
+    return <MoonlitInvite fields={fields} onReply={onReply} theme={moonlitThemeOf(swatch)} />;
   }
   let body: ReactNode;
   switch (template.style) {

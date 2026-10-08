@@ -578,5 +578,36 @@
       { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
+  },
+  "moonlit": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [
+      { "id": "night", "name": "Moonlit gold" }
+    ],
+    "defaultTheme": "night",
+    "shots": [
+      { "label": "Our photo" },
+      { "label": "Moment 1" },
+      { "label": "Moment 2" },
+      { "label": "Moment 3" },
+      { "label": "Moment 4" },
+      { "label": "Moment 5" },
+      { "label": "Moment 6" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The window", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Blessing line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding night", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

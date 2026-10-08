@@ -121,7 +121,8 @@ export type TemplateStyle =
   | "grandoor"
   | "grandenvelope"
   | "pastal"
-  | "palace";
+  | "palace"
+  | "moonlit";
 
 export type Template = {
   id: string;
