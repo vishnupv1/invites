@@ -19,13 +19,14 @@ import { InviteView } from "../components/InviteView";
 import { ShaadiInvite } from "../components/ShaadiInvite";
 import { ThiruvizhaInvite, type ThiruvizhaLang } from "../components/ThiruvizhaInvite";
 import { PastalInvite } from "../components/PastalInvite";
+import { PalaceInvite } from "../components/PalaceInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor, designCtaLabel } from "../data/templates";
 import { templateSeo, topicForTemplate } from "../data/topics";
-import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import { formatShortDate } from "../lib/dates";
@@ -79,6 +80,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <InlandInvite fields={fields} demo autoOpen />;
     case "pastal":
       return <PastalInvite fields={fields} theme={pastalThemeOf(swatch)} />;
+    case "palace":
+      return <PalaceInvite fields={fields} theme={palaceThemeOf(swatch)} />;
     case "home":
       return <HomeInvite fields={fields} theme={homeThemeOf(swatch)} demo />;
     case "shaadi":

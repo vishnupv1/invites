@@ -6,6 +6,7 @@ export type RoomItem = { label: string; name: string; text: string; note: string
 export type PersonItem = { name: string; role: string };
 export type FactItem = { label: string; value: string };
 export type FaqItem = { q: string; a: string };
+export type WishItem = { text: string; by: string };
 
 export type CustomPack = {
   story?: StoryBeat[];
@@ -14,6 +15,7 @@ export type CustomPack = {
   people?: PersonItem[];
   facts?: FactItem[];
   faqs?: FaqItem[];
+  wishes?: WishItem[];
   sangeetName?: string | null;
   sangeetTime?: string;
   sangeetVenue?: string;
@@ -87,6 +89,7 @@ export function packOf(id: string, lines: string | undefined): CustomPack {
       people: base.people?.map((item) => ({ ...item })),
       facts: base.facts?.map((item) => ({ ...item })),
       faqs: base.faqs?.map((item) => ({ ...item })),
+      wishes: base.wishes?.map((item) => ({ ...item })),
     };
   }
   try {
@@ -101,6 +104,7 @@ export function packOf(id: string, lines: string | undefined): CustomPack {
       people: mergeList(base.people, parsed.people),
       facts: mergeList(base.facts, parsed.facts),
       faqs: mergeList(base.faqs, parsed.faqs),
+      wishes: mergeList(base.wishes, parsed.wishes),
     };
   } catch {
     return packOf(id, "");

@@ -523,6 +523,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "palace",
+    name: "Palace",
+    style: "palace",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A paper-palace wedding. Tap the plaque, the ribbon falls, and blush doors open onto the celebrations.",
+    asks: { photos: 7, audio: false, location: true },
+    meta: META.palace,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "With the blessings of",
+        names: "Isha & Kabir",
+        title: "",
+        detail: "",
+        date: "2027-01-23",
+        time: "18:00",
+        venue: "Sheesh Mahal Gardens",
+        address: "Amer Road, Jaipur, Rajasthan",
+        message: "we request the honour of your presence as our children begin their forever",
+        dress: "",
+        rsvpBy: "2026-12-20",
+        lines: linesFor("palace"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

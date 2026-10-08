@@ -20,9 +20,10 @@ import { GazalInvite, type GazalWish } from "./GazalInvite";
 import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PastalInvite } from "./PastalInvite";
+import { PalaceInvite } from "./PalaceInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, vivahThemeOf } from "../lib/themes";
 import { useFonts } from "../lib/fonts";
 
 type Reply = { name: string; note: string; attending: boolean };
@@ -379,6 +380,9 @@ export function InviteSite({
   }
   if (template.style === "pastal") {
     return <PastalInvite fields={fields} onReply={onReply} theme={pastalThemeOf(swatch)} />;
+  }
+  if (template.style === "palace") {
+    return <PalaceInvite fields={fields} onReply={onReply} theme={palaceThemeOf(swatch)} />;
   }
   let body: ReactNode;
   switch (template.style) {

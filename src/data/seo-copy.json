@@ -126,6 +126,12 @@
       "description": "Guests tap the palace doors and a blush-and-gold wedding invitation rises over the lake. Share one link for RSVPs.",
       "lead": "The Grand Door is a palace wedding invitation. Guests tap the doors, the leaves swing open, and a blush-and-gold invitation rises over the lake."
     },
+    "palace": {
+      "heading": "Palace wedding invitation",
+      "title": "Palace Wedding Invitation — Paper Doors & Palace Gardens | InvitesReady",
+      "description": "A paper-palace wedding invitation. Tap the plaque, the ribbon falls, and blush doors open onto Sheesh Mahal — celebrations, wishes and RSVP.",
+      "lead": "Blush paper, a hanging ribbon and a palace that rises as the doors open. Made for a wedding day that feels like a celebration in Jaipur."
+    },
     "pastal": {
       "heading": "Pressed-paper wedding invitation",
       "title": "Pastal party — Animated Wedding Invitation | InvitesReady",
@@ -181,7 +187,7 @@
       "title": "Digital wedding invitations | InvitesReady",
       "description": "Digital wedding invitations for a garden, beach, floral, or palace celebration. Share one link. Guests RSVP with no app.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
-      "templates": ["aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor", "grandenvelope", "pastal"],
+      "templates": ["palace", "aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor", "grandenvelope", "pastal"],
       "related": ["/nikah", "/shaadi", "/tamil-wedding"]
     },
     {

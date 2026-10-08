@@ -1,5 +1,5 @@
 import { TimeField } from "../components/WhenFields";
-import { linesFor, packOf, type CustomPack, type FactItem, type FaqItem, type PersonItem, type ProgrammeItem, type RoomItem, type StoryBeat } from "../data/custom";
+import { linesFor, packOf, type CustomPack, type FactItem, type FaqItem, type PersonItem, type ProgrammeItem, type RoomItem, type StoryBeat, type WishItem } from "../data/custom";
 
 function RemoveButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
@@ -178,6 +178,21 @@ export function PackFields({ id, lines, onChange }: { id: string; lines?: string
             </div>
           ))}
           <button type="button" className="ed-add" onClick={() => addItem<FactItem>("facts", { label: "New fact", value: "" })}>+ Add a fact</button>
+        </>
+      ) : null}
+      {pack.wishes ? (
+        <>
+          {pack.wishes.map((item, index) => (
+            <div className="ed-fn" key={`wish-${index}`}>
+              {index === 0 ? <p className="ed-lead">Wishes</p> : null}
+              <div className="ed-fn-head">
+                <input className="ed-input" aria-label="From" value={item.by} onChange={(event) => patchList<WishItem>("wishes", index, { by: event.target.value })} />
+                <RemoveButton label={`Remove wish from ${item.by || "guest"}`} onClick={() => dropItem("wishes", index)} />
+              </div>
+              <textarea className="ed-input" aria-label="Wish" rows={2} value={item.text} onChange={(event) => patchList<WishItem>("wishes", index, { text: event.target.value })} />
+            </div>
+          ))}
+          <button type="button" className="ed-add" onClick={() => addItem<WishItem>("wishes", { text: "", by: "" })}>+ Add a wish</button>
         </>
       ) : null}
       {pack.caption !== undefined && pack.sangeetName === undefined ? (

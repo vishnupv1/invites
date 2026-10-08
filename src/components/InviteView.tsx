@@ -12,6 +12,7 @@ import { HomeInvite } from "./HomeInvite";
 import { ShaadiInvite } from "./ShaadiInvite";
 import { ThiruvizhaInvite } from "./ThiruvizhaInvite";
 import { PastalInvite } from "./PastalInvite";
+import { PalaceInvite } from "./PalaceInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -219,6 +220,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <InlandInvite fields={fields} quiet={quiet} demo={demo} />;
     case "pastal":
       return <PastalInvite fields={fields} />;
+    case "palace":
+      return <PalaceInvite fields={fields} />;
     case "home":
       return <HomeInvite fields={fields} quiet={quiet} demo={demo} />;
     case "shaadi":
