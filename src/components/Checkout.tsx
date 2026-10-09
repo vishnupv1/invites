@@ -4,12 +4,22 @@ import { Check, Lock, Tag } from "lucide-react";
 import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { Brand } from "./Brand";
 import { Spinner } from "./Loader";
-import { trackEvent, trackSignUp } from "../lib/analytics";
+import { trackEvent, trackPaymentOutcome, trackPurchase } from "../lib/analytics";
+import { claimCallback, safeErrorCode } from "../lib/funnel-events";
 import { useSession } from "../session";
 import type { Template } from "../types";
 import "./checkout.css";
 
-type RazorpayFailure = { error?: { description?: string } };
+type RazorpayFailure = { error?: { description?: string; reason?: string; code?: string } };
+
+type CheckoutStop = Error & { outcome: "cancelled" | "failed"; errorCode?: string };
+
+function checkoutStop(message: string, outcome: "cancelled" | "failed", errorCode?: string) {
+  const error = new Error(message) as CheckoutStop;
+  error.outcome = outcome;
+  error.errorCode = errorCode;
+  return error;
+}
 type RazorpayCheckout = {
   open: () => void;
   on: (event: "payment.failed", handler: (response: RazorpayFailure) => void) => void;
@@ -156,14 +166,14 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
     try {
       if (!getToken()) {
         await ensureSession(email.trim(), name.trim());
-        trackSignUp("email");
       }
       if (total === 0) {
         await onPurchased(applied?.code);
-        trackEvent("purchase", {
-          currency: "INR",
+        trackPurchase({
+          templateId: template.id,
+          templateName: template.name,
           value: 0,
-          template_name: template.name,
+          currency: "INR",
           coupon: applied?.code,
           items: checkoutItems(0),
         });
@@ -173,6 +183,7 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
       await loadRazorpay();
       if (!window.Razorpay) throw new Error("Could not open Razorpay. Try again.");
       const payment = await new Promise<RazorpayPayment>((resolve, reject) => {
+        const gate = { taken: false };
         const checkout = new window.Razorpay!({
           key: order.keyId,
           amount: order.amount,
@@ -182,25 +193,44 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
           description: `Unlock ${template.name}`,
           prefill: { name: name.trim(), email: email.trim(), contact: phone.replace(/\D/g, "") },
           theme: { color: "#1C3A2A" },
-          handler: resolve,
-          modal: { ondismiss: () => reject(new Error("Payment was cancelled.")) },
+          handler: (paid) => {
+            if (!claimCallback(gate)) return;
+            resolve(paid);
+          },
+          modal: {
+            ondismiss: () => {
+              if (!claimCallback(gate)) return;
+              reject(checkoutStop("Payment was cancelled.", "cancelled"));
+            },
+          },
         });
         checkout.on("payment.failed", (response) => {
-          reject(new Error(response.error?.description || "Payment failed. Please try again."));
+          if (!claimCallback(gate)) return;
+          reject(checkoutStop(response.error?.description || "Payment failed. Please try again.", "failed", response.error?.reason || response.error?.code));
         });
         checkout.open();
       });
       await verifyPayment(payment);
       await onPurchased(applied?.code, payment);
-      trackEvent("purchase", {
-        currency: "INR",
+      trackPurchase({
+        templateId: template.id,
+        templateName: template.name,
         value: total,
-        transaction_id: payment.razorpay_payment_id,
-        template_name: template.name,
+        currency: "INR",
+        transactionId: payment.razorpay_payment_id,
         coupon: applied?.code,
         items: checkoutItems(total),
       });
     } catch (reason) {
+      const stop = reason as Partial<CheckoutStop>;
+      if (stop.outcome === "cancelled" || stop.outcome === "failed") {
+        trackPaymentOutcome(stop.outcome, {
+          templateId: template.id,
+          value: total,
+          currency: "INR",
+          errorCode: safeErrorCode(stop.errorCode),
+        });
+      }
       const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
       if (message) setError(message);
     } finally {

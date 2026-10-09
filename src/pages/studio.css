@@ -10,7 +10,9 @@
   color: #1C3A2A;
 }
 .board a:hover {
-  color: #8FB9A0;
+  color: #1C3A2A;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .board button:focus-visible,
 .board a:focus-visible {

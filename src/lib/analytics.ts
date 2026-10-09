@@ -1,3 +1,6 @@
+import { outcomeEvent, saveDraftEvent } from "./funnel-events.ts";
+import { purchaseEventKey } from "./purchase-event-key.ts";
+
 const measurementId = "G-NNF07Q6XYV";
 const INTERNAL_KEY = "invitesready.internal";
 
@@ -97,6 +100,31 @@ export function trackStartDesign(template: { id: string; name: string }) {
   });
 }
 
+export function trackFirstEdit(template: { id: string }) {
+  trackOnce("first_edit", template.id, { template_id: template.id });
+}
+
+export function trackSaveDraft(saved: { id: string; status?: string; templateId?: string }, fallbackTemplateId?: string) {
+  const event = saveDraftEvent({
+    reachedServer: true,
+    ok: Boolean(saved.id),
+    inviteId: saved.id,
+    templateId: saved.templateId || fallbackTemplateId,
+    status: saved.status,
+  });
+  if (!event) return;
+  trackOnce(event.name, event.key, event.params);
+}
+
+export function trackPaymentOutcome(
+  outcome: "cancelled" | "failed",
+  facts: { templateId: string; value: number; currency: string; errorCode?: string },
+) {
+  const event = outcomeEvent(outcome, facts);
+  if (!event || event.name === "purchase") return;
+  trackEvent(event.name, event.params);
+}
+
 export function trackSignUp(method: "google" | "email") {
   trackEvent("sign_up", { method });
 }
@@ -120,6 +148,28 @@ export function trackRsvpSubmit(response: "yes" | "no", template?: { id: string;
   trackEvent("rsvp_submit", {
     response,
     ...(template ? { template_id: template.id, template_name: template.name } : {}),
+  });
+}
+
+export { purchaseEventKey };
+
+export function trackPurchase(params: {
+  templateId: string;
+  templateName: string;
+  value: number;
+  currency: string;
+  transactionId?: string;
+  coupon?: string;
+  items: EventItem[];
+}) {
+  trackOnce("purchase", purchaseEventKey(params.templateId, params.transactionId, params.coupon), {
+    currency: params.currency,
+    value: params.value,
+    template_id: params.templateId,
+    template_name: params.templateName,
+    ...(params.transactionId ? { transaction_id: params.transactionId } : {}),
+    ...(params.coupon ? { coupon: params.coupon } : {}),
+    items: params.items,
   });
 }
 

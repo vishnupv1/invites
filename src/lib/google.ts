@@ -72,5 +72,5 @@ export async function signInWithGoogle() {
   if (!clientId) throw new Error("Google sign-in is not set up yet.");
   await loadGoogle();
   const code = await requestCode(clientId);
-  await logInWithGoogle(code);
+  return logInWithGoogle(code);
 }

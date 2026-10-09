@@ -923,6 +923,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
+  }
+  .ed-sheet-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .ed-view {
+    min-height: 40px;
+    padding: 0 12px;
+    border: 1px solid #D7E6DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #1C3A2A;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
   }
   .ed-sheet-head h2 {
     font-family: Geist, "Segoe UI", sans-serif;

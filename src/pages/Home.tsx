@@ -31,18 +31,12 @@ const SETS: Record<"wedding" | "birthday" | "baby" | "home", PickCard[]> = {
   ],
   birthday: [
     { id: "inland", name: "Inland Letter", kicker: "INLAND LETTER", cover: "/covers/inland.jpg", category: "Birthday" },
-    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg", category: "Wedding" },
-    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg", category: "Wedding" },
   ],
   baby: [
     { id: "baptism", name: "Little Blessing", kicker: "LITTLE BLESSING", cover: "/covers/baptism.jpg", category: "Baptism" },
-    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg", category: "Wedding" },
-    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg", category: "Wedding" },
   ],
   home: [
     { id: "hearth", name: "Hearth", kicker: "HEARTH", cover: "/covers/hearth.jpg", category: "Housewarming" },
-    { id: "beach", name: "Sunset Shore", kicker: "SUNSET SHORE", cover: "/covers/beach.jpg", category: "Wedding" },
-    { id: "anna", name: "Anna", kicker: "ANNA", cover: "/covers/anna.jpg", category: "Wedding" },
   ],
 };
 
@@ -64,7 +58,7 @@ const CARDS: Design[] = [
 
 const TILES = [
   { k: "01 · OPENING", t: "Openings guests remember", d: "Doors, curtains, wax seals and gift boxes — every invitation opens like a short film.", stage: true },
-  { k: "02 · RSVP", t: "Every reply, live", d: "Headcount, meal choices and messages in one dashboard. Nudge late replies in a tap.", stage: false },
+  { k: "02 · RSVP", t: "Every reply, live", d: "Headcount and messages in one dashboard. Guests reply from the invitation link.", stage: false },
   { k: "03 · SHARE", t: "One link, everywhere", d: "WhatsApp, Instagram, email. No app, no login for guests.", stage: false },
   { k: "04 · FUNCTIONS", t: "Haldi to reception", d: "Every function with its own time, venue and dress code.", stage: false },
   { k: "05 · LANGUAGE", t: "Your language", d: "English, Malayalam, Hindi and Tamil — mixed as you like.", stage: false },
@@ -232,6 +226,7 @@ export function Home({ focus }: { focus?: string }) {
   const [mode, setMode] = useState<"idle" | "working" | "done">("idle");
   const [faq, setFaq] = useState(0);
   const [ci, setCi] = useState(1);
+  const [sample, setSample] = useState(false);
 
   useEffect(() => {
     const previous = document.body.style.background;
@@ -268,8 +263,9 @@ export function Home({ focus }: { focus?: string }) {
   }, [mode, reduced]);
 
   function go(text?: string) {
-    const next = (text ?? query).trim() || PLACEHOLDERS[0];
-    setQuery(next);
+    const typed = (text ?? query).trim();
+    setSample(!typed);
+    setQuery(typed || PLACEHOLDERS[0]);
     setMode("working");
   }
 
@@ -362,7 +358,7 @@ export function Home({ focus }: { focus?: string }) {
 
         <section id="templates" className="lv-car" aria-roledescription="carousel" aria-label="Invitation designs">
           <span className="lv-mono">MADE WITH INVITESREADY</span>
-          <h2>Designs that open <span>like a film.</span></h2>
+          <p className="lv-film-title">Designs that open <span>like a film.</span></p>
           <div className="lv-flow" onPointerDown={onStripDown} onPointerUp={onStripUp} onPointerCancel={() => { drag.current.active = false; }}>
             <span className="lv-flow-glow" aria-hidden="true" />
             {CARDS.map((card, index) => {
@@ -476,6 +472,7 @@ export function Home({ focus }: { focus?: string }) {
 
           {mode === "done" ? (
             <>
+              {sample ? <p className="lv-fine">Showing a sample wedding so you can see how matching works.</p> : null}
               <div className="lv-picks">
                 {picks.map((pick, index) => (
                   <article key={pick.id} className="lv-pick" style={{ animationDelay: `${index * 0.15}s` }}>

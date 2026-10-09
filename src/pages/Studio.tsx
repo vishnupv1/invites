@@ -91,7 +91,11 @@ export function Studio({ view = "dashboard" }: { view?: "dashboard" | "guests" |
                 <h1 className="li-title">Guests</h1>
                 <span className="li-sub">Replies from every invitation.</span>
               </div>
-              {!ready ? null : invites.length === 0 ? (
+              {!ready ? (
+                <p className="empty wait-line" aria-busy="true" role="status">
+                  <Spinner size="md" /> Loading your invitations…
+                </p>
+              ) : invites.length === 0 ? (
                 <div className="li-empty">
                   <strong>Nothing here yet.</strong>
                   <p>Create an invitation and replies will show up here.</p>

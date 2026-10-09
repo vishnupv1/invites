@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackEvent } from "../lib/analytics";
@@ -29,6 +29,10 @@ export function Auth() {
   const [googleBusy, setGoogleBusy] = useState(false);
 
   const login = mode === "login";
+
+  useEffect(() => {
+    document.title = login ? "Log in | InvitesReady" : "Sign up | InvitesReady";
+  }, [login]);
 
   function switchMode(next: Mode) {
     setMode(next);
@@ -82,8 +86,8 @@ export function Auth() {
     setErrors({});
     setGoogleBusy(true);
     try {
-      await signInWithGoogle();
-      trackEvent(login ? "login" : "sign_up", { method: "google" });
+      const created = await signInWithGoogle();
+      trackEvent(created ? "sign_up" : "login", { method: "google" });
       continueOn();
     } catch (error) {
       setErrors({ form: error instanceof Error ? error.message : "Could not sign you in with Google." });
@@ -110,7 +114,7 @@ export function Auth() {
           <i />
         </div>
         <div className="m-copy">
-          <h1>{login ? "Welcome back" : "Create your account"}</h1>
+          <p className="auth-mobile-title">{login ? "Welcome back" : "Create your account"}</p>
           <p>{login ? "Log in to manage your invites." : "Your first invite is free."}</p>
         </div>
       </header>
@@ -220,24 +224,17 @@ export function Auth() {
               {!login ? (
                 <label>
                   Full name
-                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Your full name" autoComplete="name" />
-                  {errors.name ? <small>{errors.name}</small> : null}
+                  <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Your full name" autoComplete="name" aria-invalid={errors.name ? true : undefined} aria-describedby={errors.name ? "auth-name-error" : undefined} />
+                  {errors.name ? <small id="auth-name-error">{errors.name}</small> : null}
                 </label>
               ) : null}
               <label>
                 Email address
-                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" />
-                {errors.email ? <small>{errors.email}</small> : null}
+                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" aria-invalid={errors.email ? true : undefined} aria-describedby={errors.email ? "auth-email-error" : undefined} />
+                {errors.email ? <small id="auth-email-error">{errors.email}</small> : null}
               </label>
               <label>
-                <span className="label-row">
-                  Password
-                  {login ? (
-                    <button type="button" className="forgot" onClick={() => setNotice("Password reset isn’t available yet.")}>
-                      Forgot password?
-                    </button>
-                  ) : null}
-                </span>
+                <span className="label-row">Password</span>
                 <span className="pw">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -245,12 +242,14 @@ export function Auth() {
                     onChange={(event) => setPassword(event.target.value)}
                     placeholder={login ? "Your password" : "Create a password"}
                     autoComplete={login ? "current-password" : "new-password"}
+                    aria-invalid={errors.password ? true : undefined}
+                    aria-describedby={errors.password ? "auth-password-error" : undefined}
                   />
                   <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword((value) => !value)}>
                     {showPassword ? <EyeOff /> : <Eye />}
                   </button>
                 </span>
-                {errors.password ? <small>{errors.password}</small> : null}
+                {errors.password ? <small id="auth-password-error">{errors.password}</small> : null}
                 {!login && !errors.password ? <em>At least 8 characters.</em> : null}
               </label>
               {!login ? (
@@ -262,8 +261,9 @@ export function Auth() {
                   {errors.agree ? <small>{errors.agree}</small> : null}
                 </label>
               ) : null}
-              {errors.form ? <small className="form-note">{errors.form}</small> : null}
+              {errors.form ? <small className="form-note" role="alert">{errors.form}</small> : null}
               {notice ? <small className="form-note">{notice}</small> : null}
+              {login ? <p className="switch">Password reset is not available yet.</p> : null}
               <button className="submit" type="submit" disabled={busy} aria-busy={busy || undefined}>
                 {busy ? <Spinner tone="paper" /> : login ? "Log in" : "Create account"}
                 {busy ? <span className="spin-sr">{login ? "Logging in" : "Creating account"}</span> : null}

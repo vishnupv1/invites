@@ -84,7 +84,7 @@
   text-transform: uppercase;
   color: #1C3A2A;
 }
-.cat-login:hover { color: #8FB9A0; }
+.cat-login:hover { color: #1C3A2A; text-decoration: underline; text-underline-offset: 3px; }
 .cat a.cat-create {
   min-height: 46px;
   display: flex;

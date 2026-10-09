@@ -631,8 +631,10 @@
   .m-bar em { color: #1C3A2A; font-style: italic; }
   .m-bar i { width: 44px; }
   .m-copy { position: relative; display: flex; flex-direction: column; gap: 6px; }
-  .m-copy h1 { margin: 0; font-family: Geist, "Segoe UI", sans-serif; font-size: 30px; font-weight: 600; line-height: 1.12; color: #1C3A2A; }
+  .m-copy h1,
+  .auth-mobile-title { margin: 0; font-family: Geist, "Segoe UI", sans-serif; font-size: 30px; font-weight: 600; line-height: 1.12; color: #1C3A2A; }
   .m-copy p { margin: 0; font-size: 15px; color: #5E7368; }
+  .m-copy .auth-mobile-title { margin: 0; font-family: Geist, "Segoe UI", sans-serif; font-size: 30px; font-weight: 600; line-height: 1.12; color: #1C3A2A; }
   .auth main {
     display: block;
     margin: -40px 16px 0;

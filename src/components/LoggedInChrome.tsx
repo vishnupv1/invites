@@ -139,12 +139,12 @@ export function LoggedInChrome() {
           </button>
           <Link className="li-logo" to="/studio" aria-label="InvitesReady home">
             <Mark />
-            <span>Invites<span>Ready</span></span>
+            <span>invitesready</span>
           </Link>
         </div>
 
         <nav className="li-cats" aria-label="Categories">
-          {events.map((event) => (
+          {events.filter((event) => templates.some((template) => template.events.includes(event.id as EventId))).map((event) => (
             <button key={event.id} type="button" className={mega === event.id ? "on" : ""} aria-expanded={mega === event.id} onClick={() => { setMega((value) => (value === event.id ? null : event.id)); setMenu(false); setSheet(false); }}>
               {event.label}
             </button>
@@ -204,7 +204,7 @@ export function LoggedInChrome() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true">
               <path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z" />
             </svg>
-            Go Premium
+            Paid designs
           </Link>
         </div>
       </div>
@@ -224,7 +224,7 @@ export function LoggedInChrome() {
 
       {sheet ? (
         <div className="li-sheet">
-          {events.map((event) => {
+          {events.filter((event) => templates.some((template) => template.events.includes(event.id as EventId))).map((event) => {
             const designs = templates.filter((template) => template.events.includes(event.id as EventId));
             const open = sheetCat === event.id;
             return (
@@ -250,7 +250,7 @@ export function LoggedInChrome() {
               </div>
             );
           })}
-          <Link className="li-premium li-premium-sheet" to="/templates">Go Premium</Link>
+          <Link className="li-premium li-premium-sheet" to="/templates">Paid designs</Link>
         </div>
       ) : null}
     </header>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { listTemplates, updateHostName } from "../api";
+import { Spinner } from "../components/Loader";
 import { getEvent } from "../data/events";
 import { TEMPLATES, formatPrice } from "../data/templates";
 import { FavoriteHeart } from "../components/FavoriteHeart";
@@ -221,9 +222,9 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
 
 const SETTINGS_KEY = "invitesready.settings.v1";
 const TOGGLES = [
-  ["Email me when a guest replies", "One email per reply"],
-  ["Daily WhatsApp summary", "A short recap every evening"],
-  ["Product news & offers", "New templates and discounts"],
+  ["Email me when a guest replies", "Not available yet. Replies stay on the Guests page."],
+  ["Daily WhatsApp summary", "Not available yet. There is no WhatsApp sender."],
+  ["Product news & offers", "Not available yet."],
 ] as const;
 
 function readSettings() {
@@ -232,7 +233,7 @@ function readSettings() {
     const parsed = raw ? (JSON.parse(raw) as { phone?: string; toggles?: boolean[]; lang?: string }) : {};
     return {
       phone: parsed.phone ?? "",
-      toggles: Array.isArray(parsed.toggles) && parsed.toggles.length === 3 ? parsed.toggles : [true, true, false],
+      toggles: [false, false, false],
       lang: parsed.lang ?? "en",
     };
   } catch {
@@ -279,7 +280,6 @@ export function AccountHub({
   const [name, setName] = useState(host?.name ?? "");
   const [saving, setSaving] = useState(false);
   const [phone, setPhone] = useState(() => readSettings().phone);
-  const [toggles, setToggles] = useState(() => readSettings().toggles);
   const [lang, setLang] = useState(() => readSettings().lang);
   const titles = {
     events: ["My events", "Your invitations and their replies"],
@@ -324,8 +324,11 @@ export function AccountHub({
 
       {view === "events" ? (
         <div className="li-events">
-          {ready
-            ? published.map((invite) => (
+          {!ready ? (
+            <p className="empty wait-line" aria-busy="true" role="status">
+              <Spinner size="md" /> Loading your events…
+            </p>
+          ) : published.map((invite) => (
                 <article className="li-event" key={invite.id}>
                   <img src={invite.cover || `/covers/${invite.templateId}.jpg`} alt="" />
                   <div>
@@ -339,18 +342,23 @@ export function AccountHub({
                     </div>
                   </div>
                 </article>
-              ))
-            : null}
-          <Link className="li-new" to="/templates">
-            <b>+</b>
-            <strong>Create a new event</strong>
-            <span className="li-muted">Start from any template</span>
-          </Link>
+              ))}
+          {ready ? (
+            <Link className="li-new" to="/templates">
+              <b>+</b>
+              <strong>Create a new event</strong>
+              <span className="li-muted">Start from any template</span>
+            </Link>
+          ) : null}
         </div>
       ) : null}
 
       {view === "drafts" ? (
-        drafts.length && ready ? (
+        !ready ? (
+          <p className="empty wait-line" aria-busy="true" role="status">
+            <Spinner size="md" /> Loading your drafts…
+          </p>
+        ) : drafts.length ? (
           <div className="li-tiles">
             {drafts.map((invite) => (
               <article className="li-tile" key={invite.id}>
@@ -373,7 +381,11 @@ export function AccountHub({
       ) : null}
 
       {view === "favorites" ? (
-        !catalogReady ? null : favoriteTemplates.length ? (
+        !catalogReady ? (
+          <p className="empty wait-line" aria-busy="true" role="status">
+            <Spinner size="md" /> Loading your favorites…
+          </p>
+        ) : favoriteTemplates.length ? (
           <div className="li-tiles">
             {favoriteTemplates.map((template) => {
               const event = template.events[0] ?? "marriage";
@@ -411,7 +423,11 @@ export function AccountHub({
       ) : null}
 
       {view === "purchases" ? (
-        !catalogReady ? null : purchased.length ? (
+        !catalogReady ? (
+          <p className="empty wait-line" aria-busy="true" role="status">
+            <Spinner size="md" /> Loading your purchases…
+          </p>
+        ) : purchased.length ? (
           <>
             <div className="li-purchases">
               {purchased.map((template) => {
@@ -462,22 +478,22 @@ export function AccountHub({
             </div>
             <div className="li-panel">
               <h2>Notifications</h2>
-              {TOGGLES.map(([label, sub], index) => {
-                const on = toggles[index];
+              {TOGGLES.map(([label, sub]) => {
                 return (
                   <button
                     key={label}
                     type="button"
                     className="li-switch"
                     role="switch"
-                    aria-checked={on}
-                    onClick={() => setToggles((current) => current.map((value, item) => (item === index ? !value : value)))}
+                    aria-checked={false}
+                    aria-disabled="true"
+                    disabled
                   >
                     <span>
                       <strong>{label}</strong>
                       <small>{sub}</small>
                     </span>
-                    <span className={on ? "li-track on" : "li-track"}><i /></span>
+                    <span className="li-track"><i /></span>
                   </button>
                 );
               })}
@@ -507,8 +523,8 @@ export function AccountHub({
                 void (async () => {
                   try {
                     if (next !== (host?.name ?? "").trim()) await updateHostName(next);
-                    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ phone, toggles, lang }));
-                    onToast("Settings saved.");
+                    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ phone, lang }));
+                    onToast("Name saved. Email and WhatsApp alerts are not available yet. Phone and language stay on this device.");
                   } catch (error) {
                     onToast(error instanceof Error ? error.message : "Could not save your name.", "bad");
                   } finally {

@@ -50,8 +50,8 @@ export function GuestAuthDialog({ heading = "Sign in to save your invitation", o
     setError("");
     setGoogleBusy(true);
     try {
-      await signInWithGoogle();
-      if (tab === "signup") trackSignUp("google");
+      const created = await signInWithGoogle();
+      if (created) trackSignUp("google");
       else trackLogin("google");
       onDone();
     } catch (reason) {

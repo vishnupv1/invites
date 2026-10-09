@@ -19,7 +19,7 @@ import { Templates } from "./pages/Templates";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
-import { Unauthorized } from "./pages/Unauthorized";
+import { NotFound, Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
 
 function RequireAccount({ children }: { children: ReactNode }) {
@@ -93,6 +93,7 @@ export default function App() {
         <Route path="/purchases" element={<RequireAccount><Studio view="purchases" /></RequireAccount>} />
         <Route path="/settings" element={<RequireAccount><Studio view="settings" /></RequireAccount>} />
         <Route path="/i/:code" element={<InvitePage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

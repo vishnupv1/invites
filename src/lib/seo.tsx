@@ -33,7 +33,7 @@ function describe(pathname: string): Meta {
   if (pathname === "/features") {
     return {
       title: "Invitation features | InvitesReady",
-      description: "RSVPs, guest groups, reminders, a photo wall, and password-protected pages for wedding and family invitations.",
+      description: "RSVPs, a guest list, and a photo wall for wedding and family invitations.",
       index: true,
       image: BRAND_IMAGE,
     };
@@ -134,8 +134,19 @@ function describe(pathname: string): Meta {
   if (pathname === "/create" || pathname.startsWith("/create/")) {
     return { title: "Design your invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
   }
-  if (pathname === "/studio" || pathname === "/events" || pathname === "/drafts" || pathname === "/favorites" || pathname === "/guests" || pathname === "/purchases" || pathname === "/settings") {
+  if (pathname === "/studio") {
     return { title: "Your invitations | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+  }
+  const studioTitles: Record<string, string> = {
+    "/events": "My events | InvitesReady",
+    "/drafts": "Saved drafts | InvitesReady",
+    "/favorites": "My favorites | InvitesReady",
+    "/guests": "Guests | InvitesReady",
+    "/purchases": "Purchases | InvitesReady",
+    "/settings": "Settings | InvitesReady",
+  };
+  if (studioTitles[pathname]) {
+    return { title: studioTitles[pathname], description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
   }
   if (pathname.startsWith("/i/")) {
     return { title: "Guest invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };

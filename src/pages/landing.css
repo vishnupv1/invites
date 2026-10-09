@@ -506,6 +506,7 @@
   overflow: hidden;
 }
 .lv-car h2,
+.lv-car .lv-film-title,
 .lv-sec h2,
 .lv-cta h2 {
   margin: 0;
@@ -513,7 +514,8 @@
   font-size: 32px;
   line-height: 1.08;
 }
-.lv-car h2 span { color: #1C3A2A; }
+.lv-car h2 span,
+.lv-car .lv-film-title span { color: #1C3A2A; }
 .lv-flow {
   position: relative;
   width: 100%;
@@ -877,7 +879,7 @@
   width: 100%;
 }
 .lv-foot-cols div { display: flex; flex-direction: column; gap: 10px; }
-.lv-foot-cols a { font-size: 14px; color: #5E7368; }
+.lv-foot-cols a { font-size: 14px; color: #5E7368; min-height: 44px; display: inline-flex; align-items: center; }
 .lv-foot-cols a:hover { color: #1C3A2A; }
 .lv-foot-end {
   width: 100%;
@@ -894,6 +896,16 @@
 #features,
 #how,
 #faq { scroll-margin-top: 80px; }
+
+@media (max-width: 959px) {
+  .lv-sky > #start { order: -1; }
+}
+
+.lv-fine {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
 
 @media (min-width: 960px) {
   .lv-nav { padding: 0 40px; }
@@ -913,6 +925,7 @@
   .lv-pick { width: 220px; }
   .lv-car { padding: 48px 0 12px; gap: 26px; }
   .lv-car h2,
+  .lv-car .lv-film-title,
   .lv-sec h2,
   .lv-cta h2 { font-size: 48px; }
   .lv-flow { height: 530px; }

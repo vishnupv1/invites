@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PublicHeader } from "../components/PublicHeader";
 import "./legal.css";
@@ -23,6 +24,26 @@ export function Unauthorized() {
             Log in
           </Link>
           <Link to="/">Back to home</Link>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export function NotFound() {
+  useEffect(() => {
+    document.title = "Page not found | InvitesReady";
+  }, []);
+
+  return (
+    <div className="legal">
+      <PublicHeader />
+      <main>
+        <h1>We couldn’t find that page</h1>
+        <p className="legal-lede">The address may be mistyped, or the page may have moved.</p>
+        <div className="legal-actions">
+          <Link className="legal-go" to="/">Back to home</Link>
+          <Link to="/browse">Browse designs</Link>
         </div>
       </main>
     </div>

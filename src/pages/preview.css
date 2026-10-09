@@ -30,7 +30,7 @@
   font-family: Geist, "Segoe UI", sans-serif;
 }
 .pv a { color: #1C3A2A; }
-.pv a:hover { color: #8FB9A0; }
+.pv a:hover { color: #1C3A2A; text-decoration: underline; text-underline-offset: 3px; }
 .pv button:focus-visible,
 .pv a:focus-visible { outline: 3px solid #1C3A2A; outline-offset: 2px; }
 .pv input:focus { outline: none; border-color: #1C3A2A; box-shadow: 0 0 0 3px rgba(90, 150, 120, 0.15); }

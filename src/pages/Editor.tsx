@@ -44,7 +44,7 @@ import { Notice, type NoticeTone } from "../components/Notice";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields, Template } from "../types";
 import { formatShortDate } from "../lib/dates";
-import { trackPublish, trackShareWhatsApp, trackStartDesign } from "../lib/analytics";
+import { trackFirstEdit, trackPublish, trackSaveDraft, trackShareWhatsApp, trackStartDesign } from "../lib/analytics";
 import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
 import { useFonts } from "../lib/fonts";
 import "./editor.css";
@@ -410,6 +410,17 @@ export function Editor({
   }, [expanded]);
 
   useEffect(() => {
+    if (!publishOpen) return;
+    const dialog = document.querySelector<HTMLElement>(".ed-dialog");
+    dialog?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPublishOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [publishOpen]);
+
+  useEffect(() => {
     const frame = frameRef.current;
     const inner = innerRef.current;
     if (!frame || !inner || device !== "desktop") return;
@@ -443,6 +454,7 @@ export function Editor({
             inviteIdRef.current = saved.id;
             codeRef.current = saved.code;
             statusRef.current = saved.status === "live" ? "live" : "draft";
+            trackSaveDraft(saved, template.id);
             remember(saved);
             localStorage.removeItem(localDraftKey(template.id));
             onInviteRef.current?.(saved.id);
@@ -458,6 +470,7 @@ export function Editor({
         const nextEditor = editorState(latest);
         try {
           const saved = await updateInvite(inviteIdRef.current, template.id, nextFields, nextEditor);
+          trackSaveDraft(saved, template.id);
           remember(saved);
           localStorage.removeItem(localDraftKey(template.id));
         } catch (reason) {
@@ -467,6 +480,7 @@ export function Editor({
           inviteIdRef.current = saved.id;
           codeRef.current = saved.code;
           statusRef.current = saved.status === "live" ? "live" : "draft";
+          trackSaveDraft(saved, template.id);
           remember(saved);
           localStorage.removeItem(localDraftKey(template.id));
           onInviteRef.current?.(saved.id);
@@ -517,6 +531,7 @@ export function Editor({
     setFuture([]);
     setModel({ ...current, ...patch });
     dirtyRef.current = true;
+    if (template) trackFirstEdit(template);
   }
 
   function shotLimit(lines: string | undefined) {
@@ -571,6 +586,7 @@ export function Editor({
       setFuture((next) => [modelRef.current as Model, ...next]);
       setModel(previous);
       dirtyRef.current = true;
+      if (template) trackFirstEdit(template);
       return items.slice(0, -1);
     });
   }
@@ -582,6 +598,7 @@ export function Editor({
       setPast((history) => [...history.slice(-40), modelRef.current as Model]);
       setModel(next);
       dirtyRef.current = true;
+      if (template) trackFirstEdit(template);
       return items.slice(1);
     });
   }
@@ -889,9 +906,12 @@ export function Editor({
             <span className="ed-grab" aria-hidden="true" />
             <div>
               <h2>{tab}</h2>
-              <button type="button" className="ed-done" onClick={() => setSheet(false)}>
-                Done
-              </button>
+              <div className="ed-sheet-actions">
+                <button type="button" className="ed-view" onClick={() => setExpanded(true)}>View invitation</button>
+                <button type="button" className="ed-done" onClick={() => setSheet(false)}>
+                  Done
+                </button>
+              </div>
             </div>
           </div>
           {tab === "Details" ? (
@@ -933,7 +953,7 @@ export function Editor({
               {usesField(template, "title") ? (
                 <div className="ed-field">
                   <label className="ed-label" htmlFor="ed-title">{template.meta.components.find((item) => item.id === "line")?.label ?? event.titleLabel}</label>
-                  <input id="ed-title" className="ed-input" value={draft.title} onChange={(change) => patchDraft({ title: change.target.value })} />
+                  <textarea id="ed-title" className="ed-input" rows={3} value={draft.title} onChange={(change) => patchDraft({ title: change.target.value })} />
                 </div>
               ) : null}
               {usesField(template, "detail") ? (
@@ -1422,7 +1442,7 @@ export function Editor({
 
       {publishOpen ? (
         <div className="ed-modal">
-          <div className="ed-dialog" role="dialog" aria-label="Publish and share">
+          <div className="ed-dialog" role="dialog" aria-modal="true" aria-label="Publish and share" tabIndex={-1}>
             <div className="ed-dialog-head">
               <div>
                 <h2>{link ? "Your invitation is live" : needsPay ? "Pay and publish" : "Publish your invitation"}</h2>

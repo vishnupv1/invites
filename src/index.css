@@ -19,7 +19,8 @@
   --plum: var(--magenta);
   --plum-dark: var(--berry);
   --gold: var(--rose);
-  --error: #f87171;
+  --error: #8F2D2D;
+  --link: #1C3A2A;
 }
 
 * { box-sizing: border-box; }
@@ -53,7 +54,7 @@ h1, h2, h3 { font-family: Geist, "Segoe UI", sans-serif; font-weight: 600; lette
   color: var(--muted);
 }
 .lede { font-size: 1.08rem; max-width: 42rem; }
-h1 { font-size: clamp(2.6rem, 6vw, 5rem); line-height: 0.95; margin: 0 0 16px; }
+h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; }
 
 .solid, .ghost {
   display: inline-flex;
@@ -120,7 +121,7 @@ h1 { font-size: clamp(2.6rem, 6vw, 5rem); line-height: 0.95; margin: 0 0 16px; }
 }
 .topic-lead { max-width: 680px; margin: 0; line-height: 1.6; color: var(--muted); }
 .topic-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 16px 0 22px; }
-.topic-links a { color: var(--plum); font-weight: 700; }
+.topic-links a { color: var(--link); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .shop-top h3 a { color: inherit; text-decoration: none; }
 .grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .shop-card { text-decoration: none; overflow: hidden; }
@@ -260,7 +261,7 @@ input::placeholder, textarea::placeholder { color: #5E7368; }
 .card .message { font-size: 0.98rem; }
 .card footer { display: grid; gap: 4px; margin-top: 18px; font-size: 0.86rem; }
 .when, .where { display: grid; margin: 14px 0; }
-.where strong { font-weight: 560; }
+.where strong { font-weight: 600; }
 
 .garden {
   background: #09090b;

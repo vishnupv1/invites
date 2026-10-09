@@ -11,7 +11,7 @@ import { Checkout } from "../components/Checkout";
 import { EVENTS } from "../data/events";
 import { TEMPLATES, formatPrice, sampleFor, withCatalogMeta } from "../data/templates";
 import { Editor } from "./Editor";
-import { trackLogin, trackPublish, trackShareWhatsApp, trackSignUp, trackStartDesign } from "../lib/analytics";
+import { trackFirstEdit, trackLogin, trackPublish, trackSaveDraft, trackShareWhatsApp, trackSignUp, trackStartDesign } from "../lib/analytics";
 import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
 import { formatLongDate, formatShortDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
@@ -218,8 +218,10 @@ export function CreateGuest() {
     : null;
 
   useEffect(() => {
-    if (step >= 3 || liveRef.current || !getToken() || !template || !fields) return;
-    if (!name1.trim() && !date && !venue.trim() && !message.trim()) return;
+    if (!template || step >= 3) return;
+    const meaningful = Boolean(name1.trim() || date || venue.trim() || message.trim());
+    if (meaningful) trackFirstEdit(template);
+    if (liveRef.current || !getToken() || !fields || !meaningful) return;
     const templateIdNow = template.id;
     const payload: InviteFields = { ...fields, names: typedNames, message, venue, time };
     const editor = { swatch, receptionOn };
@@ -227,6 +229,7 @@ export function CreateGuest() {
       const run = async () => {
         if (liveRef.current && inviteIdRef.current) {
           const saved = await updateInvite(inviteIdRef.current, templateIdNow, payload, editor);
+          trackSaveDraft(saved, templateIdNow);
           library.remember(saved);
           return;
         }
@@ -235,6 +238,7 @@ export function CreateGuest() {
           if (!creatingRef.current) {
             creatingRef.current = saveDraft(templateIdNow, payload, editor).then((saved) => {
               inviteIdRef.current = saved.id;
+              trackSaveDraft(saved, templateIdNow);
               library.remember(saved);
               return saved.id;
             });
@@ -244,6 +248,7 @@ export function CreateGuest() {
         }
         if (!inviteIdRef.current || liveRef.current) return;
         const saved = await updateInvite(inviteIdRef.current, templateIdNow, payload, editor);
+        trackSaveDraft(saved, templateIdNow);
         library.remember(saved);
       };
       void run().catch(() => {
@@ -295,10 +300,10 @@ export function CreateGuest() {
     setAuthError("");
     setGoogleBusy(true);
     try {
-      await signInWithGoogle();
+      const created = await signInWithGoogle();
       inviteIdRef.current = "";
       await refreshHost();
-      if (authTab === "signup") trackSignUp("google");
+      if (created) trackSignUp("google");
       else trackLogin("google");
       setAuthDone(true);
       setJustLoggedIn(true);
@@ -359,6 +364,7 @@ export function CreateGuest() {
       venue: editorSummary.venue || source.venue,
     };
     const drafted = await saveDraft(template.id, payload, local?.editor ?? { swatch, receptionOn });
+    trackSaveDraft(drafted, template.id);
     inviteIdRef.current = drafted.id;
     library.remember(drafted);
     localStorage.removeItem(localKey);

@@ -62,7 +62,7 @@ function look(id: string) {
   return LOOK[id] ?? { styles: [] as StyleTag[], pop: 0, added: 0, tags: "", swatches: ["#FBF8F5", "#D81B60", "#2A1527"] };
 }
 
-function useHref(template: Template, occasion = "all") {
+function hrefFor(template: Template, occasion = "all") {
   const event = occasion !== "all" && template.events.includes(occasion as Template["events"][number])
     ? occasion
     : template.events[0];
@@ -284,8 +284,8 @@ export function AllTemplates() {
                       <span className="cat-line desk">{labels}</span>
                       <span className="cat-line mob">{formatPrice(template)} · {first}</span>
                       <div className="cat-actions">
-                        <Link className="cat-preview" to={`/browse/${template.id}`} state={{ fromBrowse: true }}>Preview</Link>
-                        <Link to={useHref(template, occasion)}>Use</Link>
+                        <Link className="cat-preview" to={`/browse/${template.id}`} state={{ fromBrowse: true }} aria-label={`Preview ${template.name}`}>Preview</Link>
+                        <Link to={hrefFor(template, occasion)} aria-label={`Use ${template.name}`}>Use</Link>
                       </div>
                     </div>
                   </article>
@@ -316,7 +316,7 @@ export function AllTemplates() {
       </footer>
 
       {preview && demo ? (
-        <CatalogDemo template={preview} href={useHref(preview, occasion)} label="Use this template" onClose={() => setDemo(false)} />
+        <CatalogDemo template={preview} href={hrefFor(preview, occasion)} label="Use this template" onClose={() => setDemo(false)} />
       ) : null}
 
       {preview ? (
@@ -354,7 +354,7 @@ export function AllTemplates() {
                 <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span>
               </div>
               <div className="cat-modal-actions">
-                <Link to={useHref(preview)}>{designCtaLabel(preview)}</Link>
+                <Link to={hrefFor(preview)}>{designCtaLabel(preview)}</Link>
                 <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
               </div>
             </div>

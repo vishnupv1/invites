@@ -69,11 +69,12 @@ export async function logIn(email: string, password: string) {
 }
 
 export async function logInWithGoogle(code: string) {
-  const session = await request<{ token: string }>("/api/auth/google", {
+  const session = await request<{ token: string; created?: boolean }>("/api/auth/google", {
     method: "POST",
     body: JSON.stringify({ code }),
   });
   storeToken(session.token);
+  return session.created === true;
 }
 
 export async function googleClientId() {
@@ -247,8 +248,28 @@ export function getPublicInvite(slug: string) {
   return request<{ slug: string; templateId: string; fields: InviteFields; swatch?: string; greetings?: { name: string; note: string; attending?: boolean }[] }>(`/api/invites/${slug}`);
 }
 
-export function sendGreeting(slug: string, body: { name: string; note: string; attending: boolean }) {
-  return request(`/api/invites/${slug}/greetings`, { method: "POST", body: JSON.stringify(body) });
+const REPLIES = "invitesready.replies.v1";
+
+function readReplies() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(REPLIES) || "{}") as Record<string, string>;
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export async function sendGreeting(slug: string, body: { name: string; note: string; attending: boolean }) {
+  const replies = readReplies();
+  const saved = await request<{ replyToken?: string }>(`/api/invites/${slug}/greetings`, {
+    method: "POST",
+    body: JSON.stringify({ ...body, replyToken: replies[slug] }),
+  });
+  if (saved.replyToken) {
+    replies[slug] = saved.replyToken;
+    localStorage.setItem(REPLIES, JSON.stringify(replies));
+  }
+  return saved;
 }
 
 export async function uploadMedia(file: File) {
