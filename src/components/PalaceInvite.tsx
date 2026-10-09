@@ -243,7 +243,7 @@ export function PalaceInvite({
         <img className="pq-roses r" src="/palace/roses-r.webp" alt="" />
         {GLINTS.map(([x, y], index) => (
           <span
-            key={x + y}
+            key={`glint-${index}`}
             className="pq-glint"
             style={{ left: `${x * 100}%`, top: `${y * 100}%`, ["--dur" as string]: `${2.6 + (index % 4) * 0.7}s`, ["--delay" as string]: `${3 + index * 0.37}s` }}
             aria-hidden="true"
@@ -253,9 +253,9 @@ export function PalaceInvite({
             </svg>
           </span>
         ))}
-        {petals.map((petal) => (
+        {petals.map((petal, index) => (
           <span
-            key={petal.left + petal.delay}
+            key={`petal-${index}`}
             className="pq-petal"
             style={{ left: petal.left, width: petal.size, height: petal.size + 3, ["--fy" as string]: "110vh", ["--dx" as string]: petal.dx, ["--dur" as string]: petal.duration, ["--delay" as string]: petal.delay }}
             aria-hidden="true"

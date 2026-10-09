@@ -33,13 +33,21 @@ function splitNames(names: string) {
   return { first: parts[0]?.trim() || "Rohan", second: parts.slice(1).join(" & ").trim() || "Alisha" };
 }
 
+function sealPlace(place: string) {
+  const bit = place.split(",")[0]?.trim() || "";
+  return bit.length > 0 && bit.length <= 16 ? bit.toUpperCase() : "";
+}
+
 function stampOf(iso: string, place: string) {
   const date = new Date(`${iso || "2027-03-20"}T12:00:00`);
-  if (Number.isNaN(date.getTime())) return { weekday: "SATURDAY", mid: "20.03", foot: `2027 · ${place.toUpperCase()}` };
+  const year = Number.isNaN(date.getTime()) ? "2027" : String(date.getFullYear());
+  const short = sealPlace(place);
+  const foot = short ? `${year} · ${short}` : year;
+  if (Number.isNaN(date.getTime())) return { weekday: "SATURDAY", mid: "20.03", foot };
   const weekday = date.toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
   const dd = String(date.getDate()).padStart(2, "0");
   const mm = String(date.getMonth() + 1).padStart(2, "0");
-  return { weekday, mid: `${dd}.${mm}`, foot: `${date.getFullYear()} · ${place.toUpperCase()}` };
+  return { weekday, mid: `${dd}.${mm}`, foot };
 }
 
 function dotted(iso: string, place: string) {
@@ -663,7 +671,7 @@ export function BeachInvite({
             <div className="bw-foot-wave" aria-hidden="true">
               <div className="bw-wave" style={{ height: 60, animationDuration: "10s" }}>
                 <svg viewBox="0 0 1600 60" preserveAspectRatio="none">
-                  <path d="M0 30C100 10 200 50 300 30S500 10 600 30 800 50 900 30 1100 10 1200 30 1400 50 1500 30 1600 30V60H0z" fill="#6FB3B8" fillOpacity="0.5" />
+                  <path d="M0 30C100 10 200 50 300 30S500 10 600 30 800 50 900 30 1100 10 1200 30 1400 50 1500 30V60H0z" fill="#6FB3B8" fillOpacity="0.5" />
                 </svg>
               </div>
             </div>

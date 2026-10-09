@@ -246,7 +246,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 48px 12px 8px;
   background: var(--bg);
   backdrop-filter: blur(8px);
 }

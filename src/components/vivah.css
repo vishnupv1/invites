@@ -226,9 +226,10 @@
   flex-direction: column;
   align-items: center;
   gap: 14px;
+  max-width: min(340px, calc(100% - 28px));
 }
 
-.wd-open-names .wd-row { display: flex; justify-content: center; }
+.wd-open-names .wd-row { display: flex; flex-wrap: wrap; justify-content: center; max-width: 100%; }
 
 .wd-open-amp {
   font-family: "Cinzel Decorative", serif;
@@ -436,7 +437,8 @@
   gap: 12px;
 }
 
-.wd-hero-names .wd-row { display: flex; justify-content: center; }
+.wd-hero-names { max-width: min(340px, calc(100% - 28px)); }
+.wd-hero-names .wd-row { display: flex; flex-wrap: wrap; justify-content: center; max-width: 100%; }
 
 .wd-hero-amp {
   position: relative;

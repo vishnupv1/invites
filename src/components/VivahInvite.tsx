@@ -99,7 +99,7 @@ function calendarLink(title: string, date: string, time: string, location: strin
 }
 
 function tagOf(first: string, second: string) {
-  const clean = (value: string) => value.replace(/[^A-Za-z0-9]/g, "");
+  const clean = (value: string) => value.replace(/\s+/g, "");
   return second ? `#${clean(first)}Weds${clean(second)}` : `#${clean(first)}`;
 }
 

@@ -786,15 +786,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 18px;
+  padding: 8px 12px;
   border-radius: 999px;
   font-family: Jost, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+.gd-btn > span {
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
 }
 
 .gd-btn.yes {
@@ -1185,8 +1194,8 @@
   }
   .gd-btn.yes,
   .gd-btn.no {
-    letter-spacing: 0.12em;
-    font-size: 13px;
+    letter-spacing: 0.04em;
+    font-size: 14px;
   }
   .gd-arch {
     height: 96%;

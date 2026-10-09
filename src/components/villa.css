@@ -135,7 +135,10 @@
   line-height: 1.15;
   color: var(--olive-d);
   padding: 0.1em 0.3em 0;
-  white-space: nowrap;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .vs.is-desk .vs-names { font-size: 88px; }
 .vs-amp { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 0.42em; }
@@ -241,7 +244,11 @@
   font-family: Cinzel, serif;
   font-size: 17px;
   font-weight: 600;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.12em;
+  line-height: 1.45;
+  padding: 0 18px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
   color: #48512a;
   text-shadow: -1px -1px 0 rgba(30, 34, 12, 0.55), 1px 1px 0 rgba(200, 210, 160, 0.35);
 }

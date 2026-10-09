@@ -864,6 +864,12 @@
   .cat-badges .anim svg { width: 12px; height: 12px; }
 }
 
+@media (max-width: 420px) {
+  .cat-grid { grid-template-columns: 1fr; }
+  .cat-name-row strong,
+  .cat-line { white-space: normal; overflow: visible; text-overflow: unset; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cat-card,
   .cat-heart,
