@@ -1,3 +1,4 @@
+import { TEMPLATES } from "./data/templates";
 import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
 const TOKEN = "invitesready.token.v1";
@@ -147,8 +148,10 @@ export function listEvents() {
   return request<CatalogEvent[]>("/api/events");
 }
 
-export function listTemplates() {
-  return request<Template[]>("/api/templates");
+export async function listTemplates() {
+  const rows = await request<Template[]>("/api/templates");
+  const seen = new Set(rows.map((row) => row.id));
+  return [...TEMPLATES.filter((template) => !seen.has(template.id)), ...rows];
 }
 
 export function getTemplateRecord(id: string) {

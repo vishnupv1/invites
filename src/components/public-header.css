@@ -19,11 +19,19 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   color: #1C3A2A;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.02em;
   text-decoration: none;
+}
+
+.ph-logo span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ph-links {
@@ -39,6 +47,27 @@
 }
 
 .ph-links a:hover { color: #1C3A2A; }
+
+.ph-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ph-login {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  color: #1C3A2A;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ph-login:hover { color: #2F5C45; }
 
 .ph-pill {
   min-height: 40px;
@@ -63,6 +92,8 @@
 
 @media (min-width: 960px) {
   .ph { padding: 0 40px; }
+  .ph-actions { gap: 10px; }
+  .ph-login { padding: 0 12px; }
   .ph-links {
     display: flex;
     position: absolute;

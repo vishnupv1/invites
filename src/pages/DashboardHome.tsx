@@ -23,6 +23,7 @@ const THUMBS: Record<string, { bg: string; fg: string }> = {
   grandenvelope: { bg: "#1A0C0A", fg: "#F3DDA8" },
   pastal: { bg: "#EFE7DA", fg: "#6B5640" },
   palace: { bg: "#F3E2D8", fg: "#6E4A42" },
+  hansa: { bg: "#E4E0E6", fg: "#4A4E68" },
   villa: { bg: "#F7F1E6", fg: "#66703F" },
   moonlit: { bg: "#0B1226", fg: "#E9BE6A" },
   pull: { bg: "#4A0716", fg: "#F3DDA8" },

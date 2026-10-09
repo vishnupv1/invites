@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSession } from "../session";
 import "./public-header.css";
 
 function Mark() {
@@ -12,6 +13,10 @@ function Mark() {
 }
 
 export function PublicHeader() {
+  const { signedIn, host } = useSession();
+  const onAuth = useLocation().pathname === "/login";
+  const account = host?.name?.split(" ")[0] || "Account";
+
   return (
     <header className="ph">
       <Link className="ph-logo" to="/" aria-label="InvitesReady">
@@ -23,7 +28,14 @@ export function PublicHeader() {
         <Link to="/how">How it works</Link>
         <Link to="/faq">FAQs</Link>
       </nav>
-      <Link className="ph-pill" to="/browse">See the designs</Link>
+      <div className="ph-actions">
+        {onAuth ? null : (
+          <Link className="ph-login" to={signedIn ? "/studio" : "/login"}>
+            {signedIn ? account : "Log in"}
+          </Link>
+        )}
+        <Link className="ph-pill" to="/browse">See the designs</Link>
+      </div>
     </header>
   );
 }
