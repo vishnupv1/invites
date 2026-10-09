@@ -139,7 +139,11 @@ export function MoonlitInvite({
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(node);
-    return () => observer.disconnect();
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   useEffect(() => {
@@ -148,25 +152,17 @@ export function MoonlitInvite({
     if (!stage || !fit) return;
     const apply = () => {
       const width = stage.clientWidth;
-      if (width >= 860) {
-        stage.style.height = "";
-        stage.style.aspectRatio = "";
-        fit.style.width = "";
-        fit.style.height = "";
-        fit.style.maxWidth = "";
-        fit.style.aspectRatio = "";
-        fit.style.position = "";
-        fit.style.left = "";
-        fit.style.top = "";
-        fit.style.transform = "";
-        return;
-      }
+      const desk = width >= 860;
       const visible = window.visualViewport?.height ?? window.innerHeight;
-      const designW = 390;
-      const designH = 844;
-      const height = Math.min(width * (designH / designW), Math.max(visible, 480));
+      const designW = desk ? 1440 : 390;
+      const designH = desk ? 900 : 844;
+      const height = desk
+        ? visible
+        : Math.min(width * (designH / designW), Math.max(visible, 480));
       const scale = Math.min(width / designW, height / designH);
       stage.style.aspectRatio = "auto";
+      stage.style.maxHeight = "none";
+      stage.style.minHeight = "0";
       stage.style.height = `${height}px`;
       fit.style.width = `${designW}px`;
       fit.style.height = `${designH}px`;
