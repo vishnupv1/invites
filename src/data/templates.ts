@@ -579,6 +579,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "villa",
+    name: "Villa Serena",
+    style: "villa",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A sunlit Tuscan wedding. Tap the oval, the cover opens, and lemon trees, fairy lights and a villa garden welcome the weekend.",
+    asks: { photos: 1, audio: false, location: true },
+    meta: META.villa,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Aditi & Vikram",
+        title: "",
+        detail: "",
+        date: "2027-04-17",
+        time: "16:30",
+        venue: "Villa Serena",
+        address: "Chianti, Tuscany",
+        message: "invite you to a weekend of sunshine, good wine and long dinners under the Tuscan sky, as we say yes to forever.",
+        dress: "Garden Formal",
+        rsvpBy: "2027-03-10",
+        lines: linesFor("villa"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

@@ -9,6 +9,7 @@ import type { ThiruvizhaTheme } from "../components/ThiruvizhaInvite";
 import type { PastalTheme } from "../components/PastalInvite";
 import type { PalaceTheme } from "../components/PalaceInvite";
 import type { MoonlitTheme } from "../components/MoonlitInvite";
+import type { VillaTheme } from "../components/VillaInvite";
 import type { PullTheme } from "../components/PullInvite";
 import type { VivahTheme } from "../components/VivahInvite";
 
@@ -72,6 +73,10 @@ export function palaceThemeOf(_swatch: string): PalaceTheme {
 
 export function moonlitThemeOf(_swatch: string): MoonlitTheme {
   return "night";
+}
+
+export function villaThemeOf(_swatch: string): VillaTheme {
+  return "olive";
 }
 
 export function pullThemeOf(swatch: string): PullTheme {

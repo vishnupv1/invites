@@ -1,0 +1,721 @@
+.vs {
+  --olive: #66703f;
+  --olive-d: #4e5730;
+  --ink: #3e4428;
+  --terra: #a9603f;
+  --cream: #f7f1e6;
+  position: relative;
+  background: var(--cream);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.vs img { display: block; user-select: none; }
+.vs input::placeholder, .vs textarea::placeholder { color: #a8a48e; }
+.vs input:focus, .vs textarea:focus { outline: none; border-color: var(--olive); }
+.vs button:focus-visible, .vs a:focus-visible { outline: 2px solid var(--olive); outline-offset: 3px; }
+
+.vs-stage {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--cream);
+  background-image: radial-gradient(ellipse at 50% 38%, rgba(255, 246, 220, 0.9), rgba(255, 246, 220, 0) 60%), url("/villa/paper.jpg");
+  background-size: auto, 480px;
+  background-blend-mode: normal, multiply;
+}
+
+.vs-fit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.vs-lights { position: absolute; left: 0; top: 0; right: 0; z-index: 3; pointer-events: none; }
+.vs-lights.desk { display: none; }
+.vs.is-desk .vs-lights.phone { display: none; }
+.vs.is-desk .vs-lights.desk { display: block; }
+.vs-lights svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.vs-b {
+  position: absolute;
+  width: 8px;
+  height: 10px;
+  border-radius: 50% 50% 45% 45%;
+  background: #d9d2bc;
+  box-shadow: inset 0 -2px 2px rgba(0, 0, 0, 0.08);
+}
+.vs.is-live .vs-b {
+  animation: vs-lit 0.5s ease forwards, vs-flick var(--f) ease-in-out infinite;
+  animation-delay: var(--d), calc(var(--d) + 0.5s);
+}
+
+.vs-glow {
+  position: absolute;
+  left: -6px;
+  top: 158px;
+  width: 402px;
+  height: 402px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 226, 150, 0.55), rgba(255, 226, 150, 0) 65%);
+  pointer-events: none;
+  opacity: 0.4;
+}
+.vs.is-desk .vs-glow { left: 512px; top: 89px; width: 416px; height: 416px; }
+.vs.is-live .vs-glow { opacity: 1; animation: vs-glow 5s ease-in-out infinite; }
+
+.vs-lem { display: none; position: absolute; z-index: 2; bottom: -6px; width: 230px; }
+.vs.is-desk .vs-lem { display: block; }
+.vs-lem.l { left: 40px; }
+.vs-lem.r { right: 40px; transform: scaleX(-1); }
+.vs.is-live .vs-lem.l { animation: vs-rise 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: 1.6s; }
+.vs.is-live .vs-lem.r { animation: vs-fade 1.4s ease both; animation-delay: 1.75s; }
+
+.vs-garden {
+  position: absolute;
+  z-index: 1;
+  left: -25px;
+  top: 667px;
+  width: 440px;
+}
+.vs.is-desk .vs-garden { left: 340px; top: 591px; width: 760px; }
+.vs.is-live .vs-garden { animation: vs-rise 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: 1.3s; }
+
+.vs-head {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  top: 96px;
+  margin: 0;
+  text-align: center;
+  font-family: Cinzel, serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--terra);
+  opacity: 0;
+}
+.vs.is-desk .vs-head { top: 122px; font-size: 18px; }
+.vs.is-live .vs-head { opacity: 1; animation: vs-wipe 1.4s ease-out both; animation-delay: 1.5s; }
+
+.vs-badge {
+  position: absolute;
+  z-index: 2;
+  left: 104px;
+  top: 235px;
+  width: 183px;
+}
+.vs.is-desk .vs-badge { left: 625px; top: 168px; width: 189px; }
+
+.vs-hero {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  top: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  padding: 0 16px;
+  visibility: hidden;
+}
+.vs.is-desk .vs-hero { top: 464px; gap: 6px; }
+.vs.is-live .vs-hero { visibility: visible; }
+
+.vs-names {
+  margin: 0;
+  font-family: "Pinyon Script", cursive;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--olive-d);
+  padding: 0.1em 0.3em 0;
+  white-space: nowrap;
+}
+.vs.is-desk .vs-names { font-size: 88px; }
+.vs-amp { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 0.42em; }
+.vs.is-live .vs-names { animation: vs-wipe 1.5s ease-out both; animation-delay: 2.1s; }
+
+.vs-date, .vs-place { opacity: 0; }
+.vs-date {
+  font-family: Cinzel, serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--ink);
+}
+.vs.is-desk .vs-date { font-size: 17px; }
+.vs-place {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--terra);
+}
+.vs.is-desk .vs-place { font-size: 21px; }
+.vs.is-live .vs-date { animation: vs-up 0.9s ease both; animation-delay: 2.9s; }
+.vs.is-live .vs-place { animation: vs-up 0.9s ease both; animation-delay: 3.2s; }
+
+.vs-scroll {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  margin: 0 auto;
+  width: max-content;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(247, 241, 230, 0.92);
+  border: 1px solid #d8d2bf;
+  font-family: Jost, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--olive);
+  text-decoration: none;
+  animation: vs-up 0.8s ease both, vs-hint 2s ease-in-out 1s infinite;
+}
+.vs.is-desk .vs-scroll { bottom: 20px; }
+
+.vs-lid {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  perspective: 1800px;
+}
+.vs-cover {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 50%;
+  background: linear-gradient(105deg, #727d47, #5f6a38 55%, #56602f);
+  -webkit-mask-image: radial-gradient(103px 136px at 195px 372px, transparent 99%, #000 100%);
+  mask-image: radial-gradient(103px 136px at 195px 372px, transparent 99%, #000 100%);
+  box-shadow: inset -12px 0 24px rgba(0, 0, 0, 0.18);
+}
+.vs.is-desk .vs-cover {
+  -webkit-mask-image: radial-gradient(107px 140px at 720px 310px, transparent 99%, #000 100%);
+  mask-image: radial-gradient(107px 140px at 720px 310px, transparent 99%, #000 100%);
+}
+.vs.is-live .vs-cover { animation: vs-cover 1.7s cubic-bezier(0.55, 0, 0.3, 1) both; animation-delay: 0.15s; }
+.vs-cover-tex {
+  position: absolute;
+  inset: 0;
+  background-image: url("/villa/paper.jpg");
+  background-size: 480px;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.vs-oval {
+  position: absolute;
+  left: 50px;
+  top: 150px;
+  width: 290px;
+  filter: drop-shadow(-1px -1px 0 rgba(255, 255, 230, 0.22)) drop-shadow(2px 3px 3px rgba(20, 24, 8, 0.45));
+}
+.vs.is-desk .vs-oval { left: 570px; top: 80px; width: 300px; }
+.vs-kicker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 98px;
+  text-align: center;
+  font-family: Jost, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  color: rgba(245, 240, 215, 0.78);
+}
+.vs.is-desk .vs-kicker { display: none; }
+.vs-cover-names {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 625px;
+  margin: 0;
+  text-align: center;
+  font-family: Cinzel, serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: #48512a;
+  text-shadow: -1px -1px 0 rgba(30, 34, 12, 0.55), 1px 1px 0 rgba(200, 210, 160, 0.35);
+}
+.vs.is-desk .vs-cover-names { top: 566px; font-size: 20px; }
+.vs-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 22, 8, 0.15), rgba(20, 22, 8, 0.55));
+  opacity: 0;
+  pointer-events: none;
+}
+.vs.is-live .vs-shade { animation: vs-shade 1.7s ease-in both; animation-delay: 0.15s; }
+.vs-ring {
+  position: absolute;
+  left: 78px;
+  top: 223px;
+  width: 234px;
+  height: 299px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 248, 220, 0.8);
+  box-sizing: border-box;
+  animation: vs-ring 2.4s ease-out infinite;
+  pointer-events: none;
+}
+.vs.is-desk .vs-ring { left: 600px; top: 156px; width: 241px; height: 309px; }
+.vs-tap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 56px;
+  margin: 0 auto;
+  width: max-content;
+  padding: 12px 26px;
+  border-radius: 999px;
+  background: rgba(247, 241, 230, 0.95);
+  box-shadow: 0 8px 20px rgba(20, 24, 8, 0.25);
+  font-family: Jost, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--olive-d);
+  animation: vs-hint 2.4s ease-in-out infinite;
+}
+.vs.is-desk .vs-tap { bottom: 40px; }
+.vs-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 21;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.vs-sec {
+  position: relative;
+  padding: 68px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  background-color: var(--cream);
+  background-image: url("/villa/paper.jpg");
+  background-size: 480px;
+  background-blend-mode: multiply;
+  overflow: hidden;
+}
+.vs-sec.alt { background-color: #efeadb; }
+.vs.is-desk .vs-sec { padding: 96px 120px; gap: 18px; }
+
+.vs-branch { width: 280px; margin-bottom: 4px; }
+.vs.is-desk .vs-branch { width: 420px; }
+.vs-kick {
+  font-family: Jost, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--ink);
+}
+.vs.is-desk .vs-kick { font-size: 12px; }
+.vs-small {
+  font-family: Jost, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+  opacity: 0.78;
+}
+.vs-addr {
+  font-family: Jost, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--terra);
+}
+.vs.is-desk .vs-addr { font-size: 12px; }
+.vs-parents { display: flex; flex-direction: column; gap: 10px; margin: 6px 0; }
+.vs.is-desk .vs-parents { flex-direction: row; align-items: center; gap: 40px; }
+.vs-person { display: flex; flex-direction: column; gap: 4px; }
+.vs-pname {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.vs.is-desk .vs-pname { font-size: 22px; }
+.vs-amp-script { font-family: "Pinyon Script", cursive; font-size: 40px; line-height: 1; color: var(--olive); }
+.vs-lead {
+  margin: 0;
+  max-width: 560px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.vs.is-desk .vs-lead { font-size: 22px; }
+.vs-h2 {
+  margin: 0;
+  font-family: "Pinyon Script", cursive;
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 1.2;
+  color: var(--olive-d);
+  padding: 0.1em 0.2em 0;
+}
+.vs.is-desk .vs-h2 { font-size: 64px; }
+
+.vs-count { display: flex; gap: 12px; justify-content: center; margin-top: 6px; }
+.vs.is-desk .vs-count { gap: 22px; }
+.vs-count div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.vs-count strong {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1.5px solid var(--olive);
+  background: rgba(255, 253, 247, 0.7);
+  font-family: Cinzel, serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--olive-d);
+}
+.vs.is-desk .vs-count strong { width: 100px; height: 100px; font-size: 36px; }
+.vs-until { font-style: italic; }
+
+.vs-villa { width: 380px; max-width: 108%; margin: 6px 0 2px; }
+.vs.is-desk .vs-villa { width: 760px; }
+.vs-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+.vs-btn {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-family: Jost, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.vs-btn.solid { border: none; background: var(--olive); color: var(--cream); box-shadow: 0 8px 18px rgba(78, 87, 48, 0.22); }
+.vs-btn.line { border: 1.5px solid var(--olive); background: transparent; color: var(--olive-d); }
+.vs-btn svg { margin-right: 8px; }
+
+.vs-story { display: flex; flex-direction: column; align-items: center; gap: 28px; margin-top: 8px; width: 100%; }
+.vs.is-desk .vs-story { flex-direction: row; gap: 80px; align-items: center; justify-content: center; }
+.vs-frame { position: relative; flex-shrink: 0; width: 280px; aspect-ratio: 700 / 1073; }
+.vs.is-desk .vs-frame { width: 340px; }
+.vs-slot {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 19%;
+  bottom: 19%;
+  border: none;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #f3eedf, #e2dcc6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+}
+.vs-slot img { width: 100%; height: 100%; object-fit: cover; }
+.vs-frame > img { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.vs-beats { display: flex; flex-direction: column; gap: 24px; max-width: 420px; }
+.vs.is-desk .vs-beats { gap: 32px; text-align: left; }
+.vs-beat { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+.vs.is-desk .vs-beat { align-items: flex-start; }
+.vs-year { font-family: Cinzel, serif; font-size: 14px; font-weight: 600; letter-spacing: 0.2em; color: var(--terra); }
+.vs-beat h3 { margin: 0; font-family: "Pinyon Script", cursive; font-size: 36px; font-weight: 400; line-height: 1.2; color: var(--olive-d); padding-top: 0.1em; }
+.vs.is-desk .vs-beat h3 { font-size: 40px; }
+.vs-beat p { margin: 0; font-family: "Cormorant Garamond", serif; font-size: 18px; line-height: 1.45; }
+
+.vs-events { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; max-width: 400px; margin-top: 8px; }
+.vs.is-desk .vs-events { grid-template-columns: repeat(4, 1fr); gap: 18px; max-width: 1100px; }
+.vs-card {
+  border-radius: 18px;
+  background: rgba(255, 253, 247, 0.86);
+  border: 1px solid #e2dcc8;
+  box-shadow: 0 10px 30px rgba(78, 87, 48, 0.08);
+}
+.vs-event { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 14px; }
+.vs.is-desk .vs-event { padding: 26px 16px; }
+.vs-event h3, .vs-stay h3 { margin: 0; font-family: "Pinyon Script", cursive; font-size: 32px; font-weight: 400; line-height: 1.2; color: var(--olive-d); padding-top: 0.1em; }
+.vs.is-desk .vs-event h3 { font-size: 34px; }
+.vs-time { font-family: Cinzel, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; }
+.vs-where { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 17px; color: var(--terra); }
+
+.vs-feast { position: relative; }
+.vs-walk { position: absolute; top: 30px; width: 130px; }
+.vs-walk img { animation: vs-walk 1.6s ease-in-out infinite; }
+.vs-walk.l { left: -40px; }
+.vs-walk.r { right: -34px; width: 120px; top: 40px; }
+.vs-flip { display: block; transform: scaleX(-1); }
+.vs-walk.r img { animation-delay: 0.8s; }
+.vs.is-desk .vs-walk { top: 80px; width: 300px; }
+.vs.is-desk .vs-walk.l { left: 60px; }
+.vs.is-desk .vs-walk.r { right: 60px; top: 120px; }
+.vs-menu { position: relative; display: flex; flex-direction: column; gap: 18px; max-width: 230px; margin-top: 70px; }
+.vs.is-desk .vs-menu { gap: 22px; max-width: 440px; margin-top: 6px; }
+.vs-menu h3 { margin: 0; font-family: "Pinyon Script", cursive; font-size: 28px; font-weight: 400; line-height: 1.2; color: var(--olive-d); }
+.vs.is-desk .vs-menu h3 { font-size: 32px; }
+.vs-menu p { margin: 0; font-family: Jost, sans-serif; font-size: 12px; letter-spacing: 0.04em; opacity: 0.8; }
+.vs-feast-img { position: relative; width: 360px; max-width: 104%; margin-top: 10px; }
+.vs.is-desk .vs-feast-img { width: 620px; }
+
+.vs-dress { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 26px; font-weight: 600; color: var(--terra); }
+.vs.is-desk .vs-dress { font-size: 30px; }
+.vs-swatches { display: flex; gap: 12px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+.vs.is-desk .vs-swatches { gap: 22px; }
+.vs-swatches div { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.vs-swatches i {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.vs.is-desk .vs-swatches i { width: 54px; height: 54px; }
+
+.vs-bouquet { width: 160px; animation: vs-sway 6s ease-in-out infinite; transform-origin: 50% 90%; }
+.vs.is-desk .vs-bouquet { width: 200px; }
+.vs-bank {
+  width: 100%;
+  max-width: 360px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 22px;
+  border: 1.5px dashed var(--olive);
+  border-radius: 16px;
+  background: rgba(255, 253, 247, 0.7);
+  cursor: pointer;
+  margin-top: 4px;
+  color: inherit;
+}
+.vs-bank strong { font-family: "Cormorant Garamond", serif; font-size: 19px; font-weight: 600; }
+
+.vs-car { width: 300px; animation: vs-drive 4s ease-in-out infinite; }
+.vs.is-desk .vs-car { width: 420px; }
+
+.vs-stay-row { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 6px; }
+.vs.is-desk .vs-stay-row { flex-direction: row; gap: 60px; align-items: center; }
+.vs-lemons { width: 200px; }
+.vs.is-desk .vs-lemons { width: 300px; }
+.vs-stays { display: flex; flex-direction: column; gap: 12px; width: min(340px, 100%); }
+.vs.is-desk .vs-stays { width: 420px; }
+.vs-stay { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 20px; }
+.vs.is-desk .vs-stay { align-items: flex-start; }
+
+.vs-wishes { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; max-width: 420px; margin-top: 6px; }
+.vs.is-desk .vs-wishes { grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; }
+.vs-wish { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; text-align: left; }
+.vs.is-desk .vs-wish { padding: 24px 26px; }
+.vs-wish q { font-family: "Pinyon Script", cursive; font-size: 50px; line-height: 0.6; height: 20px; color: var(--olive); }
+.vs-wish p { margin: 0; font-family: "Cormorant Garamond", serif; font-size: 18px; line-height: 1.45; }
+.vs-wish cite { font-family: Jost, sans-serif; font-style: normal; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: var(--terra); }
+.vs-wish-form { display: flex; gap: 10px; width: 100%; max-width: 560px; margin-top: 6px; }
+
+.vs-form {
+  width: 100%;
+  max-width: 520px;
+  box-sizing: border-box;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.vs.is-desk .vs-form { padding: 32px; }
+.vs-lab { font-family: Jost, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.vs-field, .vs-area {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid #d8d2bf;
+  background: #fffdf8;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  color: var(--ink);
+}
+.vs-area { padding: 12px 16px; resize: none; }
+.vs-choice {
+  min-height: 48px;
+  width: 100%;
+  border-radius: 12px;
+  font-family: Jost, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #d8d2bf;
+  background: #fffdf8;
+  color: var(--ink);
+}
+.vs-choice.on { border: 1.5px solid var(--olive); background: var(--olive); color: var(--cream); font-weight: 600; }
+.vs-step { display: flex; justify-content: space-between; align-items: center; }
+.vs-step div { display: flex; align-items: center; gap: 10px; }
+.vs-step button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #cfc9b4;
+  background: #fffdf8;
+  color: var(--olive-d);
+  font-size: 20px;
+  cursor: pointer;
+}
+.vs-step strong { min-width: 26px; text-align: center; font-family: Cinzel, serif; font-size: 20px; font-weight: 600; }
+.vs-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.vs-chip {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-family: Jost, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid #cfc9b4;
+  background: transparent;
+  color: var(--ink);
+}
+.vs-chip.on { border-color: var(--olive); background: var(--olive); color: var(--cream); font-weight: 600; }
+.vs-err { font-family: Jost, sans-serif; font-size: 12px; color: #a4492f; }
+.vs-stack { display: flex; flex-direction: column; gap: 6px; }
+.vs-wide { width: 100%; min-height: 54px; }
+.vs-done { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 10px 0; overflow: hidden; }
+.vs-leaf {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 18px;
+  border-radius: 0 100% 0 100%;
+  animation: vs-leaf 2.6s ease-in both;
+  pointer-events: none;
+}
+.vs-done img { width: 130px; animation: vs-pop 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.vs-done h3 { margin: 0; font-family: "Pinyon Script", cursive; font-size: 42px; font-weight: 400; line-height: 1.2; color: var(--olive-d); }
+.vs.is-desk .vs-done h3 { font-size: 50px; }
+.vs-link {
+  min-height: 40px;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  font-family: Jost, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--olive-d);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.vs-thanks { width: 100%; max-width: 360px; padding: 12px; box-sizing: border-box; border-radius: 26px; background: var(--olive); box-shadow: 0 16px 40px rgba(78, 87, 48, 0.25); }
+.vs.is-desk .vs-thanks { max-width: 640px; padding: 18px; }
+.vs-thanks-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 34px 20px;
+  border-radius: 16px;
+  background-color: var(--cream);
+  background-image: url("/villa/paper.jpg");
+  background-size: 480px;
+  background-blend-mode: multiply;
+  box-shadow: inset 0 0 0 6px var(--cream), inset 0 0 0 7.5px var(--olive), inset 0 0 0 10px var(--cream), inset 0 0 0 11px rgba(102, 112, 63, 0.5);
+}
+.vs.is-desk .vs-thanks-in { padding: 46px 40px; }
+.vs-grazie { font-family: "Pinyon Script", cursive; font-size: 58px; line-height: 1.2; color: var(--olive-d); padding-top: 0.1em; }
+.vs.is-desk .vs-grazie { font-size: 76px; }
+.vs-tag { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 19px; font-weight: 600; color: var(--terra); }
+.vs.is-desk .vs-tag { font-size: 24px; }
+
+.vs-foot {
+  position: relative;
+  overflow: hidden;
+  padding: 60px 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  background-color: var(--cream);
+  background-image: url("/villa/paper.jpg");
+  background-size: 480px;
+  background-blend-mode: multiply;
+}
+.vs.is-desk .vs-foot { padding: 80px 20px 0; }
+.vs-foot-names { position: relative; margin: 0; font-family: "Pinyon Script", cursive; font-size: 46px; font-weight: 400; line-height: 1.2; color: var(--olive-d); }
+.vs.is-desk .vs-foot-names { font-size: 58px; }
+.vs-made { position: relative; font-family: Jost, sans-serif; font-size: 11px; letter-spacing: 0.2em; color: var(--olive); opacity: 0.7; text-decoration: none; }
+.vs-foot-garden { width: 420px; max-width: none; margin-top: 10px; margin-bottom: -4px; }
+.vs.is-desk .vs-foot-garden { width: 900px; }
+
+.vs-toast {
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  top: 18px;
+  transform: translateX(-50%);
+  width: min(440px, calc(100% - 32px));
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 18px;
+  border-radius: 999px;
+  background: var(--cream);
+  border: 1px solid #d8d2bf;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  font-family: Jost, sans-serif;
+  font-size: 14px;
+}
+.vs-toast button { min-height: 36px; padding: 0 14px; border: none; border-radius: 999px; background: var(--olive); color: var(--cream); font-family: Jost, sans-serif; cursor: pointer; }
+
+.vs[data-motion="off"] .vs-hero,
+.vs[data-motion="off"] .vs-head,
+.vs[data-motion="off"] .vs-date,
+.vs[data-motion="off"] .vs-place { visibility: visible; opacity: 1; }
+.vs[data-motion="off"] .vs-lid { display: none; }
+.vs[data-motion="off"] *,
+.vs[data-motion="off"] *::before,
+.vs[data-motion="off"] *::after { animation: none !important; }
+
+@keyframes vs-lit { from { background: #d9d2bc; box-shadow: none; } to { background: #ffe9b0; box-shadow: 0 0 8px 3px rgba(255, 214, 120, 0.75), 0 0 22px 6px rgba(255, 200, 100, 0.35); } }
+@keyframes vs-flick {
+  0%, 100% { background: #ffe9b0; box-shadow: 0 0 8px 3px rgba(255, 214, 120, 0.75), 0 0 22px 6px rgba(255, 200, 100, 0.35); }
+  50% { background: #fff3d2; box-shadow: 0 0 10px 4px rgba(255, 220, 140, 0.9), 0 0 28px 8px rgba(255, 205, 110, 0.45); }
+}
+@keyframes vs-cover { from { transform: rotateY(0); } to { transform: rotateY(-118deg); } }
+@keyframes vs-shade { from { opacity: 0; } to { opacity: 0.55; } }
+@keyframes vs-rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes vs-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vs-wipe { from { clip-path: inset(-30% 100% -30% 0); } to { clip-path: inset(-30% -10% -30% -10%); } }
+@keyframes vs-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes vs-glow { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.06); } }
+@keyframes vs-ring { 0% { transform: scale(0.92); opacity: 0.8; } 100% { transform: scale(1.18); opacity: 0; } }
+@keyframes vs-hint { 0%, 100% { transform: translateY(0); opacity: 0.75; } 50% { transform: translateY(6px); opacity: 1; } }
+@keyframes vs-walk { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-8px) rotate(1.5deg); } }
+@keyframes vs-drive { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
+@keyframes vs-sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+@keyframes vs-leaf { 0% { transform: translate(0, -20px) rotate(0); opacity: 1; } 100% { transform: translate(var(--x), 360px) rotate(var(--r)); opacity: 0; } }
+@keyframes vs-pop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .vs * { animation-duration: 0.01ms !important; animation-delay: 0s !important; }
+}

@@ -46,6 +46,7 @@ const SETS: Record<"wedding" | "birthday" | "baby" | "home", PickCard[]> = {
 };
 
 const CARDS: Design[] = [
+  { id: "villa", name: "Villa Serena", kicker: "WEDDING · TUSCAN VILLA", cover: "/covers/villa.jpg" },
   { id: "moonlit", name: "Moonlit Jharokha", kicker: "WEDDING · MOONLIT WINDOW", cover: "/covers/moonlit.jpg" },
   { id: "palace", name: "Palace", kicker: "WEDDING · PAPER PALACE", cover: "/covers/palace.jpg" },
   { id: "pastal", name: "Pastal party", kicker: "WEDDING · PRESSED PAPER", cover: "/covers/pastal.jpg" },

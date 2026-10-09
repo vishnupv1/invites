@@ -609,5 +609,30 @@
       { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
+  },
+  "villa": {
+    "names": "couple",
+    "ceremony": "The ceremony",
+    "themes": [
+      { "id": "olive", "name": "Tuscan olive" }
+    ],
+    "defaultTheme": "olive",
+    "shots": [
+      { "label": "Our photo" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The oval", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Blessing line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The weekend", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photograph", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

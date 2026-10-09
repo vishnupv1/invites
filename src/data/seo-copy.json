@@ -126,6 +126,12 @@
       "description": "Guests tap the palace doors and a blush-and-gold wedding invitation rises over the lake. Share one link for RSVPs.",
       "lead": "The Grand Door is a palace wedding invitation. Guests tap the doors, the leaves swing open, and a blush-and-gold invitation rises over the lake."
     },
+    "villa": {
+      "heading": "Villa Serena wedding invitation",
+      "title": "Villa Serena — Tuscan Wedding Invitation | InvitesReady",
+      "description": "A sunlit Tuscan wedding invitation. Tap the oval, the cover opens onto lemon trees and fairy lights — the weekend, wishes and RSVP.",
+      "lead": "Olive paper, a sealed oval and a villa garden under fairy lights. Made for a wedding weekend in the Chianti hills."
+    },
     "moonlit": {
       "heading": "Moonlit Jharokha wedding invitation",
       "title": "Moonlit Jharokha — Wedding Invitation by the Lake | InvitesReady",
@@ -193,7 +199,7 @@
       "title": "Digital wedding invitations | InvitesReady",
       "description": "Digital wedding invitations for a garden, beach, floral, or palace celebration. Share one link. Guests RSVP with no app.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
-      "templates": ["moonlit", "palace", "aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor", "grandenvelope", "pastal"],
+      "templates": ["villa", "moonlit", "palace", "aurelia", "anna", "beach", "botanica", "heavenly", "pull", "peace", "grandoor", "grandenvelope", "pastal"],
       "related": ["/nikah", "/shaadi", "/tamil-wedding"]
     },
     {
