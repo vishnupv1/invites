@@ -38,10 +38,10 @@ function Mark() {
     <svg className="li-mark" viewBox="0 0 512 512" aria-hidden="true">
       <defs>
         <linearGradient id="lgv4" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FF7380" />
-          <stop offset=".4" stopColor="#F23F78" />
-          <stop offset=".7" stopColor="#D81B60" />
-          <stop offset="1" stopColor="#8E1550" />
+          <stop offset="0" stopColor="#8FB9A0" />
+          <stop offset=".4" stopColor="#6F9A82" />
+          <stop offset=".7" stopColor="#1C3A2A" />
+          <stop offset="1" stopColor="#1C3A2A" />
         </linearGradient>
       </defs>
       <rect width="512" height="512" rx="132" fill="url(#lgv4)" />
@@ -133,7 +133,7 @@ export function LoggedInChrome() {
       <div className="li-bar-row">
         <div className="li-brand-side">
           <button type="button" className="li-burger" aria-label="Browse categories" aria-expanded={sheet} onClick={() => { setSheet((value) => !value); setMenu(false); setMega(null); }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
@@ -153,7 +153,7 @@ export function LoggedInChrome() {
 
         <div className="li-actions">
           <Link className="li-search" to="/templates" aria-label="Search templates">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="M20 20l-4-4" />
             </svg>

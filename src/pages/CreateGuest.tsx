@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
-import { Brand } from "../components/Brand";
+import { PublicHeader } from "../components/PublicHeader";
 import { GoogleButton } from "../components/GoogleButton";
 import { signInWithGoogle } from "../lib/google";
 import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
@@ -430,8 +430,8 @@ export function CreateGuest() {
 
   return (
     <div className="cg-root">
+      <PublicHeader />
       <header className="cg-header">
-        <Brand />
         <ol className="cg-steps" aria-label="Steps">
           {STEPS.map((label, index) => {
             const n = (index + 1) as 1 | 2 | 3 | 4;
@@ -640,6 +640,7 @@ export function CreateGuest() {
                       <span>invitesready.com/i/</span>created when you publish
                     </div>
                   </label>
+                  <p className="cg-muted">Publish when the preview looks right. The link stays the same if you edit later.</p>
                   <div className={template.free ? "cg-plan" : "cg-plan premium"}>
                     <header>
                       <strong>
@@ -756,7 +757,7 @@ export function CreateGuest() {
             </div>
             <form className="cg-auth" onSubmit={onAuth}>
               <button type="button" className="cg-close" aria-label="Close" onClick={() => setAuthOpen(false)}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </button>

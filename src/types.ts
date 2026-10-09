@@ -123,7 +123,8 @@ export type TemplateStyle =
   | "pastal"
   | "palace"
   | "moonlit"
-  | "villa";
+  | "villa"
+  | "hansa";
 
 export type Template = {
   id: string;

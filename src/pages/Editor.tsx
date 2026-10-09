@@ -19,6 +19,7 @@ import { PastalInvite } from "../components/PastalInvite";
 import { PalaceInvite } from "../components/PalaceInvite";
 import { MoonlitInvite } from "../components/MoonlitInvite";
 import { VillaInvite } from "../components/VillaInvite";
+import { HansaInvite } from "../components/HansaInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -771,7 +772,7 @@ export function Editor({
         <div className="ed-brand">
           {embedded ? null : (
           <Link className="ed-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
           </Link>
@@ -876,7 +877,7 @@ export function Editor({
                 setTab(item.id);
               }}
             >
-              <Icon d={item.icon} stroke={sheet && tab === item.id ? "#D81B60" : "#6B5A62"} />
+              <Icon d={item.icon} stroke={sheet && tab === item.id ? "#1C3A2A" : "#5E7368"} />
               <span>{item.id}</span>
             </button>
           ))}
@@ -1389,6 +1390,8 @@ export function Editor({
                     <MoonlitInvite fields={previewFields} theme={moonlitThemeOf(model.swatch)} />
                   ) : template.style === "villa" ? (
                     <VillaInvite fields={previewFields} theme={villaThemeOf(model.swatch)} />
+                  ) : template.style === "hansa" ? (
+                    <HansaInvite fields={previewFields} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (
@@ -1423,7 +1426,7 @@ export function Editor({
                 <p className="ed-lead">{link ? "Share it with your guests now." : needsPay ? "Your draft is saved in My drafts. Watch it as a guest, then pay once to publish." : "Publish when the preview looks right."}</p>
               </div>
               <button type="button" className="ed-x" aria-label="Close" onClick={() => { setPublishOpen(false); setPubPhase("idle"); }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </button>
@@ -1446,26 +1449,24 @@ export function Editor({
                     WhatsApp
                   </button>
                   <button type="button" onClick={() => void copyLink()}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 9h12v12H9zM5 15V5a2 2 0 0 1 2-2h10" /></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 9h12v12H9zM5 15V5a2 2 0 0 1 2-2h10" /></svg>
                     Copy link
                   </button>
                   <button type="button" onClick={() => setShowQr(true)}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM17 17h4v4h-4" /></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM17 17h4v4h-4" /></svg>
                     QR code
                   </button>
                 </div>
                 {showQr ? <img className="ed-qr" alt="QR code for the invitation" src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(link)}`} /> : null}
                 <Link className="ed-studio" to={signedIn ? "/guests" : "/browse"}>{signedIn ? "Go to guest list" : "Browse templates"}</Link>
               </div>
+            ) : needsPay ? (
+              <div className="ed-stack">
+                <button type="button" className="ed-go quiet" onClick={() => { setPublishOpen(false); setDemoOpen(true); }}>See your demo</button>
+                <button type="button" className="ed-go" onClick={() => setPayOpen(true)}>Pay {formatPrice(template)} and publish</button>
+              </div>
             ) : (
-              needsPay ? (
-                <div className="ed-stack">
-                  <button type="button" className="ed-go quiet" onClick={() => { setPublishOpen(false); setDemoOpen(true); }}>See your demo</button>
-                  <button type="button" className="ed-go" onClick={() => setPayOpen(true)}>Pay {formatPrice(template)} and publish</button>
-                </div>
-              ) : (
-                <SmartButton className="ed-go" phase={pubPhase} idle="Publish invite" onClick={() => void publish()} />
-              )
+              <SmartButton className="ed-go" phase={pubPhase} idle="Publish invite" onClick={() => void publish()} />
             )}
           </div>
         </div>

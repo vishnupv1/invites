@@ -55,6 +55,10 @@ function rupees(amount: number) {
   return `₹${Math.round(amount).toLocaleString("en-IN")}`;
 }
 
+function discountRupees(price: number, percentOff: number) {
+  return Math.round((price * percentOff) / 100);
+}
+
 type FieldErrors = { name?: string; email?: string; phone?: string };
 
 type Props = {
@@ -70,7 +74,7 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
   const [email, setEmail] = useState(host?.email ?? "");
   const [phone, setPhone] = useState("");
   const [coupon, setCoupon] = useState("");
-  const [applied, setApplied] = useState("");
+  const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null);
   const [offersOpen, setOffersOpen] = useState(false);
   const [checking, setChecking] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -79,7 +83,8 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
   const [error, setError] = useState("");
   const busy = useRef(false);
   const listPrice = template.free ? 0 : template.price;
-  const total = applied || template.free ? 0 : listPrice;
+  const saved = discountRupees(listPrice, applied?.percent ?? 0);
+  const total = listPrice - saved;
 
   useEffect(() => {
     if (host?.name) setName((current) => current || host.name);
@@ -106,7 +111,7 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
   async function applyCoupon(raw = coupon) {
     const code = raw.trim();
     if (!code) {
-      setApplied("");
+      setApplied(null);
       setCouponError("Enter a coupon code.");
       return;
     }
@@ -115,11 +120,11 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
     try {
       const result = await verifyCoupon(code);
       setCoupon("");
-      setApplied(result.code);
+      setApplied({ code: result.code, percent: result.percent ?? 100 });
       setOffersOpen(false);
       setError("");
     } catch (reason) {
-      setApplied("");
+      setApplied(null);
       setCouponError(reason instanceof Error ? reason.message : "That code isn’t valid. Check the spelling and try again.");
     } finally {
       setChecking(false);
@@ -153,18 +158,18 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
         await ensureSession(email.trim(), name.trim());
         trackSignUp("email");
       }
-      if (applied || template.free) {
-        await onPurchased(applied || undefined);
+      if (total === 0) {
+        await onPurchased(applied?.code);
         trackEvent("purchase", {
           currency: "INR",
           value: 0,
           template_name: template.name,
-          coupon: applied || undefined,
+          coupon: applied?.code,
           items: checkoutItems(0),
         });
         return;
       }
-      const order = await createPaymentOrder(template.id);
+      const order = await createPaymentOrder(template.id, applied?.code);
       await loadRazorpay();
       if (!window.Razorpay) throw new Error("Could not open Razorpay. Try again.");
       const payment = await new Promise<RazorpayPayment>((resolve, reject) => {
@@ -176,7 +181,7 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
           name: "InvitesReady",
           description: `Unlock ${template.name}`,
           prefill: { name: name.trim(), email: email.trim(), contact: phone.replace(/\D/g, "") },
-          theme: { color: "#D81B60" },
+          theme: { color: "#1C3A2A" },
           handler: resolve,
           modal: { ondismiss: () => reject(new Error("Payment was cancelled.")) },
         });
@@ -186,14 +191,14 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
         checkout.open();
       });
       await verifyPayment(payment);
-      await onPurchased(undefined, payment);
+      await onPurchased(applied?.code, payment);
       trackEvent("purchase", {
         currency: "INR",
-        value: template.price,
+        value: total,
         transaction_id: payment.razorpay_payment_id,
         template_name: template.name,
-        coupon: applied || undefined,
-        items: checkoutItems(template.price),
+        coupon: applied?.code,
+        items: checkoutItems(total),
       });
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
@@ -273,8 +278,8 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
           </div>
           {applied ? (
             <div className="co-line">
-              <span>Coupon {applied}</span>
-              <b className="is-save">−{rupees(listPrice)}</b>
+              <span>Coupon {applied.code}</span>
+              <b className="is-save">−{rupees(saved)}</b>
             </div>
           ) : null}
 
@@ -283,10 +288,10 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
               <div className="co-applied">
                 <span className="co-tag"><Tag size={18} strokeWidth={2.4} aria-hidden="true" /></span>
                 <span>
-                  <strong>{applied} applied</strong>
-                  <small>You save {rupees(listPrice)}</small>
+                  <strong>{applied.code} applied</strong>
+                  <small>You save {rupees(saved)}</small>
                 </span>
-                <button type="button" className="co-remove" onClick={() => setApplied("")}>Remove</button>
+                <button type="button" className="co-remove" onClick={() => setApplied(null)}>Remove</button>
               </div>
             ) : (
               <>

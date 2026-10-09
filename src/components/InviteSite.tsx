@@ -23,6 +23,7 @@ import { PastalInvite } from "./PastalInvite";
 import { PalaceInvite } from "./PalaceInvite";
 import { MoonlitInvite } from "./MoonlitInvite";
 import { VillaInvite } from "./VillaInvite";
+import { HansaInvite } from "./HansaInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
@@ -391,6 +392,9 @@ export function InviteSite({
   }
   if (template.style === "villa") {
     return <VillaInvite fields={fields} onReply={onReply} theme={villaThemeOf(swatch)} />;
+  }
+  if (template.style === "hansa") {
+    return <HansaInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   let body: ReactNode;
   switch (template.style) {

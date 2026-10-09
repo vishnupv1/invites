@@ -607,6 +607,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "hansa",
+    name: "Hansa",
+    style: "hansa",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A moonlight wedding on the lake. Break the seal, the envelope opens, and swans, lilies and a full moon welcome the celebrations.",
+    asks: { photos: 6, audio: false, location: true },
+    meta: META.hansa,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "With the blessings of our families",
+        names: "Rhea & Aarav",
+        title: "We're getting married",
+        detail: "",
+        date: "2027-02-14",
+        time: "17:30",
+        venue: "Hansa Mahal",
+        address: "Lake Pichola, Udaipur",
+        message: "Like the swans who choose each other for life, we have found our forever. Join us under the full moon as we begin it.",
+        dress: "Soft pastels, silver and dove grey for the ladies; black or ivory sherwanis and tuxedos for the gents. We kindly reserve white for the bride.",
+        rsvpBy: "2027-01-10",
+        lines: linesFor("hansa"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {

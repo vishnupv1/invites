@@ -634,5 +634,29 @@
       { "id": "gallery", "label": "Photograph", "configurable": true, "fields": ["photos"] },
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
+  },
+  "hansa": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "reception": "Reception",
+    "themes": [{ "id": "moon", "name": "Moonlight silver" }],
+    "defaultTheme": "moon",
+    "shots": [{ "label": "Our photo" }],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The seal", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Blessing line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Hansa Mahal", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

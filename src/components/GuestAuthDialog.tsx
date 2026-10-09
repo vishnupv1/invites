@@ -69,7 +69,7 @@ export function GuestAuthDialog({ heading = "Sign in to save your invitation", o
             <p className="ed-lead">Your draft stays on this device until you publish.</p>
           </div>
           <button type="button" className="ed-x" aria-label="Close" onClick={onClose}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>

@@ -22,9 +22,11 @@ import { PastalInvite } from "../components/PastalInvite";
 import { PalaceInvite } from "../components/PalaceInvite";
 import { MoonlitInvite } from "../components/MoonlitInvite";
 import { VillaInvite } from "../components/VillaInvite";
+import { HansaInvite } from "../components/HansaInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
+import { PublicHeader } from "../components/PublicHeader";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor, designCtaLabel } from "../data/templates";
 import { templateSeo, topicForTemplate } from "../data/topics";
@@ -88,6 +90,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <MoonlitInvite fields={fields} theme={moonlitThemeOf(swatch)} />;
     case "villa":
       return <VillaInvite fields={fields} theme={villaThemeOf(swatch)} />;
+    case "hansa":
+      return <HansaInvite fields={fields} />;
     case "home":
       return <HomeInvite fields={fields} theme={homeThemeOf(swatch)} demo />;
     case "shaadi":
@@ -146,6 +150,8 @@ export function TemplatePage() {
   const topic = topicForTemplate(template.id);
 
   return (
+    <>
+    {account ? null : <PublicHeader />}
     <div className={account ? "board buy-board is-account" : "board buy-board"}>
       {account ? <AppMenu current="/templates" name={hostName} signedIn /> : null}
     <div className="buy">
@@ -153,7 +159,7 @@ export function TemplatePage() {
       <header className="buy-head">
         <div className="buy-id">
           <Link className="buy-back" to={catalogTo}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
             Templates
@@ -299,7 +305,7 @@ export function TemplatePage() {
               <ul className="buy-list">
                 {template.meta.components.map((item) => (
                   <li key={item.id}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M5 12l4 4L19 7" />
                     </svg>
                     {item.label}
@@ -314,7 +320,7 @@ export function TemplatePage() {
             </p>
 
             <div className="buy-lock">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A5A26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="4" y="10" width="16" height="11" rx="2" />
                 <path d="M8 10V7a4 4 0 0 1 8 0v3" />
               </svg>
@@ -380,5 +386,6 @@ export function TemplatePage() {
       ) : null}
     </div>
     </div>
+    </>
   );
 }

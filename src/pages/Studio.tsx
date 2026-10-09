@@ -13,7 +13,7 @@ type GuestRow = Greeting & { inviteId: string; eventName: string };
 type Filter = "All" | "Attending" | "Declined";
 type AccountView = "events" | "drafts" | "favorites" | "purchases" | "settings";
 
-const AVATARS = ["#D81B60", "#F23F78", "#2E8B57", "#8E1550", "#FF7380"];
+const AVATARS = ["#1C3A2A", "#6F9A82", "#2E8B57", "#1C3A2A", "#8FB9A0"];
 
 function initialsOf(name: string) {
   return name

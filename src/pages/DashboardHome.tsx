@@ -14,7 +14,7 @@ export type DashGreeting = { id: string; name: string; note: string; attending: 
 type GuestFilter = "all" | "attending" | "declined";
 type Section = "guests" | "schedule" | "activity";
 
-const AVATARS = ["#D81B60", "#F23F78", "#2E8B57", "#FF7380", "#8E1550"];
+const AVATARS = ["#1C3A2A", "#6F9A82", "#2E8B57", "#8FB9A0", "#1C3A2A"];
 const THUMBS: Record<string, { bg: string; fg: string }> = {
   beach: { bg: "#F7B38A", fg: "#1E3A44" },
   botanica: { bg: "#F3E3D6", fg: "#3A2E2A" },
@@ -231,7 +231,7 @@ function SwitcherList({
                   </small>
                 </span>
                 {on ? (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M5 12l4 4L19 7" />
                   </svg>
                 ) : null}
@@ -437,7 +437,7 @@ export function DashboardHome({
                   cx="50"
                   cy="50"
                   r="42"
-                  stroke="#D81B60"
+                  stroke="#1C3A2A"
                   strokeWidth="10"
                   fill="none"
                   strokeLinecap="round"
@@ -465,7 +465,7 @@ export function DashboardHome({
             </article>
             <article>
               <span>
-                <i style={{ background: "#D81B60" }} />
+                <i style={{ background: "#1C3A2A" }} />
                 Notes
               </span>
               <strong>{notes}</strong>
@@ -484,7 +484,7 @@ export function DashboardHome({
       ) : (
         <section className="dv-share">
           <div>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />
             </svg>
           </div>
@@ -595,7 +595,7 @@ export function DashboardHome({
               const noted = Boolean(item.note.trim());
               return (
                 <div className="dv-act" key={item.id}>
-                  <i style={{ background: noted ? "#D81B60" : item.attending ? "#2E8B57" : "#C8392B" }} />
+                  <i style={{ background: noted ? "#1C3A2A" : item.attending ? "#2E8B57" : "#C8392B" }} />
                   <div>
                     <p>
                       <strong>{item.name}</strong> {noted ? `left a note: “${item.note.trim()}”` : item.attending ? "is attending" : "can't make it"}

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Brand } from "../components/Brand";
+import { PublicHeader } from "../components/PublicHeader";
 import "./legal.css";
 
 function safeNext(value: unknown) {
@@ -12,13 +12,7 @@ export function Unauthorized() {
 
   return (
     <div className="legal">
-      <header className="legal-bar">
-        <Brand />
-        <nav aria-label="Account">
-          <Link to="/">Home</Link>
-          <Link to="/browse">Templates</Link>
-        </nav>
-      </header>
+      <PublicHeader />
       <main>
         <h1>This page is for your account</h1>
         <p className="legal-lede">

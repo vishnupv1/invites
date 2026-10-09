@@ -38,15 +38,15 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
   return (
     <div className="admin-login">
       <svg className="rings left" viewBox="0 0 560 560" fill="none" aria-hidden="true">
-        <circle cx="280" cy="280" r="270" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
-        <circle cx="280" cy="280" r="190" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="270" stroke="#1C3A2A" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="190" stroke="#1C3A2A" strokeOpacity="0.18" strokeWidth="1.5" />
       </svg>
       <svg className="rings right" viewBox="0 0 560 560" fill="none" aria-hidden="true">
-        <circle cx="280" cy="280" r="270" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
-        <circle cx="280" cy="280" r="190" stroke="#F23F78" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="270" stroke="#1C3A2A" strokeOpacity="0.18" strokeWidth="1.5" />
+        <circle cx="280" cy="280" r="190" stroke="#1C3A2A" strokeOpacity="0.18" strokeWidth="1.5" />
       </svg>
       <Link className="admin-mark" to="/">
-        <Brand light linked={false} />
+        <Brand linked={false} />
         <span className="admin-chip">Admin</span>
       </Link>
       <div className="admin-card">
@@ -54,7 +54,7 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
         {step === "creds" ? (
           <form onSubmit={continueLogin} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div className="shield">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D81B60" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z" />
                 <path d="M9 12l2 2 4-4" />
               </svg>
@@ -97,7 +97,7 @@ export function AdminLogin({ onReady }: { onReady: () => void }) {
             <div>
               <h1>Two-step verification</h1>
               <p>
-                Enter the 6-digit code from your authenticator app for <strong style={{ color: "#2A1527" }}>{email}</strong>.
+                Enter the 6-digit code from your authenticator app for <strong style={{ color: "#1C3A2A" }}>{email}</strong>.
               </p>
             </div>
             <label>

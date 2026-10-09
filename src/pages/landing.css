@@ -6,10 +6,10 @@
 
 .lv {
   min-height: 100vh;
-  background: #09090b;
-  color: #fafafa;
+  background: #F4F8F5;
+  color: #1C3A2A;
   font-family: Geist, "Segoe UI", sans-serif;
-  color-scheme: dark;
+  color-scheme: light;
   -webkit-font-smoothing: antialiased;
 }
 .lv h1,
@@ -28,14 +28,14 @@
 .lv input { font-family: inherit; }
 .lv button:focus-visible,
 .lv a:focus-visible {
-  outline: 2px solid #7dd3fc;
+  outline: 2px solid #1C3A2A;
   outline-offset: 3px;
 }
 .lv-mono {
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 12px;
   letter-spacing: 0.14em;
-  color: #71717a;
+  color: #5E7368;
 }
 
 .lv-nav {
@@ -48,16 +48,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(9, 9, 11, 0.75);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid #18181b;
+  border-bottom: 1px solid #D7E6DC;
 }
 .lv-logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #fafafa;
+  color: #1C3A2A;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -66,13 +66,13 @@
   display: none;
   gap: 30px;
   font-size: 14px;
-  color: #a1a1aa;
+  color: #5E7368;
 }
-.lv-nav-links a:hover { color: #fafafa; }
+.lv-nav-links a:hover { color: #1C3A2A; }
 .lv a.lv-pill,
 .lv a.lv-use,
 .lv a.lv-preview {
-  color: #09090b;
+  color: #1C3A2A;
 }
 .lv-pill {
   min-height: 40px;
@@ -80,13 +80,14 @@
   align-items: center;
   padding: 0 16px;
   border-radius: 999px;
-  background: #fafafa;
-  color: #09090b;
+  background: #C5E0D2;
+  color: #1C3A2A;
   font-size: 14px;
   font-weight: 600;
-  transition: transform 0.2s;
+  box-shadow: 0 8px 18px rgba(80, 140, 110, 0.16);
+  transition: transform 0.2s, background 0.2s;
 }
-.lv-pill:hover { transform: translateY(-1px); }
+.lv-pill:hover { transform: translateY(-1px); background: #B5D6C4; }
 
 .lv-sky {
   position: relative;
@@ -108,7 +109,7 @@
   right: 0;
   bottom: 0;
   height: 160px;
-  background: linear-gradient(180deg, rgba(9, 9, 11, 0), #09090b);
+  background: linear-gradient(180deg, rgba(244, 248, 245, 0), #F4F8F5);
   pointer-events: none;
   z-index: 0;
 }
@@ -131,7 +132,7 @@
   animation: lv-up 0.8s ease both;
 }
 .lv-sheen {
-  background: linear-gradient(90deg, #7dd3fc 0%, #7dd3fc 35%, #ffffff 50%, #a5b4fc 65%, #7dd3fc 100%);
+  background: linear-gradient(90deg, #1C3A2A 0%, #1C3A2A 35%, #ffffff 50%, #8FB9A0 65%, #1C3A2A 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -154,7 +155,7 @@
   width: 760px;
   height: 520px;
   margin-left: -520px;
-  background: radial-gradient(closest-side, rgba(125, 211, 252, 0.38), rgba(125, 211, 252, 0));
+  background: radial-gradient(closest-side, rgba(90, 150, 120, 0.12), rgba(90, 150, 120, 0));
 }
 .lv-aur-b {
   left: 50%;
@@ -162,7 +163,7 @@
   width: 640px;
   height: 480px;
   margin-left: -60px;
-  background: radial-gradient(closest-side, rgba(165, 180, 252, 0.32), rgba(165, 180, 252, 0));
+  background: radial-gradient(closest-side, rgba(143, 185, 160, 0.1), rgba(143, 185, 160, 0));
   animation-duration: 20s;
   animation-direction: reverse;
 }
@@ -173,7 +174,7 @@
   height: 300px;
   margin-left: -300px;
   filter: blur(40px);
-  background: radial-gradient(closest-side, rgba(45, 212, 191, 0.12), rgba(45, 212, 191, 0));
+  background: radial-gradient(closest-side, rgba(196, 164, 140, 0.12), rgba(196, 164, 140, 0));
   animation-duration: 24s;
 }
 .lv-beam {
@@ -182,13 +183,13 @@
   width: 420px;
   height: 420px;
   margin-left: -210px;
-  background: conic-gradient(from 180deg at 50% 0%, rgba(125, 211, 252, 0) 160deg, rgba(186, 230, 253, 0.22) 180deg, rgba(125, 211, 252, 0) 200deg);
+  background: conic-gradient(from 180deg at 50% 0%, rgba(90, 150, 120, 0) 160deg, rgba(180, 210, 190, 0.22) 180deg, rgba(90, 150, 120, 0) 200deg);
   filter: blur(6px);
   animation: lv-beam 7s ease-in-out infinite;
 }
 .lv-grid {
   inset: 0;
-  background-image: linear-gradient(#18181b 1px, transparent 1px), linear-gradient(90deg, #18181b 1px, transparent 1px);
+  background-image: linear-gradient(#D7E6DC 1px, transparent 1px), linear-gradient(90deg, #D7E6DC 1px, transparent 1px);
   background-size: 48px 48px;
   -webkit-mask-image: radial-gradient(ellipse at 50% 22%, #000 12%, transparent 72%);
   mask-image: radial-gradient(ellipse at 50% 22%, #000 12%, transparent 72%);
@@ -200,11 +201,11 @@
   height: 120px;
   margin-left: -250px;
   border-radius: 50%;
-  border-top: 1px solid rgba(125, 211, 252, 0.35);
-  background: radial-gradient(ellipse at 50% 0%, rgba(125, 211, 252, 0.16), rgba(9, 9, 11, 0) 70%);
+  border-top: 1px solid rgba(90, 150, 120, 0.35);
+  background: radial-gradient(ellipse at 50% 0%, rgba(90, 150, 120, 0.16), rgba(244, 248, 245, 0) 70%);
 }
 .lv-glint {
-  filter: drop-shadow(0 0 6px rgba(125, 211, 252, 0.9));
+  filter: drop-shadow(0 0 6px rgba(90, 150, 120, 0.9));
   animation: lv-star 2.4s ease-in-out infinite;
   opacity: 0;
 }
@@ -213,14 +214,14 @@
   width: 140px;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #e0f2fe 70%, #ffffff);
-  box-shadow: 0 0 10px rgba(186, 230, 253, 0.9);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #8FB9A0 70%, #ffffff);
+  box-shadow: 0 0 10px rgba(180, 210, 190, 0.9);
   animation: lv-shoot 9s ease-out infinite;
   opacity: 0;
 }
 .lv-dust {
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(125, 211, 252, 0.9);
+  box-shadow: 0 0 8px rgba(90, 150, 120, 0.9);
   animation: lv-rise 8s ease-out infinite;
   opacity: 0;
 }
@@ -238,7 +239,7 @@
   position: absolute;
   inset: -40px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(125, 211, 252, 0.35), rgba(165, 180, 252, 0.15) 40%, rgba(9, 9, 11, 0) 70%);
+  background: radial-gradient(circle, rgba(90, 150, 120, 0.35), rgba(143, 185, 160, 0.15) 40%, rgba(244, 248, 245, 0) 70%);
   filter: blur(10px);
   animation: lv-glow 5s ease-in-out infinite;
 }
@@ -246,7 +247,7 @@
   position: absolute;
   inset: 18px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(125, 211, 252, 0), rgba(125, 211, 252, 0.9), rgba(165, 180, 252, 0.6), rgba(125, 211, 252, 0) 60%);
+  background: conic-gradient(from 0deg, rgba(90, 150, 120, 0), rgba(90, 150, 120, 0.9), rgba(143, 185, 160, 0.6), rgba(90, 150, 120, 0) 60%);
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
   animation: lv-spin 6s linear infinite;
@@ -254,7 +255,7 @@
 .lv-ring-inner {
   inset: 44px;
   background: none;
-  border: 1px solid rgba(125, 211, 252, 0.18);
+  border: 1px solid rgba(90, 150, 120, 0.18);
   -webkit-mask: none;
   mask: none;
   animation: none;
@@ -271,7 +272,7 @@
   margin-left: -4px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 0 12px 4px rgba(125, 211, 252, 0.9);
+  box-shadow: 0 0 12px 4px rgba(90, 150, 120, 0.9);
 }
 .lv-emblem {
   position: relative;
@@ -279,8 +280,8 @@
   height: 92px;
   border-radius: 30px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(224, 242, 254, 0.25);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 50px rgba(125, 211, 252, 0.25);
+  border: 1px solid rgba(220, 236, 226, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 50px rgba(90, 150, 120, 0.25);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -291,8 +292,8 @@
 .lv-spark {
   position: absolute;
   border-radius: 50%;
-  background: #e0f2fe;
-  box-shadow: 0 0 10px #7dd3fc;
+  background: #8FB9A0;
+  box-shadow: 0 0 10px #1C3A2A;
   animation: lv-tw 2s ease-in-out infinite;
 }
 
@@ -308,9 +309,9 @@
   border-radius: 18px;
   border: 1.5px solid transparent;
   background:
-    linear-gradient(#111113, #111113) padding-box,
-    conic-gradient(from var(--ang), rgba(125, 211, 252, 0.15), #7dd3fc, rgba(165, 180, 252, 0.9), rgba(125, 211, 252, 0.15) 40%, rgba(63, 63, 70, 0.8) 60%, rgba(125, 211, 252, 0.15)) border-box;
-  box-shadow: 0 0 40px rgba(125, 211, 252, 0.18), 0 20px 50px rgba(0, 0, 0, 0.5);
+    linear-gradient(#FFFFFF, #FFFFFF) padding-box,
+    conic-gradient(from var(--ang), rgba(90, 150, 120, 0.15), #1C3A2A, rgba(143, 185, 160, 0.9), rgba(90, 150, 120, 0.15) 40%, rgba(190, 214, 198, 0.8) 60%, rgba(90, 150, 120, 0.15)) border-box;
+  box-shadow: 0 0 40px rgba(90, 150, 120, 0.18), 0 20px 50px rgba(0, 0, 0, 0.5);
   animation: lv-ang 6s linear infinite, lv-up 0.8s ease both;
   animation-delay: 0s, 0.1s;
 }
@@ -320,9 +321,9 @@
   border: none;
   background: transparent;
   font-size: 15px;
-  color: #fafafa;
+  color: #1C3A2A;
 }
-.lv-prompt input::placeholder { color: #71717a; }
+.lv-prompt input::placeholder { color: #5E7368; }
 .lv-prompt input:focus { outline: none; }
 .lv-go {
   flex-shrink: 0;
@@ -330,7 +331,7 @@
   height: 48px;
   border: none;
   border-radius: 12px;
-  background: #7dd3fc;
+  background: #C5E0D2;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -349,13 +350,13 @@
   min-height: 36px;
   padding: 0 14px;
   border-radius: 999px;
-  border: 1px solid #27272a;
+  border: 1px solid #D7E6DC;
   background: transparent;
   font-size: 13px;
-  color: #a1a1aa;
+  color: #5E7368;
   cursor: pointer;
 }
-.lv-chip:hover { border-color: #7dd3fc; color: #fafafa; }
+.lv-chip:hover { border-color: #1C3A2A; color: #1C3A2A; }
 .lv-auth {
   display: flex;
   flex-direction: column;
@@ -372,19 +373,19 @@
   gap: 8px;
   padding: 0 18px;
   border-radius: 12px;
-  border: 1px solid #27272a;
+  border: 1px solid #D7E6DC;
   background: transparent;
-  color: #fafafa;
+  color: #1C3A2A;
   font-size: 14px;
   font-weight: 500;
   transition: transform 0.2s, background 0.2s, border-color 0.2s;
 }
 .lv-auth-btn:hover {
   transform: translateY(-1px);
-  border-color: #52525b;
-  background: #18181b;
+  border-color: #5E7368;
+  background: #E3F0E8;
 }
-.lv-fine { font-size: 12px; color: #71717a; }
+.lv-fine { font-size: 12px; color: #5E7368; }
 
 .lv-panel {
   width: 100%;
@@ -395,28 +396,28 @@
   gap: 12px;
   padding: 22px;
   border-radius: 18px;
-  background: #111113;
-  border: 1px solid #3f3f46;
+  background: #FFFFFF;
+  border: 1px solid #D7E6DC;
   text-align: left;
   animation: lv-op 0.3s ease both;
 }
-.lv-quote { color: #a1a1aa; }
+.lv-quote { color: #5E7368; }
 .lv-log {
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 14px;
-  color: #e4e4e7;
+  color: #5E7368;
   animation: lv-up 0.4s ease both;
 }
-.lv-log span { color: #7dd3fc; }
+.lv-log span { color: #1C3A2A; }
 .lv-bar {
   height: 2px;
   border-radius: 2px;
-  background: #27272a;
+  background: #D7E6DC;
   overflow: hidden;
 }
 .lv-bar div {
   height: 100%;
-  background: linear-gradient(90deg, #7dd3fc, #a5b4fc);
+  background: linear-gradient(90deg, #1C3A2A, #8FB9A0);
   animation: lv-bar 2.6s ease both;
 }
 
@@ -438,8 +439,8 @@
   gap: 10px;
   padding: 8px;
   border-radius: 18px;
-  background: #111113;
-  border: 1px solid #27272a;
+  background: #FFFFFF;
+  border: 1px solid #D7E6DC;
   animation: lv-up 0.6s ease both;
 }
 .lv-pick-shot {
@@ -462,24 +463,24 @@
   right: 0;
   bottom: 0;
   padding: 30px 12px 12px;
-  background: linear-gradient(180deg, rgba(9, 9, 11, 0), rgba(9, 9, 11, 0.85));
+  background: linear-gradient(180deg, rgba(244, 248, 245, 0), rgba(255, 255, 255, 0.92));
   text-align: center;
 }
 .lv-pick-shot div span:first-child {
   display: block;
   font-size: 15px;
   font-weight: 600;
-  color: #fafafa;
+  color: #1C3A2A;
 }
-.lv-pick-shot .lv-mono { font-size: 10px; letter-spacing: 0.1em; color: #a1a1aa; }
+.lv-pick-shot .lv-mono { font-size: 10px; letter-spacing: 0.1em; color: #5E7368; }
 .lv-use {
   min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: #fafafa;
-  color: #09090b;
+  background: #C5E0D2;
+  color: #1C3A2A;
   font-size: 13px;
   font-weight: 600;
   transition: transform 0.2s;
@@ -489,7 +490,7 @@
   border: none;
   background: none;
   font-size: 14px;
-  color: #a1a1aa;
+  color: #5E7368;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -512,7 +513,7 @@
   font-size: 32px;
   line-height: 1.08;
 }
-.lv-car h2 span { color: #7dd3fc; }
+.lv-car h2 span { color: #1C3A2A; }
 .lv-flow {
   position: relative;
   width: 100%;
@@ -532,7 +533,7 @@
   height: 360px;
   margin: -180px 0 0 -180px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(125, 211, 252, 0.22), rgba(9, 9, 11, 0) 65%);
+  background: radial-gradient(circle, rgba(90, 150, 120, 0.22), rgba(244, 248, 245, 0) 65%);
   pointer-events: none;
 }
 .lv-slide {
@@ -546,15 +547,15 @@
   box-sizing: border-box;
   border: none;
   border-radius: 34px;
-  background: #18181b;
+  background: #E3F0E8;
   cursor: pointer;
   color: inherit;
   transform-style: preserve-3d;
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.7s, filter 0.7s;
-  box-shadow: 0 0 0 1px #27272a, 0 30px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 1px #D7E6DC, 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 .lv-slide.is-front {
-  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.5), 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(125, 211, 252, 0.2);
+  box-shadow: 0 0 0 1px rgba(90, 150, 120, 0.5), 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(90, 150, 120, 0.2);
 }
 .lv-slide img {
   width: 100%;
@@ -580,22 +581,22 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  border: 1px solid #27272a;
+  border: 1px solid #D7E6DC;
   background: transparent;
-  color: #fafafa;
+  color: #1C3A2A;
   font-size: 22px;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s, border-color 0.2s;
 }
-.lv-arrow:hover { background: #18181b; border-color: #52525b; transform: translateY(-1px); }
+.lv-arrow:hover { background: #E3F0E8; border-color: #5E7368; transform: translateY(-1px); }
 .lv-preview {
   min-height: 46px;
   display: inline-flex;
   align-items: center;
   padding: 0 22px;
   border-radius: 999px;
-  background: #fafafa;
-  color: #09090b;
+  background: #C5E0D2;
+  color: #1C3A2A;
   font-size: 14px;
   font-weight: 600;
   transition: transform 0.2s;
@@ -608,11 +609,11 @@
   padding: 0;
   border: none;
   border-radius: 999px;
-  background: #3f3f46;
+  background: #D7E6DC;
   cursor: pointer;
   transition: width 0.3s;
 }
-.lv-dots button.is-on { width: 22px; background: #7dd3fc; }
+.lv-dots button.is-on { width: 22px; background: #1C3A2A; }
 
 .lv-sec {
   padding: 60px 20px;
@@ -621,7 +622,7 @@
   align-items: center;
   gap: 30px;
 }
-.lv-sec h2 span { color: #71717a; }
+.lv-sec h2 span { color: #5E7368; }
 .lv-bento {
   width: 100%;
   display: grid;
@@ -630,14 +631,14 @@
 }
 .lv-tile {
   border-radius: 22px;
-  background: #111113;
-  border: 1px solid #27272a;
+  background: #FFFFFF;
+  border: 1px solid #D7E6DC;
   padding: 22px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.lv-kicker { color: #7dd3fc; }
+.lv-kicker { color: #1C3A2A; }
 .lv-tile h3 {
   margin: 0;
   font-size: 22px;
@@ -650,7 +651,7 @@
   margin: 0;
   font-size: 15px;
   line-height: 1.6;
-  color: #a1a1aa;
+  color: #5E7368;
 }
 .lv-stage {
   position: relative;
@@ -658,8 +659,8 @@
   flex-grow: 1;
   min-height: 250px;
   border-radius: 18px;
-  background: radial-gradient(ellipse at 50% 45%, rgba(125, 211, 252, 0.12), rgba(17, 17, 19, 0) 65%), #0c0c0e;
-  border: 1px solid #1f1f23;
+  background: radial-gradient(ellipse at 50% 45%, rgba(90, 150, 120, 0.12), rgba(255, 255, 255, 0) 65%), #F4F8F5;
+  border: 1px solid #FFFFFF;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -676,7 +677,7 @@
   height: 280px;
   margin: -140px 0 0 -140px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(125, 211, 252, 0.28), rgba(165, 180, 252, 0.1) 40%, rgba(12, 12, 14, 0) 70%);
+  background: radial-gradient(circle, rgba(90, 150, 120, 0.28), rgba(143, 185, 160, 0.1) 40%, rgba(244, 248, 245, 0) 70%);
   animation: lv-glow 6s ease-in-out infinite;
 }
 .lv-door {
@@ -684,22 +685,22 @@
   width: 150px;
   height: 190px;
   border-radius: 75px 75px 14px 14px;
-  border: 1px solid rgba(224, 242, 254, 0.3);
-  box-shadow: 0 0 40px rgba(125, 211, 252, 0.18), inset 0 0 30px rgba(125, 211, 252, 0.08);
+  border: 1px solid rgba(220, 236, 226, 0.3);
+  box-shadow: 0 0 40px rgba(90, 150, 120, 0.18), inset 0 0 30px rgba(90, 150, 120, 0.08);
   perspective: 600px;
 }
 .lv-door-in {
   position: absolute;
   inset: 6px;
   border-radius: 70px 70px 10px 10px;
-  background: radial-gradient(ellipse at 50% 50%, rgba(224, 242, 254, 0.35), rgba(125, 211, 252, 0.08) 60%, rgba(12, 12, 14, 0));
+  background: radial-gradient(ellipse at 50% 50%, rgba(220, 236, 226, 0.35), rgba(90, 150, 120, 0.08) 60%, rgba(244, 248, 245, 0));
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .lv-door-card {
   display: flex;
-  filter: drop-shadow(0 0 14px rgba(125, 211, 252, 0.9));
+  filter: drop-shadow(0 0 14px rgba(90, 150, 120, 0.9));
   animation: lv-reveal 5s ease-in-out infinite;
 }
 .lv-door-card svg { width: 46px; height: 46px; }
@@ -710,7 +711,7 @@
   bottom: 6px;
   width: calc(50% - 6px);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03));
-  border: 1px solid rgba(224, 242, 254, 0.28);
+  border: 1px solid rgba(220, 236, 226, 0.28);
   backdrop-filter: blur(6px);
 }
 .lv-door-l {
@@ -733,14 +734,14 @@
   width: 4px;
   height: 22px;
   border-radius: 2px;
-  background: #7dd3fc;
-  box-shadow: 0 0 10px #7dd3fc;
+  background: #1C3A2A;
+  box-shadow: 0 0 10px #1C3A2A;
 }
 .lv-door-l span { right: 8px; }
 .lv-door-r span { left: 8px; }
 .lv-door-spark {
   position: absolute;
-  filter: drop-shadow(0 0 6px rgba(125, 211, 252, 0.9));
+  filter: drop-shadow(0 0 6px rgba(90, 150, 120, 0.9));
   animation: lv-star 2.4s ease-in-out infinite;
   opacity: 0;
 }
@@ -759,9 +760,9 @@
   padding: 0 12px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid #27272a;
+  border: 1px solid #D7E6DC;
   font-size: 12px;
-  color: #d4d4d8;
+  color: #5E7368;
 }
 
 .lv-steps {
@@ -775,7 +776,7 @@
   flex-direction: column;
   gap: 10px;
   padding-top: 20px;
-  border-top: 1px solid #27272a;
+  border-top: 1px solid #D7E6DC;
 }
 .lv-steps h3 {
   margin: 0;
@@ -784,7 +785,7 @@
 }
 
 .lv-faqs { width: 100%; max-width: 760px; }
-.lv-faqs > div { border-bottom: 1px solid #27272a; }
+.lv-faqs > div { border-bottom: 1px solid #D7E6DC; }
 .lv-faqs button {
   width: 100%;
   min-height: 64px;
@@ -796,14 +797,14 @@
   background: none;
   font-size: 16px;
   font-weight: 500;
-  color: #fafafa;
+  color: #1C3A2A;
   text-align: left;
   cursor: pointer;
 }
 .lv-faqs button span {
   flex-shrink: 0;
   font-size: 22px;
-  color: #71717a;
+  color: #5E7368;
   transition: transform 0.25s;
 }
 .lv-faqs p { margin: 0 0 20px; animation: lv-op 0.25s ease both; }
@@ -814,8 +815,8 @@
   margin: 0 14px 40px;
   padding: 60px 20px;
   border-radius: 28px;
-  border: 1px solid #27272a;
-  background: #111113;
+  border: 1px solid #D7E6DC;
+  background: #FFFFFF;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -829,7 +830,7 @@
   height: 600px;
   margin: -300px 0 0 -300px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(125, 211, 252, 0.18), rgba(165, 180, 252, 0.08) 40%, rgba(9, 9, 11, 0) 70%);
+  background: radial-gradient(circle, rgba(90, 150, 120, 0.18), rgba(143, 185, 160, 0.08) 40%, rgba(244, 248, 245, 0) 70%);
   animation: lv-glow 6s ease-in-out infinite;
 }
 .lv-cta h2,
@@ -840,8 +841,8 @@
   align-items: center;
   padding: 0 26px;
   border-radius: 999px;
-  background: #7dd3fc;
-  color: #09090b;
+  background: #C5E0D2;
+  color: #1C3A2A;
   font-size: 15px;
   font-weight: 600;
   transition: transform 0.2s;
@@ -854,7 +855,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 36px;
-  border-top: 1px solid #18181b;
+  border-top: 1px solid #D7E6DC;
 }
 .lv-foot-brand {
   display: flex;
@@ -867,7 +868,7 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.6;
-  color: #71717a;
+  color: #5E7368;
 }
 .lv-foot-cols {
   display: grid;
@@ -876,8 +877,8 @@
   width: 100%;
 }
 .lv-foot-cols div { display: flex; flex-direction: column; gap: 10px; }
-.lv-foot-cols a { font-size: 14px; color: #a1a1aa; }
-.lv-foot-cols a:hover { color: #fafafa; }
+.lv-foot-cols a { font-size: 14px; color: #5E7368; }
+.lv-foot-cols a:hover { color: #1C3A2A; }
 .lv-foot-end {
   width: 100%;
   display: flex;
@@ -885,13 +886,12 @@
   flex-wrap: wrap;
   gap: 10px;
   padding-top: 24px;
-  border-top: 1px solid #27272a;
+  border-top: 1px solid #D7E6DC;
 }
 
 #start,
 #templates,
 #features,
-#pricing,
 #how,
 #faq { scroll-margin-top: 80px; }
 
@@ -987,5 +987,5 @@
     animation: none !important;
     transition: none !important;
   }
-  .lv-sheen { color: #7dd3fc; background: none; }
+  .lv-sheen { color: #1C3A2A; background: none; }
 }

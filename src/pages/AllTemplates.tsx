@@ -2,28 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Heart, Sparkle } from "lucide-react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
+import { PublicHeader } from "../components/PublicHeader";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, eventLabels, formatPrice, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
-import { TOPICS } from "../data/topics";
+import { TEMPLATES, designCtaLabel, eventLabels, formatPrice, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
 import { trackTemplatePreview } from "../lib/analytics";
 import type { InviteFields, Template } from "../types";
 import "./all-templates.css";
 
 type StyleTag = "Animated" | "Traditional" | "Royal" | "Modern" | "Minimal";
-type PriceFilter = "All" | "Free" | "Paid";
-type SortId = "popular" | "new" | "low" | "high" | "az";
-
-const STYLES: StyleTag[] = ["Animated", "Traditional", "Royal", "Modern", "Minimal"];
-const SORTS: { id: SortId; label: string }[] = [
-  { id: "popular", label: "Most popular" },
-  { id: "new", label: "Newest" },
-  { id: "low", label: "Price: low to high" },
-  { id: "high", label: "Price: high to low" },
-  { id: "az", label: "Name: A–Z" },
-];
 
 const FEAT: Record<StyleTag, string> = {
   Animated: "Animated opening guests can tap",
@@ -56,14 +45,8 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
   hearth: { styles: ["Animated", "Modern"], pop: 77, added: 8, tags: "house home mint door key", swatches: ["#DDEFE8", "#FBD9B6", "#34456E"] },
 };
 
-const COLLECTIONS: { id: string; title: string; thumbs: string[]; styles: StyleTag[]; price: PriceFilter; tone: string }[] = [
-  { id: "animated", title: "Animated favourites", thumbs: ["peace", "shaadi", "vivah"], styles: ["Animated"], price: "All", tone: "animated" },
-  { id: "free", title: "Free to use", thumbs: ["gazal", "aurelia"], styles: [], price: "Free", tone: "free" },
-  { id: "royal", title: "Royal & traditional", thumbs: ["shaadi", "thiruvizha", "vivah"], styles: ["Traditional"], price: "All", tone: "royal" },
-  { id: "modern", title: "Modern & minimal", thumbs: ["botanica", "anna", "peace"], styles: ["Modern"], price: "All", tone: "modern" },
-];
-
 const SAVED_KEY = "invitesready-saved-templates";
+type PriceFilter = "All" | "Free" | "Paid";
 
 function readSaved() {
   try {
@@ -89,24 +72,17 @@ export function AllTemplates() {
   const { id: routeId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [query, setQuery] = useState("");
   const [events, setEvents] = useState<CatalogEvent[]>(EVENTS);
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
   const [catalogReady, setCatalogReady] = useState(false);
   const [occasion, setOccasion] = useState("all");
   const [price, setPrice] = useState<PriceFilter>("All");
-  const [styles, setStyles] = useState<StyleTag[]>([]);
-  const [sort, setSort] = useState<SortId>("popular");
-  const [sortOpen, setSortOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const categoryRef = useRef<HTMLDivElement>(null);
   const [saved, setSaved] = useState<string[]>(readSaved);
-  const [savedOnly, setSavedOnly] = useState(false);
-  const [collection, setCollection] = useState<string | null>(null);
-  const [sheet, setSheet] = useState(false);
   const [previewId, setPreviewId] = useState<string | null>(routeId ?? null);
   const [demo, setDemo] = useState(false);
   const [broken, setBroken] = useState<string[]>([]);
-  const [menu, setMenu] = useState(false);
-  const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     listEvents().then(setEvents).catch(() => setEvents(EVENTS));
@@ -140,16 +116,23 @@ export function AllTemplates() {
   }, [saved]);
 
   useEffect(() => {
-    if (!sortOpen) return;
-    function onDoc(event: MouseEvent) {
-      if (!sortRef.current?.contains(event.target as Node)) setSortOpen(false);
+    if (!categoryOpen) return;
+    function onPointer(event: PointerEvent) {
+      if (!categoryRef.current?.contains(event.target as Node)) setCategoryOpen(false);
     }
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, [sortOpen]);
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setCategoryOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [categoryOpen]);
 
   useEffect(() => {
-    if (!sheet && !previewId && !demo) return;
+    if (!previewId && !demo) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function onKey(event: KeyboardEvent) {
@@ -158,7 +141,6 @@ export function AllTemplates() {
         setDemo(false);
         return;
       }
-      setSheet(false);
       closePreview();
     }
     document.addEventListener("keydown", onKey);
@@ -166,33 +148,18 @@ export function AllTemplates() {
       document.body.style.overflow = previous;
       document.removeEventListener("keydown", onKey);
     };
-  }, [sheet, previewId, demo]);
+  }, [previewId, demo]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const base = catalog.filter((template) => {
-      const extra = look(template.id);
-      const labels = template.events.map((id) => events.find((event) => event.id === id)?.label ?? "");
+    const list = catalog.filter((template) => {
+      const occasionOk = occasion === "all" || template.events.includes(occasion as Template["events"][number]);
       const priceOk = price === "All" || (price === "Free" ? template.free : !template.free);
-      const styleOk = styles.every((style) => extra.styles.includes(style));
-      const savedOk = !savedOnly || saved.includes(template.id);
-      const text = `${template.name} ${template.tagline} ${template.description} ${labels.join(" ")} ${extra.tags} ${extra.styles.join(" ")}`.toLowerCase();
-      return priceOk && styleOk && savedOk && (!q || text.includes(q));
+      return occasionOk && priceOk;
     });
-    const list = base.filter((template) => occasion === "all" || template.events.includes(occasion as Template["events"][number]));
-    const sorted = [...list].sort((a, b) => {
-      if (sort === "popular") return look(b.id).pop - look(a.id).pop || a.name.localeCompare(b.name);
-      if (sort === "new") return look(b.id).added - look(a.id).added || a.name.localeCompare(b.name);
-      if (sort === "low") return a.price - b.price || a.name.localeCompare(b.name);
-      if (sort === "high") return b.price - a.price || a.name.localeCompare(b.name);
-      return a.name.localeCompare(b.name);
-    });
-    return { base, sorted };
-  }, [catalog, events, query, occasion, price, styles, savedOnly, saved, sort]);
+    return [...list].sort((a, b) => look(b.id).pop - look(a.id).pop || a.name.localeCompare(b.name));
+  }, [catalog, occasion, price]);
 
   const preview = catalog.find((template) => template.id === previewId) ?? null;
-  const sortLabel = SORTS.find((item) => item.id === sort)?.label ?? "Most popular";
-  const activeCount = (price !== "All" ? 1 : 0) + styles.length + (sort !== "popular" ? 1 : 0);
 
   function closePreview() {
     setDemo(false);
@@ -204,37 +171,6 @@ export function AllTemplates() {
 
   function markBroken(id: string) {
     setBroken((current) => (current.includes(id) ? current : [...current, id]));
-  }
-
-  function toggleStyle(style: StyleTag) {
-    setCollection(null);
-    setStyles((current) => (current.includes(style) ? current.filter((item) => item !== style) : [...current, style]));
-  }
-
-  function pickCollection(id: string) {
-    if (collection === id) {
-      setCollection(null);
-      setStyles([]);
-      setPrice("All");
-      return;
-    }
-    const next = COLLECTIONS.find((item) => item.id === id);
-    if (!next) return;
-    setCollection(id);
-    setStyles(next.styles);
-    setPrice(next.price);
-    setOccasion("all");
-  }
-
-  function resetFilters() {
-    setQuery("");
-    setOccasion("all");
-    setPrice("All");
-    setStyles([]);
-    setSavedOnly(false);
-    setSort("popular");
-    setCollection(null);
-    setSortOpen(false);
   }
 
   function toggleSaved(id: string) {
@@ -257,191 +193,69 @@ export function AllTemplates() {
 
   return (
     <div className="cat">
-      <header className="cat-nav">
-        <Brand />
-        <nav className="cat-links" aria-label="Main">
-          <Link to="/browse" aria-current="page">Templates</Link>
-          <Link to="/how">How it works</Link>
-          <Link to="/features">Features</Link>
-          <Link to="/faq">FAQ</Link>
-        </nav>
-        <div className="cat-nav-actions">
-          <Link className="cat-login" to="/login">Log in</Link>
-          <Link className="cat-create" to="/create">Create invite</Link>
-        </div>
-        <button type="button" className="cat-burger" aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} onClick={() => setMenu((open) => !open)}>
-          {menu ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-              <path d="M4 7h16M4 12h16M4 17h10" />
-            </svg>
-          )}
-        </button>
-      </header>
-      {menu ? (
-        <nav className="cat-menu" aria-label="Menu">
-          <Link to="/browse" onClick={() => setMenu(false)}>Templates</Link>
-          <Link to="/how" onClick={() => setMenu(false)}>How it works</Link>
-          <Link to="/features" onClick={() => setMenu(false)}>Features</Link>
-          <Link to="/faq" onClick={() => setMenu(false)}>FAQ</Link>
-          <Link to="/login" onClick={() => setMenu(false)}>Log in</Link>
-          <Link className="cat-create" to="/create" onClick={() => setMenu(false)}>Create invite — free</Link>
-        </nav>
-      ) : null}
+      <PublicHeader />
 
       <main>
         <section className="cat-hero">
-          <div>
-            <span className="cat-kicker">Templates</span>
-            <h1>
-              Find the invite that feels like <em>you.</em>
-            </h1>
-            <p>
-              {catalog.length} designs for weddings, nikahs, shaadi, Tamil weddings, baptisms, birthdays and housewarmings. Preview any one free. Guests RSVP from the link, with no app.
-            </p>
-            <nav className="cat-topics" aria-label="Occasions">
-              {TOPICS.map((topic) => (
-                <Link key={topic.id} to={topic.path}>{topic.label}</Link>
-              ))}
-            </nav>
-          </div>
-          <div className="cat-search">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A7880" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <path d="M20 20l-4-4" />
-            </svg>
-            <label htmlFor="cat-search">Search templates</label>
-            <input
-              id="cat-search"
-              type="search"
-              placeholder={'Search “gold”, “beach”, “floral”…'}
-              value={query}
-              onChange={(input) => setQuery(input.target.value)}
-            />
-            {query ? (
-              <button type="button" aria-label="Clear search" onClick={() => setQuery("")}>
-                ×
-              </button>
-            ) : null}
-          </div>
-        </section>
-
-        <section className="cat-cols" aria-label="Collections">
-          {COLLECTIONS.map((item) => {
-            const count = catalog.filter((template) => (item.price === "Free" ? template.free : item.styles.every((style) => look(template.id).styles.includes(style)))).length;
-            return (
-              <button key={item.id} type="button" className={`cat-col ${item.tone}${collection === item.id ? " on" : ""}`} aria-pressed={collection === item.id} onClick={() => pickCollection(item.id)}>
-                <span className="cat-col-imgs">
-                  {item.thumbs.map((id) => {
-                    const template = catalog.find((row) => row.id === id);
-                    const tone = look(id).swatches[0];
-                    return broken.includes(id) || !template ? (
-                      <span key={id} style={{ background: tone }} />
-                    ) : (
-                      <img key={id} src={`/covers/${id}.jpg`} alt="" onError={() => markBroken(id)} />
-                    );
-                  })}
-                </span>
-                <span className="cat-col-copy">
-                  <strong>{item.title}</strong>
-                  <small>{count} templates</small>
-                </span>
-              </button>
-            );
-          })}
-        </section>
-
-        <section className="cat-bar">
-          <div className="cat-occ" role="tablist" aria-label="Occasion">
-            <button type="button" role="tab" aria-selected={occasion === "all"} className={occasion === "all" ? "on" : ""} onClick={() => { setOccasion("all"); setCollection(null); }}>
-              All <span>{filtered.base.length}</span>
-            </button>
-            {events.map((event) => {
-              const count = filtered.base.filter((template) => template.events.includes(event.id as Template["events"][number])).length;
-              const on = occasion === event.id;
-              const disabled = count === 0 && !on;
-              return (
-                <button
-                  key={event.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={on}
-                  className={on ? "on" : ""}
-                  disabled={disabled}
-                  onClick={() => { setOccasion(event.id); setCollection(null); }}
-                >
-                  {event.label} <span>{count}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="cat-filters-desk">
+          <span className="cat-kicker">Templates</span>
+          <h1>
+            Find the invite that feels like <em>you.</em>
+          </h1>
+          <p>Preview any design free. Pay once when you publish. Guests RSVP with no app.</p>
+          <div className="cat-tools">
             <div className="cat-seg" role="group" aria-label="Price">
               {(["All", "Free", "Paid"] as const).map((label) => (
-                <button key={label} type="button" className={price === label ? "on" : ""} aria-pressed={price === label} onClick={() => { setPrice(label); setCollection(null); }}>
+                <button key={label} type="button" className={price === label ? "on" : ""} aria-pressed={price === label} onClick={() => setPrice(label)}>
                   {label}
                 </button>
               ))}
             </div>
-            <i className="cat-rule" />
-            {STYLES.map((style) => (
-              <button key={style} type="button" className={`cat-style${styles.includes(style) ? " on" : ""}`} aria-pressed={styles.includes(style)} onClick={() => toggleStyle(style)}>
-                {style}
-              </button>
-            ))}
-            <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <Heart size={14} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> {saved.length}
-            </button>
-            <div className="cat-sort-wrap">
-            <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
-            <div className="cat-sort" ref={sortRef}>
-              <button type="button" aria-haspopup="listbox" aria-expanded={sortOpen} onClick={() => setSortOpen((open) => !open)}>
-                Sort: {sortLabel}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B5A62" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M7 10l5 5 5-5" />
-                </svg>
-              </button>
-              {sortOpen ? (
-                <div role="listbox" aria-label="Sort">
-                  {SORTS.map((item) => (
-                    <button key={item.id} type="button" role="option" aria-selected={sort === item.id} className={sort === item.id ? "on" : ""} onClick={() => { setSort(item.id); setSortOpen(false); }}>
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
+            <div className="cat-category" ref={categoryRef}>
+              <span id="cat-category-label">Category</span>
+              <div className={`cat-category-menu${categoryOpen ? " is-open" : ""}`}>
+                <button type="button" aria-haspopup="listbox" aria-expanded={categoryOpen} aria-labelledby="cat-category-label" onClick={() => setCategoryOpen((open) => !open)}>
+                  <span>{events.find((event) => event.id === occasion)?.label ?? "All"}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M7 10l5 5 5-5" />
+                  </svg>
+                </button>
+                {categoryOpen ? (
+                  <div role="listbox" aria-labelledby="cat-category-label">
+                    {[{ id: "all", label: "All" }, ...events].map((event) => {
+                      const on = occasion === event.id;
+                      return (
+                        <button
+                          key={event.id}
+                          type="button"
+                          role="option"
+                          aria-selected={on}
+                          className={on ? "on" : ""}
+                          onClick={() => {
+                            setOccasion(event.id);
+                            setCategoryOpen(false);
+                          }}
+                        >
+                          <span aria-hidden="true">{on ? <Check size={14} strokeWidth={2.8} /> : null}</span>
+                          {event.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
             </div>
-            </div>
-          </div>
-
-          <div className="cat-filters-mob">
-            <button type="button" className="cat-filters-btn" onClick={() => setSheet(true)}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A1527" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-                <path d="M4 6h16M7 12h10M10 18h4" />
-              </svg>
-              Filters
-              {activeCount > 0 ? <span>{activeCount}</span> : null}
-            </button>
-            <button type="button" className={`cat-saved${savedOnly ? " on" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly((on) => !on)}>
-              <Heart size={14} aria-hidden="true" fill={savedOnly ? "currentColor" : "none"} /> {saved.length}
-            </button>
-            <span className="cat-count">{filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}</span>
           </div>
         </section>
 
         <section className="cat-grid-wrap">
-          {filtered.sorted.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="cat-grid" role="status" aria-busy="true" aria-label="Loading templates">
               <span className="skel-sr">Loading</span>
               <SkeletonCards count={8} />
             </div>
           ) : (
             <div className="cat-grid">
-              {filtered.sorted.map((template, index) => {
+              {filtered.map((template, index) => {
                 const extra = look(template.id);
                 const loved = saved.includes(template.id);
                 const labels = eventLabels(template);
@@ -459,7 +273,6 @@ export function AllTemplates() {
                       <button type="button" className={`cat-heart${loved ? " on" : ""}`} aria-pressed={loved} aria-label={`${loved ? "Remove" : "Save"} ${template.name}`} onClick={() => toggleSaved(template.id)}>
                         <Heart size={18} aria-hidden="true" fill={loved ? "currentColor" : "none"} />
                       </button>
-                      <div className="cat-hover">Quick preview</div>
                     </div>
                     <div className="cat-info">
                       <div className="cat-name-row">
@@ -489,7 +302,7 @@ export function AllTemplates() {
       </main>
 
       <footer className="cat-foot">
-        <Brand light />
+        <Brand />
         <nav aria-label="Footer">
           <Link to="/browse">Templates</Link>
           <Link to="/privacy">Privacy</Link>
@@ -499,45 +312,6 @@ export function AllTemplates() {
         </nav>
         <small>© 2026 InvitesReady.com</small>
       </footer>
-
-      {sheet ? (
-        <div className="cat-sheet-back" onClick={() => setSheet(false)}>
-          <div role="dialog" aria-label="Filters" className="cat-sheet" onClick={(event) => event.stopPropagation()}>
-            <span className="cat-grab" />
-            <div className="cat-sheet-head">
-              <strong>Filters</strong>
-              <button type="button" onClick={resetFilters}>Reset</button>
-            </div>
-            <span className="cat-sheet-label">Price</span>
-            <div className="cat-sheet-prices" role="group" aria-label="Price">
-              {(["All", "Free", "Paid"] as const).map((label) => (
-                <button key={label} type="button" className={price === label ? "on" : ""} aria-pressed={price === label} onClick={() => { setPrice(label); setCollection(null); }}>
-                  {label}
-                </button>
-              ))}
-            </div>
-            <span className="cat-sheet-label">Style</span>
-            <div className="cat-sheet-styles">
-              {STYLES.map((style) => (
-                <button key={style} type="button" className={`cat-style${styles.includes(style) ? " on" : ""}`} aria-pressed={styles.includes(style)} onClick={() => toggleStyle(style)}>
-                  {style}
-                </button>
-              ))}
-            </div>
-            <span className="cat-sheet-label">Sort by</span>
-            <div className="cat-sheet-sorts">
-              {SORTS.map((item) => (
-                <button key={item.id} type="button" className={sort === item.id ? "on" : ""} aria-pressed={sort === item.id} onClick={() => setSort(item.id)}>
-                  {item.label}
-                </button>
-              ))}
-            </div>
-            <button type="button" className="cat-sheet-go" onClick={() => setSheet(false)}>
-              Show {filtered.sorted.length === 1 ? "1 template" : `${filtered.sorted.length} templates`}
-            </button>
-          </div>
-        </div>
-      ) : null}
 
       {preview && demo ? (
         <CatalogDemo template={preview} href={useHref(preview, occasion)} label="Use this template" onClose={() => setDemo(false)} />
@@ -578,7 +352,7 @@ export function AllTemplates() {
                 <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span>
               </div>
               <div className="cat-modal-actions">
-                <Link to={useHref(preview)}>{preview.free ? "Use this design — Free" : `Use this design — ${formatPrice(preview)}`}</Link>
+                <Link to={useHref(preview)}>{designCtaLabel(preview)}</Link>
                 <button type="button" className="ghost" onClick={() => setDemo(true)}>Open live demo</button>
               </div>
             </div>
@@ -602,3 +376,4 @@ export function CatalogDemo({ template, onClose, href, label, fields }: { templa
     </div>
   );
 }
+

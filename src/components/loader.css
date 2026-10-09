@@ -4,8 +4,8 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid #27272a;
-  border-top-color: #7dd3fc;
+  border: 2px solid #D7E6DC;
+  border-top-color: #1C3A2A;
   animation: spin-turn 0.8s linear infinite;
   flex-shrink: 0;
   vertical-align: -3px;
@@ -52,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 20px rgba(125, 211, 252, 0.25);
+  box-shadow: 0 10px 20px rgba(90, 150, 120, 0.25);
 }
 
 .smart-face {
@@ -69,7 +69,7 @@ button.smart-btn.loading:disabled {
   opacity: 1;
   cursor: default;
   animation: none;
-  box-shadow: 0 10px 20px rgba(168, 23, 79, 0.25);
+  box-shadow: 0 10px 20px rgba(90, 150, 120, 0.25);
 }
 
 button.smart-btn.done,

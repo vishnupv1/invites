@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Brand } from "../components/Brand";
+import { PublicHeader } from "../components/PublicHeader";
 import "./legal.css";
 
 export const CONTACT_EMAIL = "hello@invitesready.com";
@@ -8,15 +8,7 @@ export const CONTACT_EMAIL = "hello@invitesready.com";
 function Frame({ title, lede, children }: { title: string; lede: string; children: ReactNode }) {
   return (
     <div className="legal">
-      <header className="legal-bar">
-        <Brand />
-        <nav aria-label="Policies">
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/terms">Terms</Link>
-          <Link to="/refunds">Refunds</Link>
-          <Link to="/contact">Contact</Link>
-        </nav>
-      </header>
+      <PublicHeader />
       <main>
         <h1>{title}</h1>
         <p className="legal-lede">{lede}</p>
@@ -77,7 +69,7 @@ export function Terms() {
       <p>Keep your login to yourself. You are responsible for invitations published from your account and for the replies those pages collect.</p>
       <h2>Payments</h2>
       <p>
-        Prices are shown in Indian rupees before you pay. Razorpay collects the payment. A coupon that we accept reduces the price to zero for that template. Buying a template once lets you publish invitations with that design without paying again. See the <Link to="/refunds">refund policy</Link> for cancellations.
+        Prices are shown in Indian rupees before you pay. Razorpay collects the payment. A coupon that we accept reduces the price at checkout, and some coupons make the template free. Buying a template once lets you publish invitations with that design without paying again. See the <Link to="/refunds">refund policy</Link> for cancellations.
       </p>
       <h2>Acceptable use</h2>
       <p>Do not use InvitesReady for unlawful, misleading, or abusive invitations, or to collect guest information you are not entitled to collect.</p>
@@ -89,7 +81,7 @@ export function Refunds() {
   return (
     <Frame title="Refunds" lede="Last updated 29 September 2026. Template purchases are one-time payments for a digital design.">
       <h2>What you are buying</h2>
-      <p>A paid template is a digital licence to use that design on InvitesReady. The price on the checkout screen is the full price. A valid coupon can make that price zero. Free templates are not charged.</p>
+      <p>A paid template is a digital licence to use that design on InvitesReady. The price on the checkout screen is the amount you pay. A valid coupon can reduce that price, and some coupons make it free. Free templates are not charged.</p>
       <h2>When we refund</h2>
       <p>Email {CONTACT_EMAIL} within 7 days of payment if you have not published an invitation with that template and you cannot use the design. We will refund the amount Razorpay charged for that order.</p>
       <h2>When we do not refund</h2>

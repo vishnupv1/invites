@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackEvent } from "../lib/analytics";
 import { Brand } from "../components/Brand";
+import { PublicHeader } from "../components/PublicHeader";
 import { GoogleButton } from "../components/GoogleButton";
 import { signInWithGoogle } from "../lib/google";
 import { Spinner } from "../components/Loader";
@@ -91,19 +92,21 @@ export function Auth() {
   }
 
   return (
+    <div className="auth-page">
+    <PublicHeader />
     <div className="auth">
       <header className="m-top">
         <svg className="m-rings" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-          <circle cx="120" cy="120" r="110" stroke="#F23F78" strokeOpacity="0.25" strokeWidth="1.5" />
-          <circle cx="120" cy="120" r="70" stroke="#F23F78" strokeOpacity="0.25" strokeWidth="1.5" />
+          <circle cx="120" cy="120" r="110" stroke="#1C3A2A" strokeOpacity="0.25" strokeWidth="1.5" />
+          <circle cx="120" cy="120" r="70" stroke="#1C3A2A" strokeOpacity="0.25" strokeWidth="1.5" />
         </svg>
         <div className="m-bar">
           <Link to="/" aria-label="Back to home">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
           </Link>
-          <img className="brand-name" src="/brand/wordmark-light.png" alt="InvitesReady" />
+          <img className="brand-name" src="/brand/wordmark.png" alt="InvitesReady" />
           <i />
         </div>
         <div className="m-copy">
@@ -112,7 +115,7 @@ export function Auth() {
         </div>
       </header>
       <aside className="auth-brand">
-        <Brand light />
+        <Brand />
         <div className="auth-pitch">
           <div>
             <h1>
@@ -279,6 +282,7 @@ export function Auth() {
           Your password stays on the account. We never share it.
         </p>
       </main>
+    </div>
     </div>
   );
 }

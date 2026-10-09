@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
 import { Category } from "./pages/Category";
@@ -7,7 +7,7 @@ import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
-import { Brand } from "./components/Brand";
+import { PublicHeader } from "./components/PublicHeader";
 import { PageMeta } from "./lib/seo";
 import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
@@ -33,17 +33,9 @@ function RequireAccount({ children }: { children: ReactNode }) {
 }
 
 function Shell({ children }: { children: ReactNode }) {
-  const { ready, signedIn } = useSession();
   return (
     <>
-      <header className="nav">
-        <Brand />
-        <nav>
-          <Link to="/occasions">Celebrations</Link>
-          <Link to="/browse">Templates</Link>
-          {ready && signedIn ? <Link to="/studio">Dashboard</Link> : <Link to="/login">Log in</Link>}
-        </nav>
-      </header>
+      <PublicHeader />
       <main className="wrap">{children}</main>
     </>
   );

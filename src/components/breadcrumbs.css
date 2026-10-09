@@ -10,12 +10,12 @@
   font-family: Geist, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #a1a1aa;
+  color: #5E7368;
 }
 .crumbs li { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .crumbs a,
 .crumbs button {
-  color: #7dd3fc;
+  color: #1C3A2A;
   text-decoration: none;
   background: none;
   border: none;
@@ -27,7 +27,7 @@
 .crumbs a:hover,
 .crumbs button:hover { text-decoration: underline; }
 .crumbs [aria-current="page"] {
-  color: #fafafa;
+  color: #1C3A2A;
   font-weight: 700;
   max-width: 36ch;
   overflow: hidden;

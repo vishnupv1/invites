@@ -39,7 +39,7 @@ const SUBS: Record<Section, string> = {
   More: "Purchases and this console.",
 };
 
-const COLORS = ["#2A1527", "#F23F78", "#2E8B57", "#C8392B", "#D81B60", "#8E1550"];
+const COLORS = ["#1C3A2A", "#6F9A82", "#2E8B57", "#C8392B", "#1C3A2A", "#1C3A2A"];
 
 function initials(name: string) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
@@ -133,20 +133,20 @@ export function Admin() {
     <div className="console">
       <header className="adm-bar">
         <div>
-          <img className="brand-name" src="/brand/wordmark-light.png" alt="InvitesReady" />
+          <img className="brand-name" src="/brand/wordmark.png" alt="InvitesReady" />
           <span className="adm-badge">Admin</span>
         </div>
         <div className="adm-avatar" aria-hidden="true">{initials(data.admin.name)}</div>
       </header>
       <aside className="console-side">
         <Link className="console-brand" to="/">
-          <Brand light linked={false} />
+          <Brand linked={false} />
           <span className="console-tag">Admin console</span>
         </Link>
         <nav aria-label="Admin">
           {SECTIONS.map((label) => (
             <button key={label} type="button" className={section === label ? "console-nav on" : "console-nav"} aria-current={section === label ? "page" : undefined} onClick={() => setSection(label)}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={section === label ? "#2A1527" : "#F3BBCF"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={section === label ? "#1C3A2A" : "#A8C4B4"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d={ICONS[label]} />
               </svg>
               <span>{label}</span>
@@ -154,7 +154,7 @@ export function Admin() {
           ))}
         </nav>
         <div className="console-account">
-          <div className="avatar" style={{ background: "#D81B60", color: "#fff" }}>{initials(data.admin.name)}</div>
+          <div className="avatar" style={{ background: "#1C3A2A", color: "#fff" }}>{initials(data.admin.name)}</div>
           <div style={{ flexGrow: 1 }}>
             <strong>{data.admin.name}</strong>
             <small>Admin</small>

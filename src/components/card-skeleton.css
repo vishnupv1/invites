@@ -14,13 +14,13 @@
   position: relative;
   overflow: hidden;
   border-radius: 22px;
-  background: #111113;
+  background: #FFFFFF;
   border: 1px solid #f1e6ea;
   display: flex;
   flex-direction: column;
 }
 .skel-card.studio { border-radius: 20px; }
-.skel-cover { aspect-ratio: 3 / 4; background: #18181b; }
+.skel-cover { aspect-ratio: 3 / 4; background: #E3F0E8; }
 .skel-card.studio .skel-cover { aspect-ratio: auto; height: 300px; }
 .skel-copy {
   padding: 16px;
@@ -28,10 +28,10 @@
   flex-direction: column;
   gap: 8px;
 }
-.skel-line { height: 9px; border-radius: 4px; background: #27272a; }
+.skel-line { height: 9px; border-radius: 4px; background: #D7E6DC; }
 .skel-line.title { width: 70%; }
 .skel-line.sub { height: 8px; width: 45%; }
-.skel-pill { height: 22px; margin-top: 4px; border-radius: 999px; background: #18181b; }
+.skel-pill { height: 22px; margin-top: 4px; border-radius: 999px; background: #E3F0E8; }
 .skel-shimmer {
   position: absolute;
   inset: 0;

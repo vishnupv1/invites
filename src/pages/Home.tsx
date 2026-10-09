@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { PublicHeader } from "../components/PublicHeader";
 import { useFonts } from "../lib/fonts";
 import { getTemplate, designCtaLabel } from "../data/templates";
 import "./landing.css";
@@ -89,7 +90,7 @@ const GLINTS = Array.from({ length: 22 }, (_, i) => ({
   left: (i * 41 + 7) % 94,
   top: (i * 29 + 5) % 82,
   size: 8 + (i % 4) * 4,
-  color: ["#E0F2FE", "#BAE6FD", "#C7D2FE", "#FFFFFF"][i % 4],
+  color: ["#8FB9A0", "#C5E0D2", "#1C3A2A", "#B7D4C4"][i % 4],
   delay: `${i * 0.37}s`,
   dur: `${2.2 + (i % 5) * 0.5}s`,
 }));
@@ -104,7 +105,7 @@ const DUST = Array.from({ length: 14 }, (_, i) => ({
   left: (i * 37 + 11) % 96,
   top: 30 + ((i * 23) % 60),
   size: 2 + (i % 3),
-  color: i % 3 ? "#BAE6FD" : "#C7D2FE",
+  color: i % 3 ? "#C5E0D2" : "#8FB9A0",
   delay: `${i * 0.6}s`,
   dur: `${6 + (i % 5)}s`,
 }));
@@ -200,29 +201,19 @@ function Spark({ size, color }: { size: number; color: string }) {
   );
 }
 
-function Mark() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 512 512" aria-hidden="true">
-      <rect width="512" height="512" rx="132" fill="#FAFAFA" />
-      <path d="M256 244C256 244 176 182 176 140C176 110 199 90 225 90C242 90 252 101 256 110C260 101 270 90 287 90C313 90 336 110 336 140C336 182 256 244 256 244Z" fill="#09090B" />
-      <path d="M104 236L256 348L408 236" fill="none" stroke="#09090B" strokeWidth="58" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function Emblem({ id }: { id: string }) {
   return (
     <svg viewBox="0 0 120 120" aria-hidden="true">
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#E0F2FE" />
-          <stop offset=".5" stopColor="#7DD3FC" />
-          <stop offset="1" stopColor="#A5B4FC" />
+          <stop offset="0" stopColor="#E7F4EC" />
+          <stop offset=".5" stopColor="#8FB9A0" />
+          <stop offset="1" stopColor="#1C3A2A" />
         </linearGradient>
       </defs>
       <path d="M60 52C60 52 42 38 42 28C42 21 47 16 53 16C57 16 59 19 60 21C61 19 63 16 67 16C73 16 78 21 78 28C78 38 60 52 60 52Z" fill={`url(#${id})`} />
       <path d="M18 50L60 80L102 50" fill="none" stroke={`url(#${id})`} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="14" y="44" width="92" height="62" rx="14" fill="none" stroke="rgba(224,242,254,.35)" strokeWidth="2" />
+      <rect x="14" y="44" width="92" height="62" rx="14" fill="none" stroke="rgba(28,58,42,.35)" strokeWidth="2" />
     </svg>
   );
 }
@@ -242,7 +233,7 @@ export function Home({ focus }: { focus?: string }) {
 
   useEffect(() => {
     const previous = document.body.style.background;
-    document.body.style.background = "#09090B";
+    document.body.style.background = "#F4F8F5";
     return () => {
       document.body.style.background = previous;
     };
@@ -313,18 +304,7 @@ export function Home({ focus }: { focus?: string }) {
 
   return (
     <div className="lv">
-      <header className="lv-nav">
-        <Link className="lv-logo" to="/" aria-label="InvitesReady">
-          <Mark />
-          <span>invitesready</span>
-        </Link>
-        <nav className="lv-nav-links" aria-label="Main">
-          <a href="#templates">Templates</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#faq">FAQs</a>
-        </nav>
-          <Link className="lv-pill" to="/browse">See the designs</Link>
-      </header>
+      <PublicHeader />
 
       <main>
         <div className="lv-sky">
@@ -451,7 +431,7 @@ export function Home({ focus }: { focus?: string }) {
                   onChange={(event) => setQuery(event.target.value)}
                 />
                 <button type="submit" className="lv-go" aria-label="Create my invitations">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#09090B" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
                 </button>
@@ -522,13 +502,13 @@ export function Home({ focus }: { focus?: string }) {
                     </div>
                     {DOOR_SPARKS.map(([x, y, size], index) => (
                       <span key={index} className="lv-door-spark" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${index * 0.35}s`, animationDuration: `${2.4 + index * 0.4}s` }}>
-                        <Spark size={size} color="#E0F2FE" />
+                        <Spark size={size} color="#8FB9A0" />
                       </span>
                     ))}
                     <div className="lv-kinds">
                       {KINDS.map(([label, icon]) => (
                         <span key={label}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d={icon} />
                           </svg>
                           {label}

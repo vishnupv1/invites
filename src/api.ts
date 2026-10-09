@@ -160,7 +160,7 @@ export function listPurchases() {
 }
 
 export function verifyCoupon(code: string) {
-  return request<{ valid: boolean; code: string }>("/api/coupons/verify", {
+  return request<{ valid: boolean; code: string; percent: number }>("/api/coupons/verify", {
     method: "POST",
     body: JSON.stringify({ code }),
   });
@@ -172,10 +172,10 @@ export type RazorpayPayment = {
   razorpay_signature: string;
 };
 
-export function createPaymentOrder(templateId: string) {
+export function createPaymentOrder(templateId: string, coupon?: string) {
   return request<{ keyId: string; orderId: string; amount: number; currency: string }>("/api/create-order", {
     method: "POST",
-    body: JSON.stringify({ templateId }),
+    body: JSON.stringify({ templateId, coupon: coupon || undefined }),
   });
 }
 

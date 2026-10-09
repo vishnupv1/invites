@@ -3,8 +3,8 @@
   inset: 0;
   z-index: 120;
   overflow: auto;
-  background: #09090b;
-  color: #fafafa;
+  background: #F4F8F5;
+  color: #1C3A2A;
 }
 .co-head {
   height: 72px;
@@ -14,8 +14,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: #111113;
-  border-bottom: 1px solid #18181b;
+  background: #FFFFFF;
+  border-bottom: 1px solid #D7E6DC;
 }
 .co-steps {
   display: flex;
@@ -33,7 +33,7 @@
   font-weight: 600;
   color: #1f6b42;
 }
-.co-step.is-now { color: #fafafa; }
+.co-step.is-now { color: #1C3A2A; }
 .co-dot {
   width: 24px;
   height: 24px;
@@ -44,7 +44,7 @@
   background: #12261c;
   color: #1f6b42;
 }
-.co-step.is-now .co-dot { background: #7dd3fc; color: #09090b; font-size: 12px; font-weight: 700; }
+.co-step.is-now .co-dot { background: #C5E0D2; color: #1C3A2A; font-size: 12px; font-weight: 700; }
 .co-bar { width: 40px; height: 2px; background: #12261c; }
 .co-secure {
   display: flex;
@@ -88,8 +88,8 @@
 }
 .co-card {
   border-radius: 20px;
-  background: #111113;
-  border: 1px solid #18181b;
+  background: #FFFFFF;
+  border: 1px solid #D7E6DC;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@
 }
 .co-item div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .co-item strong { font-size: 18px; }
-.co-item small { font-size: 14px; color: #a1a1aa; }
+.co-item small { font-size: 14px; color: #5E7368; }
 .co-edit {
   align-self: flex-start;
   padding: 0;
@@ -114,44 +114,44 @@
   font: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: #7dd3fc;
+  color: #1C3A2A;
   cursor: pointer;
 }
 .co-price { margin-left: auto; font-size: 20px; font-weight: 700; flex-shrink: 0; }
-.co-note { font-size: 13px; color: #a1a1aa; }
+.co-note { font-size: 13px; color: #5E7368; }
 .co-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .co-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.co-field span { font-size: 13px; font-weight: 600; color: #d4d4d8; }
+.co-field span { font-size: 13px; font-weight: 600; color: #5E7368; }
 .co-field input {
   width: 100%;
   box-sizing: border-box;
   min-height: 48px;
   padding: 0 14px;
   border-radius: 12px;
-  border: 1px solid #27272a;
-  background: #111113;
+  border: 1px solid #D7E6DC;
+  background: #FFFFFF;
   font: inherit;
   font-size: 15px;
-  color: #fafafa;
+  color: #1C3A2A;
 }
-.co-field input::placeholder { color: #71717a; }
-.co-field input:focus { outline: none; border-color: #7dd3fc; box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.15); }
+.co-field input::placeholder { color: #5E7368; }
+.co-field input:focus { outline: none; border-color: #1C3A2A; box-shadow: 0 0 0 3px rgba(90, 150, 120, 0.15); }
 .co-field input.is-bad { border-color: #f87171; }
 .co-field small { font-size: 12px; color: #f87171; }
-.co-hint { font-size: 13px; color: #71717a; }
+.co-hint { font-size: 13px; color: #5E7368; }
 .co-aside { position: sticky; top: 24px; gap: 16px; grid-column: 2; grid-row: 1 / span 2; }
 .co-line { display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
-.co-line span { color: #d4d4d8; }
+.co-line span { color: #5E7368; }
 .co-line b { font-weight: 600; }
-.co-line b.is-save { color: #86efac; }
+.co-line b.is-save { color: #1F6B42; }
 .co-coupon {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 14px;
   border-radius: 14px;
-  background: #18181b;
-  border: 1px dashed #27272a;
+  background: #E3F0E8;
+  border: 1px dashed #D7E6DC;
 }
 .co-coupon.is-on { background: #f2faf5; border: 1px solid #12261c; }
 .co-code { display: flex; gap: 8px; }
@@ -165,24 +165,24 @@
   min-height: 48px;
   padding: 0 14px;
   border-radius: 12px;
-  border: 1px solid #27272a;
-  background: #111113;
+  border: 1px solid #D7E6DC;
+  background: #FFFFFF;
   font: inherit;
   font-size: 15px;
-  color: #fafafa;
+  color: #1C3A2A;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.co-code input::placeholder { text-transform: none; letter-spacing: 0; color: #71717a; }
-.co-code input:focus { outline: none; border-color: #7dd3fc; box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.15); }
+.co-code input::placeholder { text-transform: none; letter-spacing: 0; color: #5E7368; }
+.co-code input:focus { outline: none; border-color: #1C3A2A; box-shadow: 0 0 0 3px rgba(90, 150, 120, 0.15); }
 .co-code input.is-bad { border-color: #f87171; animation: co-shake 0.3s ease; }
 .co-apply {
   min-height: 48px;
   padding: 0 20px;
   border: none;
   border-radius: 12px;
-  background: #fafafa;
-  color: #09090b;
+  background: #C5E0D2;
+  color: #1C3A2A;
   font: inherit;
   font-size: 15px;
   font-weight: 600;
@@ -197,7 +197,7 @@
   font: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: #7dd3fc;
+  color: #1C3A2A;
   cursor: pointer;
 }
 .co-offers { display: flex; flex-direction: column; gap: 8px; animation: co-in 0.2s ease both; }
@@ -208,20 +208,20 @@
   gap: 10px;
   padding: 10px 12px;
   border-radius: 12px;
-  background: #111113;
-  border: 1px dashed #3f3f46;
+  background: #FFFFFF;
+  border: 1px dashed #D7E6DC;
 }
 .co-offer div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .co-offer b { font-size: 14px; letter-spacing: 1px; font-family: ui-monospace, monospace; }
-.co-offer small { font-size: 13px; color: #a1a1aa; }
+.co-offer small { font-size: 13px; color: #5E7368; }
 .co-use {
   flex-shrink: 0;
   min-height: 36px;
   padding: 0 14px;
   border-radius: 999px;
-  border: 1px solid #7dd3fc;
-  background: #111113;
-  color: #7dd3fc;
+  border: 1px solid #1C3A2A;
+  background: #FFFFFF;
+  color: #1C3A2A;
   font: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -242,14 +242,14 @@
 }
 .co-applied span { flex-grow: 1; display: flex; flex-direction: column; }
 .co-applied strong { font-size: 15px; color: #1f6b42; }
-.co-applied small { font-size: 13px; color: #d4d4d8; }
+.co-applied small { font-size: 13px; color: #5E7368; }
 .co-remove {
   border: none;
   background: none;
   font: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: #a1a1aa;
+  color: #5E7368;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -258,11 +258,11 @@
   justify-content: space-between;
   align-items: baseline;
   padding-top: 14px;
-  border-top: 1.5px dashed #27272a;
+  border-top: 1.5px dashed #D7E6DC;
 }
 .co-total span { font-size: 17px; font-weight: 700; }
 .co-total b { font-size: 30px; font-weight: 700; }
-.co-gst { font-size: 13px; color: #71717a; margin-top: -8px; }
+.co-gst { font-size: 13px; color: #5E7368; margin-top: -8px; }
 .co-pay {
   min-height: 56px;
   display: inline-flex;
@@ -271,18 +271,18 @@
   gap: 8px;
   border: none;
   border-radius: 999px;
-  background: #7dd3fc;
-  color: #09090b;
+  background: #C5E0D2;
+  color: #1C3A2A;
   font: inherit;
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(125, 211, 252, 0.25);
+  box-shadow: 0 10px 20px rgba(90, 150, 120, 0.25);
 }
 .co-pay:disabled { opacity: 0.85; cursor: wait; }
 .co-trust { display: flex; flex-direction: column; gap: 8px; }
-.co-trust span { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a1a1aa; }
-.co-trust a { color: #a1a1aa; }
+.co-trust span { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #5E7368; }
+.co-trust a { color: #5E7368; }
 .co-head .brand-mark { width: 32px; height: 32px; }
 .co-head .brand-name { height: 22px; }
 .board .co-screen a,
@@ -295,14 +295,14 @@
 .board .co-offers-toggle,
 .board .co-offers-toggle:hover,
 .board .co-use,
-.board .co-use:hover { color: #7dd3fc; }
+.board .co-use:hover { color: #1C3A2A; }
 .board .co-apply,
 .board .co-apply:hover,
 .board .co-pay,
-.board .co-pay:hover { color: #09090b; }
+.board .co-pay:hover { color: #1C3A2A; }
 .board .co-secure,
-.board .co-step { color: #86efac; }
-.board .co-step.is-now { color: #fafafa; }
+.board .co-step { color: #1F6B42; }
+.board .co-step.is-now { color: #1C3A2A; }
 
 @keyframes co-in {
   from { opacity: 0; transform: translateY(-4px); }
@@ -333,7 +333,7 @@
     gap: 16px;
     margin: 0 -14px;
     padding: 18px 14px 16px;
-    background: #09090b;
+    background: #F4F8F5;
   }
   .co-scroll { display: flex; flex-direction: column; gap: 18px; }
   .co-details, .co-aside { grid-column: auto; grid-row: auto; }
