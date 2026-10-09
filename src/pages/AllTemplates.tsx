@@ -34,8 +34,8 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
   heavenly: { styles: ["Animated", "Royal"], pop: 92, added: 14, isNew: true, tags: "palace doors lanterns gold petals world walk through", swatches: ["#1E120A", "#E6C27A", "#F7A8B8"] },
   grandoor: { styles: ["Animated", "Royal"], pop: 96, added: 17, isNew: true, tags: "palace doors blush lanterns udaipur lake grand door", swatches: ["#120608", "#E8C987", "#F7A8B8"] },
   grandenvelope: { styles: ["Animated", "Royal"], pop: 97, added: 18, isNew: true, tags: "envelope wax seal burgundy gold munnar flap parchment", swatches: ["#1A0C0A", "#6E2032", "#E8C987"] },
-  pastal: { styles: ["Animated", "Royal"], pop: 98, added: 19, isNew: true, tags: "pressed paper palace wax seal ivory blush sage jaipur lotus", swatches: ["#EFE7DA", "#EEDCD6", "#E1E6D8"] },
   palace: { styles: ["Animated", "Royal"], pop: 99, added: 20, isNew: true, tags: "paper palace drapes roses jaipur plaque ribbon doors", swatches: ["#F3E2D8", "#6E4A42"] },
+  bloom: { styles: ["Animated", "Modern"], pop: 103, added: 24, isNew: true, tags: "bloom letter floral seal envelope jaipur garden pastels wreath", swatches: ["#FBF3EE", "#B9786E"] },
   hansa: { styles: ["Animated", "Royal"], pop: 102, added: 23, isNew: true, tags: "moonlight swans lake udaipur seal envelope lilies", swatches: ["#E4E0E6", "#4A4E68"] },
   villa: { styles: ["Animated", "Royal"], pop: 101, added: 22, isNew: true, tags: "tuscany villa lemon olive garden chianti destination wedding", swatches: ["#F7F1E6", "#66703F"] },
   moonlit: { styles: ["Animated", "Royal"], pop: 100, added: 21, isNew: true, tags: "moonlit jharokha lantern lake udaipur night gold diya", swatches: ["#0B1226", "#E9BE6A"] },
@@ -185,6 +185,7 @@ export function AllTemplates() {
     }
     return (
       <img
+        className={template.id === "moonlit" ? "is-moonlit" : template.id === "palace" ? "is-palace" : undefined}
         src={`/covers/${template.id}.jpg`}
         alt=""
         onError={() => markBroken(template.id)}

@@ -149,7 +149,7 @@ export function listEvents() {
 }
 
 export async function listTemplates() {
-  const rows = await request<Template[]>("/api/templates");
+  const rows = (await request<Template[]>("/api/templates")).filter((row) => row.id !== "pastal");
   const seen = new Set(rows.map((row) => row.id));
   return [...TEMPLATES.filter((template) => !seen.has(template.id)), ...rows];
 }

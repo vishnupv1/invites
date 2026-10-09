@@ -171,7 +171,7 @@ export function Templates() {
                 <article className={bought ? "tpl-card bought" : "tpl-card"} key={template.id}>
                   <div className="tpl-cover">
                     <button type="button" className="tpl-shot" aria-label={`Open ${template.name}`} onClick={() => setDemo(template)}>
-                      <img src={`/covers/${template.id}.jpg`} alt="" />
+                      <img className={template.id === "moonlit" ? "is-moonlit" : template.id === "palace" ? "is-palace" : undefined} src={`/covers/${template.id}.jpg`} alt="" />
                     </button>
                     {bought ? <span className="tpl-owned">Purchased</span> : null}
                     <FavoriteHeart className="overlay" liked={liked} name={template.name} onClick={() => toggle(template.id)} />

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PublicHeader } from "../components/PublicHeader";
 import { useFonts } from "../lib/fonts";
 import { getTemplate, designCtaLabel } from "../data/templates";
@@ -47,11 +47,11 @@ const SETS: Record<"wedding" | "birthday" | "baby" | "home", PickCard[]> = {
 };
 
 const CARDS: Design[] = [
+  { id: "bloom", name: "Bloom Letter", kicker: "WEDDING · A SEALED LETTER", cover: "/covers/bloom.jpg" },
   { id: "hansa", name: "Hansa", kicker: "WEDDING · MOONLIGHT LAKE", cover: "/covers/hansa.jpg" },
   { id: "villa", name: "Villa Serena", kicker: "WEDDING · TUSCAN VILLA", cover: "/covers/villa.jpg" },
   { id: "moonlit", name: "Moonlit Jharokha", kicker: "WEDDING · MOONLIT WINDOW", cover: "/covers/moonlit.jpg" },
   { id: "palace", name: "Palace", kicker: "WEDDING · PAPER PALACE", cover: "/covers/palace.jpg" },
-  { id: "pastal", name: "Pastal party", kicker: "WEDDING · PRESSED PAPER", cover: "/covers/pastal.jpg" },
   { id: "heavenly", name: "Enchanted Doors", kicker: "WEDDING · DOORS OF LIGHT", cover: "/covers/heavenly.jpg" },
   { id: "grandoor", name: "The Grand Door", kicker: "WEDDING · CINEMATIC ENTRANCE", cover: "/covers/grandoor.jpg" },
   { id: "grandenvelope", name: "The Sealed Invitation", kicker: "WEDDING · WAX SEAL", cover: "/covers/grandenvelope.jpg" },
@@ -224,6 +224,7 @@ export function Home({ focus }: { focus?: string }) {
   const wide = useWide();
   const reduced = useReducedMotion();
   const { hash } = useLocation();
+  const navigate = useNavigate();
   const drag = useRef({ x: 0, active: false });
   const swiped = useRef(false);
   const [query, setQuery] = useState("");
@@ -283,6 +284,20 @@ export function Home({ focus }: { focus?: string }) {
       return;
     }
     setCi(index);
+  }
+
+  function openCard(index: number) {
+    if (swiped.current) {
+      swiped.current = false;
+      return;
+    }
+    if (index !== ci) {
+      setCi(index);
+      return;
+    }
+    const card = CARDS[index];
+    const template = getTemplate(card.id);
+    navigate(template ? `/create/${card.id}` : `/open/${card.id}`);
   }
 
   function onStripDown(event: ReactPointerEvent<HTMLDivElement>) {
@@ -360,10 +375,10 @@ export function Home({ focus }: { focus?: string }) {
                   key={card.id}
                   type="button"
                   className={distance === 0 ? "lv-slide is-front" : "lv-slide"}
-                  aria-label={`Show ${card.name}`}
+                  aria-label={distance === 0 ? (getTemplate(card.id) ? designCtaLabel(getTemplate(card.id)!) : `Preview ${card.name}`) : `Show ${card.name}`}
                   aria-hidden={distance > 2}
                   tabIndex={distance > 2 ? -1 : 0}
-                  onClick={() => choose(index)}
+                  onClick={() => openCard(index)}
                   style={{
                     transform: `translateX(${off * shift}px) translateZ(${-distance * 120}px) rotateY(${-off * 22}deg) scale(${1 - distance * 0.08})`,
                     zIndex: 10 - distance,

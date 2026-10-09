@@ -168,6 +168,8 @@
   display: block;
   pointer-events: none;
 }
+.tpl-shot img.is-palace { transform: scale(1.25); }
+.tpl-shot img.is-moonlit { transform: scale(1.41); }
 .tpl-meta { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .tpl-meta strong { display: block; font-size: 16px; }
 .tpl-meta span { display: block; font-size: 13px; color: #5E7368; padding-top: 2px; }

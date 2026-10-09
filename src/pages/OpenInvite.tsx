@@ -19,6 +19,7 @@ import { PalaceInvite } from "../components/PalaceInvite";
 import { MoonlitInvite } from "../components/MoonlitInvite";
 import { VillaInvite } from "../components/VillaInvite";
 import { HansaInvite } from "../components/HansaInvite";
+import { BloomInvite } from "../components/BloomInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { getTemplate, sampleFor } from "../data/templates";
 import { trackTemplatePreview } from "../lib/analytics";
@@ -58,6 +59,7 @@ export function OpenInvite() {
       {template.style === "moonlit" ? <MoonlitInvite fields={fields} /> : null}
       {template.style === "villa" ? <VillaInvite fields={fields} /> : null}
       {template.style === "hansa" ? <HansaInvite fields={fields} /> : null}
+      {template.style === "bloom" ? <BloomInvite fields={fields} /> : null}
     </div>
   );
 }

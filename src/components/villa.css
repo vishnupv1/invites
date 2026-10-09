@@ -458,11 +458,10 @@
 .vs-where { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 17px; color: var(--terra); }
 
 .vs-feast { position: relative; }
-.vs-walk { position: absolute; top: 30px; width: 130px; }
-.vs-walk img { animation: vs-walk 1.6s ease-in-out infinite; }
-.vs-walk.l { left: -40px; }
-.vs-walk.r { right: -34px; width: 120px; top: 40px; }
-.vs-flip { display: block; transform: scaleX(-1); }
+.vs-walk { position: absolute; top: 36px; width: clamp(84px, 26vw, 112px); }
+.vs-walk img { width: 100%; height: auto; animation: vs-walk 1.6s ease-in-out infinite; }
+.vs-walk.l { left: -10px; }
+.vs-walk.r { right: -8px; width: clamp(78px, 24vw, 104px); top: 48px; }
 .vs-walk.r img { animation-delay: 0.8s; }
 .vs.is-desk .vs-walk { top: 80px; width: 300px; }
 .vs.is-desk .vs-walk.l { left: 60px; }

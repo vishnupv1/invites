@@ -20,6 +20,7 @@ import { PalaceInvite } from "../components/PalaceInvite";
 import { MoonlitInvite } from "../components/MoonlitInvite";
 import { VillaInvite } from "../components/VillaInvite";
 import { HansaInvite } from "../components/HansaInvite";
+import { BloomInvite } from "../components/BloomInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { getTemplateRecord, listEvents, listTemplates, type CatalogEvent } from "../api";
 import { useSession } from "../session";
@@ -397,6 +398,15 @@ export function TemplatePreview() {
                   }}
                 />
               ) : null}
+              {template.style === "bloom" ? (
+                <BloomInvite
+                  fields={{
+                    ...sample,
+                    names: n2 ? `${n1} & ${n2}` : n1,
+                    venue: venueText === "Venue" ? sample.venue : venueText,
+                  }}
+                />
+              ) : null}
               {template.style === "villa" ? (
                 <VillaInvite
                   fields={{
@@ -488,7 +498,7 @@ export function TemplatePreview() {
                   />
                 </div>
               ) : null}
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && template.style !== "peace" && template.style !== "botanica" && template.style !== "heavenly" && template.style !== "pull" && template.style !== "inland" && template.style !== "grandoor" && template.style !== "grandenvelope" && template.style !== "pastal" && template.style !== "palace" && template.style !== "moonlit" && template.style !== "villa" && view === "card" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && template.style !== "peace" && template.style !== "botanica" && template.style !== "heavenly" && template.style !== "pull" && template.style !== "inland" && template.style !== "grandoor" && template.style !== "grandenvelope" && template.style !== "pastal" && template.style !== "palace" && template.style !== "moonlit" && template.style !== "villa" && template.style !== "hansa" && template.style !== "bloom" && view === "card" ? (
                 <div className="pv-card" style={{ ...ink, border: colour.bg === "#FAF7F2" ? "1px solid #E8DFD6" : undefined }}>
                   <div className="pv-card-in" style={{ borderColor: colour.accent, outlineColor: colour.accent }}>
                     <svg width="120" height="22" viewBox="0 0 120 22" fill="none" aria-hidden="true">
@@ -512,7 +522,7 @@ export function TemplatePreview() {
                 </div>
               ) : null}
 
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && template.style !== "peace" && template.style !== "botanica" && template.style !== "heavenly" && template.style !== "pull" && template.style !== "inland" && template.style !== "grandoor" && template.style !== "grandenvelope" && template.style !== "pastal" && template.style !== "palace" && template.style !== "moonlit" && template.style !== "villa" && view === "phone" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && template.style !== "peace" && template.style !== "botanica" && template.style !== "heavenly" && template.style !== "pull" && template.style !== "inland" && template.style !== "grandoor" && template.style !== "grandenvelope" && template.style !== "pastal" && template.style !== "palace" && template.style !== "moonlit" && template.style !== "villa" && template.style !== "hansa" && template.style !== "bloom" && view === "phone" ? (
                 <div className="pv-phone">
                   <div className="pv-phone-in">
                     <div className="pv-cover" style={ink}>
@@ -546,7 +556,7 @@ export function TemplatePreview() {
                 </div>
               ) : null}
 
-              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && template.style !== "peace" && template.style !== "botanica" && template.style !== "heavenly" && template.style !== "pull" && template.style !== "inland" && template.style !== "grandoor" && template.style !== "grandenvelope" && template.style !== "pastal" && template.style !== "palace" && template.style !== "moonlit" && template.style !== "villa" && view === "desktop" ? (
+              {template.style !== "gazal" && template.style !== "aurelia" && template.style !== "anna" && template.style !== "baptism" && template.style !== "vivah" && template.style !== "beach" && template.style !== "home" && template.style !== "shaadi" && template.style !== "thiruvizha" && template.style !== "peace" && template.style !== "botanica" && template.style !== "heavenly" && template.style !== "pull" && template.style !== "inland" && template.style !== "grandoor" && template.style !== "grandenvelope" && template.style !== "pastal" && template.style !== "palace" && template.style !== "moonlit" && template.style !== "villa" && template.style !== "hansa" && template.style !== "bloom" && view === "desktop" ? (
                 <div className="pv-desk">
                   <div className="pv-chrome">
                     <span className="pv-dot" />
@@ -615,7 +625,7 @@ export function TemplatePreview() {
                 <input id="pv-venue" value={venue} onChange={(event) => setVenue(event.target.value)} />
               </div>
               </div>
-              {template.style === "peace" || template.style === "botanica" || template.style === "heavenly" || template.style === "pull" || template.style === "inland" || template.style === "grandoor" || template.style === "grandenvelope" || template.style === "pastal" || template.style === "palace" || template.style === "moonlit" || template.style === "villa" || template.style === "hansa" ? null : <div className="pv-lang">
+              {template.style === "peace" || template.style === "botanica" || template.style === "heavenly" || template.style === "pull" || template.style === "inland" || template.style === "grandoor" || template.style === "grandenvelope" || template.style === "pastal" || template.style === "palace" || template.style === "moonlit" || template.style === "villa" || template.style === "hansa" || template.style === "bloom" ? null : <div className="pv-lang">
                 <span>Language</span>
                 <div className="pv-langs" role="group" aria-label="Language">
                   {([["en", "English"], ["ml", template.style === "thiruvizha" ? "தமிழ்" : "മലയാളം"], ["both", "Bilingual"]] as const).map(([id, label]) => (
@@ -624,7 +634,7 @@ export function TemplatePreview() {
                 </div>
               </div>}
               <div className="pv-colours">
-                <span>Colour · <span style={{ fontWeight: 500, color: "#716A6D" }}>{template.style === "peace" ? (variant === 1 ? "Noir" : variant === 3 ? "Sage" : "Blush") : template.style === "botanica" ? (variant === 1 ? "Midnight" : variant === 2 ? "Sage" : "Blush") : template.style === "heavenly" ? "Golden hour" : template.style === "pull" ? (variant === 1 ? "Midnight & champagne" : variant === 2 ? "Emerald & gold" : variant === 3 ? "Plum & rose" : "Burgundy & gold") : template.style === "inland" ? "Inland post" : template.style === "grandoor" ? "Blush & gold" : template.style === "grandenvelope" ? "Wine & gold" : template.style === "pastal" ? (variant === 1 ? "Blush" : variant === 2 ? "Sage" : "Ivory") : template.style === "palace" ? "Blush paper" : template.style === "moonlit" ? "Moonlit gold" : template.style === "villa" ? "Tuscan olive" : template.style === "hansa" ? "Moonlight silver" : colour.name}</span></span>
+                <span>Colour · <span style={{ fontWeight: 500, color: "#716A6D" }}>{template.style === "peace" ? (variant === 1 ? "Noir" : variant === 3 ? "Sage" : "Blush") : template.style === "botanica" ? (variant === 1 ? "Midnight" : variant === 2 ? "Sage" : "Blush") : template.style === "heavenly" ? "Golden hour" : template.style === "pull" ? (variant === 1 ? "Midnight & champagne" : variant === 2 ? "Emerald & gold" : variant === 3 ? "Plum & rose" : "Burgundy & gold") : template.style === "inland" ? "Inland post" : template.style === "grandoor" ? "Blush & gold" : template.style === "grandenvelope" ? "Wine & gold" : template.style === "pastal" ? (variant === 1 ? "Blush" : variant === 2 ? "Sage" : "Ivory") : template.style === "palace" ? "Blush paper" : template.style === "moonlit" ? "Moonlit gold" : template.style === "villa" ? "Tuscan olive" : template.style === "bloom" ? "Garden blush" : template.style === "hansa" ? "Moonlight silver" : colour.name}</span></span>
                 <div className="pv-swatches">
                   {(template.style === "peace"
                     ? [
@@ -658,6 +668,8 @@ export function TemplatePreview() {
                       ? [{ name: "Moonlit gold", bg: "#0B1226", accent: "#E9BE6A", index: 0 }]
                     : template.style === "villa"
                       ? [{ name: "Tuscan olive", bg: "#F7F1E6", accent: "#66703F", index: 0 }]
+                    : template.style === "bloom"
+                      ? [{ name: "Garden blush", bg: "#FBF3EE", accent: "#B9786E", index: 0 }]
                     : template.style === "hansa"
                       ? [{ name: "Moonlight silver", bg: "#E4E0E6", accent: "#4A4E68", index: 0 }]
                     : template.style === "pull"
@@ -682,7 +694,7 @@ export function TemplatePreview() {
               <p>{template.description}</p>
               <div className="pv-facts">
                 <div><span>Best for</span><strong>{eventLabels(template)}</strong></div>
-                <div><span>Languages</span><strong>{template.style === "thiruvizha" ? "English, Tamil, bilingual" : template.style === "peace" || template.style === "botanica" || template.style === "heavenly" || template.style === "pull" || template.style === "inland" || template.style === "grandoor" || template.style === "grandenvelope" || template.style === "pastal" || template.style === "palace" || template.style === "moonlit" || template.style === "villa" || template.style === "hansa" ? "English" : "English, Malayalam, bilingual"}</strong></div>
+                <div><span>Languages</span><strong>{template.style === "thiruvizha" ? "English, Tamil, bilingual" : template.style === "peace" || template.style === "botanica" || template.style === "heavenly" || template.style === "pull" || template.style === "inland" || template.style === "grandoor" || template.style === "grandenvelope" || template.style === "pastal" || template.style === "palace" || template.style === "moonlit" || template.style === "villa" || template.style === "hansa" || template.style === "bloom" ? "English" : "English, Malayalam, bilingual"}</strong></div>
                 <div><span>Includes</span><strong>{extras(template)}</strong></div>
                 <div><span>Price</span><strong>{formatPrice(template)}</strong></div>
               </div>

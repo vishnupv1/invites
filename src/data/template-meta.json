@@ -635,6 +635,29 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "bloom": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "reception": "Reception",
+    "themes": [{ "id": "blush", "name": "Garden blush" }],
+    "defaultTheme": "blush",
+    "shots": [{ "label": "Our photo" }, { "label": "Gallery" }, { "label": "Gallery" }, { "label": "Gallery" }, { "label": "Gallery" }, { "label": "Gallery" }, { "label": "Gallery" }],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The seal", "configurable": false, "fields": [] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The Rose Pavilion", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "hansa": {
     "names": "couple",
     "ceremony": "The wedding",

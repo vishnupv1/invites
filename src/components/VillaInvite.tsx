@@ -397,7 +397,7 @@ export function VillaInvite({
 
       <section className="vs-sec alt vs-feast">
         <span className="vs-walk l"><img src="/villa/walk-l.webp" alt="" /></span>
-        <span className="vs-walk r"><span className="vs-flip"><img src="/villa/walk-r.webp" alt="" /></span></span>
+        <span className="vs-walk r"><img src="/villa/walk-r.webp" alt="" /></span>
         <span className="vs-kick">MENU</span>
         <h2 className="vs-h2">The Feast</h2>
         <div className="vs-menu">
