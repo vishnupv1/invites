@@ -85,6 +85,8 @@ export function MoonlitInvite({
 }) {
   useFonts("Great Vibes", "Cinzel", "Cormorant Garamond", "Jost");
   const rootRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLElement>(null);
+  const fitRef = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
   const nameId = useId();
   const noteId = useId();
@@ -138,6 +140,53 @@ export function MoonlitInvite({
     const observer = new ResizeObserver(measure);
     observer.observe(node);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const fit = fitRef.current;
+    if (!stage || !fit) return;
+    const apply = () => {
+      const width = stage.clientWidth;
+      if (width >= 860) {
+        stage.style.height = "";
+        stage.style.aspectRatio = "";
+        fit.style.width = "";
+        fit.style.height = "";
+        fit.style.maxWidth = "";
+        fit.style.aspectRatio = "";
+        fit.style.position = "";
+        fit.style.left = "";
+        fit.style.top = "";
+        fit.style.transform = "";
+        return;
+      }
+      const visible = window.visualViewport?.height ?? window.innerHeight;
+      const designW = 390;
+      const designH = 844;
+      const height = Math.min(width * (designH / designW), Math.max(visible, 480));
+      const scale = Math.min(width / designW, height / designH);
+      stage.style.aspectRatio = "auto";
+      stage.style.height = `${height}px`;
+      fit.style.width = `${designW}px`;
+      fit.style.height = `${designH}px`;
+      fit.style.maxWidth = "none";
+      fit.style.aspectRatio = "auto";
+      fit.style.position = "absolute";
+      fit.style.left = "50%";
+      fit.style.top = "50%";
+      fit.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(stage);
+    window.addEventListener("resize", apply);
+    window.visualViewport?.addEventListener("resize", apply);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", apply);
+      window.visualViewport?.removeEventListener("resize", apply);
+    };
   }, []);
 
   useEffect(() => {
@@ -231,8 +280,8 @@ export function MoonlitInvite({
 
   return (
     <div ref={rootRef} className={`mj${desk ? " is-desk" : ""}${live ? " is-live" : ""}`} data-motion={live && reduced() ? "off" : undefined} data-theme="night">
-      <section className="mj-stage">
-        <div className="mj-fit">
+      <section className="mj-stage" ref={stageRef}>
+        <div className="mj-fit" ref={fitRef}>
         <div className="mj-scene">
           <span className="mj-moon-glow" aria-hidden="true" />
           <img className="mj-moon" src="/moonlit/moon.webp" alt="" />
@@ -289,8 +338,8 @@ export function MoonlitInvite({
               <img className="mj-frame" src="/moonlit/frame.webp" alt="" />
             </div>
             <div className="mj-hang phone"><img src="/moonlit/lantern.webp" alt="" /></div>
-            <div className="mj-hang side l"><img src="/moonlit/lantern.webp" alt="" /></div>
-            <div className="mj-hang side r"><img src="/moonlit/lantern.webp" alt="" /></div>
+            <div className="mj-hang edge l"><img src="/moonlit/lantern.webp" alt="" /></div>
+            <div className="mj-hang edge r"><img src="/moonlit/lantern.webp" alt="" /></div>
             {!live ? <span className="mj-ring" aria-hidden="true" /> : null}
             {!live ? (
               <span className="mj-hint">

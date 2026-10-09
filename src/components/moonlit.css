@@ -384,9 +384,9 @@
 .mj.is-live .mj-hang img { animation: mj-flare 1s ease both; }
 
 .mj-hang.phone { left: 41.8%; top: 28.2%; width: 16.4%; }
-.mj .mj-hang.side { display: none; }
+.mj .mj-hang.edge { display: none; }
 .mj.is-desk .mj-hang.phone { display: none; }
-.mj.is-desk .mj-hang.side { display: block; top: 0; width: 7.8%; }
+.mj.is-desk .mj-hang.edge { display: block; top: 0; width: 7.8%; }
 .mj.is-desk .mj-hang.l { left: 17.1%; }
 .mj.is-desk .mj-hang.r { left: 75.1%; animation-delay: -0.8s; }
 
