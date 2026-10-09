@@ -232,6 +232,7 @@ export function MoonlitInvite({
   return (
     <div ref={rootRef} className={`mj${desk ? " is-desk" : ""}${live ? " is-live" : ""}`} data-motion={live && reduced() ? "off" : undefined} data-theme="night">
       <section className="mj-stage">
+        <div className="mj-fit">
         <div className="mj-scene">
           <span className="mj-moon-glow" aria-hidden="true" />
           <img className="mj-moon" src="/moonlit/moon.webp" alt="" />
@@ -301,6 +302,7 @@ export function MoonlitInvite({
             {!live ? <button type="button" className="mj-hit" aria-label="Light the lantern and open the window" onClick={openWindow} /> : null}
           </div>
         ) : null}
+        </div>
       </section>
 
       <section className="mj-sec" id="mj-welcome">
