@@ -10,6 +10,7 @@ Disallow: /purchases
 Disallow: /templates
 Disallow: /unauthorized
 Disallow: /preview
+Disallow: /design-check
 Disallow: /i/
 Disallow: /api/
 

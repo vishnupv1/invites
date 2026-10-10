@@ -373,9 +373,11 @@ function pages(templates, events) {
   return list;
 }
 
+const UNLISTED = new Set(["/design-check"]);
+
 function writeSitemap(list) {
   const urls = list
-    .filter((page) => canonicalPath(page) === page.path)
+    .filter((page) => canonicalPath(page) === page.path && !UNLISTED.has(page.path))
     .map((page) => `  <url><loc>${SITE}${page.path}</loc><lastmod>${page.lastmod}</lastmod></url>`)
     .join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;

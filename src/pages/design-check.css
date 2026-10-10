@@ -1,0 +1,90 @@
+.ir-check-band {
+  background: var(--emerald);
+}
+
+.ir-check-body {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 28px 20px 12px;
+}
+
+.ir-check h1 {
+  margin: 8px 0 0;
+  max-width: 16ch;
+  font-size: 40px;
+}
+
+.ir-check-lead {
+  max-width: 38rem;
+  margin: 12px 0 0;
+  color: var(--soft);
+  font-size: 15px;
+}
+
+.ir-check-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.ir-check-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+}
+
+.ir-check-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(420px, 100%);
+  min-height: 64px;
+  padding: 12px 16px;
+  border-radius: 20px;
+  background: var(--card);
+  font-weight: 700;
+}
+
+.ir-check-sticky-demo {
+  padding: 12px 20px 28px;
+}
+
+.ir-check-sticky-scroll {
+  position: relative;
+  height: 220px;
+  overflow: auto;
+  border-radius: 22px;
+  background: var(--paper-2);
+}
+
+.ir-check-sticky-scroll > p {
+  margin: 0;
+  padding: 20px 20px 0;
+  color: var(--soft);
+}
+
+.ir-check-sticky-spacer {
+  height: 280px;
+}
+
+@media (min-width: 900px) {
+  .ir-check-body,
+  .ir-check-sticky-demo {
+    padding-left: 56px;
+    padding-right: 56px;
+  }
+
+  .ir-check h1 {
+    font-size: 64px;
+  }
+
+  .ir-check-stack {
+    align-items: flex-start;
+    width: auto;
+  }
+}

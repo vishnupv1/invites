@@ -1,0 +1,544 @@
+.ir-app .ir-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 58px;
+  min-height: 58px;
+  padding: 8px 8px 8px 22px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--emerald);
+  color: var(--card);
+  font-family: var(--ir-sans);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ir-app .ir-btn-label {
+  text-align: left;
+}
+
+.ir-app .ir-btn-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 14px;
+  background: var(--marigold);
+  color: var(--emerald-dark);
+}
+
+.ir-app .ir-btn-marigold {
+  background: var(--marigold);
+  color: var(--emerald);
+}
+
+.ir-app .ir-btn-marigold .ir-btn-tile {
+  background: var(--emerald);
+  color: var(--marigold);
+}
+
+.ir-app .ir-btn-whatsapp {
+  background: var(--whatsapp);
+  color: var(--ink);
+}
+
+.ir-app .ir-btn-whatsapp .ir-btn-tile {
+  background: var(--emerald-dark);
+  color: #fff;
+}
+
+.ir-app .ir-btn-outline {
+  background: transparent;
+  color: var(--emerald);
+  box-shadow: inset 0 0 0 1.5px var(--emerald);
+}
+
+.ir-app .ir-btn-outline .ir-btn-tile {
+  background: var(--marigold);
+  color: var(--emerald);
+}
+
+.ir-app .ir-btn:hover {
+  background: var(--emerald-dark);
+}
+
+.ir-app .ir-btn-marigold:hover {
+  background: #d4922a;
+}
+
+.ir-app .ir-btn-whatsapp:hover {
+  background: #1a9d50;
+}
+
+.ir-app .ir-btn-outline:hover {
+  background: rgba(14, 77, 60, 0.06);
+}
+
+.ir-app .ir-btn:active {
+  transform: scale(0.98);
+}
+
+.ir-app .ir-btn:focus-visible,
+.ir-app .ir-textlink:focus-visible,
+.ir-app .ir-back:focus-visible,
+.ir-app .ir-toggle:focus-visible,
+.ir-app .ir-seg button:focus-visible,
+.ir-app .ir-nav a:focus-visible,
+.ir-app .ir-crumbs a:focus-visible,
+.ir-app .ir-logo:focus-visible {
+  outline: 2px solid var(--marigold);
+  outline-offset: 3px;
+}
+
+.ir-app .ir-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (min-width: 900px) {
+  .ir-app .ir-btn {
+    width: auto;
+    min-width: 260px;
+  }
+}
+
+.ir-app .ir-textlink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--emerald);
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+}
+
+.ir-app .ir-textlink.is-ondark {
+  color: var(--marigold);
+}
+
+.ir-app .ir-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ir-app .ir-field input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1.5px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  padding: 8px 0 10px;
+  color: var(--ink);
+  font-family: var(--ir-display);
+  font-size: 20px;
+  font-weight: 500;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 36, "wght" 500;
+}
+
+.ir-app .ir-field input::placeholder {
+  color: var(--soft);
+}
+
+.ir-app .ir-field input:focus {
+  outline: none;
+  border-bottom-color: var(--emerald);
+}
+
+.ir-app .ir-seg {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--paper-2);
+}
+
+.ir-app .ir-seg button {
+  flex: 1;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--soft);
+  font-family: var(--ir-sans);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ir-app .ir-seg button[aria-checked="true"] {
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 6px 16px rgba(23, 32, 28, 0.08);
+}
+
+.ir-app .ir-toggle {
+  width: 48px;
+  height: 28px;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--paper-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ir-app .ir-toggle-knob {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.ir-app .ir-toggle[aria-pressed="true"] {
+  background: var(--emerald);
+  box-shadow: none;
+}
+
+.ir-app .ir-toggle[aria-pressed="true"] .ir-toggle-knob {
+  transform: translateX(20px);
+  background: var(--marigold);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ir-app .ir-toggle-knob,
+  .ir-app .ir-seg button {
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+}
+
+.ir-app .ir-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--emerald);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.ir-app .ir-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 20px;
+  background: var(--paper);
+}
+
+.ir-app .ir-topbar.is-emerald {
+  background: var(--emerald);
+  color: var(--card);
+  border-radius: 0 0 34px 34px;
+}
+
+.ir-app .ir-topbar-copy {
+  min-width: 0;
+}
+
+.ir-app .ir-topbar-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.ir-app .ir-topbar-sub {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--soft);
+}
+
+.ir-app .ir-topbar.is-emerald .ir-topbar-sub {
+  color: var(--marigold-light);
+}
+
+.ir-app .ir-topbar-action {
+  margin-left: auto;
+}
+
+.ir-app .ir-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+  padding: 12px 20px;
+  background: var(--paper);
+}
+
+.ir-app .ir-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--emerald);
+  text-decoration: none;
+}
+
+.ir-app .ir-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--marigold);
+  color: var(--emerald);
+}
+
+.ir-app .ir-logo-name {
+  font-size: 22px;
+}
+
+.ir-app .ir-nav-links {
+  display: none;
+  align-items: center;
+  gap: 28px;
+}
+
+.ir-app .ir-nav-links a {
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ir-app .ir-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ir-app .ir-nav-signin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--emerald);
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.ir-app .ir-nav-try {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 18px;
+  background: var(--marigold);
+  color: var(--emerald);
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.ir-app .ir-nav.is-emerald {
+  background: var(--emerald);
+  color: var(--card);
+}
+
+.ir-app .ir-nav.is-emerald .ir-logo,
+.ir-app .ir-nav.is-emerald .ir-nav-links a,
+.ir-app .ir-nav.is-emerald .ir-nav-signin {
+  color: var(--card);
+}
+
+.ir-app .ir-nav.is-emerald .ir-nav-signin {
+  box-shadow: inset 0 0 0 1.5px rgba(255, 253, 248, 0.45);
+  text-decoration: none;
+  border-radius: 18px;
+  padding: 0 16px;
+}
+
+@media (min-width: 900px) {
+  .ir-app .ir-nav {
+    padding: 12px 56px;
+  }
+
+  .ir-app .ir-nav-links,
+  .ir-app .ir-nav-try {
+    display: flex;
+  }
+
+  .ir-app .ir-nav-signin {
+    padding: 0 16px;
+    border-radius: 18px;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 1.5px var(--emerald);
+  }
+
+  .ir-app .ir-nav.is-emerald .ir-nav-signin {
+    box-shadow: inset 0 0 0 1.5px rgba(255, 253, 248, 0.55);
+  }
+}
+
+.ir-app .ir-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 72px;
+  padding: 12px 20px;
+  background: var(--paper);
+}
+
+.ir-app .ir-crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ir-app .ir-crumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ir-app .ir-crumbs a {
+  color: var(--soft);
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ir-app .ir-crumbs [aria-current="page"] {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.ir-app .ir-crumbs-sep {
+  color: var(--faint);
+}
+
+.ir-app .ir-crumbs-aside {
+  margin-left: auto;
+}
+
+@media (min-width: 900px) {
+  .ir-app .ir-crumbs {
+    padding: 12px 56px;
+  }
+}
+
+.ir-app .ir-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 390 / 844;
+  overflow: hidden;
+  background: #f4f8f5;
+  color: #1c3a2a;
+  font-family: Geist, "Segoe UI", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  --ink: #1c3a2a;
+  --muted: #5e7368;
+  --paper: #ffffff;
+  --line: #d7e6dc;
+  --moss: #2e8b57;
+  --magenta: #c5e0d2;
+  --rose: #c5e0d2;
+  --coral: #8fb9a0;
+  --berry: #1c3a2a;
+  --error: #8f2d2d;
+  --link: #1c3a2a;
+}
+
+.ir-app .ir-preview-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  height: 844px;
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+.ir-app .ir-preview-stage[inert] {
+  pointer-events: none;
+}
+
+.ir-app .ir-phone {
+  box-sizing: border-box;
+  width: min(320px, 100%);
+  padding: 10px;
+  border-radius: 44px;
+  background: var(--emerald-dark);
+}
+
+.ir-app .ir-phone-screen {
+  overflow: hidden;
+  border-radius: 34px;
+  background: #fff;
+}
+
+.ir-app .ir-phone-screen > .ir-preview {
+  aspect-ratio: 390 / 844;
+}
+
+.ir-app .ir-sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 28px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(180deg, rgba(244, 238, 227, 0) 0%, var(--paper) 34%);
+}
+
+.ir-app .ir-sticky-note {
+  margin: 0;
+  text-align: center;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--soft);
+}
+
+@media (min-width: 900px) {
+  .ir-app .ir-sticky {
+    align-items: flex-start;
+  }
+
+  .ir-app .ir-sticky-note {
+    width: 100%;
+    max-width: 260px;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ir-app .ir-btn:active {
+    transform: none;
+  }
+}

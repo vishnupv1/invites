@@ -127,6 +127,9 @@ function describe(pathname: string): Meta {
     }
   }
 
+  if (pathname === "/design-check") {
+    return { title: "Design check | InvitesReady", description: "Internal gallery of shell components.", index: false, image: HOME_IMAGE };
+  }
   if (pathname === "/login") {
     return { title: "Log in | InvitesReady", description: HOME_DESCRIPTION, index: false, image: HOME_IMAGE };
   }

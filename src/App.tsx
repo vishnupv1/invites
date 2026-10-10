@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
@@ -21,6 +21,8 @@ import { TOPICS } from "./data/topics";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 import { NotFound, Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
+
+const DesignCheck = lazy(() => import("./pages/DesignCheck"));
 
 function RequireAccount({ children }: { children: ReactNode }) {
   const { ready, signedIn } = useSession();
@@ -53,6 +55,14 @@ export default function App() {
         <Route path="/faq" element={<Home focus="faq" />} />
         <Route path="/occasions" element={<Home focus="occasions" />} />
         <Route path="/login" element={<Auth />} />
+        <Route
+          path="/design-check"
+          element={
+            <Suspense fallback={<div className="acct-wait" aria-busy="true" aria-label="Loading"><Spinner size="md" /></div>}>
+              <DesignCheck />
+            </Suspense>
+          }
+        />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/refunds" element={<Refunds />} />
