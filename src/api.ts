@@ -42,7 +42,9 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
       localStorage.removeItem(TOKEN);
       notifySession();
     }
-    throw new Error(payload.error || "Request failed.");
+    const error = new Error(payload.error || "Request failed.") as Error & { status?: number };
+    error.status = response.status;
+    throw error;
   }
   return payload as T;
 }
@@ -176,10 +178,40 @@ export type RazorpayPayment = {
   razorpay_signature: string;
 };
 
+export type PaymentOrder =
+  | { action: "pay"; keyId: string; orderId: string; amount: number; currency: string; attemptId: string; reused: boolean }
+  | { action: "recover"; attemptId: string };
+
 export function createPaymentOrder(templateId: string, coupon?: string) {
-  return request<{ keyId: string; orderId: string; amount: number; currency: string }>("/api/create-order", {
+  return request<PaymentOrder>("/api/create-order", {
     method: "POST",
     body: JSON.stringify({ templateId, coupon: coupon || undefined }),
+  });
+}
+
+export type PendingAttempt = {
+  id: string;
+  templateId: string;
+  amount: number;
+  currency: string;
+  coupon: string;
+  status: string;
+};
+
+export function listPendingPayments(templateId: string) {
+  return request<{ attempts: PendingAttempt[] }>(`/api/payments/pending?templateId=${encodeURIComponent(templateId)}`);
+}
+
+export type RecoveryPreview =
+  | { state: "captured"; attemptId: string; templateId: string; amount: number; currency: string; coupon: string }
+  | { state: "completed"; templateId: string; coupon: string; amount: number; currency: string; paymentId: string }
+  | { state: "recovered"; owned: true; templateId: string; paymentId: string; coupon: string; amount: number; currency: string }
+  | { state: "unpaid"; attemptId: string; templateId: string; orderId: string; amount: number; currency: string; coupon: string; keyId: string };
+
+export function inspectPaymentAttempt(attemptId: string, finalize = false) {
+  return request<RecoveryPreview>("/api/payments/recover", {
+    method: "POST",
+    body: JSON.stringify({ attemptId, finalize }),
   });
 }
 

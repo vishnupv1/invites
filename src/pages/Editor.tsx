@@ -243,7 +243,7 @@ export function Editor({
   const template = getTemplate(id);
   const inviteQuery = embedded ? "" : (params.get("invite") ?? "");
   const eventQuery = eventIdProp || params.get("event") || undefined;
-  const { owns, purchase, remember, invites, ready: libraryReady } = useLibrary();
+  const { owns, purchase, grant, remember, invites, ready: libraryReady } = useLibrary();
   useEffect(() => {
     if (embedded || !template) return;
     trackStartDesign(template);
@@ -1511,6 +1511,11 @@ export function Editor({
           onClose={() => setPayOpen(false)}
           onPurchased={async (coupon, payment) => {
             await purchase(template.id, coupon, payment);
+            setPayOpen(false);
+            await publish();
+          }}
+          onEntitled={async () => {
+            grant(template.id);
             setPayOpen(false);
             await publish();
           }}

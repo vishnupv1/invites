@@ -853,6 +853,12 @@ export function CreateGuest() {
             setCheckout(false);
             await publishNow();
           }}
+          onEntitled={async () => {
+            library.grant(template.id);
+            setOwned((current) => (current.includes(template.id) ? current : [...current, template.id]));
+            setCheckout(false);
+            await publishNow();
+          }}
         />
       ) : null}
 

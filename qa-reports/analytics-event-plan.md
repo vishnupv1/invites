@@ -19,7 +19,7 @@
 | `save_draft` | After `POST /api/invites/draft` or a draft `PUT /api/invites/record/:id` returns. Not on a failed request, a device-only save, or an update whose status is `live`. | `template_id` | Once per invite id per page load |
 | `sign_up` | Email: after `signUp` resolves. Google: only when the API returns `created: true`. An existing Google account sends `login` even if the signup tab was open. | `method` | No |
 | `login` | Same, after a successful login | `method` | No |
-| `begin_checkout` | Checkout form submitted and valid, before Razorpay | `currency`, `value`, `items[]` with `item_id`, `item_name`, `price` | No |
+| `begin_checkout` | A new checkout form is submitted and valid, before Razorpay. Finishing a payment that was already captured does not send it again. | `currency`, `value`, `items[]` with `item_id`, `item_name`, `price` | No |
 | `purchase` | After `onPurchased` resolves, which calls `POST /api/purchases`. Cancel, Razorpay failure, and a rejected purchase do not fire it. | `currency`, `value`, `template_id`, `template_name`, `items`, `transaction_id` when Razorpay returned a payment id, optional `coupon` | Once per page load. Paid key is `paid:<payment id>`. Zero-price key is `zero:<template id>:<coupon>`. |
 | `payment_cancelled` | First Razorpay dismiss callback for that checkout attempt | `template_id`, `value`, `currency` | First callback wins. A later `payment.failed` on the same attempt is ignored. A new attempt can send the event again. |
 | `payment_failed` | First Razorpay `payment.failed` callback for that checkout attempt | `template_id`, `value`, `currency`, optional `error_code` | Same first-callback rule. `error_code` is Razorpay `reason` or `code` only when it is a short token. The bank description is shown in the form and is not sent. |
@@ -73,6 +73,20 @@ The local parameter check allows only the field names in the tables above. It re
 
 A signed-in editor can save the sample invitation to the server before the person types. That save can emit `save_draft` without `first_edit`. Use `first_edit` when the question is whether they changed anything.
 
+## Phase 8 — browser collect only
+
+GA4 DebugView was not opened. There is no authorized property session in this environment. A collect request is not proof that DebugView received the event.
+
+During the Villa lost-response recovery on the isolated test site, with `?team=1`, Chrome sent one `begin_checkout` before Razorpay and one `purchase` after Finish unlocking. The recovery click did not send a second `begin_checkout`. The Bloom recovery run did not keep its collect log. `payment_failed`, `payment_cancelled`, `publish`, and `rsvp_submit` were not watched in DebugView in this pass. The hits that were observed did not include a card number, signature, email, or phone in the event name. Parameter bodies were not exported.
+
+## Phase 10
+
+DebugView was not opened. In the fresh Chrome context that finished a captured test payment, the only collect event observed was one `purchase`. `begin_checkout` was not sent for that Finish unlocking click. The payment id is the dedupe key, so a repeat of the same finalization does not send a second `purchase` during that page load. No card number, signature, email, or phone was part of the event name. This is a browser request, not a DebugView record.
+
+## Phase 9
+
+DebugView was not opened. The overlapping purchase replay was two API calls, not a browser session, so it produced no `begin_checkout` or `purchase` hit to inspect. The DebugView checklist in section 7 is still the manual procedure, including one extra expectation: Finish unlocking must not send a second `begin_checkout`, and `purchase` must appear only after the purchase request succeeds.
+
 ## 5. Still not implemented
 
 | Event | Trigger | Parameters | Notes |
@@ -95,7 +109,7 @@ A signed-in editor can save the sample invitation to the server before the perso
 
 ## 7. DebugView checklist
 
-Use the Razorpay **test** key and the success and failure cards from Razorpay’s current test-card list. Do not use a live key or a real card. Open the site with `?team=1`, then in GA4 choose Admin, DebugView, and this browser. None of these steps were run.
+Use the Razorpay **test** key and the success and failure cards from Razorpay’s current test-card list. Do not use a live key or a real card. Open the site with `?team=1`, then in GA4 choose Admin, DebugView, and this browser. None of these steps were run, including in Phase 9. After a captured payment, Finish unlocking must not send another `begin_checkout`.
 
 | Step | Action | Expect | Must not appear |
 |---|---|---|---|

@@ -9,6 +9,7 @@ type Library = {
   ready: boolean;
   owns: (id: string, free: boolean) => boolean;
   purchase: (id: string, coupon?: string, payment?: RazorpayPayment) => Promise<void>;
+  grant: (id: string) => void;
   remember: (invite: SavedInvite) => void;
 };
 
@@ -53,6 +54,9 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       owns: (id, free) => free || owned.includes(id),
       purchase: async (id, coupon, payment) => {
         await purchaseTemplate(id, coupon, payment);
+        setOwned((current) => (current.includes(id) ? current : [...current, id]));
+      },
+      grant: (id) => {
         setOwned((current) => (current.includes(id) ? current : [...current, id]));
       },
       remember: (invite) => {

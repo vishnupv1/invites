@@ -1,11 +1,23 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Check, Lock, Tag } from "lucide-react";
-import { createPaymentOrder, ensureSession, getToken, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
+import { createPaymentOrder, ensureSession, getToken, inspectPaymentAttempt, listPendingPayments, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
 import { Brand } from "./Brand";
 import { Spinner } from "./Loader";
 import { trackEvent, trackPaymentOutcome, trackPurchase } from "../lib/analytics";
 import { claimCallback, safeErrorCode } from "../lib/funnel-events";
+import {
+  type CapturedPayment,
+  beginFinalization,
+  checkoutAction,
+  emitsBeginCheckout,
+  forgetCapturedPayment,
+  keepProofAfterFailure,
+  readCapturedPayment,
+  recoveryMode,
+  rememberCapturedPayment,
+  requestStatus,
+} from "../lib/payment-recovery";
 import { useSession } from "../session";
 import type { Template } from "../types";
 import "./checkout.css";
@@ -45,6 +57,43 @@ declare global {
 
 let razorpayScript: Promise<void> | null = null;
 
+function openRazorpay(
+  order: { keyId: string; amount: number; currency: string; orderId: string },
+  name: string,
+  email: string,
+  phone: string,
+  templateName: string,
+) {
+  return new Promise<RazorpayPayment>((resolve, reject) => {
+    const gate = { taken: false };
+    const checkout = new window.Razorpay!({
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      order_id: order.orderId,
+      name: "InvitesReady",
+      description: `Unlock ${templateName}`,
+      prefill: { name: name.trim(), email: email.trim(), contact: phone.replace(/\D/g, "") },
+      theme: { color: "#1C3A2A" },
+      handler: (paid) => {
+        if (!claimCallback(gate)) return;
+        resolve(paid);
+      },
+      modal: {
+        ondismiss: () => {
+          if (!claimCallback(gate)) return;
+          reject(checkoutStop("Payment was cancelled.", "cancelled"));
+        },
+      },
+    });
+    checkout.on("payment.failed", (response) => {
+      if (!claimCallback(gate)) return;
+      reject(checkoutStop(response.error?.description || "Payment failed. Please try again.", "failed", response.error?.reason || response.error?.code));
+    });
+    checkout.open();
+  });
+}
+
 function loadRazorpay() {
   if (window.Razorpay) return Promise.resolve();
   if (!razorpayScript) {
@@ -60,6 +109,15 @@ function loadRazorpay() {
 }
 
 const OFFERS = [{ code: "WELCOME26", detail: "This template is free" }];
+const RECOVERY = "Payment received. Finish unlocking this design. You will not be charged again.";
+const RESUME = "A checkout is already open for this design. Continue with the same order. You will only be charged if you complete the payment.";
+
+type ServerHold =
+  | { kind: "captured"; attemptId: string; coupon: string; amount: number; currency: string }
+  | { kind: "unpaid"; attemptId: string; coupon: string; orderId: string; amount: number; currency: string; keyId: string }
+  | { kind: "completed"; coupon: string; amount: number; currency: string; paymentId: string }
+  | { kind: "support"; message: string }
+  | { kind: "wait"; message: string };
 
 function rupees(amount: number) {
   return `₹${Math.round(amount).toLocaleString("en-IN")}`;
@@ -76,10 +134,11 @@ type Props = {
   detail?: string;
   onClose: () => void;
   onPurchased: (coupon?: string, payment?: RazorpayPayment) => Promise<void>;
+  onEntitled: (coupon?: string) => Promise<void>;
 };
 
-export function Checkout({ template, detail, onClose, onPurchased }: Props) {
-  const { host } = useSession();
+export function Checkout({ template, detail, onClose, onPurchased, onEntitled }: Props) {
+  const { host, signedIn } = useSession();
   const [name, setName] = useState(host?.name ?? "");
   const [email, setEmail] = useState(host?.email ?? "");
   const [phone, setPhone] = useState("");
@@ -90,7 +149,9 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [couponError, setCouponError] = useState("");
-  const [error, setError] = useState("");
+  const [captured, setCaptured] = useState<CapturedPayment | null>(() => readCapturedPayment(sessionStorage, template.id));
+  const [serverHold, setServerHold] = useState<ServerHold | null>(null);
+  const [error, setError] = useState(() => (readCapturedPayment(sessionStorage, template.id) ? RECOVERY : ""));
   const busy = useRef(false);
   const listPrice = template.free ? 0 : template.price;
   const saved = discountRupees(listPrice, applied?.percent ?? 0);
@@ -100,6 +161,57 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
     if (host?.name) setName((current) => current || host.name);
     if (host?.email) setEmail((current) => current || host.email);
   }, [host]);
+
+  useEffect(() => {
+    if (!signedIn || readCapturedPayment(sessionStorage, template.id)) return;
+    let cancel = false;
+    listPendingPayments(template.id)
+      .then(async (listed) => {
+        const attempt = listed.attempts[0];
+        if (!attempt || cancel) return;
+        const preview = await inspectPaymentAttempt(attempt.id);
+        if (cancel) return;
+        if (preview.state === "captured") {
+          setServerHold({ kind: "captured", attemptId: preview.attemptId, coupon: preview.coupon, amount: preview.amount, currency: preview.currency });
+          setError(RECOVERY);
+        } else if (preview.state === "unpaid") {
+          setServerHold({
+            kind: "unpaid",
+            attemptId: preview.attemptId,
+            coupon: preview.coupon,
+            orderId: preview.orderId,
+            amount: preview.amount,
+            currency: preview.currency,
+            keyId: preview.keyId,
+          });
+          setError(RESUME);
+        } else if (preview.state === "completed" || preview.state === "recovered") {
+          setServerHold({
+            kind: "completed",
+            coupon: preview.coupon,
+            amount: preview.amount,
+            currency: preview.currency,
+            paymentId: preview.paymentId,
+          });
+          setError(RECOVERY);
+        }
+      })
+      .catch((reason) => {
+        if (cancel) return;
+        const status = requestStatus(reason);
+        const message = reason instanceof Error ? reason.message : "Could not check that payment.";
+        if (status === 503) {
+          setServerHold({ kind: "wait", message });
+          setError(message);
+        } else if (status === 409) {
+          setServerHold({ kind: "support", message });
+          setError(message);
+        } else if (status === 410) setError(message);
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [signedIn, template.id]);
 
   useEffect(() => {
     const previous = document.body.style.overflow;
@@ -151,23 +263,77 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (busy.current) return;
     const next = problems();
     setFieldErrors(next);
     if (Object.keys(next).length) return;
-    busy.current = true;
+    if (!beginFinalization(busy)) return;
     setSubmitting(true);
     setError("");
-    trackEvent("begin_checkout", {
-      currency: "INR",
-      value: total,
-      items: checkoutItems(total),
-    });
+    const mode = recoveryMode(captured, serverHold && serverHold.kind !== "support" && serverHold.kind !== "wait" && serverHold.kind !== "completed" ? serverHold : serverHold?.kind === "completed" ? { kind: "captured" } : null);
     try {
       if (!getToken()) {
         await ensureSession(email.trim(), name.trim());
       }
-      if (total === 0) {
+      if (serverHold?.kind === "wait") {
+        const listed = await listPendingPayments(template.id);
+        const attempt = listed.attempts[0];
+        if (!attempt) {
+          setServerHold(null);
+          return;
+        }
+        const preview = await inspectPaymentAttempt(attempt.id);
+        if (preview.state === "captured" || preview.state === "completed" || preview.state === "recovered") {
+          setServerHold(preview.state === "captured"
+            ? { kind: "captured", attemptId: preview.attemptId, coupon: preview.coupon, amount: preview.amount, currency: preview.currency }
+            : { kind: "completed", coupon: preview.coupon, amount: preview.amount, currency: preview.currency, paymentId: preview.paymentId });
+          setError(RECOVERY);
+        } else if (preview.state === "unpaid") {
+          setServerHold({
+            kind: "unpaid",
+            attemptId: preview.attemptId,
+            coupon: preview.coupon,
+            orderId: preview.orderId,
+            amount: preview.amount,
+            currency: preview.currency,
+            keyId: preview.keyId,
+          });
+          setError(RESUME);
+        }
+        return;
+      }
+      if (serverHold?.kind === "support") return;
+      if (serverHold?.kind === "completed" || serverHold?.kind === "captured") {
+        const finished = serverHold.kind === "completed"
+          ? { coupon: serverHold.coupon, amount: serverHold.amount, currency: serverHold.currency, paymentId: serverHold.paymentId }
+          : await inspectPaymentAttempt(serverHold.attemptId, true);
+        if ("state" in finished && finished.state !== "recovered" && finished.state !== "completed") {
+          setError(RECOVERY);
+          return;
+        }
+        const coupon = finished.coupon || undefined;
+        const paymentId = "paymentId" in finished ? finished.paymentId : "";
+        forgetCapturedPayment(sessionStorage);
+        setCaptured(null);
+        setServerHold(null);
+        await onEntitled(coupon);
+        trackPurchase({
+          templateId: template.id,
+          templateName: template.name,
+          value: finished.amount / 100,
+          currency: finished.currency || "INR",
+          transactionId: paymentId || undefined,
+          coupon,
+          items: checkoutItems(finished.amount / 100),
+        });
+        return;
+      }
+      const finishing = checkoutAction(captured) === "finalize";
+      if (total === 0 && mode === "new") {
+        trackEvent("begin_checkout", {
+          currency: "INR",
+          value: 0,
+          items: checkoutItems(0),
+        });
         await onPurchased(applied?.code);
         trackPurchase({
           templateId: template.id,
@@ -179,46 +345,53 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
         });
         return;
       }
+      let payment = captured?.payment;
+      const couponCode = finishing ? captured?.coupon || undefined : serverHold?.kind === "unpaid" ? serverHold.coupon || undefined : applied?.code;
+      if (mode === "unpaid" && serverHold?.kind === "unpaid") {
+        await loadRazorpay();
+        if (!window.Razorpay) throw new Error("Could not open Razorpay. Try again.");
+        payment = await openRazorpay({
+          keyId: serverHold.keyId,
+          amount: serverHold.amount,
+          currency: serverHold.currency,
+          orderId: serverHold.orderId,
+        }, name, email, phone, template.name);
+        const held = { templateId: template.id, coupon: serverHold.coupon, payment };
+        rememberCapturedPayment(sessionStorage, held);
+        setCaptured(held);
+      } else if (!finishing) {
       const order = await createPaymentOrder(template.id, applied?.code);
+      if (order.action === "recover") {
+        setServerHold({ kind: "captured", attemptId: order.attemptId, coupon: applied?.code ?? "", amount: total * 100, currency: "INR" });
+        setError(RECOVERY);
+        return;
+      }
+      if (!order.reused && emitsBeginCheckout("new")) {
+        trackEvent("begin_checkout", {
+          currency: "INR",
+          value: total,
+          items: checkoutItems(total),
+        });
+      }
       await loadRazorpay();
       if (!window.Razorpay) throw new Error("Could not open Razorpay. Try again.");
-      const payment = await new Promise<RazorpayPayment>((resolve, reject) => {
-        const gate = { taken: false };
-        const checkout = new window.Razorpay!({
-          key: order.keyId,
-          amount: order.amount,
-          currency: order.currency,
-          order_id: order.orderId,
-          name: "InvitesReady",
-          description: `Unlock ${template.name}`,
-          prefill: { name: name.trim(), email: email.trim(), contact: phone.replace(/\D/g, "") },
-          theme: { color: "#1C3A2A" },
-          handler: (paid) => {
-            if (!claimCallback(gate)) return;
-            resolve(paid);
-          },
-          modal: {
-            ondismiss: () => {
-              if (!claimCallback(gate)) return;
-              reject(checkoutStop("Payment was cancelled.", "cancelled"));
-            },
-          },
-        });
-        checkout.on("payment.failed", (response) => {
-          if (!claimCallback(gate)) return;
-          reject(checkoutStop(response.error?.description || "Payment failed. Please try again.", "failed", response.error?.reason || response.error?.code));
-        });
-        checkout.open();
-      });
+      payment = await openRazorpay(order, name, email, phone, template.name);
+      const held = { templateId: template.id, coupon: applied?.code ?? "", payment };
+      rememberCapturedPayment(sessionStorage, held);
+      setCaptured(held);
+      }
+      if (!payment) throw new Error("Could not open Razorpay. Try again.");
       await verifyPayment(payment);
-      await onPurchased(applied?.code, payment);
+      await onPurchased(couponCode, payment);
+      forgetCapturedPayment(sessionStorage);
+      setCaptured(null);
       trackPurchase({
         templateId: template.id,
         templateName: template.name,
         value: total,
         currency: "INR",
         transactionId: payment.razorpay_payment_id,
-        coupon: applied?.code,
+        coupon: couponCode,
         items: checkoutItems(total),
       });
     } catch (reason) {
@@ -231,8 +404,19 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
           errorCode: safeErrorCode(stop.errorCode),
         });
       }
-      const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
-      if (message) setError(message);
+      const heldNow = readCapturedPayment(sessionStorage, template.id);
+      const proofMessage = reason instanceof Error ? reason.message : undefined;
+      if (heldNow && keepProofAfterFailure(requestStatus(reason), proofMessage)) {
+        setCaptured(heldNow);
+        setError(RECOVERY);
+      } else {
+        if (heldNow && !keepProofAfterFailure(requestStatus(reason), proofMessage)) {
+          forgetCapturedPayment(sessionStorage);
+          setCaptured(null);
+        }
+        const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
+        if (message) setError(message);
+      }
     } finally {
       busy.current = false;
       setSubmitting(false);
@@ -371,9 +555,21 @@ export function Checkout({ template, detail, onClose, onPurchased }: Props) {
           </div>
           <span className="co-gst">Includes {rupees(total * 18 / 118)} GST · one-time payment</span>
           {error ? <span className="co-alert" role="alert">{error}</span> : null}
-          <button type="submit" className="co-pay" disabled={submitting}>
+          <button type="submit" className="co-pay" disabled={submitting || serverHold?.kind === "support"}>
             {submitting ? <Spinner tone="paper" /> : null}
-            {submitting ? "Opening Razorpay…" : total ? `Pay ${rupees(total)} securely` : "Unlock template"}
+            {submitting
+              ? (captured || serverHold?.kind === "captured" || serverHold?.kind === "completed" ? "Finishing…" : "Opening Razorpay…")
+              : serverHold?.kind === "support"
+                ? "Contact support"
+                : serverHold?.kind === "wait"
+                  ? "Check again"
+                  : captured || serverHold?.kind === "captured" || serverHold?.kind === "completed"
+                    ? "Finish unlocking"
+                    : serverHold?.kind === "unpaid"
+                      ? "Continue payment"
+                      : total
+                        ? `Pay ${rupees(total)} securely`
+                        : "Unlock template"}
           </button>
           <div className="co-trust">
             <span><Check size={16} strokeWidth={2.4} color="#2E8B57" aria-hidden="true" />Pay securely with Razorpay: UPI, cards, netbanking & wallets</span>

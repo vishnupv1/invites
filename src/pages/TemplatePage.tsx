@@ -117,7 +117,7 @@ export function TemplatePage() {
     if (!template) return;
     trackTemplatePreview(template);
   }, [template]);
-  const { owns, purchase } = useLibrary();
+  const { owns, purchase, grant } = useLibrary();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [device, setDevice] = useState<"phone" | "desk">(() =>
@@ -383,6 +383,10 @@ export function TemplatePage() {
           onClose={() => setOpen(false)}
           onPurchased={async (coupon, payment) => {
             await purchase(template.id, coupon, payment);
+            navigate(createTo);
+          }}
+          onEntitled={async () => {
+            grant(template.id);
             navigate(createTo);
           }}
         />

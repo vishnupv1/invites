@@ -163,3 +163,41 @@ For one date range, in this order:
 5. `begin_checkout` / paid design starts.
 6. `purchase` / `begin_checkout`. Also `payment_cancelled` / `begin_checkout` and `payment_failed` / `begin_checkout`. Use `transaction_id` so paid purchases are unique.
 7. `sign_up` and `login` beside checkout, not instead of it.
+
+## Phase 7 — captured payment recovery
+
+If Razorpay captures a payment and the purchase request then fails, checkout keeps that payment proof in `sessionStorage` and shows “Finish unlocking.” That button sends the same order through verify and purchase. It does not call `POST /api/create-order` and it does not send another `begin_checkout`. Publish still runs only after the purchase call resolves. A 400 from the server drops the proof. A lost response or a 5xx keeps it.
+
+This was checked with unit tests and by opening the Bloom checkout in Chrome with a locally stored proof. The finish button was not pressed, and no payment was sent. DebugView was not watched.
+
+Phase 8 changed the 400 rule. Only “Razorpay could not verify that payment.”, “That payment does not match this purchase.”, and “Check those details.” clear a stored proof. Other 400 responses, including an invalid coupon, keep it.
+
+## Phase 8 — recovery against Razorpay test mode
+
+Two real test-mode payments were completed on an isolated site. The live site was not used to pay.
+
+Bloom: the first purchase request was answered in the browser with HTTP 500 and never reached the API. Finish unlocking reused `order_TlvfBkvcOxsucT` and `pay_TlvfEoI0rvbvuz`. The purchase count went from 0 to 1. Razorpay shows one captured payment. The guest page `/i/ncstYSVY` opened. The collect log for this run was not saved.
+
+Villa: the API recorded the purchase and returned HTTP 200, then the browser dropped that response. Before Finish unlocking there was one villa purchase and the invitation was still a draft. After the retry there was still one purchase, no second order, and `/i/Vop_ck1B` was live. The browser sent `begin_checkout` once and `purchase` once.
+
+A fake signature was rejected with “Razorpay could not verify that payment.”, the proof was removed, and no order was created. Clearing the session, opening another browser, and two overlapping recovery requests were not run in Phase 8. The server has no unfinished-payment lookup, so another browser cannot finish the same charge. DebugView was not opened.
+
+## Phase 9 — overlapping finalization
+
+Two purchase requests for the existing Bloom order `order_TlvfBkvcOxsucT` were sent at the same time to an isolated test-key API. Both returned HTTP 200. The host still had one bloom purchase. Razorpay still lists one captured payment, `pay_TlvfEoI0rvbvuz`. Asking for a new order returned HTTP 409 before Razorpay could create one. A bad signature returned HTTP 400 beside a successful retry and did not remove the purchase. Two publishes of the live invitation both returned HTTP 200 and left `/i/ncstYSVY` as the one live Bloom code.
+
+The same-tab button now ignores a second click while the first request is running. That does not cover two tabs.
+
+The case of two requests inserting the purchase row for the first time was not run on MongoDB. An in-memory unique index, using the same duplicate-key decision, keeps one row. There is no isolated database for that insert race.
+
+Recovery after cleared storage was not built in Phase 9. Phase 10 added it.
+
+## Phase 10 — server-side recovery
+
+Creating an order now writes a pending row for the signed-in host before Razorpay is called. The row stores the order id, amount, currency, coupon, and status. It does not store a card, signature, email, or phone. A second create for the same price reuses that order. A captured attempt does not create another order.
+
+`POST /api/payments/recover` fetches the order and the captured payment from Razorpay. The client cannot supply the payment id. Another host receives 404. Publish still waits until the purchase upsert has succeeded.
+
+Chrome, isolated test key, local database: the first create and the second create shared `order_Tm7kPHhwI9ZWxl`. A test card payment was captured (`pay_Tm7kXjXLjntK8V`). The purchase response was then failed on purpose. A new browser context with the same sign-in and empty `sessionStorage` showed “Finish unlocking”, sent no `create-order` and no `begin_checkout`, sent one `purchase`, stored one bloom purchase, and published. DebugView was not opened.
+
+Two first-time purchase upserts on that local MongoDB left one row. That database was not the application database.
