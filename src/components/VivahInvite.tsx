@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Flower2, Hand, Heart, Music, Music2, Sparkle, Wine } from "lucide-react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
@@ -727,7 +728,7 @@ export function VivahInvite({
               <div className="wd-seal-in">{(first[0] || "").toUpperCase()}<i><Heart className="glyph" fill="currentColor" /></i>{(second[0] || "").toUpperCase()}</div>
             </div>
             <span className="wd-foot-love">With love, {fields.hosts}</span>
-            <a className="wd-made" href="/">Made with InvitesReady</a>
+            <a className="wd-made" href={madeWithHref("vivah")}>Made with InvitesReady</a>
             <InstagramLink />
           </footer>
         </div>

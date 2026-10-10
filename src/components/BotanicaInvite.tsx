@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Heart, Music2 } from "lucide-react";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
@@ -566,7 +567,7 @@ export function BotanicaInvite({
             </div>
             <span className="bf-love">With love, {fields.names || `${names.first} & ${names.second}`}</span>
             <span className="bf-hash">{numericDate(fields.date)} · #{names.tag}</span>
-            <a className="bf-credit" href="/">Made with InvitesReady</a>
+            <a className="bf-credit" href={madeWithHref("botanica")}>Made with InvitesReady</a>
             <InstagramLink />
           </footer>
 

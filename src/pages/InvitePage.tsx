@@ -65,7 +65,7 @@ export function InvitePage() {
           trackRsvpSubmit(reply.attending ? "yes" : "no", loaded.template);
         }}
       />
-      <GuestCta templateName={loaded.template.name} campaign={loaded.template.id} />
+      <GuestCta templateName={loaded.template.name} templateId={loaded.template.id} />
     </div>
   );
 }

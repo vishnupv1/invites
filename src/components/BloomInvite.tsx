@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { useFonts } from "../lib/fonts";
@@ -465,7 +466,7 @@ export function BloomInvite({
         <strong>{couple.first} &amp; {couple.second}</strong>
         <span className="bl-small">{shortDate(fields.date)} · {(fields.address || "Jaipur").toUpperCase()}</span>
         <button type="button" className="bl-link" onClick={() => setPhase("closed")}>↺ Open the letter again</button>
-        <a className="bl-made" href="/">MADE WITH INVITESREADY</a>
+        <a className="bl-made" href={madeWithHref("bloom")}>MADE WITH INVITESREADY</a>
       </footer>
 
       {toast ? (

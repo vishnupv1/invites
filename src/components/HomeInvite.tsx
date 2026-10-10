@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Armchair, Balloon, Birdhouse, BookOpen, Car, Coffee, CookingPot, CupSoda, Dice5, Flower2, Frame, Heart, House, Key, KeyRound, Leaf, Milk, Nut, PlantPot, Smile, Sofa, Sparkles, Star, SunMedium, TrainFront, TreePalm, TreePine, Utensils, type LucideIcon } from "lucide-react";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
@@ -582,7 +583,7 @@ export function HomeInvite({
             </svg>
             <em>See you at home!</em>
             <small>With love, {family} · {tag}</small>
-            <a href="/">Made with InvitesReady</a>
+            <a href={madeWithHref("hearth")}>Made with InvitesReady</a>
             <InstagramLink />
           </footer>
         </article>

@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { madeWithHref } from "../lib/share";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
 import { useFonts } from "../lib/fonts";
@@ -639,7 +640,7 @@ export function GrandDoorInvite({
           <span className="gd-wait">We can’t wait<br />to celebrate with you</span>
           <span className="gd-close-names">{couple.first}{couple.second ? ` & ${couple.second}` : ""}</span>
           <button type="button" className="gd-replay" onClick={replay}>↺ Watch the doors open again</button>
-          <a className="gd-made" href="/">Made with InvitesReady</a>
+          <a className="gd-made" href={madeWithHref("grandoor")}>Made with InvitesReady</a>
         </div>
       </section>
 

@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { madeWithHref } from "../lib/share";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
 import { useFonts } from "../lib/fonts";
@@ -503,7 +504,7 @@ export function GrandEnvelopeInvite({
             </div>
           </div>
         </div>
-        <a className="ge-made" href="/">CREATE YOUR INVITATION · INVITESREADY</a>
+        <a className="ge-made" href={madeWithHref("grandenvelope")}>CREATE YOUR INVITATION · INVITESREADY</a>
       </section>
 
       {toast ? (

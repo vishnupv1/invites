@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem } from "../data/custom";
@@ -564,7 +565,7 @@ export function VillaInvite({
         <p className="vs-foot-names">{fields.names}</p>
         <span className="vs-small">{footDate(fields.date, region)}</span>
         <button type="button" className="vs-link" onClick={replay}>↺ Open the invitation again</button>
-        <Link className="vs-made" to="/">MADE WITH INVITESREADY</Link>
+        <Link className="vs-made" to={madeWithHref("villa")}>MADE WITH INVITESREADY</Link>
         <img className="vs-foot-garden" src="/villa/garden.webp" alt="" />
       </footer>
 

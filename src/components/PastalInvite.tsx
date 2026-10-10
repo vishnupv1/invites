@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem } from "../data/custom";
@@ -497,7 +498,7 @@ export function PastalInvite({
         <button type="button" className="pt-link" onClick={replay}>
           ↺ Open the invitation again
         </button>
-        <Link className="pt-made" to="/create">
+        <Link className="pt-made" to={madeWithHref("pastal")}>
           MADE WITH INVITESREADY
         </Link>
       </footer>

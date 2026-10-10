@@ -29,6 +29,7 @@ import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useFonts } from "../lib/fonts";
+import { madeWithHref } from "../lib/share";
 
 type Reply = { name: string; note: string; attending: boolean };
 
@@ -445,7 +446,7 @@ export function InviteSite({
         <WishForm names={fields.names} onReply={onReply} />
       </section>
       <footer className="site-foot">
-        <span>Made with <Link to="/">invitesready</Link></span>
+        <span>Made with <Link to={madeWithHref(template.id)}>invitesready</Link></span>
         <InstagramLink />
       </footer>
     </div>

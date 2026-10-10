@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem } from "../data/custom";
@@ -558,7 +559,7 @@ export function MoonlitInvite({
         <span className="mj-foot-names mj-gold">{fields.names}</span>
         <span className="mj-small" style={{ position: "relative" }}>{shortDate(fields.date)} · {cityOf(fields.address, fields.venue).toUpperCase()}</span>
         <button type="button" className="mj-link" style={{ position: "relative" }} onClick={replay}>↺ Open the window again</button>
-        <Link className="mj-made" to="/create">MADE WITH INVITESREADY</Link>
+        <Link className="mj-made" to={madeWithHref("moonlit")}>MADE WITH INVITESREADY</Link>
       </footer>
 
       {toast ? (

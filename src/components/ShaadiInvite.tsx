@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { madeWithHref } from "../lib/share";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { calendarUrl, formatLongDate } from "../lib/dates";
@@ -512,7 +513,7 @@ export function ShaadiInvite({
             </div>
             <p className="sh-hindi">आपकी उपस्थिति हमारा सौभाग्य</p>
             <p className="sh-tag">{[hash, fields.date ? dotted(fields.date) : ""].filter(Boolean).join(" · ")}</p>
-            <a href="/">Made with InvitesReady</a>
+            <a href={madeWithHref("shaadi")}>Made with InvitesReady</a>
             <InstagramLink />
           </footer>
           {playing && fields.audio ? <audio src={assetUrl(fields.audio)} autoPlay loop /> : null}

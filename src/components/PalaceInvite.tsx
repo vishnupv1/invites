@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem } from "../data/custom";
@@ -530,7 +531,7 @@ export function PalaceInvite({
         <span className="pq-foot-names">{fields.names}</span>
         <span className="pq-small">{shortDate(fields.date)} · {cityOf(fields.address, fields.venue).toUpperCase()}</span>
         <button type="button" className="pq-link" style={{ position: "relative" }} onClick={replay}>↺ Open the invitation again</button>
-        <Link className="pq-made" to="/create">MADE WITH INVITESREADY</Link>
+        <Link className="pq-made" to={madeWithHref("palace")}>MADE WITH INVITESREADY</Link>
       </footer>
 
       {toast ? (

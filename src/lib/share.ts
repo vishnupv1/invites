@@ -6,13 +6,18 @@ export function guestInviteUrl(code: string, campaign?: string) {
   return url.toString();
 }
 
-export function guestCtaHref(campaign?: string) {
+export function madeWithHref(templateId?: string) {
   const params = new URLSearchParams({
     utm_source: "whatsapp",
     utm_medium: "guest_invite",
+    utm_campaign: "referral",
   });
-  if (campaign) params.set("utm_campaign", campaign);
+  if (templateId) params.set("utm_content", templateId);
   return `/browse?${params.toString()}`;
+}
+
+export function guestCtaHref(templateId?: string) {
+  return madeWithHref(templateId);
 }
 
 export function viewInvitePath(code: string) {

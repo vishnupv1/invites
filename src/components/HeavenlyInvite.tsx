@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { madeWithHref } from "../lib/share";
 import { Check } from "lucide-react";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem, type StoryBeat } from "../data/custom";
@@ -661,7 +662,7 @@ export function HeavenlyInvite({
                 </div>
                 <div className="hv-c-cta">
                   <button type="button" className="hv-replay" onClick={replay}>↺ Replay</button>
-                  <a className="hv-made" href="/">Create your invitation · InvitesReady</a>
+                  <a className="hv-made" href={madeWithHref("heavenly")}>Create your invitation · InvitesReady</a>
                 </div>
               </div>
             </>
@@ -999,7 +1000,7 @@ export function HeavenlyInvite({
               {numericDate(fields.date)} · {hashtag.toUpperCase()}
             </span>
             <button type="button" className="hv-foot-replay" onClick={replay}>↺ Watch the doors open again</button>
-            <a className="hv-foot-made" href="/">Made with InvitesReady</a>
+            <a className="hv-foot-made" href={madeWithHref("heavenly")}>Made with InvitesReady</a>
             <InstagramLink />
           </footer>
 

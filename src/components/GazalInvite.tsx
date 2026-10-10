@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
@@ -318,7 +319,7 @@ export function GazalInvite({
           {first} {second ? <em>&amp;</em> : null} {second}
         </strong>
         <span>{formatLongDate(fields.date)}</span>
-        <Link to="/">Made with InvitesReady</Link>
+        <Link to={madeWithHref("gazal")}>Made with InvitesReady</Link>
         <InstagramLink />
       </footer>
     </article>

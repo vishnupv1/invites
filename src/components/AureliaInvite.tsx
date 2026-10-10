@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
@@ -244,7 +245,7 @@ export function AureliaInvite({
       <footer>
         <strong>{first}{second ? " & " : ""}{second}</strong>
         <span>{formatLongDate(fields.date)}</span>
-        <Link to="/">Made with InvitesReady</Link>
+        <Link to={madeWithHref("aurelia")}>Made with InvitesReady</Link>
         <InstagramLink />
       </footer>
     </article>

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { madeWithHref } from "../lib/share";
 import { Sparkle } from "lucide-react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
@@ -632,7 +633,7 @@ export function PeaceInvite({
             <span className="pc-seal"><Seal /></span>
             {fields.message ? <span className="pc-script pc-foil">{fields.message}</span> : null}
             <small>{when.dots}{pack.caption ? ` · ${pack.caption}` : ""}</small>
-            <a href="/">Made with InvitesReady</a>
+            <a href={madeWithHref("peace")}>Made with InvitesReady</a>
             <InstagramLink />
           </footer>
         </>

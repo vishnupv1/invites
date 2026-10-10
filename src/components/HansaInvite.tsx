@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { packOf } from "../data/custom";
 import { useFonts } from "../lib/fonts";
 import type { InviteFields } from "../types";
@@ -487,7 +488,7 @@ export function HansaInvite({
         <strong>{couple.first} &amp; {couple.second}</strong>
         <span className="hs-small">{fields.date.split("-").reverse().join(" · ")} · {fields.address.split(",")[0] || fields.venue}</span>
         <button type="button" className="hs-link" onClick={() => { setPhase("closed"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>↺ Open the invitation again</button>
-        <a className="hs-made" href="/">MADE WITH INVITESREADY</a>
+        <a className="hs-made" href={madeWithHref("hansa")}>MADE WITH INVITESREADY</a>
         <img className="lilies" src={ART.lilies} alt="" />
       </footer>
 

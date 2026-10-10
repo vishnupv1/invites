@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { madeWithHref } from "../lib/share";
 import { BottleWine, Fish, Flower2, Footprints, Glasses, HatGlasses, Plane, Shell, Shirt, Sparkle, SportShoe, Star, Waves, type LucideIcon } from "lucide-react";
 import { assetUrl } from "../api";
 import { eventName, packOf } from "../data/custom";
@@ -666,7 +667,7 @@ export function BeachInvite({
             <small>
               {dateLine} · {tag}
             </small>
-            <a href="/">Made with InvitesReady</a>
+            <a href={madeWithHref("beach")}>Made with InvitesReady</a>
             <InstagramLink />
             <div className="bw-foot-wave" aria-hidden="true">
               <div className="bw-wave" style={{ height: 60, animationDuration: "10s" }}>

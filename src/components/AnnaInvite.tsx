@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
@@ -450,7 +451,7 @@ export function AnnaInvite({
           <footer className="anna-foot">
             <em>{first}{second ? " & " : ""}{second}</em>
             <span className="anna-hash">{meetTag(first, second)}</span>
-            <Link to="/">Made with InvitesReady</Link>
+            <Link to={madeWithHref("anna")}>Made with InvitesReady</Link>
             <InstagramLink />
           </footer>
         </article>

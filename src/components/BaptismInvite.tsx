@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { madeWithHref } from "../lib/share";
 import { Link } from "react-router-dom";
 import { Baby, Bird, Heart, Milk, Smile, Sparkle, type LucideIcon } from "lucide-react";
 import type { InviteFields } from "../types";
@@ -533,7 +534,7 @@ export function BaptismInvite({
           <footer className="bp-foot">
             <em>{fields.names}</em>
             <span>With love, {fields.hosts || "the family"} <span className="bp-heart"><Heart className="glyph" fill="currentColor" aria-hidden="true" /></span></span>
-            <Link to="/">Made with InvitesReady</Link>
+            <Link to={madeWithHref("baptism")}>Made with InvitesReady</Link>
             <InstagramLink />
           </footer>
         </article>
