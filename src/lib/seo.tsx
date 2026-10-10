@@ -4,12 +4,14 @@ import { getEvent } from "../data/events";
 import { SEO_CATEGORIES, SEO_PAGES, topicByPath, templateSeo } from "../data/topics";
 import { getTemplate, templatesFor } from "../data/templates";
 import { trackPageView } from "./analytics";
+import { generatedTemplateSeo } from "./template-seo.mjs";
 
 export const SITE = "https://invitesready.com";
 
 const HOME_DESCRIPTION = SEO_PAGES["/"].description;
 
-const BRAND_IMAGE = `${SITE}/covers/shaadi.jpg`;
+const HOME_IMAGE = `${SITE}/og/home.jpg`;
+const BROWSE_IMAGE = `${SITE}/og/browse.jpg`;
 
 type Meta = { title: string; description: string; index: boolean; image: string; canonical?: string };
 
@@ -19,7 +21,7 @@ function describe(pathname: string): Meta {
       title: SEO_PAGES["/"].title,
       description: HOME_DESCRIPTION,
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/how") {
@@ -27,7 +29,7 @@ function describe(pathname: string): Meta {
       title: "How digital invitations work | InvitesReady",
       description: "Pick a template, add your details, and share one link. Guests open it in the browser and RSVP without an app.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/features") {
@@ -35,7 +37,7 @@ function describe(pathname: string): Meta {
       title: "Invitation features | InvitesReady",
       description: "RSVPs, a guest list, and a photo wall for wedding and family invitations.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/faq") {
@@ -43,7 +45,7 @@ function describe(pathname: string): Meta {
       title: "Invitation questions | InvitesReady",
       description: "Guests do not need an app. You can design before you sign up, edit after sending, and keep the address private.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/occasions") {
@@ -51,7 +53,7 @@ function describe(pathname: string): Meta {
       title: SEO_PAGES["/occasions"].title,
       description: SEO_PAGES["/occasions"].description,
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/browse" || pathname === "/templates") {
@@ -59,7 +61,7 @@ function describe(pathname: string): Meta {
       title: SEO_PAGES["/browse"].title,
       description: SEO_PAGES["/browse"].description,
       index: pathname === "/browse",
-      image: BRAND_IMAGE,
+      image: pathname === "/browse" ? BROWSE_IMAGE : HOME_IMAGE,
     };
   }
   if (pathname === "/privacy") {
@@ -67,7 +69,7 @@ function describe(pathname: string): Meta {
       title: "Privacy policy | InvitesReady",
       description: "How InvitesReady collects, uses, and stores account details, invitation content, guest replies, and payments.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/terms") {
@@ -75,7 +77,7 @@ function describe(pathname: string): Meta {
       title: "Terms of use | InvitesReady",
       description: "The terms for creating an account, designing an invitation, and buying a template on InvitesReady.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/refunds") {
@@ -83,7 +85,7 @@ function describe(pathname: string): Meta {
       title: "Refunds | InvitesReady",
       description: "When a one-time InvitesReady template purchase can be refunded, and how to ask.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
   if (pathname === "/contact") {
@@ -91,7 +93,7 @@ function describe(pathname: string): Meta {
       title: "Contact | InvitesReady",
       description: "Contact InvitesReady about your account, a template purchase, or a published invitation.",
       index: true,
-      image: BRAND_IMAGE,
+      image: HOME_IMAGE,
     };
   }
 
@@ -99,17 +101,14 @@ function describe(pathname: string): Meta {
   if (preview) {
     const template = getTemplate(preview[1]);
     if (template) {
-      const onBrowse = pathname.startsWith("/browse/");
       const accountOnly = pathname.startsWith("/preview/");
-      const line = templateSeo(template.id);
+      const line = templateSeo(template.id) ?? generatedTemplateSeo(template);
       return {
-        title: line?.title ?? `${template.name} — Animated Invitation | InvitesReady`,
-        description: line?.description ?? (template.free
-          ? `Preview the ${template.name} invitation. This design is free to publish.`
-          : `Preview the ${template.name} invitation. Buy it once, then use it for your celebration.`),
+        title: line.title,
+        description: line.description,
         index: !accountOnly,
-        image: `${SITE}/covers/${template.id}.jpg`,
-        canonical: onBrowse ? `/browse/${template.id}` : `/template/${template.id}`,
+        image: `${SITE}/og/${template.id}.jpg`,
+        canonical: `/template/${template.id}`,
       };
     }
   }
@@ -123,19 +122,19 @@ function describe(pathname: string): Meta {
         title: line?.title ?? `${event.label} invitations | InvitesReady`,
         description: line?.description ?? `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
         index: true,
-        image: BRAND_IMAGE,
+        image: HOME_IMAGE,
       };
     }
   }
 
   if (pathname === "/login") {
-    return { title: "Log in | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+    return { title: "Log in | InvitesReady", description: HOME_DESCRIPTION, index: false, image: HOME_IMAGE };
   }
   if (pathname === "/create" || pathname.startsWith("/create/")) {
-    return { title: "Design your invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+    return { title: "Design your invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: HOME_IMAGE };
   }
   if (pathname === "/studio") {
-    return { title: "Your invitations | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+    return { title: "Your invitations | InvitesReady", description: HOME_DESCRIPTION, index: false, image: HOME_IMAGE };
   }
   const studioTitles: Record<string, string> = {
     "/events": "My events | InvitesReady",
@@ -146,22 +145,22 @@ function describe(pathname: string): Meta {
     "/settings": "Settings | InvitesReady",
   };
   if (studioTitles[pathname]) {
-    return { title: studioTitles[pathname], description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+    return { title: studioTitles[pathname], description: HOME_DESCRIPTION, index: false, image: HOME_IMAGE };
   }
   if (pathname.startsWith("/i/")) {
-    return { title: "Guest invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: BRAND_IMAGE };
+    return { title: "Guest invitation | InvitesReady", description: HOME_DESCRIPTION, index: false, image: HOME_IMAGE };
   }
 
   const topic = topicByPath(pathname);
   if (topic) {
-    return { title: topic.title, description: topic.description, index: true, image: BRAND_IMAGE };
+    return { title: topic.title, description: topic.description, index: true, image: HOME_IMAGE };
   }
 
   return {
     title: "InvitesReady",
     description: HOME_DESCRIPTION,
     index: false,
-    image: BRAND_IMAGE,
+    image: HOME_IMAGE,
   };
 }
 
@@ -201,6 +200,8 @@ export function PageMeta() {
     setMeta("og:type", "website", "property");
     setMeta("og:site_name", "InvitesReady", "property");
     setMeta("og:image", meta.image, "property");
+    setMeta("og:image:width", "1200", "property");
+    setMeta("og:image:height", "630", "property");
     setMeta("og:image:alt", meta.title, "property");
     setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", meta.title);
