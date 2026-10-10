@@ -250,9 +250,22 @@ function graphFor(page, templates) {
   return { "@context": "https://schema.org", "@graph": graph };
 }
 
+const ICON_LINKS = [
+  '<link rel="icon" href="/favicon-v2.ico" sizes="48x48">',
+  '<link rel="icon" type="image/png" href="/favicon-v2-48.png" sizes="48x48">',
+  '<link rel="icon" type="image/png" href="/favicon-v2.png" sizes="192x192">',
+  '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
+].join("\n    ");
+
+function ensureIcons(html) {
+  const stripped = html.replace(/\n\s*<link rel="(?:shortcut icon|icon|apple-touch-icon)"[^>]*>/g, "");
+  if (!stripped.includes("<head>")) throw new Error("Missing <head>");
+  return stripped.replace("<head>", `<head>\n    ${ICON_LINKS}`);
+}
+
 function pageHtml(base, page, templates, events) {
   const url = `${SITE}${canonicalPath(page)}`;
-  let html = base;
+  let html = ensureIcons(base);
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(page.title)}</title>`);
   html = replaceMeta(html, "name", "description", page.description);
   html = replaceMeta(html, "name", "robots", "index, follow");
@@ -294,7 +307,7 @@ function replaceRoot(html, body) {
 }
 
 function fallbackHtml(base) {
-  let html = base;
+  let html = ensureIcons(base);
   html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>InvitesReady</title>");
   html = replaceMeta(html, "name", "robots", "noindex, nofollow");
   html = html.replace(/\s*<link rel="canonical" href="[^"]*" \/>/, "");
@@ -424,6 +437,9 @@ function prerender(list, templates, events) {
       }
     }
     if (page.path === "/") {
+      for (const link of ICON_LINKS.split("\n")) {
+        if (!html.includes(link.trim())) throw new Error(`Homepage is missing ${link.trim()}`);
+      }
       fs.writeFileSync(indexPath, html);
       continue;
     }
