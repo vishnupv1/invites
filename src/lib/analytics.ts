@@ -12,8 +12,28 @@ declare global {
 }
 
 let initialized = false;
+let blocked = false;
 let lastPage: string | undefined;
 let internal = false;
+
+const PERSONAL = new Set(["email", "phone", "name", "guest", "guest_name", "host_name", "full_name", "first_name", "last_name"]);
+
+export function shouldLoadAnalytics(agent?: { webdriver?: boolean; userAgent?: string }) {
+  const nav = agent ?? (typeof navigator === "undefined" ? undefined : navigator);
+  if (!nav) return true;
+  if (nav.webdriver) return false;
+  return !/HeadlessChrome|bot|crawler|spider|Lighthouse/i.test(nav.userAgent || "");
+}
+
+function withoutPersonal<T extends Record<string, unknown>>(params?: T) {
+  if (!params) return params;
+  const next: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(params)) {
+    if (PERSONAL.has(key)) continue;
+    next[key] = value;
+  }
+  return next as T;
+}
 
 function rememberInternalTraffic() {
   try {
@@ -34,6 +54,11 @@ function withTraffic<T extends Record<string, unknown>>(params?: T) {
 
 function initialize() {
   if (initialized) return;
+  initialized = true;
+  if (!shouldLoadAnalytics()) {
+    blocked = true;
+    return;
+  }
   rememberInternalTraffic();
 
   window.dataLayer = window.dataLayer ?? [];
@@ -49,9 +74,10 @@ function initialize() {
   document.head.appendChild(script);
 
   window.gtag("js", new Date());
-  window.gtag("config", measurementId, withTraffic({ send_page_view: false }));
+  const config: Record<string, unknown> = { send_page_view: false };
+  if (internal) config.traffic_type = "internal";
+  window.gtag("config", measurementId, config);
   if (internal) window.gtag("set", { traffic_type: "internal" });
-  initialized = true;
 }
 
 type EventItem = { item_id: string; item_name: string; price: number };
@@ -59,7 +85,8 @@ type EventValue = string | number | boolean | EventItem[] | undefined;
 
 export function trackEvent(name: string, params?: Record<string, EventValue>) {
   initialize();
-  window.gtag("event", name, withTraffic(params));
+  if (blocked) return;
+  window.gtag("event", name, withTraffic(withoutPersonal(params)));
 }
 
 const once = new Set<string>();
@@ -75,6 +102,7 @@ export function trackPageView(page: string, title: string, pageType?: string) {
   if (lastPage === page) return;
 
   initialize();
+  if (blocked) return;
   lastPage = page;
   document.title = title;
   const params: Record<string, EventValue> = {
@@ -133,20 +161,35 @@ export function trackLogin(method: "google" | "email") {
   trackEvent("login", { method });
 }
 
+const recentActions = new Map<string, number>();
+
+function trackAction(name: string, key: string, params?: Record<string, EventValue>) {
+  const id = `${name}:${key}`;
+  const now = Date.now();
+  const previous = recentActions.get(id);
+  if (previous !== undefined && now - previous < 1000) return;
+  recentActions.set(id, now);
+  trackEvent(name, params);
+}
+
 export function trackPublish(template: { id: string; name: string }) {
-  trackEvent("publish", {
+  trackAction("publish", template.id, {
     template_id: template.id,
     template_name: template.name,
   });
 }
 
 export function trackShareWhatsApp(templateName?: string) {
-  trackEvent("share_whatsapp", templateName ? { template_name: templateName } : undefined);
+  trackAction("share_whatsapp", templateName || "invite", {
+    method: "whatsapp",
+    ...(templateName ? { template_name: templateName } : {}),
+  });
 }
 
 export function trackRsvpSubmit(response: "yes" | "no", template?: { id: string; name: string }) {
   trackEvent("rsvp_submit", {
     response,
+    page_type: "guest",
     ...(template ? { template_id: template.id, template_name: template.name } : {}),
   });
 }
@@ -174,7 +217,10 @@ export function trackPurchase(params: {
 }
 
 export function trackGuestCtaClick(templateName?: string) {
-  trackEvent("guest_cta_click", templateName ? { template_name: templateName } : undefined);
+  trackEvent("guest_cta_click", {
+    page_type: "guest",
+    ...(templateName ? { template_name: templateName } : {}),
+  });
 }
 
 export function isInternalTraffic() {

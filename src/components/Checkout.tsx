@@ -332,6 +332,8 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled }:
         trackEvent("begin_checkout", {
           currency: "INR",
           value: 0,
+          template_id: template.id,
+          template_name: template.name,
           items: checkoutItems(0),
         });
         await onPurchased(applied?.code);
@@ -370,6 +372,8 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled }:
         trackEvent("begin_checkout", {
           currency: "INR",
           value: total,
+          template_id: template.id,
+          template_name: template.name,
           items: checkoutItems(total),
         });
       }

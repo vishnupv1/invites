@@ -45,6 +45,7 @@ const allowedKeys = new Set([
   "coupon",
   "error_code",
   "method",
+  "response",
 ]);
 
 function assertAllowed(payload, label) {
@@ -121,6 +122,41 @@ test("tracked events follow the funnel rules and stay free of personal fields", 
   analytics.trackSignUp("email");
   analytics.trackLogin("email");
   analytics.trackPublish({ id: "gazal", name: "Gazal" });
+  analytics.trackPublish({ id: "gazal", name: "Gazal" });
+  assert.equal(named("event", "publish").length, 1);
+
+  analytics.trackShareWhatsApp("Gazal");
+  analytics.trackShareWhatsApp("Gazal");
+  assert.equal(named("event", "share_whatsapp").length, 1);
+  assert.equal(named("event", "share_whatsapp")[0][2].method, "whatsapp");
+
+  analytics.trackRsvpSubmit("yes", { id: "hansa", name: "Hansa" });
+  assert.equal(named("event", "rsvp_submit")[0][2].page_type, "guest");
+  analytics.trackGuestCtaClick("Hansa");
+  assert.equal(named("event", "guest_cta_click")[0][2].page_type, "guest");
+
+  analytics.trackEvent("begin_checkout", {
+    email: "host@example.com",
+    phone: "9999999999",
+    name: "Host",
+    template_id: "hansa",
+    template_name: "Hansa",
+    currency: "INR",
+    value: 499,
+  });
+  const checkout = named("event", "begin_checkout").at(-1)[2];
+  assert.equal(checkout.email, undefined);
+  assert.equal(checkout.phone, undefined);
+  assert.equal(checkout.name, undefined);
+  assert.equal(checkout.template_id, "hansa");
 
   for (const entry of named("event")) assertAllowed(entry[2], entry[1]);
+});
+
+test("analytics stays off for headless browsers and crawlers", () => {
+  assert.equal(analytics.shouldLoadAnalytics({ webdriver: true, userAgent: "Mozilla/5.0 Chrome" }), false);
+  assert.equal(analytics.shouldLoadAnalytics({ userAgent: "Mozilla/5.0 HeadlessChrome" }), false);
+  assert.equal(analytics.shouldLoadAnalytics({ userAgent: "Mozilla/5.0 (compatible; Googlebot/2.1)" }), false);
+  assert.equal(analytics.shouldLoadAnalytics({ userAgent: "Mozilla/5.0 Chrome Lighthouse" }), false);
+  assert.equal(analytics.shouldLoadAnalytics({ userAgent: "Mozilla/5.0 Chrome" }), true);
 });
