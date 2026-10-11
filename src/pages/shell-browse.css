@@ -162,19 +162,25 @@
 
 @media (min-width: 900px) {
   .ir-browse {
-    min-height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background: var(--paper);
   }
 
   .ir-browse .ir-nav {
     display: flex;
+    flex: 0 0 auto;
     border-bottom: 1px solid var(--line);
   }
 
   .ir-browse-body {
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr);
-    min-height: calc(100vh - 72px);
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .ir-browse-mobilebar {
@@ -185,6 +191,8 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-height: 0;
+    overflow: auto;
     padding: 36px 28px 40px 56px;
     border-right: 1px solid var(--line);
   }
@@ -227,6 +235,8 @@
   .ir-browse-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 32px 20px;
+    min-height: 0;
+    overflow: auto;
     padding: 32px 40px 56px 28px;
   }
 }

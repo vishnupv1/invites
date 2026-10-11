@@ -40,7 +40,7 @@ function ScrollToTop() {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-    document.querySelectorAll(".rsvp-main, .ir-detail-scroll").forEach((node) => {
+    document.querySelectorAll(".rsvp-main, .ir-detail-scroll, .ir-browse-grid").forEach((node) => {
       if (node instanceof HTMLElement) node.scrollTop = 0;
     });
   }, [pathname]);
