@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AdminLogin } from "./AdminLogin";
 import { adminSummary, getToken, signOut, type AdminSummary } from "../api";
 import { Brand } from "../components/Brand";
+import { Logo } from "../components/shell/Logo";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { EVENTS } from "../data/events";
 import { TEMPLATES } from "../data/templates";
@@ -133,7 +134,7 @@ export function Admin() {
     <div className="console">
       <header className="adm-bar">
         <div>
-          <img className="brand-name" src="/brand/wordmark.png" alt="InvitesReady" />
+          <Logo linked={false} />
           <span className="adm-badge">Admin</span>
         </div>
         <div className="adm-avatar" aria-hidden="true">{initials(data.admin.name)}</div>

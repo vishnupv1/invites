@@ -1,0 +1,232 @@
+.ir-browse-mobilebar {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  background: var(--paper);
+}
+
+.ir-browse-search {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--ink);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.ir-browse-tabs {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ir-browse-tabs button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 0 10px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--soft);
+  font-family: var(--ir-sans);
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.ir-browse-tabs button.is-on {
+  color: var(--ink);
+  border-bottom-color: var(--marigold);
+}
+
+.ir-browse-query {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 20px 12px;
+}
+
+.ir-browse-side .ir-browse-query {
+  padding: 12px 0 0;
+}
+
+.ir-browse-query input {
+  min-height: 44px;
+  border: 0 !important;
+  border-bottom: 1.5px solid var(--line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--ink);
+  font-family: var(--ir-display);
+  font-size: 20px;
+}
+
+.ir-browse-query input:focus {
+  outline: none;
+  border-bottom-color: var(--emerald);
+}
+
+.ir-browse-side {
+  display: none;
+}
+
+.ir-browse-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 14px;
+  align-items: start;
+  min-width: 0;
+  padding: 18px 20px 40px;
+}
+
+.ir-browse-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ir-browse-shot {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #ebe4d6;
+}
+
+.ir-browse-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.ir-browse-card.is-current .ir-browse-shot {
+  box-shadow: 0 0 0 2px var(--marigold);
+}
+
+.ir-browse-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 800;
+}
+
+.ir-browse-name span {
+  min-width: 0;
+}
+
+.ir-browse-name b {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--marigold-light);
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.ir-browse-desc {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.ir-browse-empty {
+  grid-column: 1 / -1;
+  color: var(--soft);
+}
+
+.ir-browse .ir-nav {
+  display: none;
+}
+
+.ir-browse-lead {
+  margin: 8px 0 18px;
+  color: var(--soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+@media (min-width: 900px) {
+  .ir-browse {
+    min-height: 100vh;
+    background: var(--paper);
+  }
+
+  .ir-browse .ir-nav {
+    display: flex;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ir-browse-body {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: calc(100vh - 72px);
+  }
+
+  .ir-browse-mobilebar {
+    display: none;
+  }
+
+  .ir-browse-side {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 36px 28px 40px 56px;
+    border-right: 1px solid var(--line);
+  }
+
+  .ir-browse-side h1 {
+    margin: 0;
+    font-size: 56px;
+    line-height: 0.95;
+  }
+
+  .ir-browse-side-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+
+  .ir-browse-side-list button {
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--soft);
+    font-family: var(--ir-sans);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .ir-browse-side-list button[aria-pressed="true"] {
+    width: 100%;
+    padding: 0 16px;
+    border-radius: 14px;
+    background: var(--emerald);
+    color: #fffdf8;
+    text-align: left;
+  }
+
+  .ir-browse-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px 20px;
+    padding: 32px 40px 56px 28px;
+  }
+}

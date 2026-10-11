@@ -114,6 +114,10 @@ export function trackPageView(page: string, title: string, pageType?: string) {
   window.gtag("event", "page_view", withTraffic(params));
 }
 
+export function trackNamesEntered() {
+  trackOnce("names_entered_landing", "landing");
+}
+
 export function trackTemplatePreview(template: { id: string; name: string }) {
   trackOnce("template_preview", template.id, {
     template_id: template.id,

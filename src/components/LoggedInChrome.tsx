@@ -6,6 +6,7 @@ import { TEMPLATES } from "../data/templates";
 import { useFavs } from "../lib/favorites";
 import { useSession } from "../session";
 import { useLibrary } from "../state";
+import { Logo } from "./shell/Logo";
 import type { EventId, Template } from "../types";
 import "../pages/studio.css";
 import "../pages/logged-in.css";
@@ -31,24 +32,6 @@ function initialsOf(name: string) {
     .map((word) => word[0])
     .join("")
     .toUpperCase();
-}
-
-function Mark() {
-  return (
-    <svg className="li-mark" viewBox="0 0 512 512" aria-hidden="true">
-      <defs>
-        <linearGradient id="lgv4" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#8FB9A0" />
-          <stop offset=".4" stopColor="#6F9A82" />
-          <stop offset=".7" stopColor="#1C3A2A" />
-          <stop offset="1" stopColor="#1C3A2A" />
-        </linearGradient>
-      </defs>
-      <rect width="512" height="512" rx="132" fill="url(#lgv4)" />
-      <path d="M256 244 C256 244 176 182 176 140 C176 110 199 90 225 90 C242 90 252 101 256 110 C260 101 270 90 287 90 C313 90 336 110 336 140 C336 182 256 244 256 244 Z" fill="#FFFFFF" />
-      <path d="M104 236 L256 348 L408 236" fill="none" stroke="#FFFFFF" strokeWidth="58" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
 }
 
 export function LoggedInChrome() {
@@ -137,10 +120,7 @@ export function LoggedInChrome() {
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
-          <Link className="li-logo" to="/studio" aria-label="InvitesReady home">
-            <Mark />
-            <span>invitesready</span>
-          </Link>
+          <Logo to="/studio" />
         </div>
 
         <nav className="li-cats" aria-label="Categories">

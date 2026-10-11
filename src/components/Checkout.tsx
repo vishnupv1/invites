@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
-import { Check, Lock, Tag } from "lucide-react";
 import { createPaymentOrder, ensureSession, getToken, inspectPaymentAttempt, listPendingPayments, verifyCoupon, verifyPayment, type RazorpayPayment } from "../api";
-import { Brand } from "./Brand";
+import { ArrowIcon, BackIcon, LockIcon } from "./shell/marks";
 import { Spinner } from "./Loader";
 import { trackEvent, trackPaymentOutcome, trackPurchase } from "../lib/analytics";
 import { claimCallback, safeErrorCode } from "../lib/funnel-events";
@@ -21,6 +19,7 @@ import {
 import { useSession } from "../session";
 import type { Template } from "../types";
 import "./checkout.css";
+import "./checkout-shell.css";
 
 type RazorpayFailure = { error?: { description?: string; reason?: string; code?: string } };
 
@@ -108,7 +107,6 @@ function loadRazorpay() {
   return razorpayScript;
 }
 
-const OFFERS = [{ code: "WELCOME26", detail: "This template is free" }];
 const RECOVERY = "Payment received. Finish unlocking this design. You will not be charged again.";
 const RESUME = "A checkout is already open for this design. Continue with the same order. You will only be charged if you complete the payment.";
 
@@ -135,16 +133,16 @@ type Props = {
   onClose: () => void;
   onPurchased: (coupon?: string, payment?: RazorpayPayment) => Promise<void>;
   onEntitled: (coupon?: string) => Promise<void>;
+  onAlreadyOwned?: () => void;
 };
 
-export function Checkout({ template, detail, onClose, onPurchased, onEntitled }: Props) {
+export function Checkout({ template, detail, onClose, onPurchased, onEntitled, onAlreadyOwned }: Props) {
   const { host, signedIn } = useSession();
   const [name, setName] = useState(host?.name ?? "");
   const [email, setEmail] = useState(host?.email ?? "");
   const [phone, setPhone] = useState("");
   const [coupon, setCoupon] = useState("");
   const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null);
-  const [offersOpen, setOffersOpen] = useState(false);
   const [checking, setChecking] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -200,6 +198,10 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled }:
         if (cancel) return;
         const status = requestStatus(reason);
         const message = reason instanceof Error ? reason.message : "Could not check that payment.";
+        if (onAlreadyOwned && /already own/i.test(message)) {
+          onAlreadyOwned();
+          return;
+        }
         if (status === 503) {
           setServerHold({ kind: "wait", message });
           setError(message);
@@ -243,7 +245,6 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled }:
       const result = await verifyCoupon(code);
       setCoupon("");
       setApplied({ code: result.code, percent: result.percent ?? 100 });
-      setOffersOpen(false);
       setError("");
     } catch (reason) {
       setApplied(null);
@@ -419,6 +420,10 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled }:
           setCaptured(null);
         }
         const message = reason instanceof Error ? reason.message : "Could not complete the purchase.";
+        if (onAlreadyOwned && /already own/i.test(message)) {
+          onAlreadyOwned();
+          return;
+        }
         if (message) setError(message);
       }
     } finally {
@@ -427,162 +432,138 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled }:
     }
   }
 
+  const couponRow = applied ? (
+    <div className="ck-applied">
+      <span>
+        <strong>{applied.code} applied</strong>
+        <small>You save {rupees(saved)}</small>
+      </span>
+      <button type="button" onClick={() => setApplied(null)}>Remove</button>
+    </div>
+  ) : (
+    <>
+      <div className="ck-coupon">
+        <input
+          value={coupon}
+          onChange={(event) => {
+            setCoupon(event.target.value.toUpperCase());
+            setCouponError("");
+          }}
+          placeholder="Have a coupon code?"
+          autoComplete="off"
+          aria-label="Coupon code"
+          aria-invalid={couponError ? true : undefined}
+          className={couponError ? "is-bad" : undefined}
+        />
+        <button type="button" onClick={() => void applyCoupon()} disabled={checking}>
+          {checking ? "…" : "Apply"}
+        </button>
+      </div>
+      {couponError ? <p className="ck-alert" role="alert">{couponError}</p> : null}
+    </>
+  );
+
+  const payLabel = submitting
+    ? (captured || serverHold?.kind === "captured" || serverHold?.kind === "completed" ? "Finishing…" : "Opening Razorpay…")
+    : serverHold?.kind === "support"
+      ? "Contact support"
+      : serverHold?.kind === "wait"
+        ? "Check again"
+        : captured || serverHold?.kind === "captured" || serverHold?.kind === "completed"
+          ? "Finish unlocking"
+          : serverHold?.kind === "unpaid"
+            ? "Continue payment"
+            : total
+              ? `Pay ${rupees(total)}`
+              : "Unlock template";
+
   return (
-    <div className="co-screen">
-      <header className="co-head">
-        <Brand />
-        <ol className="co-steps" aria-label="Checkout progress">
-          {["Design", "Details", "Payment"].map((label, index) => (
-            <li key={label} className="co-step-wrap" style={{ display: "contents" }}>
-              <span className={index === 2 ? "co-step is-now" : "co-step"}>
-                <span className="co-dot" aria-hidden="true">{index === 2 ? "3" : <Check size={14} strokeWidth={2.6} />}</span>
-                {label}
-              </span>
-              {index < 2 ? <span className="co-bar" aria-hidden="true" /> : null}
-            </li>
-          ))}
-        </ol>
-        <span className="co-secure">
-          <Lock size={16} strokeWidth={2.2} aria-hidden="true" />
-          Secure checkout
-        </span>
+    <form className="ck" onSubmit={(event) => void submit(event)}>
+      <header className="ck-bar">
+        <button type="button" className="ck-back" aria-label="Back" onClick={onClose}><BackIcon /></button>
+        <div className="ck-title">
+          <h1>Checkout</h1>
+          <small>Review & pay</small>
+        </div>
+        <p className="ck-crumb">Preview <span>/</span> Sign in <span>/</span> <b>Checkout</b></p>
+        <span className="ck-secure"><LockIcon /> Secure checkout</span>
       </header>
 
-      <form className="co-main" onSubmit={(event) => void submit(event)}>
-        <div className="co-pin">
-          <h1>Checkout</h1>
-          <section className="co-card">
-            <div className="co-item">
-              <img src={`/covers/${template.id}.jpg`} alt="" />
-              <div>
-                <strong>{template.name}</strong>
-                {detail ? <small>{detail}</small> : null}
-                <button type="button" className="co-edit" onClick={onClose}>Edit design</button>
-              </div>
-              <span className="co-price">{rupees(listPrice)}</span>
-            </div>
-            <span className="co-note">One-time payment · RSVP tracking · no watermark · yours to share forever</span>
-          </section>
+      <div className="ck-body">
+        <div className="ck-copy">
+          <p className="ck-kicker">Almost there</p>
+          <h2>Checkout</h2>
+          <p className="ck-sub">{email.trim() ? `Signed in as ${email.trim()}` : "Sign-in details"}. Your invitation goes live the moment you pay.</p>
+          <div className="ck-fields">
+            <label>
+              Full name
+              <input className={fieldErrors.name ? "is-bad" : undefined} value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" placeholder="Your name" />
+              {fieldErrors.name ? <small>{fieldErrors.name}</small> : null}
+            </label>
+            <label>
+              Email
+              <input className={fieldErrors.email ? "is-bad" : undefined} type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="you@example.com" />
+              {fieldErrors.email ? <small>{fieldErrors.email}</small> : null}
+            </label>
+            <label>
+              WhatsApp number
+              <input className={fieldErrors.phone ? "is-bad" : undefined} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" placeholder="+91" />
+              {fieldErrors.phone ? <small>{fieldErrors.phone}</small> : null}
+            </label>
+          </div>
+          <div className="ck-desk-coupon">
+            <p className="ck-label">Coupon</p>
+            {couponRow}
+          </div>
+          <p className="ck-label">Pay with<span className="ck-hint">chosen on the next step</span></p>
+          <div className="ck-methods">
+            <div><b>UPI</b><small>GPay, PhonePe, Paytm</small></div>
+            <div><b>Card</b><small>Visa, Mastercard, RuPay</small></div>
+            <div><b>Netbanking</b><small>All major banks</small></div>
+          </div>
+          <p className="ck-label">What you get</p>
+          <ul className="ck-gets">
+            <li>Unlimited guests</li>
+            <li>RSVP on the invitation</li>
+            <li>One link to share</li>
+            <li>Free edits forever</li>
+          </ul>
         </div>
 
-        <div className="co-scroll">
-          <section className="co-card co-details">
-            <h2>Your details</h2>
-            <div className="co-fields">
-              <label className="co-field">
-                <span>Full name</span>
-                <input className={fieldErrors.name ? "is-bad" : undefined} value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" placeholder="Your name" />
-                {fieldErrors.name ? <small>{fieldErrors.name}</small> : null}
-              </label>
-              <label className="co-field">
-                <span>Email</span>
-                <input className={fieldErrors.email ? "is-bad" : undefined} type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="you@example.com" />
-                {fieldErrors.email ? <small>{fieldErrors.email}</small> : null}
-              </label>
-              <label className="co-field">
-                <span>WhatsApp number</span>
-                <input className={fieldErrors.phone ? "is-bad" : undefined} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" placeholder="+91" />
-                {fieldErrors.phone ? <small>{fieldErrors.phone}</small> : null}
-              </label>
+        <aside className="ck-receipt">
+          <div className="ck-card">
+          <div className="ck-item">
+            <img src={`/covers/${template.id}.jpg`} alt="" />
+            <div>
+              <b>{template.name}</b>
+              <small>{detail || "Your invitation"}</small>
             </div>
-            <span className="co-hint">Your receipt and invitation link will be sent here.</span>
-          </section>
-
-        <aside className="co-card co-aside">
-          <h2>Order summary</h2>
-          <div className="co-line">
-            <span>{template.name} template</span>
-            <b>{rupees(listPrice)}</b>
           </div>
-          {applied ? (
-            <div className="co-line">
-              <span>Coupon {applied.code}</span>
-              <b className="is-save">−{rupees(saved)}</b>
-            </div>
-          ) : null}
-
-          <div className={applied ? "co-coupon is-on" : "co-coupon"}>
-            {applied ? (
-              <div className="co-applied">
-                <span className="co-tag"><Tag size={18} strokeWidth={2.4} aria-hidden="true" /></span>
-                <span>
-                  <strong>{applied.code} applied</strong>
-                  <small>You save {rupees(saved)}</small>
-                </span>
-                <button type="button" className="co-remove" onClick={() => setApplied(null)}>Remove</button>
-              </div>
-            ) : (
-              <>
-                <label className="co-field">
-                  <span>Have a coupon code?</span>
-                  <span className="co-code">
-                    <input
-                      value={coupon}
-                      onChange={(event) => {
-                        setCoupon(event.target.value.toUpperCase());
-                        setCouponError("");
-                      }}
-                      placeholder="Enter code"
-                      autoComplete="off"
-                      aria-invalid={couponError ? true : undefined}
-                      className={couponError ? "is-bad" : undefined}
-                    />
-                    <button type="button" className="co-apply" onClick={() => void applyCoupon()} disabled={checking}>
-                      {checking ? <Spinner tone="paper" /> : "Apply"}
-                    </button>
-                  </span>
-                </label>
-                {couponError ? <span className="co-alert" role="alert">{couponError}</span> : null}
-                <button type="button" className="co-offers-toggle" aria-expanded={offersOpen} onClick={() => setOffersOpen((open) => !open)}>
-                  {offersOpen ? "Hide offers" : `View available offers (${OFFERS.length})`}
-                </button>
-                {offersOpen ? (
-                  <div className="co-offers">
-                    {OFFERS.map((offer) => (
-                      <div className="co-offer" key={offer.code}>
-                        <div>
-                          <b>{offer.code}</b>
-                          <small>{offer.detail}</small>
-                        </div>
-                        <button type="button" className="co-use" onClick={() => void applyCoupon(offer.code)}>Apply</button>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </>
-            )}
+          <div className="ck-lines">
+            <div><span>Template</span><span>{rupees(listPrice)}</span></div>
+            {applied ? <div><span>Coupon {applied.code}</span><span>− {rupees(saved)}</span></div> : null}
+            <div className="is-soft"><span>GST included</span><span>{rupees(total * 18 / 118)}</span></div>
+            <div className="is-total"><span>Total</span><span>{rupees(total)}</span></div>
           </div>
-
-          <div className="co-total">
-            <span>Total</span>
-            <b>{rupees(total)}</b>
           </div>
-          <span className="co-gst">Includes {rupees(total * 18 / 118)} GST · one-time payment</span>
-          {error ? <span className="co-alert" role="alert">{error}</span> : null}
-          <button type="submit" className="co-pay" disabled={submitting || serverHold?.kind === "support"}>
-            {submitting ? <Spinner tone="paper" /> : null}
-            {submitting
-              ? (captured || serverHold?.kind === "captured" || serverHold?.kind === "completed" ? "Finishing…" : "Opening Razorpay…")
-              : serverHold?.kind === "support"
-                ? "Contact support"
-                : serverHold?.kind === "wait"
-                  ? "Check again"
-                  : captured || serverHold?.kind === "captured" || serverHold?.kind === "completed"
-                    ? "Finish unlocking"
-                    : serverHold?.kind === "unpaid"
-                      ? "Continue payment"
-                      : total
-                        ? `Pay ${rupees(total)} securely`
-                        : "Unlock template"}
+          <div className="ck-edge" aria-hidden="true" />
+          <div className="ck-mobile-coupon">{couponRow}</div>
+          <button type="submit" className="ck-pay ck-pay-desk" disabled={submitting || serverHold?.kind === "support"}>
+            <span>{submitting ? <Spinner tone="paper" /> : null}{payLabel}</span>
+            <b aria-hidden="true"><ArrowIcon /></b>
           </button>
-          <div className="co-trust">
-            <span><Check size={16} strokeWidth={2.4} color="#2E8B57" aria-hidden="true" />Pay securely with Razorpay: UPI, cards, netbanking & wallets</span>
-            <span><Check size={16} strokeWidth={2.4} color="#2E8B57" aria-hidden="true" /><Link to="/refunds">7-day refund</Link> if you haven’t shared the invite</span>
-            <span><Check size={16} strokeWidth={2.4} color="#2E8B57" aria-hidden="true" />GST invoice emailed instantly</span>
-          </div>
+          <p className="ck-trust"><span>Razorpay secure</span><span>Live instantly</span><span>Free edits</span></p>
+          {error ? <p className="ck-alert" role="alert">{error}</p> : null}
         </aside>
-        </div>
-      </form>
-    </div>
+      </div>
+
+      <footer className="ck-foot">
+        <button type="submit" className="ck-pay" disabled={submitting || serverHold?.kind === "support"}>
+          <span>{submitting ? <Spinner tone="paper" /> : null}{payLabel}</span>
+          <b aria-hidden="true"><ArrowIcon /></b>
+        </button>
+        <p>UPI · Cards · Netbanking · Wallets</p>
+      </footer>
+    </form>
   );
 }

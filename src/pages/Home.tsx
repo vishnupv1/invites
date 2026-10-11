@@ -1,597 +1,255 @@
-import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { PublicHeader } from "../components/PublicHeader";
-import { useFonts } from "../lib/fonts";
-import { getTemplate, designCtaLabel } from "../data/templates";
-import "./landing.css";
+import { InviteView } from "../components/InviteView";
+import { DesktopNav } from "../components/shell/DesktopNav";
+import { IrApp } from "../components/shell/IrApp";
+import { PhoneFrame } from "../components/shell/PhoneFrame";
+import { PrimaryButton } from "../components/shell/PrimaryButton";
+import { StickyFooterCTA } from "../components/shell/StickyFooterCTA";
+import { TemplatePreview } from "../components/shell/TemplatePreview";
+import { UnderlineField } from "../components/shell/UnderlineField";
+import { ArrowIcon } from "../components/shell/marks";
+import { listTemplates } from "../api";
+import { TEMPLATES, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
+import { trackNamesEntered } from "../lib/analytics";
+import { saveCoupleNames } from "../lib/couple-names";
+import type { Template } from "../types";
+import "./shell-home.css";
 
-const PLACEHOLDERS = [
-  "Aarav & Riya’s wedding · 14 Feb · Munnar",
-  "Aadi turns 5 · superhero party · Kochi",
-  "Meera & Dev’s engagement · sunset terrace",
-  "Our housewarming · Sunday brunch",
-] as const;
-
-const CHIPS = [
-  ["Wedding", "Aarav & Riya’s wedding · 14 Feb · Munnar"],
-  ["Birthday", "Aadi turns 5 · superhero party · Kochi"],
-  ["Engagement", "Meera & Dev’s engagement · sunset terrace"],
-  ["Baby shower", "Baby Sara’s naming ceremony · Thrissur"],
-  ["Housewarming", "Our housewarming · Sunday brunch"],
-] as const;
-
-type Design = { id: string; name: string; kicker: string; cover: string };
-type PickCard = Design & { category: string };
-
-const SETS: Record<"wedding" | "birthday" | "baby" | "home", PickCard[]> = {
-  wedding: [
-    { id: "peace", name: "Peace", kicker: "PEACE · GIFT BOX", cover: "/covers/peace.jpg", category: "Wedding" },
-    { id: "shaadi", name: "Shaadi", kicker: "SHAADI · VEIL", cover: "/covers/shaadi.jpg", category: "Wedding" },
-    { id: "botanica", name: "Blush Botanica", kicker: "BLUSH BOTANICA", cover: "/covers/botanica.jpg", category: "Wedding" },
-  ],
-  birthday: [
-    { id: "inland", name: "Inland Letter", kicker: "INLAND LETTER", cover: "/covers/inland.jpg", category: "Birthday" },
-  ],
-  baby: [
-    { id: "baptism", name: "Little Blessing", kicker: "LITTLE BLESSING", cover: "/covers/baptism.jpg", category: "Baptism" },
-  ],
-  home: [
-    { id: "hearth", name: "Hearth", kicker: "HEARTH", cover: "/covers/hearth.jpg", category: "Housewarming" },
-  ],
-};
-
-const CARDS: Design[] = [
-  { id: "bloom", name: "Bloom Letter", kicker: "WEDDING · A SEALED LETTER", cover: "/covers/bloom.jpg" },
-  { id: "hansa", name: "Hansa", kicker: "WEDDING · MOONLIGHT LAKE", cover: "/covers/hansa.jpg" },
-  { id: "villa", name: "Villa Serena", kicker: "WEDDING · TUSCAN VILLA", cover: "/covers/villa.jpg" },
-  { id: "moonlit", name: "Moonlit Jharokha", kicker: "WEDDING · MOONLIT WINDOW", cover: "/covers/moonlit.jpg" },
-  { id: "palace", name: "Palace", kicker: "WEDDING · PAPER PALACE", cover: "/covers/palace.jpg" },
-  { id: "heavenly", name: "Enchanted Doors", kicker: "WEDDING · DOORS OF LIGHT", cover: "/covers/heavenly.jpg" },
-  { id: "grandoor", name: "The Grand Door", kicker: "WEDDING · CINEMATIC ENTRANCE", cover: "/covers/grandoor.jpg" },
-  { id: "grandenvelope", name: "The Sealed Invitation", kicker: "WEDDING · WAX SEAL", cover: "/covers/grandenvelope.jpg" },
-  { id: "pull", name: "Curtain Call", kicker: "WEDDING · PULL THE ROPE", cover: "/covers/pull.jpg" },
-  { id: "shaadi", name: "Shaadi", kicker: "WEDDING · VEIL REVEAL", cover: "/covers/shaadi.jpg" },
-  { id: "beach", name: "Sunset Shore", kicker: "BEACH · MESSAGE IN A BOTTLE", cover: "/covers/beach.jpg" },
-  { id: "inland", name: "Inland Letter", kicker: "BIRTHDAY · TEAR TO OPEN", cover: "/covers/inland.jpg" },
-  { id: "botanica", name: "Blush Botanica", kicker: "ENGAGEMENT · FLORAL FRAMES", cover: "/covers/botanica.jpg" },
-];
-
-const TILES = [
-  { k: "01 · OPENING", t: "Openings guests remember", d: "Doors, curtains, wax seals and gift boxes — every invitation opens like a short film.", stage: true },
-  { k: "02 · RSVP", t: "Every reply, live", d: "Headcount and messages in one dashboard. Guests reply from the invitation link.", stage: false },
-  { k: "03 · SHARE", t: "One link, everywhere", d: "WhatsApp, Instagram, email. No app, no login for guests.", stage: false },
-  { k: "04 · FUNCTIONS", t: "Haldi to reception", d: "Every function with its own time, venue and dress code.", stage: false },
-  { k: "05 · LANGUAGE", t: "Your language", d: "English, Malayalam, Hindi and Tamil — mixed as you like.", stage: false },
-  { k: "06 · PRICING", t: "Pay once, from ₹299", d: "Design and preview free. Pay only when you publish — no subscription.", stage: false },
-] as const;
+const FEATURED = ["bloom", "hansa", "moonlit", "palace", "villa", "grandoor"];
 
 const STEPS = [
-  ["01 — DESCRIBE", "Tell us the moment", "Names, date, place — one sentence is enough to start."],
-  ["02 — PERSONALISE", "Make it yours", "Pick a design, add photos, functions and music. See it live."],
-  ["03 — SHARE", "Send one link", "Publish, share on WhatsApp and watch replies arrive."],
-] as const;
-
-const FAQS = [
-  ["Do guests need an app?", "No. They tap your link on WhatsApp and the invitation opens instantly in their browser."],
-  ["When do I pay?", "Only when you publish. Describing, designing and previewing are free."],
-  ["Can I add every function?", "Yes — Haldi, Mehendi, Sangeet, wedding and reception, each with its own details."],
-  ["Can I edit after sharing?", "Anytime. Your link stays the same and guests always see the latest version."],
-  ["Which languages work?", "English, Malayalam, Hindi and Tamil — mix them on one invitation."],
-] as const;
-
-const LOG = ["Reading your celebration…", "Matching designs to the mood…", "Writing your invitation…"] as const;
-
-const GLINTS = Array.from({ length: 22 }, (_, i) => ({
-  left: (i * 41 + 7) % 94,
-  top: (i * 29 + 5) % 82,
-  size: 8 + (i % 4) * 4,
-  color: ["#8FB9A0", "#C5E0D2", "#1C3A2A", "#B7D4C4"][i % 4],
-  delay: `${i * 0.37}s`,
-  dur: `${2.2 + (i % 5) * 0.5}s`,
-}));
-
-const SHOOTS = [
-  { x: 78, y: 8, delay: "0s" },
-  { x: 92, y: 26, delay: "3.5s" },
-  { x: 64, y: 4, delay: "7s" },
+  ["01", "Pick a design", "Choose an opening. You can try it before you create an account."],
+  ["02", "Add your details", "Names, functions, photos and music. The preview updates as you type."],
+  ["03", "Publish and share", "Pay when you publish, then send one link. Guests open it in the browser."],
 ];
 
-const DUST = Array.from({ length: 14 }, (_, i) => ({
-  left: (i * 37 + 11) % 96,
-  top: 30 + ((i * 23) % 60),
-  size: 2 + (i % 3),
-  color: i % 3 ? "#C5E0D2" : "#8FB9A0",
-  delay: `${i * 0.6}s`,
-  dur: `${6 + (i % 5)}s`,
-}));
+const FAQS = [
+  ["Do guests need an app?", "No. They open your link in the browser and can reply from that page."],
+  ["When do I pay?", "When you publish. Designing and previewing do not need an account."],
+  ["Can I edit after sharing?", "Yes. The link stays the same, and guests see the latest version."],
+];
 
-const SPARKS = [
-  [14, 30, 4],
-  [86, 22, 3],
-  [92, 70, 5],
-  [8, 74, 3],
-  [50, 6, 3],
-  [62, 94, 4],
-] as const;
-
-const DOOR_SPARKS = [
-  [22, 20, 12],
-  [78, 18, 9],
-  [84, 52, 14],
-  [16, 56, 8],
-  [30, 78, 10],
-  [70, 80, 8],
-] as const;
-
-const KINDS = [
-  ["Doors", "M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M12 3v18M9 12h.01M15 12h.01"],
-  ["Curtains", "M3 3h18M5 3c0 8 2 14 6 18M19 3c0 8-2 14-6 18"],
-  ["Wax seal", "M12 3l2.4 2.1 3.1-.4.7 3.1 2.7 1.6-1.3 2.9 1.3 2.9-2.7 1.6-.7 3.1-3.1-.4L12 21l-2.4-2.1-3.1.4-.7-3.1-2.7-1.6 1.3-2.9-1.3-2.9 2.7-1.6.7-3.1 3.1.4z"],
-  ["Gift box", "M3 8h18v4H3zM5 12v9h14v-9M12 8v13M12 8c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"],
-] as const;
-
-const FOOTER = [
-  {
-    h: "PRODUCT",
-    links: [
-      { label: "Templates", to: "/browse" },
-      { label: "Pricing", to: "/#pricing" },
-      { label: "How it works", to: "/how" },
-    ],
-  },
-  {
-    h: "OCCASIONS",
-    links: [
-      { label: "Weddings", to: "/wedding" },
-      { label: "Birthdays", to: "/birthday" },
-      { label: "Baby & kids", to: "/baby-shower" },
-    ],
-  },
-  {
-    h: "COMPANY",
-    links: [
-      { label: "Contact", to: "/contact" },
-      { label: "Terms", to: "/terms" },
-      { label: "Privacy", to: "/privacy" },
-    ],
-  },
-] as const;
-
-function occasionOf(query: string) {
-  if (/birthday|turns|bday/i.test(query)) return "birthday" as const;
-  if (/baby|baptism|naming|shower/i.test(query)) return "baby" as const;
-  if (/house|home/i.test(query)) return "home" as const;
-  return "wedding" as const;
+function rupee(amount: number) {
+  return `₹${amount.toLocaleString("en-IN")}`;
 }
 
-function useWide() {
-  const [wide, setWide] = useState(false);
+function lowestPaid(templates: Template[]) {
+  const prices = templates.map((item) => item.price).filter((price) => price > 0);
+  return prices.length ? Math.min(...prices) : 0;
+}
+
+function descriptor(template: Template) {
+  const line = template.description.split(".")[0]?.trim() ?? template.tagline;
+  return line.length > 48 ? `${line.slice(0, 46).trim()}…` : line;
+}
+
+function HeroPhone({ template, className = "" }: { template: Template; className?: string }) {
+  const frame = useRef<HTMLDivElement>(null);
+  const [take, setTake] = useState(0);
+
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 960px)");
-    const apply = () => setWide(query.matches);
-    apply();
-    query.addEventListener("change", apply);
-    return () => query.removeEventListener("change", apply);
-  }, []);
-  return wide;
-}
+    const root = frame.current;
+    if (!root) return;
+    let play = 0;
+    let again = 0;
+    let tries = 0;
+    const attempt = () => {
+      const opener = [...root.querySelectorAll("button")].find((button) => {
+        const label = button.getAttribute("aria-label") ?? "";
+        return /^(break the seal|open invitation|open the invitation|tear open|untie the ribbon|light the lantern|pull the rope|open the doors|enter the invitation|lift the veil|open the door|open your gift)/i.test(label);
+      });
+      if (!opener) {
+        if (tries < 30) {
+          tries += 1;
+          play = window.setTimeout(attempt, 40);
+        }
+        return;
+      }
+      opener.click();
+      again = window.setTimeout(() => setTake((value) => value + 1), 3000);
+    };
+    play = window.setTimeout(attempt, 40);
+    return () => {
+      window.clearTimeout(play);
+      window.clearTimeout(again);
+    };
+  }, [take, template.id]);
 
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => setReduced(query.matches);
-    apply();
-    query.addEventListener("change", apply);
-    return () => query.removeEventListener("change", apply);
-  }, []);
-  return reduced;
-}
-
-function Spark({ size, color }: { size: number; color: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 20 20" aria-hidden="true">
-      <path d="M10 0C10.8 6 14 9.2 20 10C14 10.8 10.8 14 10 20C9.2 14 6 10.8 0 10C6 9.2 9.2 6 10 0Z" fill={color} />
-    </svg>
-  );
-}
-
-function Emblem({ id }: { id: string }) {
-  return (
-    <svg viewBox="0 0 120 120" aria-hidden="true">
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#E7F4EC" />
-          <stop offset=".5" stopColor="#8FB9A0" />
-          <stop offset="1" stopColor="#1C3A2A" />
-        </linearGradient>
-      </defs>
-      <path d="M60 52C60 52 42 38 42 28C42 21 47 16 53 16C57 16 59 19 60 21C61 19 63 16 67 16C73 16 78 21 78 28C78 38 60 52 60 52Z" fill={`url(#${id})`} />
-      <path d="M18 50L60 80L102 50" fill="none" stroke={`url(#${id})`} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="14" y="44" width="92" height="62" rx="14" fill="none" stroke="rgba(28,58,42,.35)" strokeWidth="2" />
-    </svg>
+    <div ref={frame} className={`ir-hero-phone${className ? ` ${className}` : ""}`}>
+      <PhoneFrame label={`${template.name} preview`}>
+        <div aria-hidden="true">
+          <TemplatePreview label={`${template.name} preview`} radius={34} interactive>
+            <InviteView key={take} template={template} fields={sampleFor(template, template.events[0])} live />
+          </TemplatePreview>
+        </div>
+      </PhoneFrame>
+    </div>
   );
 }
 
 export function Home({ focus }: { focus?: string }) {
-  useFonts("Geist", "Geist Mono");
-  const wide = useWide();
-  const reduced = useReducedMotion();
-  const { hash } = useLocation();
   const navigate = useNavigate();
-  const drag = useRef({ x: 0, active: false });
-  const swiped = useRef(false);
-  const [query, setQuery] = useState("");
-  const [ph, setPh] = useState(0);
-  const [mode, setMode] = useState<"idle" | "working" | "done">("idle");
-  const [faq, setFaq] = useState(0);
-  const [ci, setCi] = useState(1);
-  const [sample, setSample] = useState(false);
+  const { hash } = useLocation();
+  const [names, setNames] = useState("");
+  const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
 
   useEffect(() => {
-    const previous = document.body.style.background;
-    document.body.style.background = "#F4F8F5";
-    return () => {
-      document.body.style.background = previous;
-    };
+    listTemplates()
+      .then((rows) => setCatalog(rows.map(withCatalogMeta)))
+      .catch(() => setCatalog(TEMPLATES));
   }, []);
 
   useEffect(() => {
     const id = focus === "occasions" ? "templates" : focus || hash.replace(/^#/, "");
     if (!id) return;
     document.getElementById(id)?.scrollIntoView({ block: "start" });
-  }, [focus, hash]);
+  }, [focus, hash, catalog]);
 
-  useEffect(() => {
-    if (reduced || mode !== "idle") return;
-    const id = window.setInterval(() => setPh((value) => (value + 1) % PLACEHOLDERS.length), 2600);
-    return () => window.clearInterval(id);
-  }, [reduced, mode]);
+  const byId = new Map(catalog.map((item) => [item.id, item]));
+  const featured = FEATURED.map((id) => byId.get(id) ?? getTemplate(id)).filter((item): item is Template => Boolean(item));
+  const lead = featured[0] ?? catalog[0];
+  const second = featured[1];
+  const from = lowestPaid(catalog);
+  const namesInMarquee = catalog.map((item) => item.name);
 
-  useEffect(() => {
-    if (reduced) return;
-    const id = window.setInterval(() => {
-      setCi((value) => (value + 1) % CARDS.length);
-    }, 3200);
-    return () => window.clearInterval(id);
-  }, [reduced, ci]);
-
-  useEffect(() => {
-    if (mode !== "working") return;
-    const id = window.setTimeout(() => setMode("done"), reduced ? 400 : 2800);
-    return () => window.clearTimeout(id);
-  }, [mode, reduced]);
-
-  function go(text?: string) {
-    const typed = (text ?? query).trim();
-    setSample(!typed);
-    setQuery(typed || PLACEHOLDERS[0]);
-    setMode("working");
-  }
-
-  function onSubmit(event: FormEvent) {
+  function onNames(event: FormEvent) {
     event.preventDefault();
-    go();
-  }
-
-  function choose(index: number) {
-    if (swiped.current) {
-      swiped.current = false;
-      return;
+    const value = names.trim();
+    if (value) {
+      saveCoupleNames(value);
+      trackNamesEntered();
     }
-    setCi(index);
+    if (lead) navigate(`/create/${lead.id}`);
   }
-
-  function openCard(index: number) {
-    if (swiped.current) {
-      swiped.current = false;
-      return;
-    }
-    if (index !== ci) {
-      setCi(index);
-      return;
-    }
-    const card = CARDS[index];
-    const template = getTemplate(card.id);
-    navigate(template ? `/create/${card.id}` : `/open/${card.id}`);
-  }
-
-  function onStripDown(event: ReactPointerEvent<HTMLDivElement>) {
-    drag.current = { x: event.clientX, active: true };
-  }
-
-  function onStripUp(event: ReactPointerEvent<HTMLDivElement>) {
-    if (!drag.current.active) return;
-    const dx = event.clientX - drag.current.x;
-    drag.current.active = false;
-    if (Math.abs(dx) < 48) return;
-    swiped.current = true;
-    setCi((value) => (value + (dx < 0 ? 1 : CARDS.length - 1)) % CARDS.length);
-  }
-
-  const picks = SETS[occasionOf(query)];
-  const current = CARDS[ci];
-  const currentTemplate = getTemplate(current.id);
-  const shift = wide ? 210 : 120;
 
   return (
-    <div className="lv">
-      <PublicHeader />
-
-      <main>
-        <div className="lv-sky">
-          <span className="lv-aur lv-aur-a" aria-hidden="true" />
-          <span className="lv-aur lv-aur-b" aria-hidden="true" />
-          <span className="lv-aur lv-aur-c" aria-hidden="true" />
-          <span className="lv-beam" aria-hidden="true" />
-          <span className="lv-grid" aria-hidden="true" />
-          <span className="lv-horizon" aria-hidden="true" />
-          {GLINTS.map((glint, index) => (
-            <span
-              key={index}
-              className={index >= 14 ? "lv-glint lv-glint-wide" : "lv-glint"}
-              style={{ left: `${glint.left}%`, top: `${glint.top}%`, animationDelay: glint.delay, animationDuration: glint.dur }}
-              aria-hidden="true"
-            >
-              <Spark size={glint.size} color={glint.color} />
-            </span>
-          ))}
-          {SHOOTS.map((shoot) => (
-            <span key={shoot.delay} className="lv-shoot" style={{ left: `${shoot.x}%`, top: `${shoot.y}%`, animationDelay: shoot.delay }} aria-hidden="true" />
-          ))}
-          {DUST.map((speck, index) => (
-            <span
-              key={index}
-              className="lv-dust"
-              style={{
-                left: `${speck.left}%`,
-                top: `${speck.top}%`,
-                width: speck.size,
-                height: speck.size,
-                background: speck.color,
-                animationDelay: speck.delay,
-                animationDuration: speck.dur,
-              }}
-              aria-hidden="true"
-            />
-          ))}
-
-        <section id="templates" className="lv-car" aria-roledescription="carousel" aria-label="Invitation designs">
-          <span className="lv-mono">MADE WITH INVITESREADY</span>
-          <p className="lv-film-title">Designs that open <span>like a film.</span></p>
-          <div className="lv-flow" onPointerDown={onStripDown} onPointerUp={onStripUp} onPointerCancel={() => { drag.current.active = false; }}>
-            <span className="lv-flow-glow" aria-hidden="true" />
-            {CARDS.map((card, index) => {
-              let off = index - ci;
-              if (off > 4) off -= CARDS.length;
-              if (off < -4) off += CARDS.length;
-              const distance = Math.abs(off);
-              return (
-                <button
-                  key={card.id}
-                  type="button"
-                  className={distance === 0 ? "lv-slide is-front" : "lv-slide"}
-                  aria-label={distance === 0 ? (getTemplate(card.id) ? designCtaLabel(getTemplate(card.id)!) : `Preview ${card.name}`) : `Show ${card.name}`}
-                  aria-hidden={distance > 2}
-                  tabIndex={distance > 2 ? -1 : 0}
-                  onClick={() => openCard(index)}
-                  style={{
-                    transform: `translateX(${off * shift}px) translateZ(${-distance * 120}px) rotateY(${-off * 22}deg) scale(${1 - distance * 0.08})`,
-                    zIndex: 10 - distance,
-                    opacity: distance > 3 ? 0 : 1 - distance * 0.22,
-                    filter: `brightness(${1 - distance * 0.25})`,
-                    pointerEvents: distance > 3 ? "none" : "auto",
-                  }}
-                >
-                  <img src={card.cover} alt="" />
-                </button>
-              );
-            })}
-          </div>
-          <div className="lv-cap" key={current.id}>
-            <span>{current.name}</span>
-            <span className="lv-mono">{current.kicker}</span>
-          </div>
-          <div className="lv-car-nav">
-            <button type="button" className="lv-arrow" aria-label="Previous design" onClick={() => choose((ci + CARDS.length - 1) % CARDS.length)}>‹</button>
-            {currentTemplate ? (
-              <Link className="lv-preview" to={`/create/${current.id}`}>{designCtaLabel(currentTemplate)}</Link>
-            ) : (
-              <Link className="lv-preview" to={`/open/${current.id}`}>Preview this invitation</Link>
-            )}
-            <button type="button" className="lv-arrow" aria-label="Next design" onClick={() => choose((ci + 1) % CARDS.length)}>›</button>
-          </div>
-          {currentTemplate ? <Link className="lv-fine" to={`/open/${current.id}`}>Watch the opening</Link> : null}
-          <div className="lv-dots">
-            {CARDS.map((card, index) => (
-              <button
-                key={card.id}
-                type="button"
-                className={index === ci ? "is-on" : undefined}
-                aria-label={`Design ${index + 1}`}
-                aria-current={index === ci ? "true" : undefined}
-                onClick={() => choose(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        <section id="start" className="lv-hero">
-          <div className="lv-orb" aria-hidden="true">
-            <span className="lv-orb-glow" />
-            <span className="lv-ring" />
-            <span className="lv-ring lv-ring-inner" />
-            <span className="lv-orbit lv-orbit-a"><span className="lv-glint-dot" /></span>
-            <span className="lv-orbit lv-orbit-b"><span className="lv-glint-dot" /></span>
-            <div className="lv-emblem"><Emblem id="lv-em" /></div>
-            {SPARKS.map(([x, y, size], index) => (
-              <span key={index} className="lv-spark" style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, animationDelay: `${index * 0.3}s`, animationDuration: `${2 + index * 0.4}s` }} />
-            ))}
-          </div>
-
-          <span className="lv-mono">DESCRIBE YOUR CELEBRATION</span>
-          <h1>Beautiful invitations,<br /><span className="lv-sheen">ready in seconds.</span></h1>
-
-          {mode === "idle" ? (
-            <>
-              <form className="lv-prompt" onSubmit={onSubmit}>
-                <input
-                  type="text"
-                  aria-label="Describe your celebration"
-                  value={query}
-                  placeholder={PLACEHOLDERS[ph]}
-                  onChange={(event) => setQuery(event.target.value)}
-                />
-                <button type="submit" className="lv-go" aria-label="Create my invitations">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </button>
-              </form>
-              <div className="lv-chips">
-                {CHIPS.map(([label, text]) => (
-                  <button key={label} type="button" className="lv-chip" onClick={() => go(text)}>{label}</button>
-                ))}
-              </div>
-              <Link className="lv-preview" to="/browse">See all designs</Link>
-              <span className="lv-fine">Free to design · pay only when you publish</span>
-            </>
-          ) : null}
-
-          {mode === "working" ? (
-            <div className="lv-panel" aria-live="polite">
-              <span className="lv-mono lv-quote">“{query}”</span>
-              {LOG.map((line, index) => (
-                <span key={line} className="lv-log" style={{ animationDelay: `${index * 0.8}s` }}>
-                  <span>›</span> {line}
-                </span>
-              ))}
-              <div className="lv-bar" aria-hidden="true"><div /></div>
+    <IrApp>
+      <div className="ir-home">
+        <header className="ir-hero is-emerald">
+          <DesktopNav tone="emerald" />
+          <div className="ir-hero-main">
+            <div className="ir-hero-copy">
+              <p className="ir-overline ir-hero-kicker">Wedding invitations · India</p>
+              <h1 className="ir-display">
+                Your wedding, <span className="ir-em">unsealed</span> on every phone.
+              </h1>
+              <p className="ir-hero-sub">
+                An invitation guests open like a real card — envelope, seal and all. Shared on WhatsApp, with RSVPs for every function.
+              </p>
             </div>
-          ) : null}
 
-          {mode === "done" ? (
-            <>
-              {sample ? <p className="lv-fine">Showing a sample wedding so you can see how matching works.</p> : null}
-              <div className="lv-picks">
-                {picks.map((pick, index) => (
-                  <article key={pick.id} className="lv-pick" style={{ animationDelay: `${index * 0.15}s` }}>
-                    <div className="lv-pick-shot">
-                      <img src={pick.cover} alt={`${pick.name} design`} />
-                      <div>
-                        <span>{pick.name}</span>
-                        <span className="lv-mono">{pick.category}</span>
-                      </div>
-                    </div>
-                    <Link className="lv-use" to={`/create/${pick.id}`}>{getTemplate(pick.id) ? designCtaLabel(getTemplate(pick.id)!) : "Use this design"}</Link>
-                  </article>
-                ))}
+            <div className="ir-hero-stage">
+              {lead ? <HeroPhone template={lead} /> : null}
+              {second ? <HeroPhone template={second} className="ir-hero-phone-back" /> : null}
+              <div className="ir-hero-stats">
+                <p>
+                  <b className="ir-display">5 min</b>
+                  <span>to make yours</span>
+                </p>
+                <p>
+                  <b className="ir-display ir-hero-price">{from > 0 ? `From ${rupee(from)}` : "Free"}</b>
+                  <span>{from > 0 ? "one-time, pay at publish" : "to try a design"}</span>
+                </p>
+                <p className="ir-hero-stat-wide">
+                  <b className="ir-display">Pay later</b>
+                  <span>design before you sign in</span>
+                </p>
               </div>
-              <button type="button" className="lv-reset" onClick={() => { setMode("idle"); setQuery(""); }}>
-                Try another celebration
+            </div>
+
+            <form className="ir-namecard" onSubmit={onNames}>
+              <UnderlineField label="Try it with your names" value={names} onChange={setNames} placeholder="Bride & groom" name="couple" autoComplete="name" />
+              <button className="ir-namecard-go" type="submit" aria-label="Try it with your names">
+                <ArrowIcon />
               </button>
-            </>
-          ) : null}
-        </section>
+              <p className="ir-namecard-chips">Free to try · No sign-up · Pay at publish</p>
+            </form>
+          </div>
+        </header>
+
+        <div className="ir-marquee" aria-hidden="true">
+          <div>
+            {[...namesInMarquee, ...namesInMarquee].map((name, index) => (
+              <span key={`${name}-${index}`}>{name}</span>
+            ))}
+          </div>
         </div>
 
-        <section id="features" className="lv-sec">
-          <h2>Everything a celebration needs.<br /><span>Nothing it doesn’t.</span></h2>
-          <div className="lv-bento">
-            {TILES.map((tile) => (
-              <article key={tile.k} id={tile.k.startsWith("06") ? "pricing" : undefined} className={tile.stage ? "lv-tile lv-tile-stage" : "lv-tile"}>
-                <span className="lv-mono lv-kicker">{tile.k}</span>
-                <h3>{tile.t}</h3>
-                <p>{tile.d}</p>
-                {tile.stage ? (
-                  <div className="lv-stage" aria-hidden="true">
-                    <span className="lv-stage-glow" />
-                    <div className="lv-door">
-                      <div className="lv-door-in">
-                        <span className="lv-door-card"><Emblem id="lv-door-em" /></span>
-                      </div>
-                      <div className="lv-door-l"><span /></div>
-                      <div className="lv-door-r"><span /></div>
-                    </div>
-                    {DOOR_SPARKS.map(([x, y, size], index) => (
-                      <span key={index} className="lv-door-spark" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${index * 0.35}s`, animationDuration: `${2.4 + index * 0.4}s` }}>
-                        <Spark size={size} color="#8FB9A0" />
-                      </span>
-                    ))}
-                    <div className="lv-kinds">
-                      {KINDS.map(([label, icon]) => (
-                        <span key={label}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d={icon} />
-                          </svg>
-                          {label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-              </article>
+        <section id="templates" className="ir-home-sec">
+          <h2 className="ir-display">Explore templates</h2>
+          <div className="ir-home-grid">
+            {featured.map((template) => (
+              <Link key={template.id} className="ir-home-card" to={`/template/${template.id}`}>
+                <img src={`/covers/${template.id}.jpg`} alt="" width={400} height={520} />
+                <span className="ir-home-card-name">{template.name}</span>
+                <span className="ir-home-card-meta">
+                  {descriptor(template)}
+                  <b>{template.price > 0 ? rupee(template.price) : "Free"}</b>
+                </span>
+              </Link>
             ))}
           </div>
         </section>
 
-        <section id="how" className="lv-sec">
-          <div className="lv-steps">
+        <section id="how" className="ir-home-sec">
+          <h2 className="ir-display">How it works</h2>
+          <ol className="ir-steps">
             {STEPS.map(([n, title, text]) => (
-              <div key={n}>
-                <span className="lv-mono">{n}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
+              <li key={n}>
+                <span>{n}</span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section id="pricing" className="ir-priceband">
+          <p className="ir-overline">Pricing</p>
+          <h2 className="ir-display">{from > 0 ? `From ${rupee(from)}` : "Free to try"}</h2>
+          <p>One-time, when you publish. Designing and previewing stay free.</p>
+          <PrimaryButton href="/browse">Browse templates</PrimaryButton>
+        </section>
+
+        <section id="features" className="ir-home-sec">
+          <h2 className="ir-display">What guests get</h2>
+          <ul className="ir-plain">
+            <li>They open one link. No app and no account.</li>
+            <li>Each function can have its own time, place and dress.</li>
+            <li>Replies come back on the same invitation.</li>
+          </ul>
+        </section>
+
+        <section id="faq" className="ir-home-sec">
+          <h2 className="ir-display">Questions</h2>
+          <div className="ir-faqs">
+            {FAQS.map(([question, answer]) => (
+              <details key={question}>
+                <summary>{question}</summary>
+                <p>{answer}</p>
+              </details>
             ))}
           </div>
         </section>
 
-        <section id="faq" className="lv-sec">
-          <h2>FAQs</h2>
-          <div className="lv-faqs">
-            {FAQS.map(([question, answer], index) => {
-              const open = faq === index;
-              return (
-                <div key={question}>
-                  <button type="button" aria-expanded={open} onClick={() => setFaq(open ? -1 : index)}>
-                    {question}
-                    <span style={{ transform: open ? "rotate(45deg)" : undefined }}>+</span>
-                  </button>
-                  {open ? <p>{answer}</p> : null}
-                </div>
-              );
-            })}
-          </div>
-        </section>
+        <footer className="ir-home-foot">
+          <Link to="/browse">Templates</Link>
+          <Link to="/how">How it works</Link>
+          <Link to="/pricing">Pricing</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
+          <Link to="/refunds">Refunds</Link>
+        </footer>
 
-        <section className="lv-cta">
-          <span aria-hidden="true" />
-          <h2>Your celebration starts with a sentence.</h2>
-          <a href="#start">Describe yours</a>
-        </section>
-      </main>
-
-      <footer className="lv-foot">
-        <div className="lv-foot-brand">
-          <span>invitesready</span>
-          <p>Beautiful digital invitations for life’s moments. Designed to be opened, shared and remembered.</p>
+        <div className="ir-home-sticky">
+          <StickyFooterCTA href="/browse" label="Browse templates" note="Free until you publish" />
         </div>
-        <div className="lv-foot-cols">
-          {FOOTER.map((column) => (
-            <div key={column.h}>
-              <span className="lv-mono">{column.h}</span>
-              {column.links.map((link) => (
-                <Link key={link.label} to={link.to}>{link.label}</Link>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="lv-foot-end">
-          <span className="lv-mono">© INVITESREADY 2026</span>
-          <span className="lv-mono">DESIGNED WITH LOVE IN KOCHI</span>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </IrApp>
   );
 }

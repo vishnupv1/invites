@@ -26,19 +26,21 @@ import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
 import { InviteView } from "../components/InviteView";
 import { Checkout } from "../components/Checkout";
+import { LiveShare } from "../components/LiveShare";
 import { GuestAuthDialog } from "../components/GuestAuthDialog";
+import { ArrowIcon, BackIcon, CheckIcon, PencilIcon, PlayIcon } from "../components/shell/marks";
 import { CatalogDemo } from "./AllTemplates";
 import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
 import { DateField, TimeField } from "../components/WhenFields";
 import { PackFields } from "./PackFields";
 import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "../data/templates";
-import { assetUrl, ensureSession, getInviteRecord, getToken, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
+import { readCoupleNames } from "../lib/couple-names";
+import { assetUrl, ensureSession, getInviteRecord, getToken, listPurchases, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
-import { AppMenu } from "../components/AppMenu";
 import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Notice, type NoticeTone } from "../components/Notice";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -48,6 +50,7 @@ import { trackFirstEdit, trackPublish, trackSaveDraft, trackShareWhatsApp, track
 import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
 import { useFonts } from "../lib/fonts";
 import "./editor.css";
+import "./editor-shell.css";
 
 type Tab = "Details" | "Functions" | "Design" | "Sections" | "RSVP" | "Music";
 type FnKind = "main" | "reception";
@@ -206,6 +209,8 @@ function readLocal(templateId: string) {
 
 function modelFor(template: Template, eventId: string | undefined): Model {
   const draft = sampleFor(template, eventId);
+  const couple = readLocal(template.id) ? null : readCoupleNames();
+  if (couple?.bride) draft.names = couple.groom ? `${couple.bride} & ${couple.groom}` : couple.bride;
   return {
     draft,
     receptionOn: Boolean(template.meta.reception && (draft.receptionVenue || draft.receptionTime)),
@@ -252,8 +257,7 @@ export function Editor({
   const onSummaryRef = useRef(onSummary);
   onInviteRef.current = onInvite;
   onSummaryRef.current = onSummary;
-  const { signedIn, host } = useSession();
-  const hostName = host?.name ?? "";
+  const { signedIn } = useSession();
   const [model, setModel] = useState<Model | null>(() => {
     if (!template || inviteQuery) return null;
     const local = readLocal(template.id);
@@ -267,7 +271,9 @@ export function Editor({
   const [sheet, setSheet] = useState(true);
   const [device, setDevice] = useState<"phone" | "desktop">("phone");
   const [expanded, setExpanded] = useState(false);
+  const [guestPreview, setGuestPreview] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
+  const [liveOpen, setLiveOpen] = useState(false);
   const [payOpen, setPayOpen] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
   const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
@@ -293,6 +299,8 @@ export function Editor({
   const creatingRef = useRef<Promise<void> | null>(null);
   const resumedRef = useRef(false);
   const persistRef = useRef<() => Promise<void>>(async () => undefined);
+  const beginPublishRef = useRef<() => void>(() => undefined);
+  const resumePublish = useRef(false);
   const frameRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -401,13 +409,15 @@ export function Editor({
   }, [toast]);
 
   useEffect(() => {
-    if (!expanded) return;
+    if (!expanded && !guestPreview) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setExpanded(false);
+      if (event.key !== "Escape") return;
+      setExpanded(false);
+      setGuestPreview(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [expanded]);
+  }, [expanded, guestPreview]);
 
   useEffect(() => {
     if (!publishOpen) return;
@@ -496,6 +506,24 @@ export function Editor({
     }
   };
 
+  useEffect(() => {
+    if (embedded || !template || !signedIn || !model || resumePublish.current) return;
+    let pending = "";
+    try {
+      pending = sessionStorage.getItem("invitesready.publish-after-login") || "";
+    } catch {
+      return;
+    }
+    if (pending !== template.id) return;
+    resumePublish.current = true;
+    try {
+      sessionStorage.removeItem("invitesready.publish-after-login");
+    } catch {
+      /* The flag is already consumed in memory. */
+    }
+    beginPublishRef.current();
+  }, [embedded, template, signedIn, model]);
+
   if (!template) return embedded ? null : <Navigate to="/" replace />;
   if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
 
@@ -518,11 +546,49 @@ export function Editor({
     if (item.id === "RSVP") return hasComponent(template, "rsvp");
     return true;
   });
+  const stepIndex = Math.max(0, tabs.findIndex((item) => item.id === tab));
+  const nextTab = tabs[stepIndex + 1];
 
   function notify(message: string, tone: NoticeTone = "ok") {
     setToastTone(tone);
     setToast(message);
   }
+
+  async function beginPublish() {
+    setError("");
+    dirtyRef.current = true;
+    if (!getToken()) {
+      if (!template) return;
+      try {
+        await persistRef.current();
+      } catch {
+        /* The draft is still on this device. Sign-in can continue. */
+      }
+      try {
+        sessionStorage.setItem("invitesready.publish-after-login", template.id);
+      } catch {
+        /* Sign-in still works if the browser blocks session storage. */
+      }
+      navigate(`/login?next=${encodeURIComponent(`/create/${template.id}`)}`);
+      return;
+    }
+    void persistRef.current();
+    if (statusRef.current === "live" && codeRef.current && template) {
+      setLink(guestInviteUrl(codeRef.current, template.id));
+      setGuestPreview(false);
+      setLiveOpen(true);
+      return;
+    }
+    if (await ownsNow()) {
+      void showLive();
+      return;
+    }
+    setPayOpen(true);
+  }
+
+  beginPublishRef.current = () => {
+    void beginPublish();
+  };
 
   function update(patch: Partial<Model>) {
     const current = modelRef.current;
@@ -720,30 +786,34 @@ export function Editor({
 
   async function publish() {
     const current = modelRef.current;
-    if (!current || !template) return;
+    if (!current || !template) return false;
     if (!getToken()) {
       setAuthIntent("publish");
       setAuthOpen(true);
-      return;
+      return false;
     }
     const fields = shownFields(current);
     if (!fields.names.trim() || !fields.date) {
-      setError("Add the names and a date before publishing.");
-      return;
+      const message = "Add the names and a date before publishing.";
+      setError(message);
+      notify(message, "bad");
+      return false;
     }
     setPubPhase("loading");
     try {
       dirtyRef.current = true;
       await persistRef.current();
       if (!inviteIdRef.current) {
-        setError("Could not save this invitation.");
-        return;
+        const message = "Could not save this invitation.";
+        setError(message);
+        notify(message, "bad");
+        return false;
       }
       if (statusRef.current === "live") {
         setError("");
         setLink(guestInviteUrl(codeRef.current, template.id));
         setShowQr(false);
-        return;
+        return true;
       }
       const saved = await publishSaved(inviteIdRef.current);
       statusRef.current = "live";
@@ -757,11 +827,40 @@ export function Editor({
       setShowQr(false);
       setSaveLabel("Saved");
       trackPublish(template);
+      return true;
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Could not publish.");
+      const message = reason instanceof Error ? reason.message : "Could not publish.";
+      setError(message);
+      notify(message, "bad");
+      return false;
     } finally {
       setPubPhase("idle");
     }
+  }
+
+  async function showLive() {
+    setPayOpen(false);
+    setPublishOpen(false);
+    const ok = await publish();
+    if (!ok) return;
+    setGuestPreview(false);
+    setLiveOpen(true);
+  }
+
+  async function ownsNow(fresh = false) {
+    if (!template) return false;
+    if (template.free) return true;
+    if (!fresh && libraryReady && owns(template.id, false)) return true;
+    try {
+      const purchased = await listPurchases();
+      if (purchased.includes(template.id)) {
+        grant(template.id);
+        return true;
+      }
+    } catch {
+      return libraryReady && owns(template.id, false);
+    }
+    return false;
   }
 
   function askToSignIn(intent: "save" | "publish") {
@@ -769,12 +868,13 @@ export function Editor({
     setAuthOpen(true);
   }
 
-  function onSignedIn() {
+  async function onSignedIn() {
     setAuthOpen(false);
     dirtyRef.current = true;
     void persistRef.current();
     if (authIntent === "publish") {
-      setPublishOpen(true);
+      if (await ownsNow(true)) void showLive();
+      else setPayOpen(true);
     }
   }
 
@@ -785,7 +885,7 @@ export function Editor({
   }
 
   const editor = (
-    <div className={`ed-root${embedded ? " ed-embedded" : ""}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}${expanded ? " is-expanded" : ""}`}>
+    <div className={`ed-root${embedded ? " ed-embedded" : " ed-shell"}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}${expanded || guestPreview ? " is-expanded" : ""}${guestPreview ? " is-guest-preview" : ""}`}>
       <header className="ed-top">
         <div className="ed-brand">
           {embedded ? null : (
@@ -835,17 +935,7 @@ export function Editor({
             </>
           )}
           {embedded ? null : (
-          <button type="button" className="ed-publish" onClick={() => {
-            setError("");
-            dirtyRef.current = true;
-            void persistRef.current();
-            if (!getToken()) {
-              askToSignIn("publish");
-              return;
-            }
-            if (statusRef.current === "live" && codeRef.current) setLink(guestInviteUrl(codeRef.current, template.id));
-            setPublishOpen(true);
-          }}>
+          <button type="button" className="ed-publish" onClick={() => { void beginPublish(); }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z" />
             </svg>
@@ -882,6 +972,50 @@ export function Editor({
       )}
 
       <div className="ed-body">
+        <header className="ed-proto">
+          <div className="ed-proto-mobile">
+            <div className="ed-proto-bar">
+              {embedded ? <span /> : (
+                <Link className="ed-proto-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates"><BackIcon /></Link>
+              )}
+              <h1>Make it yours</h1>
+              <button type="button" className="ed-proto-preview" onClick={() => setGuestPreview(true)}>Preview</button>
+            </div>
+            <div className="ed-proto-live">
+              <img src={`/covers/${template.id}.jpg`} alt="" />
+              <div>
+                <p>{template.name} · {link ? "live" : "draft"}</p>
+                <strong>{draft.names.trim() || template.name}</strong>
+                <span>{draft.date ? formatShortDate(draft.date).toUpperCase() : "Date not set"}</span>
+              </div>
+            </div>
+          </div>
+          <div className="ed-proto-desk">
+            {embedded ? <span /> : (
+              <Link className="ed-proto-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates"><BackIcon /></Link>
+            )}
+            <p className="ed-proto-crumb">Templates <span>/</span> {template.name} <span>/</span> <b>Make it yours</b></p>
+            <span className="ed-proto-saved"><CheckIcon />{signedIn ? saveLabel : "Autosaved"}</span>
+            <button type="button" className="ed-proto-full" onClick={() => setGuestPreview(true)}>Full preview</button>
+          </div>
+        </header>
+        <div className="ed-proto-main">
+          <p className="ed-proto-kicker">Step {stepIndex + 1} of {tabs.length}</p>
+          <h2 className="ed-proto-title">{tab}</h2>
+          <div className="ed-proto-steps" role="tablist" aria-label="Editor sections">
+            {tabs.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={tab === item.id}
+                className={tab === item.id ? "is-on" : index < stepIndex ? "is-done" : ""}
+                onClick={() => setTab(item.id)}
+              >
+                {String(index + 1).padStart(2, "0")} {item.id}
+              </button>
+            ))}
+          </div>
         <nav className="ed-rail" aria-label="Editor sections">
           {tabs.map((item) => (
             <button
@@ -901,7 +1035,7 @@ export function Editor({
           ))}
         </nav>
 
-        <aside className="ed-panel" inert={sheet ? undefined : true}>
+        <aside className="ed-panel">
           <div className="ed-sheet-head">
             <span className="ed-grab" aria-hidden="true" />
             <div>
@@ -1357,7 +1491,31 @@ export function Editor({
           ) : null}
         </aside>
 
+        <div className="ed-proto-foot">
+          <button
+            type="button"
+            className="ed-proto-next"
+            onClick={() => {
+              const index = tabs.findIndex((item) => item.id === tab);
+              const next = tabs[index + 1];
+              if (next) setTab(next.id);
+              else setGuestPreview(true);
+            }}
+          >
+            <span>{nextTab ? `Next — ${nextTab.id.toLowerCase()}` : "Preview my invitation"}</span>
+            <b aria-hidden="true">{nextTab ? <ArrowIcon /> : <PlayIcon />}</b>
+          </button>
+          <p>{signedIn ? saveLabel : "Autosaved on this phone"}</p>
+        </div>
+        </div>
+
         <main className="ed-canvas">
+          <aside className="ed-proto-livecopy">
+            <p>Live preview · {template.name}</p>
+            <strong>{draft.names.trim() || template.name}</strong>
+            <span>{draft.date ? formatShortDate(draft.date).toUpperCase() : "Date not set"}</span>
+            <small>This is exactly how it opens on your guests' phones. Change anything on the left and it updates instantly.</small>
+          </aside>
           <div className="ed-stage">
             <div className={device === "phone" ? "ed-frame ed-phone" : "ed-frame ed-desk"} ref={frameRef}>
               <button
@@ -1428,6 +1586,22 @@ export function Editor({
                   )}
                 </div>
               </div>
+              {guestPreview ? (
+                <div className="ed-gp">
+                  <div className="ed-gp-top">
+                    <button type="button" aria-label="Back to editor" onClick={() => setGuestPreview(false)}><BackIcon /></button>
+                    <span>Exactly what guests will see</span>
+                  </div>
+                  <div className="ed-gp-sheet">
+                    <button type="button" onClick={() => setGuestPreview(false)}>Edit</button>
+                    <button type="button" className="ed-gp-go" onClick={beginPublish}>
+                      <span>Publish · {formatPrice(template)}</span>
+                      <b aria-hidden="true"><ArrowIcon /></b>
+                    </button>
+                    <p>Edits stay free</p>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="ed-caption">
@@ -1439,6 +1613,32 @@ export function Editor({
           </div>
         </main>
       </div>
+
+      {guestPreview ? (
+        <div className="ed-gp-desk">
+          <button type="button" className="ed-gp-back" onClick={() => setGuestPreview(false)}>
+            <span aria-hidden="true"><BackIcon /></span>
+            Back to editor
+          </button>
+          <div className="ed-gp-devices" role="group" aria-label="Preview device">
+            <button type="button" aria-pressed={device === "phone"} onClick={() => setDevice("phone")}>Phone</button>
+            <button type="button" aria-pressed={device === "desktop"} onClick={() => setDevice("desktop")}>Laptop</button>
+          </div>
+          <aside className="ed-gp-side">
+            <p>Preview</p>
+            <h2>Happy with <i>how it opens?</i></h2>
+            <p>Edits stay free forever — guests always see the latest version.</p>
+            <button type="button" className="ed-gp-go" onClick={beginPublish}>
+              <span>Publish · {formatPrice(template)}</span>
+              <b aria-hidden="true"><ArrowIcon /></b>
+            </button>
+            <button type="button" className="ed-gp-keep" onClick={() => setGuestPreview(false)}>
+              <span>Keep editing</span>
+              <b aria-hidden="true"><PencilIcon /></b>
+            </button>
+          </aside>
+        </div>
+      ) : null}
 
       {publishOpen ? (
         <div className="ed-modal">
@@ -1500,8 +1700,20 @@ export function Editor({
       {authOpen ? (
         <GuestAuthDialog
           heading="Sign in to save your invitation"
+          names={draft.names.trim() || template.name}
+          templateName={template.name}
+          cover={`/covers/${template.id}.jpg`}
           onClose={() => setAuthOpen(false)}
           onDone={onSignedIn}
+        />
+      ) : null}
+      {liveOpen && link ? (
+        <LiveShare
+          names={draft.names.trim() || template.name}
+          priceLabel={template.free ? "Free" : formatPrice(template)}
+          link={link}
+          when={draft.date ? formatShortDate(draft.date) : ""}
+          onClose={() => setLiveOpen(false)}
         />
       ) : null}
       {payOpen ? (
@@ -1511,23 +1723,16 @@ export function Editor({
           onClose={() => setPayOpen(false)}
           onPurchased={async (coupon, payment) => {
             await purchase(template.id, coupon, payment);
-            setPayOpen(false);
-            await publish();
+            await showLive();
           }}
           onEntitled={async () => {
             grant(template.id);
-            setPayOpen(false);
-            await publish();
+            await showLive();
           }}
+          onAlreadyOwned={() => { void showLive(); }}
         />
       ) : null}
     </div>
   );
-  if (embedded || !signedIn) return editor;
-  return (
-    <div className="board ed-board">
-      <AppMenu current="/templates" name={hostName} signedIn />
-      {editor}
-    </div>
-  );
+  return editor;
 }

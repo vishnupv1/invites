@@ -1,0 +1,27 @@
+.ir-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  min-height: 44px;
+  color: #17201c;
+  text-decoration: none;
+}
+
+.ir-logo-mark {
+  display: block;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 0;
+  background: transparent;
+  object-fit: contain;
+}
+
+.ir-logo-name {
+  display: block;
+  height: 36px;
+  width: auto;
+  font-size: 0;
+  line-height: 0;
+}

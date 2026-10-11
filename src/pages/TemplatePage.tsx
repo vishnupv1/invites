@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { getTemplateRecord } from "../api";
+import { FavoriteHeart } from "../components/FavoriteHeart";
+import { BackIcon, HeartIcon, PlayIcon, SparkIcon } from "../components/shell/marks";
+import { IrApp } from "../components/shell/IrApp";
+import { PrimaryButton } from "../components/shell/PrimaryButton";
+import { StickyFooterCTA } from "../components/shell/StickyFooterCTA";
+import { useFavs } from "../lib/favorites";
 import { useSession } from "../session";
-import { AppMenu } from "../components/AppMenu";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
@@ -27,9 +33,8 @@ import { BloomInvite } from "../components/BloomInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
-import { PublicHeader } from "../components/PublicHeader";
 import { getEvent } from "../data/events";
-import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor, designCtaLabel } from "../data/templates";
+import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
 import { templateSeo, topicForTemplate } from "../data/topics";
 import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
@@ -38,6 +43,7 @@ import { formatShortDate } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
 import { trackTemplatePreview } from "../lib/analytics";
 import "./purchase.css";
+import "./shell-detail.css";
 
 const TONES: Record<string, { cover: string; dot: string }> = {
   terracotta: { cover: "#F6F0E6", dot: "#A44B32" },
@@ -108,7 +114,7 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
   }
 }
 
-export function TemplatePage() {
+export function TemplatePage({ library = false }: { library?: boolean }) {
   useFonts("Noto Sans Tamil");
   const { id } = useParams();
   const [params] = useSearchParams();
@@ -117,6 +123,20 @@ export function TemplatePage() {
     if (!template) return;
     trackTemplatePreview(template);
   }, [template]);
+  const { favs, toggle } = useFavs();
+  const [livePrice, setLivePrice] = useState<number | null>(null);
+  useEffect(() => {
+    if (!id) return;
+    let cancel = false;
+    getTemplateRecord(id)
+      .then((row) => {
+        if (!cancel && typeof row.price === "number") setLivePrice(row.price);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancel = true;
+    };
+  }, [id]);
   const { owns, purchase, grant } = useLibrary();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -125,11 +145,28 @@ export function TemplatePage() {
   );
   const [swatchFor, setSwatchFor] = useState<{ id: string; swatch: string } | null>(null);
   const [lang, setLang] = useState<ThiruvizhaLang>("both");
-  const { signedIn, host, ready } = useSession();
+  const { signedIn, ready } = useSession();
   const account = ready && signedIn;
-  const hostName = host?.name ?? "";
   const requested = params.get("event") as EventId | null;
   const [picked, setPicked] = useState<EventId | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const [openingTake, setOpeningTake] = useState(0);
+  useEffect(() => {
+    const root = previewRef.current;
+    if (!root) return;
+    const play = window.setTimeout(() => {
+      const opener = [...root.querySelectorAll("button")].find((button) => {
+        const label = button.getAttribute("aria-label") ?? "";
+        return /^(break the seal|open invitation|open the invitation|tear open|untie the ribbon|light the lantern|pull the rope|open the doors|enter the invitation|lift the veil|open the door|open your gift)/i.test(label);
+      });
+      opener?.click();
+    }, 300);
+    const close = window.setTimeout(() => setOpeningTake((take) => take + 1), 2300);
+    return () => {
+      window.clearTimeout(play);
+      window.clearTimeout(close);
+    };
+  }, [id, swatchFor, lang, picked, openingTake]);
   const event =
     template && picked && template.events.includes(picked)
       ? picked
@@ -140,9 +177,9 @@ export function TemplatePage() {
   if (!template || !event) return <Navigate to="/browse" replace />;
   const owned = account && owns(template.id, template.free);
   const createTo = `/create/${template.id}?event=${event}`;
-  if (owned) return <Navigate to="/templates" replace />;
+  if (owned && !library) return <Navigate to="/templates" replace />;
   const catalogTo = account ? "/templates" : "/browse";
-  const previewTo = account ? `/preview/${template.id}?event=${event}` : `/browse/${template.id}`;
+  const previewTo = `/browse/${template.id}`;
 
   const swatch = swatchFor?.id === template.id ? swatchFor.swatch : template.meta.defaultTheme;
   const themeName = template.meta.themes.find((item) => item.id === swatch)?.name;
@@ -151,80 +188,74 @@ export function TemplatePage() {
   const tamil = template.style === "thiruvizha";
   const seo = templateSeo(template.id);
   const topic = topicForTemplate(template.id);
+  const amount = livePrice ?? template.price;
+  const priceLabel = amount === 0 ? "Free" : `₹${amount.toLocaleString("en-IN")}`;
+  const sentence = template.description.split(".")[0]?.trim() || template.tagline;
+  const blurb = sentence.length > 42 ? `${sentence.slice(0, 40).trim()}…` : sentence;
+  const included = [
+    "Animated opening",
+    "Unlimited guests",
+    "RSVP per function",
+    "Maps & directions",
+    "Photos & music",
+    "Free edits forever",
+  ];
 
   return (
-    <>
-    {account ? null : <PublicHeader />}
-    <div className={account ? "board buy-board is-account" : "board buy-board"}>
-      {account ? <AppMenu current="/templates" name={hostName} signedIn /> : null}
-    <div className="buy">
-      <div className="buy-bar">
-      <header className="buy-head">
-        <div className="buy-id">
-          <Link className="buy-back" to={catalogTo}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M19 12H5M11 18l-6-6 6-6" />
-            </svg>
-            Templates
-          </Link>
-          <div className="buy-title">
-            <h1>{template.name}</h1>
-            <span className="buy-badge">{template.free ? "Free" : "Premium"}</span>
-          </div>
-        </div>
-        <div className="buy-head-actions">
-          <Link className="buy-ghost" to="/faq">
-            FAQ
-          </Link>
-          <Link className="buy-ghost" to="/#pricing">
-            Pricing
-          </Link>
-          <Link className="buy-ghost" to={previewTo}>
-            Preview
-          </Link>
-          <Link className="buy-solid" to={createTo}>
-            {designCtaLabel(template)}
-          </Link>
-        </div>
+    <IrApp>
+    <div className="ir-detail">
+      <header className="ir-detail-bar">
+        <Link className="ir-detail-bar-back" to={catalogTo} aria-label="Back to templates"><BackIcon /></Link>
+        <p><Link to={catalogTo}>Templates</Link> <span>/</span> {template.name}</p>
+        <button className="ir-detail-save-desk" type="button" aria-pressed={favs.includes(template.id)} onClick={() => toggle(template.id)}>
+          <HeartIcon /> {favs.includes(template.id) ? "Saved" : "Save"}
+        </button>
       </header>
-      <Breadcrumbs
-        className="buy-crumbs"
-        items={account
-          ? [{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]
-          : [{ label: "Home", to: "/" }, ...(topic ? [{ label: topic.label, to: topic.path }] : [{ label: "Templates", to: "/browse" }]), { label: template.name }]}
-      />
+      <div className="ir-detail-scroll">
+      <div className="ir-detail-stage">
+        <Link className="ir-detail-back" to={catalogTo} aria-label="Back to templates"><BackIcon /></Link>
+        <FavoriteHeart className="ir-detail-save" liked={favs.includes(template.id)} name={template.name} onClick={() => toggle(template.id)} />
+        <div ref={previewRef} className={device === "desk" ? "ir-detail-frame is-desk" : "ir-detail-frame"}>
+          <GuestPreview key={openingTake} template={template} fields={fields} swatch={swatch} lang={lang} />
+        </div>
+        <p className="ir-detail-pill"><PlayIcon /> Playing the opening</p>
       </div>
-
-      <div className="buy-body">
-        <div className="buy-split">
-          <section className="buy-stage" aria-label="Invitation">
-            <div className="buy-tools">
-              <div className="buy-seg" role="group" aria-label="Invitation size">
-                <button type="button" aria-pressed={device === "phone"} onClick={() => setDevice("phone")}>
-                  Mobile
-                </button>
-                <button type="button" aria-pressed={device === "desk"} onClick={() => setDevice("desk")}>
-                  Desktop
-                </button>
-              </div>
-              <p>The page a guest opens.</p>
-            </div>
-            <div className={device === "desk" ? "buy-screen is-desk" : "buy-screen"}>
-              <GuestPreview template={template} fields={fields} swatch={swatch} lang={lang} />
-            </div>
-            <Link className="buy-solid buy-under" to={createTo}>
-              {designCtaLabel(template)}
-            </Link>
-          </section>
-
-          <aside className="buy-panel">
-            <div>
-              {seo ? <p className="buy-search">{seo.heading}</p> : null}
-              <p className="buy-kicker">One-time purchase</p>
-              <p className="buy-price">{formatPrice(template)}</p>
-            </div>
-            <p className="buy-lede">{template.description}</p>
-            {seo ? <p className="buy-note">{seo.lead}</p> : null}
+      <div className="ir-detail-info">
+        <div className="ir-detail-head">
+          <div>
+            <p className="ir-detail-kicker">{getEvent(event).label}</p>
+            <h1 className="ir-display">{template.name}</h1>
+            <p className="ir-detail-blurb">{blurb}</p>
+            <p className="ir-detail-lead">{template.description}</p>
+          </div>
+          <p className="ir-detail-price">
+            <b className="ir-display">{priceLabel}</b>
+            <span>{amount === 0 ? "to publish" : "one-time"}</span>
+          </p>
+        </div>
+        <ul className="ir-detail-inc">
+          {included.map((item) => (
+            <li key={item}><SparkIcon />{item}</li>
+          ))}
+        </ul>
+        <div className="ir-detail-cta">
+          <PrimaryButton href={createTo}>Try it with your names</PrimaryButton>
+          <p>No sign-up needed to try</p>
+        </div>
+        <details className="ir-detail-more">
+          <summary>More options</summary>
+          {seo ? <p>{seo.lead}</p> : null}
+          <p>{template.description}</p>
+          <Breadcrumbs
+            items={account
+              ? [{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]
+              : [{ label: "Home", to: "/" }, ...(topic ? [{ label: topic.label, to: topic.path }] : [{ label: "Templates", to: "/browse" }]), { label: template.name }]}
+          />
+          <div className="buy-seg" role="group" aria-label="Invitation size">
+            <button type="button" aria-pressed={device === "phone"} onClick={() => setDevice("phone")}>Mobile</button>
+            <button type="button" aria-pressed={device === "desk"} onClick={() => setDevice("desk")}>Desktop</button>
+          </div>
+          <Link to={previewTo}>Open the full page</Link>
             <dl className="buy-facts">
               <div>
                 <dt>Best for</dt>
@@ -322,30 +353,27 @@ export function TemplatePage() {
               <Link to="/faq">FAQ</Link>
             </p>
 
-            <div className="buy-lock">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="4" y="10" width="16" height="11" rx="2" />
-                <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-              </svg>
-              <span>Design free. Pay {formatPrice(template)} once when you publish. Razorpay collects the payment.</span>
-            </div>
-
-            <div className="buy-actions">
-              <Link className="buy-solid" to={createTo}>
-                {designCtaLabel(template)}
-              </Link>
-              <button className="buy-ghost" type="button" onClick={() => setOpen(true)}>
-                Buy now · {formatPrice(template)}
-              </button>
-            </div>
-          </aside>
-        </div>
+            {owned ? null : (
+              <>
+                <div className="buy-lock">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="4" y="10" width="16" height="11" rx="2" />
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                  </svg>
+                  <span>Design free. Pay {formatPrice(template)} once when you publish. Razorpay collects the payment.</span>
+                </div>
+                <button className="buy-ghost" type="button" onClick={() => setOpen(true)}>
+                  Buy now · {formatPrice(template)}
+                </button>
+              </>
+            )}
+        </details>
 
         {others.length ? (
           <section className="buy-more">
             <div className="buy-more-head">
               <h2>More for {getEvent(event).label.toLowerCase()}</h2>
-              <Link to="/browse">See all templates</Link>
+              <Link to={catalogTo}>See all templates</Link>
             </div>
             <div className="buy-like">
               {others.map((item) => (
@@ -363,17 +391,10 @@ export function TemplatePage() {
           </section>
         ) : null}
       </div>
+      </div>
 
       {open ? null : (
-        <div className="buy-dock">
-          <div>
-            <span className="buy-dock-k">One-time</span>
-            <span className="buy-dock-v">{formatPrice(template)}</span>
-          </div>
-          <Link className="buy-solid" to={createTo}>
-            {designCtaLabel(template)}
-          </Link>
-        </div>
+        <StickyFooterCTA href={createTo} label="Try it with your names" note="Free to try — you only pay when you publish" />
       )}
 
       {open ? (
@@ -392,7 +413,6 @@ export function TemplatePage() {
         />
       ) : null}
     </div>
-    </div>
-    </>
+    </IrApp>
   );
 }

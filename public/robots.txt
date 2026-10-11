@@ -6,6 +6,8 @@ Disallow: /create
 Disallow: /login
 Disallow: /events
 Disallow: /guests
+Disallow: /wishes
+Disallow: /settings
 Disallow: /purchases
 Disallow: /templates
 Disallow: /unauthorized

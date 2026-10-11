@@ -144,6 +144,7 @@ function describe(pathname: string): Meta {
     "/drafts": "Saved drafts | InvitesReady",
     "/favorites": "My favorites | InvitesReady",
     "/guests": "Guests | InvitesReady",
+    "/wishes": "Wishes | InvitesReady",
     "/purchases": "Purchases | InvitesReady",
     "/settings": "Settings | InvitesReady",
   };

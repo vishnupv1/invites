@@ -295,18 +295,16 @@
 }
 
 .ir-app .ir-logo-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: var(--marigold);
-  color: var(--emerald);
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
+  background: transparent;
+  object-fit: contain;
 }
 
 .ir-app .ir-logo-name {
-  font-size: 22px;
+  height: 36px;
+  width: auto;
 }
 
 .ir-app .ir-nav-links {
@@ -323,6 +321,11 @@
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+}
+
+.ir-app .ir-nav-links a.is-on {
+  box-shadow: inset 0 -2px 0 var(--marigold);
+  font-weight: 800;
 }
 
 .ir-app .ir-nav-actions {
@@ -367,13 +370,6 @@
   color: var(--card);
 }
 
-.ir-app .ir-nav.is-emerald .ir-nav-signin {
-  box-shadow: inset 0 0 0 1.5px rgba(255, 253, 248, 0.45);
-  text-decoration: none;
-  border-radius: 18px;
-  padding: 0 16px;
-}
-
 @media (min-width: 900px) {
   .ir-app .ir-nav {
     padding: 12px 56px;
@@ -393,6 +389,9 @@
 
   .ir-app .ir-nav.is-emerald .ir-nav-signin {
     box-shadow: inset 0 0 0 1.5px rgba(255, 253, 248, 0.55);
+    text-decoration: none;
+    border-radius: 18px;
+    padding: 0 16px;
   }
 }
 

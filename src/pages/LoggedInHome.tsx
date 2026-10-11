@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { listTemplates, updateHostName } from "../api";
+import { listTemplates } from "../api";
 import { Spinner } from "../components/Loader";
 import { getEvent } from "../data/events";
 import { TEMPLATES, formatPrice } from "../data/templates";
@@ -220,27 +220,6 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
   );
 }
 
-const SETTINGS_KEY = "invitesready.settings.v1";
-const TOGGLES = [
-  ["Email me when a guest replies", "Not available yet. Replies stay on the Guests page."],
-  ["Daily WhatsApp summary", "Not available yet. There is no WhatsApp sender."],
-  ["Product news & offers", "Not available yet."],
-] as const;
-
-function readSettings() {
-  try {
-    const raw = localStorage.getItem(SETTINGS_KEY);
-    const parsed = raw ? (JSON.parse(raw) as { phone?: string; toggles?: boolean[]; lang?: string }) : {};
-    return {
-      phone: parsed.phone ?? "",
-      toggles: [false, false, false],
-      lang: parsed.lang ?? "en",
-    };
-  } catch {
-    return { phone: "", toggles: [true, true, false], lang: "en" };
-  }
-}
-
 function editedLabel(iso: string) {
   const time = new Date(iso).getTime();
   if (Number.isNaN(time)) return "Saved draft";
@@ -269,33 +248,23 @@ export function AccountHub({
   view,
   onToast,
 }: {
-  view: "events" | "drafts" | "favorites" | "purchases" | "settings";
+  view: "events" | "drafts" | "favorites" | "purchases";
   onToast: (message: string, tone?: NoticeTone) => void;
 }) {
-  const { host } = useSession();
   const { invites, ready, owned } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>([]);
   const [catalogReady, setCatalogReady] = useState(false);
-  const [name, setName] = useState(host?.name ?? "");
-  const [saving, setSaving] = useState(false);
-  const [phone, setPhone] = useState(() => readSettings().phone);
-  const [lang, setLang] = useState(() => readSettings().lang);
   const titles = {
     events: ["My events", "Your invitations and their replies"],
     drafts: ["Saved drafts", "Pick up right where you left off"],
     favorites: ["My favorites", "Templates you’ve saved for later"],
     purchases: ["Purchases", "Your receipts and invoices"],
-    settings: ["Settings", "Your profile and notifications"],
   } as const;
   const drafts = invites.filter((invite) => invite.status === "draft");
   const published = invites.filter((invite) => invite.status !== "draft");
   const favoriteTemplates = favs.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
   const purchased = owned.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
-
-  useEffect(() => {
-    setName(host?.name ?? "");
-  }, [host?.name]);
 
   useEffect(() => {
     if (view !== "favorites" && view !== "purchases") return;
@@ -456,87 +425,6 @@ export function AccountHub({
             <Link className="li-btn-sm primary" to="/templates">Browse templates</Link>
           </div>
         )
-      ) : null}
-
-      {view === "settings" ? (
-        <>
-          <div className="li-settings">
-            <div className="li-panel">
-              <h2>Profile</h2>
-              <label className="li-field">
-                <span>Full name</span>
-                <input value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" maxLength={120} />
-              </label>
-              <label className="li-field">
-                <span>Email</span>
-                <input type="email" value={host?.email ?? ""} readOnly />
-              </label>
-              <label className="li-field">
-                <span>WhatsApp number</span>
-                <input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+91" />
-              </label>
-            </div>
-            <div className="li-panel">
-              <h2>Notifications</h2>
-              {TOGGLES.map(([label, sub]) => {
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    className="li-switch"
-                    role="switch"
-                    aria-checked={false}
-                    aria-disabled="true"
-                    disabled
-                  >
-                    <span>
-                      <strong>{label}</strong>
-                      <small>{sub}</small>
-                    </span>
-                    <span className="li-track"><i /></span>
-                  </button>
-                );
-              })}
-              <label className="li-field">
-                <span>Language</span>
-                <select value={lang} onChange={(event) => setLang(event.target.value)}>
-                  <option value="en">English</option>
-                  <option value="ml">Malayalam</option>
-                  <option value="hi">Hindi</option>
-                  <option value="ta">Tamil</option>
-                </select>
-              </label>
-            </div>
-          </div>
-          <div className="li-save">
-            <button
-              type="button"
-              className="li-btn primary"
-              disabled={saving}
-              onClick={() => {
-                const next = name.trim();
-                if (!next) {
-                  onToast("Enter your full name.", "warn");
-                  return;
-                }
-                setSaving(true);
-                void (async () => {
-                  try {
-                    if (next !== (host?.name ?? "").trim()) await updateHostName(next);
-                    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ phone, lang }));
-                    onToast("Name saved. Email and WhatsApp alerts are not available yet. Phone and language stay on this device.");
-                  } catch (error) {
-                    onToast(error instanceof Error ? error.message : "Could not save your name.", "bad");
-                  } finally {
-                    setSaving(false);
-                  }
-                })();
-              }}
-            >
-              {saving ? "Saving…" : "Save changes"}
-            </button>
-          </div>
-        </>
       ) : null}
     </>
   );

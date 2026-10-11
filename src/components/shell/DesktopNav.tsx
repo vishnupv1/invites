@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
-import { EnvelopeMark } from "./marks";
+import { Link, useLocation } from "react-router-dom";
+import { useSession } from "../../session";
+import { Logo } from "./Logo";
 
 type NavLink = { href: string; label: string };
 
@@ -15,25 +16,27 @@ type Props = {
   links?: NavLink[];
 };
 
+function linkOn(href: string, path: string) {
+  if (href === "/browse") return path === "/browse" || path.startsWith("/browse/") || path === "/templates";
+  return path === href;
+}
+
 export function DesktopNav({ tone = "paper", links = LINKS }: Props) {
+  const { pathname } = useLocation();
+  const { signedIn } = useSession();
   return (
     <header className={`ir-nav${tone === "emerald" ? " is-emerald" : ""}`}>
-      <Link className="ir-logo" to="/">
-        <span className="ir-logo-mark">
-          <EnvelopeMark />
-        </span>
-        <span className="ir-logo-name ir-display">InvitesReady</span>
-      </Link>
+      <Logo tone={tone === "emerald" ? "cream" : "ink"} />
       <nav className="ir-nav-links" aria-label="Primary">
         {links.map((link) => (
-          <Link key={link.href} to={link.href}>
+          <Link key={link.href} className={linkOn(link.href, pathname) ? "is-on" : ""} to={link.href}>
             {link.label}
           </Link>
         ))}
       </nav>
       <div className="ir-nav-actions">
-        <Link className="ir-nav-signin" to="/login">
-          Sign in
+        <Link className="ir-nav-signin" to={signedIn ? "/studio" : "/login"}>
+          {signedIn ? "Dashboard" : "Sign in"}
         </Link>
         <Link className="ir-nav-try" to="/browse">
           Try free

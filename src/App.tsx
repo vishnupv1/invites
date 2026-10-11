@@ -13,8 +13,7 @@ import { Studio } from "./pages/Studio";
 import { TemplatePage } from "./pages/TemplatePage";
 import { Spinner } from "./components/Loader";
 import { OpenInvite } from "./pages/OpenInvite";
-import { TemplatePreview } from "./pages/TemplatePreview";
-import { AllTemplates } from "./pages/AllTemplates";
+import { BrowsePage } from "./pages/BrowsePage";
 import { Templates } from "./pages/Templates";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
@@ -68,10 +67,10 @@ export default function App() {
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/browse/:id?" element={<AllTemplates />} />
+        <Route path="/browse/:id?" element={<BrowsePage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/templates" element={<RequireAccount><Templates /></RequireAccount>} />
-        <Route path="/preview/:id" element={<RequireAccount><TemplatePreview /></RequireAccount>} />
+        <Route path="/preview/:id" element={<RequireAccount><TemplatePage library /></RequireAccount>} />
         <Route path="/open/:id" element={<OpenInvite />} />
         {TOPICS.map((topic) => (
           <Route
@@ -100,6 +99,7 @@ export default function App() {
         <Route path="/drafts" element={<RequireAccount><Studio view="drafts" /></RequireAccount>} />
         <Route path="/favorites" element={<RequireAccount><Studio view="favorites" /></RequireAccount>} />
         <Route path="/guests" element={<RequireAccount><Studio view="guests" /></RequireAccount>} />
+        <Route path="/wishes" element={<RequireAccount><Studio view="wishes" /></RequireAccount>} />
         <Route path="/purchases" element={<RequireAccount><Studio view="purchases" /></RequireAccount>} />
         <Route path="/settings" element={<RequireAccount><Studio view="settings" /></RequireAccount>} />
         <Route path="/i/:code" element={<InvitePage />} />
