@@ -111,8 +111,6 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
 
         <div className="ir-browse-body">
         <aside className="ir-browse-side">
-          <h1 className="ir-display">Templates</h1>
-          <p className="ir-browse-lead">Hover or tap to watch each one open. Every template is free to try.</p>
           <p className="ir-overline">Occasion</p>
           <div className="ir-browse-side-list">
             <button type="button" aria-pressed={occasion === "all"} onClick={() => setOccasion("all")}>All</button>
