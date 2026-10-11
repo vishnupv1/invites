@@ -176,7 +176,7 @@ function organization() {
     "@type": "Organization",
     name: "InvitesReady",
     url: `${SITE}/`,
-    email: "hello@invitesready.com",
+    email: "invitesreadyforyou@gmail.com",
     logo: `${SITE}/brand/logo-mark.png`,
   };
 }

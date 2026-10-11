@@ -415,7 +415,7 @@ export function AccountHub({
               })}
             </div>
             <p className="li-help">
-              Need help with a payment? <a href="mailto:hello@invitesready.com">Contact support</a>
+              Need help with a payment? <a href="mailto:invitesreadyforyou@gmail.com">Contact support</a>
             </p>
           </>
         ) : (

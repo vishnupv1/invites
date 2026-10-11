@@ -167,7 +167,7 @@ export function LibraryPane({ view }: { view: View }) {
           </article>
         );
       })}
-      <p className="rsvp-note">Need help with a payment? <a href="mailto:hello@invitesready.com">Contact support</a></p>
+      <p className="rsvp-note">Need help with a payment? <a href="mailto:invitesreadyforyou@gmail.com">Contact support</a></p>
     </div>
   );
 }

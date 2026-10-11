@@ -4,7 +4,7 @@ import { DesktopNav } from "../components/shell/DesktopNav";
 import { IrApp } from "../components/shell/IrApp";
 import "./legal.css";
 
-export const CONTACT_EMAIL = "hello@invitesready.com";
+export const CONTACT_EMAIL = "invitesreadyforyou@gmail.com";
 
 function Frame({ title, lede, children }: { title: string; lede: string; children: ReactNode }) {
   return (

@@ -242,7 +242,7 @@ export function LoggedInFooter() {
     <footer className="li-foot">
       <span>© {new Date().getFullYear()} InvitesReady.com</span>
       <span>
-        <a href="mailto:hello@invitesready.com">Help</a>
+        <a href="mailto:invitesreadyforyou@gmail.com">Help</a>
         <Link to="/privacy">Privacy</Link>
         <Link to="/terms">Terms</Link>
       </span>
