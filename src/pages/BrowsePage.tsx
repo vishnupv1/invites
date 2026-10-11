@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { listTemplates } from "../api";
 import { DesktopNav } from "../components/shell/DesktopNav";
+import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { IrApp } from "../components/shell/IrApp";
 import { TopBar } from "../components/shell/TopBar";
 import { EVENTS } from "../data/events";
@@ -138,7 +139,7 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
           {visible.map((template) => (
             <Link key={template.id} className={template.id === routeId ? "ir-browse-card is-current" : "ir-browse-card"} to={`/template/${template.id}`}>
               <span className="ir-browse-shot">
-                <img src={`/covers/${template.id}.jpg`} alt="" />
+                <PlayingInvite template={template} />
               </span>
               <span className="ir-browse-name">
                 <span>{template.name}</span>

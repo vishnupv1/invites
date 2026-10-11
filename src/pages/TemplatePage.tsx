@@ -4,6 +4,7 @@ import { getTemplateRecord } from "../api";
 import { FavoriteHeart } from "../components/FavoriteHeart";
 import { BackIcon, HeartIcon, PlayIcon, SparkIcon } from "../components/shell/marks";
 import { IrApp } from "../components/shell/IrApp";
+import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { PrimaryButton } from "../components/shell/PrimaryButton";
 import { StickyFooterCTA } from "../components/shell/StickyFooterCTA";
 import { useFavs } from "../lib/favorites";
@@ -379,7 +380,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
               {others.map((item) => (
                 <Link key={item.id} to={`/template/${item.id}?event=${event}`}>
                   <div className="buy-like-shot">
-                    <img src={`/covers/${item.id}.jpg`} alt={`${item.name} invitation`} />
+                    <PlayingInvite template={item} />
                   </div>
                   <div className="buy-like-meta">
                     <strong>{item.name}</strong>

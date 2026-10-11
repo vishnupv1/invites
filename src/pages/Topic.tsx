@@ -5,6 +5,7 @@ import { Breadcrumbs } from "../components/Breadcrumbs";
 import { formatPrice, getTemplate, sampleFor, designCtaLabel } from "../data/templates";
 import { topicByPath, TOPICS } from "../data/topics";
 import { InlandInvite } from "../components/InlandInvite";
+import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { useLibrary } from "../state";
 import type { EventId } from "../types";
 
@@ -47,14 +48,21 @@ export function Topic() {
           const owned = owns(template.id, template.free);
           return (
             <article key={template.id} className="shop-card">
-              <button
-                type="button"
+              <div
                 className="mini-preview"
+                role="button"
+                tabIndex={0}
                 aria-label={`Preview ${template.name}`}
                 onClick={() => setPreviewId(template.id)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setPreviewId(template.id);
+                  }
+                }}
               >
-                <img src={`/covers/${template.id}.jpg`} alt={`${template.name} invitation`} />
-              </button>
+                <PlayingInvite template={template} />
+              </div>
               <div className="shop-copy">
                 <div className="shop-top">
                   <h3><Link to={`/template/${template.id}`}>{template.name}</Link></h3>

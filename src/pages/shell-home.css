@@ -206,11 +206,11 @@
   margin-top: 22px;
 }
 
-.ir-home-card img {
-  width: 100%;
-  height: auto;
+.ir-home-shot {
+  position: relative;
+  display: block;
   aspect-ratio: 3 / 4;
-  object-fit: cover;
+  overflow: hidden;
   border-radius: 18px;
   background: var(--paper-2);
 }

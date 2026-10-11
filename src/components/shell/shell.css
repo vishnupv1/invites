@@ -454,6 +454,26 @@
   }
 }
 
+.ir-app .ir-play {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ir-app .ir-play .ir-preview {
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.ir-app .ir-play img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  display: block;
+}
+
 .ir-app .ir-preview {
   position: relative;
   width: 100%;

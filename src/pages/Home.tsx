@@ -6,6 +6,7 @@ import { IrApp } from "../components/shell/IrApp";
 import { PhoneFrame } from "../components/shell/PhoneFrame";
 import { PrimaryButton } from "../components/shell/PrimaryButton";
 import { StickyFooterCTA } from "../components/shell/StickyFooterCTA";
+import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { TemplatePreview } from "../components/shell/TemplatePreview";
 import { UnderlineField } from "../components/shell/UnderlineField";
 import { ArrowIcon } from "../components/shell/marks";
@@ -182,7 +183,9 @@ export function Home({ focus }: { focus?: string }) {
           <div className="ir-home-grid">
             {featured.map((template) => (
               <Link key={template.id} className="ir-home-card" to={`/template/${template.id}`}>
-                <img src={`/covers/${template.id}.jpg`} alt="" width={400} height={520} />
+                <span className="ir-home-shot">
+                  <PlayingInvite template={template} />
+                </span>
                 <span className="ir-home-card-name">{template.name}</span>
                 <span className="ir-home-card-meta">
                   {descriptor(template)}

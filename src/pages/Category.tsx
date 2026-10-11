@@ -6,6 +6,7 @@ import { SEO_CATEGORIES, TOPICS } from "../data/topics";
 import { formatPrice, getTemplate, templatesFor } from "../data/templates";
 import { useLibrary } from "../state";
 import { Breadcrumbs } from "../components/Breadcrumbs";
+import { PlayingInvite } from "../components/shell/PlayingInvite";
 import type { EventId } from "../types";
 
 function categoryHeading(id: string, label: string) {
@@ -52,14 +53,21 @@ export function Category() {
           const owned = owns(template.id, template.free);
           return (
             <article key={template.id} className="shop-card">
-              <button
-                type="button"
+              <div
                 className="mini-preview"
+                role="button"
+                tabIndex={0}
                 aria-label={`Preview ${template.name}`}
                 onClick={() => setPreviewId(template.id)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setPreviewId(template.id);
+                  }
+                }}
               >
-                <img src={`/covers/${template.id}.jpg`} alt={`${template.name} invitation`} />
-              </button>
+                <PlayingInvite template={template} />
+              </div>
               <div className="shop-copy">
                 <div className="shop-top">
                   <h3>{template.name}</h3>

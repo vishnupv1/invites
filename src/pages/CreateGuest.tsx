@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
 import { DesktopNav } from "../components/shell/DesktopNav";
+import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { IrApp } from "../components/shell/IrApp";
 import { GoogleButton } from "../components/GoogleButton";
 import { signInWithGoogle } from "../lib/google";
@@ -554,8 +555,9 @@ export function CreateGuest() {
                   const selected = item.id === template?.id;
                   return (
                     <div key={item.id} className="cg-card-wrap">
-                      <button
-                        type="button"
+                      <div
+                        role="button"
+                        tabIndex={0}
                         className={selected ? "cg-card on" : "cg-card"}
                         aria-label={`Select ${item.name}`}
                         aria-pressed={selected}
@@ -563,8 +565,14 @@ export function CreateGuest() {
                           setTemplateId(item.id);
                           setSwatch(item.meta.defaultTheme || palettesFor(item)[0] || "");
                         }}
+                        onKeyDown={(event) => {
+                          if (event.key !== "Enter" && event.key !== " ") return;
+                          event.preventDefault();
+                          setTemplateId(item.id);
+                          setSwatch(item.meta.defaultTheme || palettesFor(item)[0] || "");
+                        }}
                       >
-                        <img src={`/covers/${item.id}.jpg`} alt="" />
+                        <PlayingInvite template={item} />
                         <span className={item.free ? "cg-badge" : "cg-badge premium"}>{item.free ? "Free" : "Premium"}</span>
                         {selected ? (
                           <span className="cg-tick">
@@ -573,7 +581,7 @@ export function CreateGuest() {
                             </svg>
                           </span>
                         ) : null}
-                      </button>
+                      </div>
                       <div className="cg-card-foot">
                         <div>
                           <strong>{item.name}</strong>

@@ -272,7 +272,7 @@
 .buy-more-head a { font-size: 14px; font-weight: 700; text-decoration: none; }
 .buy-like { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
 .buy-like a { display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #1C3A2A; }
-.buy-like-shot { height: 200px; overflow: hidden; border-radius: 18px; border: 1px solid #D7E6DC; background: #FFFFFF; }
+.buy-like-shot { position: relative; height: 200px; overflow: hidden; border-radius: 18px; border: 1px solid #D7E6DC; background: #FFFFFF; }
 .buy-like-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .buy-like-meta { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
 .buy-like-meta strong { font-size: 15px; }
