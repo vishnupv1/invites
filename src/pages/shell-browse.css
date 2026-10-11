@@ -1,6 +1,6 @@
 .ir-browse-mobilebar {
   position: sticky;
-  top: 0;
+  top: 72px;
   z-index: 8;
   background: var(--paper);
 }
@@ -150,7 +150,7 @@
 }
 
 .ir-browse .ir-nav {
-  display: none;
+  display: flex;
 }
 
 .ir-browse-lead {

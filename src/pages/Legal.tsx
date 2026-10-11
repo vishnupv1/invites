@@ -1,14 +1,16 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { PublicHeader } from "../components/PublicHeader";
+import { DesktopNav } from "../components/shell/DesktopNav";
+import { IrApp } from "../components/shell/IrApp";
 import "./legal.css";
 
 export const CONTACT_EMAIL = "hello@invitesready.com";
 
 function Frame({ title, lede, children }: { title: string; lede: string; children: ReactNode }) {
   return (
-    <div className="legal">
-      <PublicHeader />
+    <IrApp>
+      <DesktopNav />
+      <div className="legal">
       <main>
         <h1>{title}</h1>
         <p className="legal-lede">{lede}</p>
@@ -24,7 +26,8 @@ function Frame({ title, lede, children }: { title: string; lede: string; childre
         </nav>
         <small>© 2026 InvitesReady.com</small>
       </footer>
-    </div>
+      </div>
+    </IrApp>
   );
 }
 

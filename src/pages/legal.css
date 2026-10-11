@@ -1,3 +1,7 @@
+.ir-app > .legal {
+  min-height: calc(100dvh - 72px);
+}
+
 .legal {
   min-height: 100vh;
   display: flex;

@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Heart, Sparkle } from "lucide-react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Brand } from "../components/Brand";
-import { PublicHeader } from "../components/PublicHeader";
+import { DesktopNav } from "../components/shell/DesktopNav";
+import { IrApp } from "../components/shell/IrApp";
 import { SkeletonCards } from "../components/CardSkeleton";
 import { InviteView } from "../components/InviteView";
 import { listEvents, listTemplates, type CatalogEvent } from "../api";
@@ -194,8 +195,9 @@ export function AllTemplates() {
   }
 
   return (
+    <IrApp>
+      <DesktopNav />
     <div className="cat">
-      <PublicHeader />
 
       <main>
         <section className="cat-hero">
@@ -362,6 +364,7 @@ export function AllTemplates() {
         </div>
       ) : null}
     </div>
+    </IrApp>
   );
 }
 

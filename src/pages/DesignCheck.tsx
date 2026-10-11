@@ -31,7 +31,7 @@ export default function DesignCheck() {
   return (
     <IrApp>
       <div className="ir-check">
-        <DesktopNav />
+        <DesktopNav tone="paper" />
         <div className="ir-check-band">
           <DesktopNav tone="emerald" />
         </div>

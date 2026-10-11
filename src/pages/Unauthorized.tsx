@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { PublicHeader } from "../components/PublicHeader";
+import { DesktopNav } from "../components/shell/DesktopNav";
+import { IrApp } from "../components/shell/IrApp";
 import "./legal.css";
 
 function safeNext(value: unknown) {
@@ -12,8 +13,9 @@ export function Unauthorized() {
   const next = safeNext((location.state as { from?: string } | null)?.from);
 
   return (
-    <div className="legal">
-      <PublicHeader />
+    <IrApp>
+      <DesktopNav />
+      <div className="legal">
       <main>
         <h1>This page is for your account</h1>
         <p className="legal-lede">
@@ -26,7 +28,8 @@ export function Unauthorized() {
           <Link to="/">Back to home</Link>
         </div>
       </main>
-    </div>
+      </div>
+    </IrApp>
   );
 }
 
@@ -36,8 +39,9 @@ export function NotFound() {
   }, []);
 
   return (
-    <div className="legal">
-      <PublicHeader />
+    <IrApp>
+      <DesktopNav />
+      <div className="legal">
       <main>
         <h1>We couldn’t find that page</h1>
         <p className="legal-lede">The address may be mistyped, or the page may have moved.</p>
@@ -46,6 +50,7 @@ export function NotFound() {
           <Link to="/browse">Browse designs</Link>
         </div>
       </main>
-    </div>
+      </div>
+    </IrApp>
   );
 }

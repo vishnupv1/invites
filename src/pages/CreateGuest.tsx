@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getHost, getToken, listEvents, listPurchases, listTemplates, logIn, publishSaved, saveDraft, signUp, updateInvite } from "../api";
-import { PublicHeader } from "../components/PublicHeader";
+import { DesktopNav } from "../components/shell/DesktopNav";
+import { IrApp } from "../components/shell/IrApp";
 import { GoogleButton } from "../components/GoogleButton";
 import { signInWithGoogle } from "../lib/google";
 import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
@@ -435,8 +436,9 @@ export function CreateGuest() {
     .toUpperCase();
 
   return (
+    <IrApp>
+      <DesktopNav />
     <div className="cg-root">
-      <PublicHeader />
       <header className="cg-header">
         <ol className="cg-steps" aria-label="Steps">
           {STEPS.map((label, index) => {
@@ -864,5 +866,6 @@ export function CreateGuest() {
 
       {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
     </div>
+    </IrApp>
   );
 }

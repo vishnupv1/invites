@@ -127,8 +127,8 @@ export function Home({ focus }: { focus?: string }) {
   return (
     <IrApp>
       <div className="ir-home">
+        <DesktopNav tone="emerald" />
         <header className="ir-hero is-emerald">
-          <DesktopNav tone="emerald" />
           <div className="ir-hero-main">
             <div className="ir-hero-copy">
               <p className="ir-overline ir-hero-kicker">Wedding invitations · India</p>

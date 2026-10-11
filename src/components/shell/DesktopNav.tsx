@@ -7,7 +7,6 @@ type NavLink = { href: string; label: string };
 const LINKS: NavLink[] = [
   { href: "/browse", label: "Templates" },
   { href: "/how", label: "How it works" },
-  { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "For planners" },
 ];
 
@@ -21,7 +20,7 @@ function linkOn(href: string, path: string) {
   return path === href;
 }
 
-export function DesktopNav({ tone = "paper", links = LINKS }: Props) {
+export function DesktopNav({ tone = "emerald", links = LINKS }: Props) {
   const { pathname } = useLocation();
   const { signedIn } = useSession();
   return (
