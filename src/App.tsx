@@ -1,4 +1,4 @@
-import { lazy, Suspense, type ReactNode } from "react";
+import { lazy, Suspense, useLayoutEffect, type ReactNode } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
@@ -34,6 +34,19 @@ function RequireAccount({ children }: { children: ReactNode }) {
   return children;
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    document.querySelectorAll(".rsvp-main, .ir-detail-scroll").forEach((node) => {
+      if (node instanceof HTMLElement) node.scrollTop = 0;
+    });
+  }, [pathname]);
+  return null;
+}
+
 function Shell({ children }: { children: ReactNode }) {
   return (
     <IrApp>
@@ -47,6 +60,7 @@ export default function App() {
   return (
     <>
       <PageMeta />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/how" element={<Home focus="how" />} />
