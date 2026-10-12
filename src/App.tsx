@@ -16,7 +16,6 @@ import { Spinner } from "./components/Loader";
 import { OpenInvite } from "./pages/OpenInvite";
 import { BrowsePage } from "./pages/BrowsePage";
 import { EmbedInvite } from "./pages/EmbedInvite";
-import { Templates } from "./pages/Templates";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
@@ -85,7 +84,7 @@ export default function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/browse/:id?" element={<BrowsePage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route path="/templates" element={<RequireAccount><Templates /></RequireAccount>} />
+        <Route path="/templates" element={<RequireAccount><Studio view="templates" /></RequireAccount>} />
         <Route path="/preview/:id" element={<RequireAccount><TemplatePage library /></RequireAccount>} />
         <Route path="/open/:id" element={<OpenInvite />} />
         {TOPICS.map((topic) => (

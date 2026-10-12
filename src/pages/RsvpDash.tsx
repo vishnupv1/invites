@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { getInviteRecord, listGreetings, updateHostName } from "../api";
 import { LiveShare } from "../components/LiveShare";
@@ -10,12 +10,13 @@ import { guestInviteUrl } from "../lib/share";
 import { useSession } from "../session";
 import { useLibrary } from "../state";
 import { Logo } from "../components/shell/Logo";
-import { CheckIcon, EventsIcon, GridIcon, GuestsIcon, HeartIcon, OverviewIcon, PencilIcon, ReceiptIcon, SettingsIcon, ShareIcon, BackIcon } from "../components/shell/marks";
+import { CheckIcon, EventsIcon, GridIcon, GuestsIcon, HeartIcon, OverviewIcon, PencilIcon, ReceiptIcon, SettingsIcon, ShareIcon } from "../components/shell/marks";
 import { LibraryPane } from "./LibraryPane";
+import { AccountTemplates } from "./Templates";
 import "./rsvp-dash.css";
 
 type Greeting = { id: string; name: string; note: string; attending: boolean; at: string };
-type Pane = "overview" | "guests" | "wishes" | "settings" | "events" | "drafts" | "favorites" | "purchases";
+type Pane = "overview" | "guests" | "wishes" | "settings" | "events" | "drafts" | "favorites" | "purchases" | "templates";
 const LIBRARY_TITLE: Partial<Record<Pane, string>> = {
   events: "My events",
   drafts: "Saved drafts",
@@ -199,6 +200,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
   const [query, setQuery] = useState("");
   const [shareOpen, setShareOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const pane = mode;
   const libraryTitle = LIBRARY_TITLE[pane];
   const ordered = useMemo(() => {
@@ -269,8 +271,15 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") setMoreOpen(false);
     }
+    function onPointer(event: PointerEvent) {
+      if (!menuRef.current?.contains(event.target as Node)) setMoreOpen(false);
+    }
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
   }, [moreOpen]);
 
   const liveText = selected?.status === "live"
@@ -287,7 +296,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
         <Link className={pane === "wishes" ? "on" : ""} to="/wishes"><HeartIcon /> Wishes</Link>
         {selected ? <Link to={`/create/${selected.templateId}?invite=${selected.id}`}><PencilIcon /> Edit invitation</Link> : <span className="off"><PencilIcon /> Edit invitation</span>}
         <Link className={pane === "settings" ? "on" : ""} to="/settings"><SettingsIcon /> Settings</Link>
-        <Link to="/templates"><GridIcon /> Templates</Link>
+        <Link className={pane === "templates" ? "on" : ""} to="/templates"><GridIcon /> Templates</Link>
         <Link className={pane === "events" ? "on" : ""} to="/events"><EventsIcon /> Events</Link>
         <Link className={pane === "drafts" ? "on" : ""} to="/drafts"><PencilIcon /> Drafts</Link>
         <Link className={pane === "favorites" ? "on" : ""} to="/favorites"><HeartIcon /> Favorites</Link>
@@ -300,14 +309,35 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
         ) : null}
       </aside>
       <div className="rsvp-main">
-        {moreOpen ? null : (
-          <div className="rsvp-more-bar">
-            <button type="button" className="rsvp-more-btn" onClick={() => setMoreOpen(true)}>Menu</button>
+        <div className="rsvp-more-bar">
+          <Logo className="rsvp-mark" to="/studio" />
+          <div className="rsvp-menu" ref={menuRef}>
+            <button
+              type="button"
+              className="rsvp-burger"
+              aria-expanded={moreOpen}
+              aria-label={moreOpen ? "Close menu" : "Menu"}
+              onClick={() => setMoreOpen((open) => !open)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+            {moreOpen ? (
+              <nav aria-label="More">
+                {JUMPS.map((item) => (
+                  <Link key={item.to} to={item.to} className={item.to === `/${pane}` ? "on" : ""} onClick={() => setMoreOpen(false)}>{item.label}</Link>
+                ))}
+                {selected ? (
+                  <Link to={`/create/${selected.templateId}?invite=${selected.id}`} onClick={() => setMoreOpen(false)}>Edit invitation</Link>
+                ) : null}
+              </nav>
+            ) : null}
           </div>
-        )}
+        </div>
         {!ready ? (
           <p className="rsvp-wait" aria-busy="true"><Spinner size="md" /> Loading your invitation…</p>
-        ) : !selected && pane !== "settings" && !libraryTitle ? (
+        ) : !selected && pane !== "settings" && pane !== "templates" && !libraryTitle ? (
           <div className="rsvp-empty">
             <h1>Your dashboard</h1>
             <p>Publish an invitation and replies will land here.</p>
@@ -318,9 +348,9 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
             <header className="rsvp-top">
               <div>
                 <small>{first ? `Namaste, ${first}` : "Namaste"}</small>
-                {libraryTitle ? <h1>{libraryTitle}</h1> : pane === "settings" ? null : <h1>{selected?.names || "Your invitation"}</h1>}
+                {pane === "settings" ? null : <h1>{libraryTitle ?? (pane === "templates" ? "Templates" : selected?.names || "Your invitation")}</h1>}
               </div>
-              {selected && !libraryTitle && pane !== "settings" ? (
+              {selected && !libraryTitle && pane !== "settings" && pane !== "templates" ? (
                 <>
                   <Link className="rsvp-chip line rsvp-text" to={`/create/${selected.templateId}?invite=${selected.id}`}><PencilIcon /> Edit</Link>
                   <button type="button" className="rsvp-chip rsvp-text" onClick={() => setShareOpen(true)}><ShareIcon /> Share</button>
@@ -329,7 +359,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
                 </>
               ) : null}
             </header>
-            {!libraryTitle && pane !== "settings" && ordered.length > 1 ? (
+            {!libraryTitle && pane !== "settings" && pane !== "templates" && ordered.length > 1 ? (
               <div className="rsvp-switch" role="tablist" aria-label="Invitations">
                 {ordered.map((invite) => (
                   <button key={invite.id} type="button" className={invite.id === selected?.id ? "on" : ""} aria-pressed={invite.id === selected?.id} onClick={() => setPicked(invite.id)}>
@@ -401,6 +431,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
                 {wishes.map((row, index) => <Reply key={row.id} row={row} index={index} />)}
               </div>
             ) : null}
+            {pane === "templates" ? <AccountTemplates /> : null}
             {libraryTitle ? <LibraryPane view={pane as "events" | "drafts" | "favorites" | "purchases"} /> : null}
             {pane === "settings" ? <SettingsForm /> : null}
           </>
@@ -412,22 +443,6 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
         <Link className={pane === "wishes" ? "on" : ""} to="/wishes"><i><HeartIcon /></i>Wishes</Link>
         <Link className={pane === "settings" ? "on" : ""} to="/settings"><i><SettingsIcon /></i>Settings</Link>
       </nav>
-      {moreOpen ? (
-        <div className="rsvp-more" role="dialog" aria-label="More">
-          <header>
-            <button type="button" onClick={() => setMoreOpen(false)} aria-label="Close menu"><BackIcon /></button>
-            <h1>More</h1>
-          </header>
-          <nav>
-            {JUMPS.map((item) => (
-              <Link key={item.to} to={item.to} className={item.to === `/${pane}` ? "on" : ""} onClick={() => setMoreOpen(false)}>{item.label}</Link>
-            ))}
-            {selected ? (
-              <Link to={`/create/${selected.templateId}?invite=${selected.id}`} onClick={() => setMoreOpen(false)}>Edit invitation</Link>
-            ) : null}
-          </nav>
-        </div>
-      ) : null}
       {shareOpen && selected ? (
         <LiveShare
           names={selected.names || "Your invitation"}
