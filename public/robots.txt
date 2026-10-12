@@ -13,6 +13,7 @@ Disallow: /templates
 Disallow: /unauthorized
 Disallow: /preview
 Disallow: /design-check
+Disallow: /embed
 Disallow: /i/
 Disallow: /api/
 

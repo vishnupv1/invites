@@ -460,6 +460,18 @@
   pointer-events: none;
 }
 
+.ir-app .ir-play iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  height: 844px;
+  border: 0;
+  transform-origin: top left;
+  pointer-events: none;
+  background: transparent;
+}
+
 .ir-app .ir-play .ir-preview {
   height: 100%;
   aspect-ratio: auto;

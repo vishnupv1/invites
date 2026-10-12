@@ -25,6 +25,16 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; }
+
+html.ir-embed,
+html.ir-embed body,
+html.ir-embed #root {
+  width: 390px;
+  height: 844px;
+  margin: 0;
+  overflow: hidden;
+  background: #fff;
+}
 a { color: inherit; }
 button, input, textarea { font: inherit; color: inherit; }
 h1, h2, h3 { font-family: Geist, "Segoe UI", sans-serif; font-weight: 600; letter-spacing: -0.04em; }

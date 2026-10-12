@@ -15,6 +15,7 @@ import { TemplatePage } from "./pages/TemplatePage";
 import { Spinner } from "./components/Loader";
 import { OpenInvite } from "./pages/OpenInvite";
 import { BrowsePage } from "./pages/BrowsePage";
+import { EmbedInvite } from "./pages/EmbedInvite";
 import { Templates } from "./pages/Templates";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
@@ -106,6 +107,7 @@ export default function App() {
             </Shell>
           }
         />
+        <Route path="/embed/:id" element={<EmbedInvite />} />
         <Route path="/template/:id" element={<TemplatePage />} />
         <Route path="/create" element={<CreateGuest />} />
         <Route path="/create/:id" element={<Editor />} />
