@@ -151,23 +151,26 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
   const requested = params.get("event") as EventId | null;
   const [picked, setPicked] = useState<EventId | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
-  const [openingTake, setOpeningTake] = useState(0);
   useEffect(() => {
     const root = previewRef.current;
     if (!root) return;
-    const play = window.setTimeout(() => {
+    let play = 0;
+    let tries = 0;
+    const attempt = () => {
       const opener = [...root.querySelectorAll("button")].find((button) => {
-        const label = button.getAttribute("aria-label") ?? "";
-        return /^(break the seal|open invitation|open the invitation|tear open|untie the ribbon|light the lantern|pull the rope|open the doors|enter the invitation|lift the veil|open the door|open your gift)/i.test(label);
+        const label = (button.getAttribute("aria-label") || button.textContent || "").replace(/\s+/g, " ").trim();
+        return /^(break the seal|open invitation|open the invitation|tear open|untie the ribbon|light the lantern|pull the rope|open the doors|enter the invitation|lift the veil|open the door|open your gift|reveal the date|tap the bottle)/i.test(label);
       });
+      if (!opener && tries < 30) {
+        tries += 1;
+        play = window.setTimeout(attempt, 40);
+        return;
+      }
       opener?.click();
-    }, 300);
-    const close = window.setTimeout(() => setOpeningTake((take) => take + 1), 2300);
-    return () => {
-      window.clearTimeout(play);
-      window.clearTimeout(close);
     };
-  }, [id, swatchFor, lang, picked, openingTake]);
+    play = window.setTimeout(attempt, 300);
+    return () => window.clearTimeout(play);
+  }, [id, swatchFor, lang, picked]);
   const event =
     template && picked && template.events.includes(picked)
       ? picked
@@ -217,7 +220,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
         <Link className="ir-detail-back" to={catalogTo} aria-label="Back to templates"><BackIcon /></Link>
         <FavoriteHeart className="ir-detail-save" liked={favs.includes(template.id)} name={template.name} onClick={() => toggle(template.id)} />
         <div ref={previewRef} className={device === "desk" ? "ir-detail-frame is-desk" : "ir-detail-frame"}>
-          <GuestPreview key={openingTake} template={template} fields={fields} swatch={swatch} lang={lang} />
+          <GuestPreview key={`${template.id}-${swatch}-${lang}-${event}`} template={template} fields={fields} swatch={swatch} lang={lang} />
         </div>
         <p className="ir-detail-pill"><PlayIcon /> Playing the opening</p>
       </div>

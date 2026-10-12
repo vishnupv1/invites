@@ -209,7 +209,7 @@
 .ir-home-shot {
   position: relative;
   display: block;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 390 / 844;
   overflow: hidden;
   border-radius: 18px;
   background: var(--paper-2);

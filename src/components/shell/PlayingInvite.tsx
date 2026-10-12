@@ -69,9 +69,17 @@ export function PlayingInvite({ template }: { template: Template }) {
   }, [seen, take, template.id]);
 
   return (
-    <div ref={root} className="ir-play" aria-hidden="true">
+    <div
+      ref={root}
+      className="ir-play"
+      aria-hidden="true"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+    >
       {seen ? (
-        <TemplatePreview label="" radius={0} interactive>
+        <TemplatePreview label="" radius={0} interactive fit="contain">
           <InviteView key={take} template={template} fields={sampleFor(template, template.events[0])} live />
         </TemplatePreview>
       ) : (
