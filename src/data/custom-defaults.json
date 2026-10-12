@@ -332,5 +332,13 @@
     ],
     "venueNote": "boats from Gangaur Ghat from 4:30 PM",
     "instagram": ""
+  },
+  "lace": {
+    "programme": [
+      { "kick": "12 FEB 2027", "title": "Mehendi", "time": "4:00 PM", "text": "The Garden Courtyard", "note": "" },
+      { "kick": "13 FEB 2027", "title": "Sangeet", "time": "8:00 PM", "text": "The Lakeside Lawn", "note": "" },
+      { "kick": "14 FEB 2027", "title": "The Wedding", "time": "6:30 PM", "text": "The Lake Villa", "note": "" },
+      { "kick": "15 FEB 2027", "title": "Reception", "time": "8:30 PM", "text": "The Pearl Ballroom", "note": "" }
+    ]
   }
 }

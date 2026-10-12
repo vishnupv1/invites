@@ -21,6 +21,7 @@ import { MoonlitInvite } from "../components/MoonlitInvite";
 import { VillaInvite } from "../components/VillaInvite";
 import { HansaInvite } from "../components/HansaInvite";
 import { BloomInvite } from "../components/BloomInvite";
+import { LaceInvite } from "../components/LaceInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -1585,6 +1586,8 @@ export function Editor({
                     <HansaInvite fields={previewFields} />
                   ) : template.style === "bloom" ? (
                     <BloomInvite fields={previewFields} />
+                  ) : template.style === "lace" ? (
+                    <LaceInvite fields={previewFields} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

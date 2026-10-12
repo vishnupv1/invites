@@ -17,6 +17,7 @@ import { MoonlitInvite } from "./MoonlitInvite";
 import { VillaInvite } from "./VillaInvite";
 import { HansaInvite } from "./HansaInvite";
 import { BloomInvite } from "./BloomInvite";
+import { LaceInvite } from "./LaceInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -234,6 +235,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <HansaInvite fields={fields} quiet={!live} />;
     case "bloom":
       return <BloomInvite fields={fields} quiet={!live} />;
+    case "lace":
+      return <LaceInvite fields={fields} quiet={!live} />;
     case "home":
       return <HomeInvite fields={fields} quiet={quiet} demo={demo} />;
     case "shaadi":

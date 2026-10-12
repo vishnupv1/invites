@@ -125,7 +125,8 @@ export type TemplateStyle =
   | "moonlit"
   | "villa"
   | "hansa"
-  | "bloom";
+  | "bloom"
+  | "lace";
 
 export type Template = {
   id: string;

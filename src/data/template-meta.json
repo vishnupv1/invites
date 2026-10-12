@@ -681,5 +681,28 @@
       { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
+  },
+  "lace": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "reception": "Reception",
+    "themes": [{ "id": "ivory", "name": "Ivory lace" }],
+    "defaultTheme": "ivory",
+    "shots": [{ "label": "The couple" }],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The seal", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "message", "label": "Invitation", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The Lake Villa", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "reception", "label": "Reception", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "gallery", "label": "Photograph", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

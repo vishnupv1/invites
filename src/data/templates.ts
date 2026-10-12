@@ -28,6 +28,37 @@ function sample(
 
 export const TEMPLATES: Template[] = [
   {
+    id: "lace",
+    name: "Lace Reveal",
+    style: "lace",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "An ivory lace wedding. Guests break the seal, scratch the oval, then the day, the lake venue, and a reply.",
+    asks: { photos: 1, audio: false, location: true },
+    meta: META.lace,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Mr & Mrs Anil Sharma\n&\nMr & Mrs Rajiv Malhotra",
+        names: "Meera & Kabir",
+        title: "",
+        detail: "",
+        date: "2027-02-14",
+        time: "18:30",
+        venue: "The Lake Villa",
+        address: "Lake Pichola Road, Udaipur",
+        message: "With the blessings of our families, we joyfully invite you to celebrate our wedding by the lake in Udaipur. Your presence would make our day complete.",
+        dress: "Soft neutrals, pearls and lace — ivory, champagne, blush and gold.",
+        rsvpBy: "2027-01-10",
+        receptionTime: "20:30",
+        receptionVenue: "The Pearl Ballroom",
+        receptionAddress: "Lake Pichola Road, Udaipur",
+        lines: linesFor("lace"),
+      }),
+    },
+  },
+  {
     id: "gazal",
     name: "Gazal",
     style: "gazal",

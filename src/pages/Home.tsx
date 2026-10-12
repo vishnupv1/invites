@@ -17,7 +17,7 @@ import { saveCoupleNames } from "../lib/couple-names";
 import type { Template } from "../types";
 import "./shell-home.css";
 
-const FEATURED = ["bloom", "hansa", "moonlit", "palace", "villa", "grandoor"];
+const FEATURED = ["lace", "bloom", "hansa", "moonlit", "palace", "villa", "grandoor"];
 
 const STEPS = [
   ["01", "Pick a design", "Choose an opening. You can try it before you create an account."],
