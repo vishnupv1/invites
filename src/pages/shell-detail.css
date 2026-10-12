@@ -183,10 +183,14 @@
   }
 
   .ir-detail-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 18px 40px 8px 28px;
+    padding: 14px 40px 14px 28px;
+    background: var(--paper);
   }
 
   .ir-detail-bar p {
@@ -222,18 +226,29 @@
   }
 
   .ir-detail-save-desk {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
     width: auto;
+    height: 40px;
     margin-left: auto;
-    padding: 0 16px;
+    padding: 0 16px 0 14px;
     border-radius: 999px;
     font-weight: 800;
     font-size: 14px;
     gap: 6px;
+    white-space: nowrap;
   }
+
+  .ir-detail-save-desk svg { flex: none; }
 
   .ir-detail-save-desk[aria-pressed="true"] {
     background: var(--paper-2);
+    color: var(--emerald);
+    border-color: var(--emerald);
   }
+
+  .ir-detail-save-desk[aria-pressed="true"] svg { fill: currentColor; }
 
   .ir-detail-scroll {
     display: grid;
