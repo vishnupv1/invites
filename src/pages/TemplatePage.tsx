@@ -180,9 +180,9 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
 
   if (!template || !event) return <Navigate to="/browse" replace />;
   const owned = account && owns(template.id, template.free);
-  const createTo = `/create/${template.id}?event=${event}`;
+  const createTo = `/create/${template.id}?event=${event}&from=template`;
   if (owned && !library) return <Navigate to="/templates" replace />;
-  const catalogTo = account ? "/templates" : "/browse";
+  const catalogTo = "/browse";
   const previewTo = `/browse/${template.id}`;
 
   const swatch = swatchFor?.id === template.id ? swatchFor.swatch : template.meta.defaultTheme;

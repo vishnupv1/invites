@@ -516,20 +516,34 @@
   box-shadow: 0 16px 40px rgba(23, 32, 28, 0.12);
 }
 
-.rsvp-menu nav a {
+.rsvp-menu nav a,
+.rsvp-menu nav button {
   display: flex;
   align-items: center;
+  width: 100%;
   min-height: 44px;
   padding: 0 14px;
+  border: 0;
   border-radius: 12px;
+  background: transparent;
   color: #17201c;
+  font: inherit;
   font-weight: 800;
   font-size: 15px;
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .rsvp-menu nav a.on,
-.rsvp-menu nav a:hover { background: #ebe3d4; }
+.rsvp-menu nav a:hover,
+.rsvp-menu nav button:hover { background: #ebe3d4; }
+
+.rsvp-menu nav button {
+  margin-top: 4px;
+  border-top: 1px solid rgba(23, 32, 28, 0.12);
+  border-radius: 0 0 8px 8px;
+}
 
 .rsvp-jumps {
   display: flex;

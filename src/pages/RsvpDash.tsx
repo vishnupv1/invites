@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getInviteRecord, listGreetings, updateHostName } from "../api";
+import { getInviteRecord, listGreetings, signOut, updateHostName } from "../api";
 import { LiveShare } from "../components/LiveShare";
 import { Spinner } from "../components/Loader";
 import { packOf } from "../data/custom";
@@ -328,9 +328,15 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
                 {JUMPS.map((item) => (
                   <Link key={item.to} to={item.to} className={item.to === `/${pane}` ? "on" : ""} onClick={() => setMoreOpen(false)}>{item.label}</Link>
                 ))}
-                {selected ? (
-                  <Link to={`/create/${selected.templateId}?invite=${selected.id}`} onClick={() => setMoreOpen(false)}>Edit invitation</Link>
-                ) : null}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMoreOpen(false);
+                    void signOut().finally(() => window.location.assign("/"));
+                  }}
+                >
+                  Log out
+                </button>
               </nav>
             ) : null}
           </div>

@@ -247,6 +247,11 @@ export function Editor({
   const navigate = useNavigate();
   const template = getTemplate(id);
   const inviteQuery = embedded ? "" : (params.get("invite") ?? "");
+  function keepFrom(path: string) {
+    const from = params.get("from");
+    if (!from) return path;
+    return `${path}${path.includes("?") ? "&" : "?"}from=${encodeURIComponent(from)}`;
+  }
   const eventQuery = eventIdProp || params.get("event") || undefined;
   const { owns, purchase, grant, remember, invites, ready: libraryReady } = useLibrary();
   useEffect(() => {
@@ -318,7 +323,7 @@ export function Editor({
       .then((record) => {
         if (cancel) return;
         if (record.templateId !== template.id) {
-          if (!embedded) navigate(`/create/${record.templateId}?invite=${record.id}`, { replace: true });
+          if (!embedded) navigate(keepFrom(`/create/${record.templateId}?invite=${record.id}`), { replace: true });
           return;
         }
         inviteIdRef.current = record.id;
@@ -361,7 +366,7 @@ export function Editor({
           })
           .catch(() => undefined);
       } else {
-        navigate(`/create/${template.id}?invite=${existing.id}`, { replace: true });
+        navigate(keepFrom(`/create/${template.id}?invite=${existing.id}`), { replace: true });
       }
       return;
     }
@@ -468,7 +473,7 @@ export function Editor({
             remember(saved);
             localStorage.removeItem(localDraftKey(template.id));
             onInviteRef.current?.(saved.id);
-            if (!embedded) navigate(`/create/${template.id}?invite=${saved.id}`, { replace: true });
+            if (!embedded) navigate(keepFrom(`/create/${template.id}?invite=${saved.id}`), { replace: true });
           });
         }
         await creatingRef.current;
@@ -884,12 +889,19 @@ export function Editor({
     notify("Link copied.");
   }
 
+  const fromPublic = params.get("from") === "template" || params.get("from") === "browse";
+  const backTo = params.get("from") === "template"
+    ? `/template/${template.id}`
+    : !signedIn || fromPublic
+      ? "/browse"
+      : "/templates";
+
   const editor = (
     <div className={`ed-root${embedded ? " ed-embedded" : " ed-shell"}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}${expanded || guestPreview ? " is-expanded" : ""}${guestPreview ? " is-guest-preview" : ""}`}>
       <header className="ed-top">
         <div className="ed-brand">
           {embedded ? null : (
-          <Link className="ed-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates">
+          <Link className="ed-back" to={backTo} aria-label="Back to templates">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
@@ -955,15 +967,15 @@ export function Editor({
         <>
           <Breadcrumbs
             className="ed-crumbs"
-            items={signedIn
+            items={!signedIn || fromPublic
               ? [
-                  { label: "Dashboard", to: "/studio" },
-                  { label: "Templates", to: "/templates" },
+                  { label: "Home", to: "/" },
+                  { label: "Templates", to: "/browse" },
                   { label: template.name },
                 ]
               : [
-                  { label: "Home", to: "/" },
-                  { label: "Templates", to: "/browse" },
+                  { label: "Dashboard", to: "/studio" },
+                  { label: "Templates", to: "/templates" },
                   { label: template.name },
                 ]}
           />
@@ -976,7 +988,7 @@ export function Editor({
           <div className="ed-proto-mobile">
             <div className="ed-proto-bar">
               {embedded ? <span /> : (
-                <Link className="ed-proto-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates"><BackIcon /></Link>
+                <Link className="ed-proto-back" to={backTo} aria-label="Back to templates"><BackIcon /></Link>
               )}
               <h1>Make it yours</h1>
               <button type="button" className="ed-proto-preview" onClick={() => setGuestPreview(true)}>Preview</button>
@@ -992,7 +1004,7 @@ export function Editor({
           </div>
           <div className="ed-proto-desk">
             {embedded ? <span /> : (
-              <Link className="ed-proto-back" to={signedIn ? "/templates" : "/browse"} aria-label="Back to templates"><BackIcon /></Link>
+              <Link className="ed-proto-back" to={backTo} aria-label="Back to templates"><BackIcon /></Link>
             )}
             <p className="ed-proto-crumb">Templates <span>/</span> {template.name} <span>/</span> <b>Make it yours</b></p>
             <span className="ed-proto-saved"><CheckIcon />{signedIn ? saveLabel : "Autosaved"}</span>
