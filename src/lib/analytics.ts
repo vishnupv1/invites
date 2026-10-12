@@ -118,10 +118,33 @@ function installMetaPixel() {
   window.fbq("init", pixelId);
 }
 
-function trackPixel(name: string, params?: Record<string, unknown>) {
-  if (!pixelId || blocked || !window.fbq) return;
-  if (params) window.fbq("track", name, withoutPersonal(params));
-  else window.fbq("track", name);
+function trackMeta(event: string, params?: Record<string, unknown>, eventId?: string) {
+  if (!pixelId || blocked || internal || !window.fbq) return;
+  const args: unknown[] = ["track", event, params ?? {}];
+  if (eventId) args.push({ eventID: eventId });
+  window.fbq(...args);
+}
+
+const META_EVENTS: Record<string, string> = {
+  template_preview: "ViewContent",
+  start_design: "CustomizeProduct",
+  begin_checkout: "InitiateCheckout",
+  sign_up: "CompleteRegistration",
+};
+
+function toMetaParams(params?: Record<string, unknown>) {
+  if (!params) return undefined;
+  const out: Record<string, unknown> = {};
+  if (params.template_id) {
+    out.content_ids = [String(params.template_id)];
+    out.content_type = "product";
+  }
+  if (params.template_name) out.content_name = String(params.template_name);
+  if (typeof params.value === "number") {
+    out.value = params.value;
+    out.currency = params.currency ?? "INR";
+  }
+  return Object.keys(out).length ? out : undefined;
 }
 
 type EventItem = { item_id: string; item_name: string; price: number };
@@ -131,6 +154,8 @@ export function trackEvent(name: string, params?: Record<string, EventValue>) {
   initialize();
   if (blocked) return;
   window.gtag("event", name, withTraffic(withoutPersonal(params)));
+  const metaEvent = META_EVENTS[name];
+  if (metaEvent) trackMeta(metaEvent, toMetaParams(params));
 }
 
 const once = new Set<string>();
@@ -156,7 +181,7 @@ export function trackPageView(page: string, title: string, pageType?: string) {
   };
   if (pageType) params.page_type = pageType;
   window.gtag("event", "page_view", withTraffic(params));
-  trackPixel("PageView");
+  trackMeta("PageView");
 }
 
 export function trackNamesEntered() {
@@ -266,13 +291,13 @@ export function trackPurchase(params: {
     items: params.items,
   });
   if (firstPurchase) {
-    trackPixel("Purchase", {
+    trackMeta("Purchase", {
       currency: params.currency,
       value: params.value,
       content_ids: [params.templateId],
       content_name: params.templateName,
       content_type: "product",
-    });
+    }, params.transactionId);
   }
 }
 
