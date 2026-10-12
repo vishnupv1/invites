@@ -27,6 +27,17 @@ type SavedDraft = {
   fields: InviteFields | null;
 };
 
+function publishDestination(next: string | null) {
+  if (!next || !next.startsWith("/create/") || next.startsWith("//")) return "";
+  const id = next.split("?")[0]?.split("/")[2] || "";
+  if (!id) return "";
+  try {
+    return sessionStorage.getItem(PUBLISH_KEY) === id ? next : "";
+  } catch {
+    return "";
+  }
+}
+
 function readSavedDraft(): SavedDraft | null {
   try {
     let best: (SavedDraft & { at: number }) | null = null;
@@ -112,7 +123,18 @@ export function Auth() {
   const saved = Boolean(draft?.names);
   const extras = MORE.map((id) => getTemplate(id)).filter((item): item is Template => Boolean(item && item.id !== previewTemplate?.id)).slice(0, 3);
   const next = params.get("next");
-  const backTo = next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
+  const publishTo = publishDestination(next);
+  const publishing = Boolean(publishTo);
+  const backTo = publishing ? publishTo : "/";
+
+  useEffect(() => {
+    if (publishing) return;
+    try {
+      sessionStorage.removeItem(PUBLISH_KEY);
+    } catch {
+      /* A plain sign-in does not resume a publish. */
+    }
+  }, [publishing]);
 
   useEffect(() => {
     document.title = login ? "Log in | InvitesReady" : "Sign up | InvitesReady";
@@ -133,9 +155,7 @@ export function Auth() {
   }
 
   function continueOn() {
-    const next = params.get("next");
-    const safe = next && next.startsWith("/") && !next.startsWith("//") ? next : "/studio";
-    window.location.assign(safe);
+    window.location.assign(publishDestination(params.get("next")) || "/studio");
   }
 
   async function onSubmit(event: FormEvent) {
@@ -181,7 +201,7 @@ export function Auth() {
 
   return (
     <IrApp>
-      <div className="si">
+      <div className={publishing ? "si" : "si is-account"}>
         <header className="si-bar">
           <Link
             className="si-back"
@@ -197,10 +217,10 @@ export function Auth() {
           >
             <BackIcon />
           </Link>
-          <span>Sign in to publish</span>
+          <span>{publishing ? "Sign in to publish" : login ? "Log in" : "Create account"}</span>
         </header>
 
-        <aside className="si-stage" aria-hidden="true">
+        {publishing ? <aside className="si-stage" aria-hidden="true">
           <div className="si-glow" />
           <div className="si-cast">
             {extras.map((item, index) => (
@@ -219,16 +239,16 @@ export function Auth() {
               {saved ? <small><CheckIcon /> Saved — nothing will be lost</small> : null}
             </div>
           </div>
-        </aside>
+        </aside> : null}
 
         <main className="si-main">
-          <div className="si-ticket">
+          {publishing ? <div className="si-ticket">
             <img src={`/covers/${previewTemplate?.id ?? "bloom"}.jpg`} alt="" />
             <div>
               <b>{names}</b>
               {saved ? <small><CheckIcon /> Your invitation is saved</small> : null}
             </div>
-          </div>
+          </div> : null}
 
           {googleBusy ? (
             <div className="si-wait" role="status" aria-live="polite">
@@ -247,8 +267,8 @@ export function Auth() {
             </div>
           ) : (
             <form onSubmit={onSubmit}>
-              <h1>One step<br />to <i>publish.</i></h1>
-              <p>Sign in so RSVPs reach you and your invitation stays safe. Takes 20 seconds.</p>
+              <h1>{publishing ? <>One step<br />to <i>publish.</i></> : login ? "Log in" : "Create your account"}</h1>
+              <p>{publishing ? "Sign in so RSVPs reach you and your invitation stays safe. Takes 20 seconds." : "Sign in to open your dashboard."}</p>
               <button type="button" className="si-swap" onClick={() => switchMode(login ? "signup" : "login")}>
                 {login ? "New here? Create account" : "Already have an account? Log in"}
               </button>

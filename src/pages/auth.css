@@ -38,6 +38,10 @@
   padding: 4px 22px 36px;
 }
 
+.si.is-account .si-ticket {
+  display: none;
+}
+
 .si-ticket {
   display: flex;
   align-items: center;
@@ -443,6 +447,18 @@
   .si-wait,
   .si-done {
     width: min(440px, 100%);
+  }
+
+  .si.is-account {
+    grid-template-columns: 1fr;
+  }
+
+  .si.is-account .si-stage {
+    display: none;
+  }
+
+  .si.is-account .si-main {
+    justify-content: center;
   }
 
   .si-ticket {

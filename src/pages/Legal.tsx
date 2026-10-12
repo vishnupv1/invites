@@ -51,12 +51,12 @@ export function Privacy() {
       <p>We use this information to create your account, show your invitation, store replies, confirm a purchase, and answer support email. We do not sell personal information.</p>
       <h2>Analytics</h2>
       <p>
-        We use Google Analytics to see which pages are visited. Google may set cookies and receive your IP address and the page address. You can block analytics cookies in your browser. We use these visits to understand the site and to measure advertising.
+        We use Google Analytics to see which pages are visited. Google may set cookies and receive your IP address and the page address. We also use the Meta Pixel to measure visits from Meta ads. Meta may set a cookie and receive the page address. You can block these cookies in your browser. We use these visits to understand the site and to measure advertising.
       </p>
       <h2>How long we keep it</h2>
       <p>We keep your account, invitations, replies, and purchase records while the account is in use. Email {CONTACT_EMAIL} if you want an invitation or account removed.</p>
       <h2>Who else sees it</h2>
-      <p>People with the invitation link can see the invitation and, if you turn replies on, can submit a reply. Razorpay processes the payment. Google processes analytics. We host the site and its database so the product can run.</p>
+      <p>People with the invitation link can see the invitation and, if you turn replies on, can submit a reply. Razorpay processes the payment. Google processes analytics. Meta processes the pixel. We host the site and its database so the product can run.</p>
     </Frame>
   );
 }

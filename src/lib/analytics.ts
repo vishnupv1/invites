@@ -2,12 +2,24 @@ import { outcomeEvent, saveDraftEvent } from "./funnel-events.ts";
 import { purchaseEventKey } from "./purchase-event-key.ts";
 
 const measurementId = "G-NNF07Q6XYV";
+const pixelId = String(import.meta.env.VITE_META_PIXEL_ID || "1134319392613426").trim();
 const INTERNAL_KEY = "invitesready.internal";
+
+type MetaPixel = {
+  (...args: unknown[]): void;
+  callMethod?: (...args: unknown[]) => void;
+  queue: IArguments[];
+  loaded: boolean;
+  version: string;
+  push: MetaPixel;
+};
 
 declare global {
   interface Window {
     dataLayer: unknown[];
     gtag: (...args: unknown[]) => void;
+    fbq?: MetaPixel;
+    _fbq?: MetaPixel;
   }
 }
 
@@ -78,6 +90,38 @@ function initialize() {
   if (internal) config.traffic_type = "internal";
   window.gtag("config", measurementId, config);
   if (internal) window.gtag("set", { traffic_type: "internal" });
+  installMetaPixel();
+}
+
+function installMetaPixel() {
+  if (!pixelId || window.fbq) return;
+  const fbq = function (this: MetaPixel) {
+    // Meta's loader reads the special arguments object, same as gtag.
+    // eslint-disable-next-line prefer-rest-params
+    const args = arguments;
+    const pixel = window.fbq;
+    if (!pixel) return;
+    if (pixel.callMethod) pixel.callMethod.apply(pixel, args as unknown as unknown[]);
+    else pixel.queue.push(args);
+  } as MetaPixel;
+  fbq.queue = [];
+  fbq.loaded = true;
+  fbq.version = "2.0";
+  fbq.push = fbq;
+  window.fbq = fbq;
+  window._fbq = fbq;
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = "https://connect.facebook.net/en_US/fbevents.js";
+  document.head.appendChild(script);
+  window.fbq("init", pixelId);
+}
+
+function trackPixel(name: string, params?: Record<string, unknown>) {
+  if (!pixelId || blocked || !window.fbq) return;
+  if (params) window.fbq("track", name, withoutPersonal(params));
+  else window.fbq("track", name);
 }
 
 type EventItem = { item_id: string; item_name: string; price: number };
@@ -112,6 +156,7 @@ export function trackPageView(page: string, title: string, pageType?: string) {
   };
   if (pageType) params.page_type = pageType;
   window.gtag("event", "page_view", withTraffic(params));
+  trackPixel("PageView");
 }
 
 export function trackNamesEntered() {
@@ -209,7 +254,9 @@ export function trackPurchase(params: {
   coupon?: string;
   items: EventItem[];
 }) {
-  trackOnce("purchase", purchaseEventKey(params.templateId, params.transactionId, params.coupon), {
+  const purchaseKey = purchaseEventKey(params.templateId, params.transactionId, params.coupon);
+  const firstPurchase = !once.has(`purchase:${purchaseKey}`);
+  trackOnce("purchase", purchaseKey, {
     currency: params.currency,
     value: params.value,
     template_id: params.templateId,
@@ -218,6 +265,15 @@ export function trackPurchase(params: {
     ...(params.coupon ? { coupon: params.coupon } : {}),
     items: params.items,
   });
+  if (firstPurchase) {
+    trackPixel("Purchase", {
+      currency: params.currency,
+      value: params.value,
+      content_ids: [params.templateId],
+      content_name: params.templateName,
+      content_type: "product",
+    });
+  }
 }
 
 export function trackGuestCtaClick(templateName?: string) {
