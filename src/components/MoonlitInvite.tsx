@@ -276,7 +276,7 @@ export function MoonlitInvite({
     : [{ left: "30%", top: "91.2%", size: "34px" }, { left: "55%", top: "93.4%", size: "30px" }, { left: "72%", top: "90%", size: "26px" }];
 
   return (
-    <div ref={rootRef} className={`mj${desk ? " is-desk" : ""}${live ? " is-live" : ""}`} data-motion={live && reduced() ? "off" : undefined} data-theme="night">
+    <div ref={rootRef} className={`mj${desk ? " is-desk" : ""}${live ? " is-live" : ""}${cover ? "" : " is-open"}`} data-motion={live && reduced() ? "off" : undefined} data-theme="night">
       <section className="mj-stage" ref={stageRef}>
         <div className="mj-fit" ref={fitRef}>
         <div className="mj-scene">

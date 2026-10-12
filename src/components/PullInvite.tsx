@@ -299,7 +299,7 @@ export function PullInvite({
   const page = screen === "page";
 
   return (
-    <div ref={rootRef} className={desk ? "pl is-desk" : "pl"} data-theme={theme}>
+    <div ref={rootRef} className={`${desk ? "pl is-desk" : "pl"}${page ? "" : " is-sealed"}`} data-theme={theme}>
       {page ? (
         <div className="pl-page">
           <button

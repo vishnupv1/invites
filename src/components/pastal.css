@@ -1,3 +1,13 @@
+.pt:not(.is-open) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.pt:not(.is-open) .pt-stage {
+  height: 100%;
+  max-height: none;
+}
+.pt:not(.is-open) > section:not(.pt-stage) { display: none; }
+
 .pt {
   --bg: #efe7da;
   --p2: #f6f0e6;

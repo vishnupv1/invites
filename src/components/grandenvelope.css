@@ -1,3 +1,13 @@
+.ge:not([data-phase="suite"]) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.ge:not([data-phase="suite"]) .ge-stage {
+  height: 100%;
+  min-height: 0;
+}
+.ge:not([data-phase="suite"]) > :not(.ge-stage) { display: none; }
+
 .ge {
   container: ge / inline-size;
   position: relative;

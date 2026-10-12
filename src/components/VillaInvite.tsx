@@ -274,7 +274,7 @@ export function VillaInvite({
   const first = name.trim().split(" ")[0];
 
   return (
-    <div ref={rootRef} className={`vs${desk ? " is-desk" : ""}${live ? " is-live" : ""}`} data-motion={live && reduced() ? "off" : undefined} data-theme="olive">
+    <div ref={rootRef} className={`vs${desk ? " is-desk" : ""}${live ? " is-live" : ""}${cover ? "" : " is-open"}`} data-motion={live && reduced() ? "off" : undefined} data-theme="olive">
       <section className="vs-stage" ref={stageRef}>
         <div className="vs-fit" ref={fitRef}>
           <Lights bulbs={PHONE_BULBS} path={PHONE_WIRE} width={390} height={156} variant="phone" />

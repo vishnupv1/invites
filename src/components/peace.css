@@ -114,6 +114,14 @@
 @keyframes pc-seal { 0% { transform: scale(2) rotate(-30deg); opacity: 0; } 70% { transform: scale(0.92) rotate(4deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
 @keyframes pc-spin { to { transform: rotate(360deg); } }
 
+.pc:not(.is-entered) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.pc:not(.is-entered) .pc-gate {
+  height: 100%;
+}
+
 .pc-gate {
   position: relative;
   height: 844px;

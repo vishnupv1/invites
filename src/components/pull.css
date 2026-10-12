@@ -150,6 +150,14 @@
 @keyframes ep-drape { 0%, 100% { transform: skewX(0deg); } 50% { transform: skewX(-0.8deg); } }
 @keyframes ep-kb { from { transform: scale(1.05); } to { transform: scale(1.18); } }
 
+.pl.is-sealed {
+  height: 100dvh;
+  overflow: hidden;
+}
+.pl.is-sealed .pl-stage {
+  height: 100% !important;
+}
+
 .pl-stage {
   position: relative;
   overflow: hidden;

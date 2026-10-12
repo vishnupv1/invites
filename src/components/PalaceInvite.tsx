@@ -232,7 +232,7 @@ export function PalaceInvite({
   const calendar = calendarUrl(fields);
 
   return (
-    <div ref={rootRef} className={`pq${desk ? " is-desk" : ""}${live ? " is-live" : ""}`} data-motion={live && reduced() ? "off" : undefined} data-theme="blush">
+    <div ref={rootRef} className={`pq${desk ? " is-desk" : ""}${live ? " is-live" : ""}${cover ? "" : " is-open"}`} data-motion={live && reduced() ? "off" : undefined} data-theme="blush">
       <section className="pq-stage">
         <img className="pq-palace" src="/palace/palace.webp" alt="" />
         <img className="pq-flowers l" src="/palace/flowers.webp" alt="" />

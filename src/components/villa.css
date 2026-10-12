@@ -1,3 +1,9 @@
+.vs:not(.is-open) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.vs:not(.is-open) > :not(.vs-stage) { display: none; }
+
 .vs {
   --olive: #66703f;
   --olive-d: #4e5730;

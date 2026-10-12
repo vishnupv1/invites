@@ -214,7 +214,7 @@ export function PastalInvite({
   return (
     <div
       ref={rootRef}
-      className={desk ? `pt is-desk${live ? " is-live" : ""}` : `pt${live ? " is-live" : ""}`}
+      className={desk ? `pt is-desk${live ? " is-live" : ""}${cover ? "" : " is-open"}` : `pt${live ? " is-live" : ""}${cover ? "" : " is-open"}`}
       data-theme={theme}
       data-motion={reduced() ? "off" : "on"}
       style={{ ["--emboss" as string]: `url(#${emboss})`, ["--deboss" as string]: `url(#${deboss})` }}

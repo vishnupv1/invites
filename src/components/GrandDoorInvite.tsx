@@ -335,7 +335,7 @@ export function GrandDoorInvite({
   const title = (fields.title || "invite you to celebrate their love").toUpperCase();
 
   return (
-    <div className={quiet ? "gd is-quiet" : "gd"}>
+    <div className={quiet ? "gd is-quiet" : "gd"} data-phase={phase}>
       <section ref={stageRef} className="gd-stage" aria-label="Opening">
         {door ? (
           <div className="gd-cam" style={{ ["--o" as string]: g.origin, ["--ce" as string]: g.ce }}>

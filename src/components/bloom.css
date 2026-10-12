@@ -1,3 +1,13 @@
+.bl:not(.is-open) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.bl:not(.is-open) .bl-stage {
+  height: 100%;
+  min-height: 0;
+}
+.bl:not(.is-open) > :not(.bl-stage) { display: none; }
+
 .bl {
   --rose: #b9786e;
   --ink: #5e4440;

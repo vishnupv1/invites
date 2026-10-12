@@ -1,3 +1,13 @@
+.gd:not([data-phase="hero"]) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.gd:not([data-phase="hero"]) .gd-stage {
+  height: 100%;
+  min-height: 0;
+}
+.gd:not([data-phase="hero"]) > :not(.gd-stage) { display: none; }
+
 .gd {
   container: gd / inline-size;
   position: relative;

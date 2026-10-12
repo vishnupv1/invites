@@ -1,3 +1,13 @@
+.pq:not(.is-open) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.pq:not(.is-open) .pq-stage {
+  height: 100%;
+  max-height: none;
+}
+.pq:not(.is-open) > :not(.pq-stage) { display: none; }
+
 .pq {
   --ink: #6e4a42;
   --soft: #8e5f57;

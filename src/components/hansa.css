@@ -1,3 +1,13 @@
+.hs:not(.is-open) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.hs:not(.is-open) .hs-stage {
+  height: 100%;
+  min-height: 0;
+}
+.hs:not(.is-open) > :not(.hs-stage) { display: none; }
+
 .hs {
   --ink: #4a4e68;
   --ink-soft: #6f7390;

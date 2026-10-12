@@ -1,3 +1,9 @@
+.mj:not(.is-open) {
+  height: 100dvh;
+  overflow: hidden;
+}
+.mj:not(.is-open) > :not(.mj-stage) { display: none; }
+
 .mj {
   --gold: #e9be6a;
   --gold-l: #f6dda0;
