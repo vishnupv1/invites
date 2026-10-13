@@ -10,7 +10,7 @@ import { TemplatePreview } from "../components/shell/TemplatePreview";
 import { ArrowIcon, BackIcon, CheckIcon } from "../components/shell/marks";
 import { getTemplate, sampleFor } from "../data/templates";
 import { trackEvent } from "../lib/analytics";
-import { signInWithGoogle } from "../lib/google";
+import { prepareGoogleSignIn, signInWithGoogle } from "../lib/google";
 import type { InviteFields, Template } from "../types";
 import "./auth.css";
 
@@ -26,6 +26,17 @@ type SavedDraft = {
   templateId: string;
   fields: InviteFields | null;
 };
+
+function safeReturn(value: string | null) {
+  if (!value || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/login")) return "";
+  try {
+    const url = new URL(value, window.location.origin);
+    if (url.origin !== window.location.origin) return "";
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return "";
+  }
+}
 
 function publishDestination(next: string | null) {
   if (!next || !next.startsWith("/create/") || next.startsWith("//")) return "";
@@ -111,6 +122,7 @@ export function Auth() {
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
+  const [googleReady, setGoogleReady] = useState(false);
   const [wide, setWide] = useState(() => window.matchMedia("(min-width: 900px)").matches);
   const [draft] = useState(readSavedDraft);
 
@@ -125,7 +137,7 @@ export function Auth() {
   const next = params.get("next");
   const publishTo = publishDestination(next);
   const publishing = Boolean(publishTo);
-  const backTo = publishing ? publishTo : "/";
+  const backTo = publishTo || safeReturn(next) || "/";
 
   useEffect(() => {
     if (publishing) return;
@@ -139,6 +151,20 @@ export function Auth() {
   useEffect(() => {
     document.title = login ? "Log in | InvitesReady" : "Sign up | InvitesReady";
   }, [login]);
+
+  useEffect(() => {
+    let live = true;
+    prepareGoogleSignIn()
+      .then(() => {
+        if (live) setGoogleReady(true);
+      })
+      .catch(() => {
+        if (live) setGoogleReady(true);
+      });
+    return () => {
+      live = false;
+    };
+  }, []);
 
   useEffect(() => {
     const query = window.matchMedia("(min-width: 900px)");
@@ -155,7 +181,8 @@ export function Auth() {
   }
 
   function continueOn() {
-    window.location.assign(publishDestination(params.get("next")) || "/studio");
+    const next = params.get("next");
+    window.location.assign(publishDestination(next) || safeReturn(next) || "/studio");
   }
 
   async function onSubmit(event: FormEvent) {
@@ -259,9 +286,9 @@ export function Auth() {
           ) : done ? (
             <div className="si-done">
               <h1>Account created</h1>
-              <p>Your account is ready. You can open the studio and publish from there.</p>
+              <p>Your account is ready. You can pick up where you left off.</p>
               <button type="button" className="si-go" onClick={continueOn}>
-                <span>Go to dashboard</span>
+                <span>{publishTo || safeReturn(params.get("next")) ? "Continue" : "Go to dashboard"}</span>
                 <b aria-hidden="true"><ArrowIcon /></b>
               </button>
             </div>
@@ -295,7 +322,7 @@ export function Auth() {
                 <b aria-hidden="true"><ArrowIcon /></b>
               </button>
               <div className="si-or">OR</div>
-              <GoogleButton className="si-google" disabled={busy || googleBusy} onClick={() => void onGoogle()} />
+              <GoogleButton className="si-google" disabled={!googleReady || busy || googleBusy} onClick={() => void onGoogle()} />
               <p className="si-legal">By continuing you agree to the <Link to="/terms">Terms</Link> & <Link to="/privacy">Privacy Policy</Link></p>
             </form>
           )}

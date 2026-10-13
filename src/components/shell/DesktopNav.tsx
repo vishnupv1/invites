@@ -20,8 +20,14 @@ function linkOn(href: string, path: string) {
   return path === href;
 }
 
+function signInHref(pathname: string, search: string, hash: string) {
+  const next = `${pathname}${search}${hash}`;
+  if (!next.startsWith("/") || next.startsWith("//") || next.startsWith("/login")) return { pathname: "/login" };
+  return { pathname: "/login", search: `?next=${encodeURIComponent(next)}` };
+}
+
 export function DesktopNav({ tone = "emerald", links = LINKS }: Props) {
-  const { pathname } = useLocation();
+  const { pathname, search, hash } = useLocation();
   const { signedIn } = useSession();
   return (
     <header className={`ir-nav${tone === "emerald" ? " is-emerald" : ""}`}>
@@ -34,7 +40,7 @@ export function DesktopNav({ tone = "emerald", links = LINKS }: Props) {
         ))}
       </nav>
       <div className="ir-nav-actions">
-        <Link className="ir-nav-signin" to={signedIn ? "/studio" : "/login"}>
+        <Link className="ir-nav-signin" to={signedIn ? "/studio" : signInHref(pathname, search, hash)}>
           {signedIn ? "Dashboard" : "Sign in"}
         </Link>
         <Link className="ir-nav-try" to="/browse">

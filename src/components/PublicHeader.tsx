@@ -6,7 +6,7 @@ import "./public-header.css";
 
 export function PublicHeader() {
   const { signedIn, host } = useSession();
-  const { pathname } = useLocation();
+  const { pathname, search, hash } = useLocation();
   const onAuth = pathname === "/login";
   const account = host?.name?.split(" ")[0] || "Account";
   const [open, setOpen] = useState(false);
@@ -43,7 +43,7 @@ export function PublicHeader() {
           {open ? "Close" : "Menu"}
         </button>
         {onAuth ? null : (
-          <Link className="ph-login" to={signedIn ? "/studio" : "/login"}>
+          <Link className="ph-login" to={signedIn ? "/studio" : { pathname: "/login", search: `?next=${encodeURIComponent(`${pathname}${search}${hash}`)}` }}>
             {signedIn ? account : "Log in"}
           </Link>
         )}

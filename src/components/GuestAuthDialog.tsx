@@ -1,8 +1,8 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { logIn, signUp } from "../api";
 import { trackLogin, trackSignUp } from "../lib/analytics";
-import { signInWithGoogle } from "../lib/google";
+import { prepareGoogleSignIn, signInWithGoogle } from "../lib/google";
 import { GoogleButton } from "./GoogleButton";
 import { Spinner } from "./Loader";
 import { ArrowIcon, BackIcon, CheckIcon } from "./shell/marks";
@@ -26,6 +26,21 @@ export function GuestAuthDialog({ heading = "Sign in to save your invitation", n
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
+  const [googleReady, setGoogleReady] = useState(false);
+
+  useEffect(() => {
+    let live = true;
+    prepareGoogleSignIn()
+      .then(() => {
+        if (live) setGoogleReady(true);
+      })
+      .catch(() => {
+        if (live) setGoogleReady(true);
+      });
+    return () => {
+      live = false;
+    };
+  }, []);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -114,7 +129,7 @@ export function GuestAuthDialog({ heading = "Sign in to save your invitation", n
         </button>
         <div className="ed-auth-or">OR</div>
         {googleBusy ? <p className="ed-auth-wait">Signing you in with Google…</p> : (
-          <GoogleButton className="ed-auth-google" disabled={busy} onClick={() => void onGoogle()} />
+          <GoogleButton className="ed-auth-google" disabled={!googleReady || busy} onClick={() => void onGoogle()} />
         )}
         <p className="ed-auth-legal">By continuing you agree to the <Link to="/terms">Terms</Link> & <Link to="/privacy">Privacy Policy</Link></p>
       </form>

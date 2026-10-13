@@ -122,6 +122,7 @@ export function LaceInvite({
   const nameId = useId();
   const noteId = useId();
   const [desk, setDesk] = useState(false);
+  const [embed, setEmbed] = useState(false);
   const [scale, setScale] = useState(1);
   const [phase, setPhase] = useState<Phase>(quiet ? "open" : "closed");
   const [gone, setGone] = useState(false);
@@ -179,14 +180,16 @@ export function LaceInvite({
     const apply = () => {
       const width = fit.clientWidth;
       if (!width) return;
+      const embedded = Boolean(fit.closest(".ir-preview, .ir-play"));
       const nextDesk = width >= 860;
       const designW = nextDesk ? 1440 : 390;
       const designH = nextDesk ? 900 : 844;
       const revealed = page.classList.contains("ph-open");
       const visible = window.visualViewport?.height ?? window.innerHeight;
       const widthScale = width / designW;
-      const nextScale = revealed ? widthScale : Math.min(widthScale, visible / designH);
+      const nextScale = revealed || embedded ? widthScale : Math.min(widthScale, visible / designH);
       setDesk((value) => (value === nextDesk ? value : nextDesk));
+      setEmbed((value) => (value === embedded ? value : embedded));
       setScale((value) => (Math.abs(value - nextScale) < 0.001 ? value : nextScale));
       const nextHeight = (revealed ? page.offsetHeight : designH) * nextScale;
       fit.style.overflow = "hidden";
@@ -409,7 +412,7 @@ export function LaceInvite({
     <div className="lr-fit" ref={fitRef} style={{ height: stage }}>
       <div
         ref={pageRef}
-        className={`lr ${desk ? "d" : "m"} ph-${phase}`}
+        className={`lr ${desk ? "d" : "m"}${embed ? " is-embed" : ""} ph-${phase}`}
         style={{ width: desk ? 1440 : 390, transform: `scale(${scale})`, transformOrigin: "top left" }}
         data-motion={window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "off" : "on"}
       >

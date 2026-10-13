@@ -5,7 +5,7 @@ import { DesktopNav } from "../components/shell/DesktopNav";
 import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { IrApp } from "../components/shell/IrApp";
 import { GoogleButton } from "../components/GoogleButton";
-import { signInWithGoogle } from "../lib/google";
+import { prepareGoogleSignIn, signInWithGoogle } from "../lib/google";
 import { Bird, Cake, Check, Gem, Heart, House, PartyPopper, Sparkles, Wine, type LucideIcon } from "lucide-react";
 import { hold, SmartButton, Spinner } from "../components/Loader";
 import { Notice, type NoticeTone } from "../components/Notice";
@@ -115,6 +115,7 @@ export function CreateGuest() {
   const [authError, setAuthError] = useState("");
   const [busy, setBusy] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
+  const [googleReady, setGoogleReady] = useState(false);
   const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [liveCode, setLiveCode] = useState("");
@@ -122,6 +123,20 @@ export function CreateGuest() {
   const [checkout, setCheckout] = useState(false);
   const [toast, setToast] = useState("");
   const [toastTone, setToastTone] = useState<NoticeTone>("ok");
+  useEffect(() => {
+    let live = true;
+    prepareGoogleSignIn()
+      .then(() => {
+        if (live) setGoogleReady(true);
+      })
+      .catch(() => {
+        if (live) setGoogleReady(true);
+      });
+    return () => {
+      live = false;
+    };
+  }, []);
+
   function notify(message: string, tone: NoticeTone = "ok") {
     setToastTone(tone);
     setToast(message);
@@ -814,7 +829,7 @@ export function CreateGuest() {
                     </h2>
                     <p>Use Google or email. Your design stays as it is.</p>
                   </div>
-                  <GoogleButton className="cg-google" disabled={busy} onClick={() => void onGoogle()} />
+                  <GoogleButton className="cg-google" disabled={!googleReady || busy} onClick={() => void onGoogle()} />
                   <div className="cg-tabs" role="tablist" aria-label="Account">
                     <button type="button" role="tab" aria-selected={authTab === "login"} className={authTab === "login" ? "on" : ""} onClick={() => { setAuthTab("login"); setAuthError(""); }}>
                       Log in

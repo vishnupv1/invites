@@ -95,11 +95,23 @@ export function Home({ focus }: { focus?: string }) {
   const { hash } = useLocation();
   const [names, setNames] = useState("");
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
+  const [showSticky, setShowSticky] = useState(false);
+  const nameCard = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     listTemplates()
       .then((rows) => setCatalog(rows.map(withCatalogMeta)))
       .catch(() => setCatalog(TEMPLATES));
+  }, []);
+
+  useEffect(() => {
+    const card = nameCard.current;
+    if (!card) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowSticky(entry.intersectionRatio === 0);
+    }, { threshold: [0, 0.6, 1] });
+    observer.observe(card);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -160,7 +172,7 @@ export function Home({ focus }: { focus?: string }) {
               </div>
             </div>
 
-            <form className="ir-namecard" onSubmit={onNames}>
+            <form className="ir-namecard" ref={nameCard} onSubmit={onNames}>
               <UnderlineField label="Try it with your names" value={names} onChange={setNames} placeholder="Bride & groom" name="couple" autoComplete="name" />
               <button className="ir-namecard-go" type="submit" aria-label="Try it with your names">
                 <ArrowIcon />
@@ -249,9 +261,11 @@ export function Home({ focus }: { focus?: string }) {
           <Link to="/refunds">Refunds</Link>
         </footer>
 
-        <div className="ir-home-sticky">
-          <StickyFooterCTA href="/browse" label="Browse templates" note="Free until you publish" />
-        </div>
+        {showSticky ? (
+          <div className="ir-home-sticky">
+            <StickyFooterCTA href="/browse" label="Browse templates" note="Free until you publish" />
+          </div>
+        ) : null}
       </div>
     </IrApp>
   );

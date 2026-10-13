@@ -110,6 +110,7 @@
 .lr.ph-closed .ht,
 .lr.ph-fading .ht { visibility: hidden; }
 
+.lr.is-embed.m.ph-closed .ec { transform: scale(0.821); transform-origin: center center; }
 .lr .env { position: absolute; inset: 0; z-index: 20; overflow: hidden; background: #e8dac4; }
 .lr .eb { position: absolute; inset: 0; background: #b9a486; }
 .lr .ecw { position: absolute; inset: 0; transform-origin: 50% 100%; }
