@@ -15,11 +15,11 @@ const OCCASION_LABEL: Partial<Record<EventId, string>> = {
   marriage: "Wedding",
 };
 
-type PriceFilter = "all" | "free" | "paid";
-
-function rupee(amount: number) {
-  return `₹${amount.toLocaleString("en-IN")}`;
-}
+// type PriceFilter = "all" | "free" | "paid";
+//
+// function rupee(amount: number) {
+//   return `₹${amount.toLocaleString("en-IN")}`;
+// }
 
 function descriptor(template: Template) {
   const line = template.description.split(".")[0]?.trim() ?? template.tagline;
@@ -32,7 +32,7 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
   const [ready, setReady] = useState(false);
   const [occasion, setOccasion] = useState<EventId | "all">("all");
-  const [price, setPrice] = useState<PriceFilter>("all");
+  // const [price, setPrice] = useState<PriceFilter>("all");
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
 
@@ -61,11 +61,12 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
     const q = query.trim().toLowerCase();
     return catalog.filter((template) => {
       const occasionOk = occasion === "all" || template.events.includes(occasion);
-      const priceOk = price === "all" || (price === "free" ? template.price === 0 || template.free : template.price > 0 && !template.free);
+      // const priceOk = price === "all" || (price === "free" ? template.price === 0 || template.free : template.price > 0 && !template.free);
+      const priceOk = true;
       const textOk = !q || template.name.toLowerCase().includes(q) || template.description.toLowerCase().includes(q);
       return occasionOk && priceOk && textOk;
     });
-  }, [catalog, occasion, price, query]);
+  }, [catalog, occasion, query]);
 
   return (
     <IrApp>
@@ -121,14 +122,14 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
               </button>
             ))}
           </div>
-          <p className="ir-overline">Price</p>
+          {/* <p className="ir-overline">Price</p>
           <div className="ir-browse-side-list">
             {(["all", "free", "paid"] as const).map((item) => (
               <button key={item} type="button" aria-pressed={price === item} onClick={() => setPrice(item)}>
                 {item === "all" ? "Any price" : item === "free" ? "Free" : "Paid"}
               </button>
             ))}
-          </div>
+          </div> */}
           <label className="ir-browse-query">
             <span className="ir-overline">Search</span>
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name or style" />
@@ -143,7 +144,8 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
               </span>
               <span className="ir-browse-name">
                 <span>{template.name}</span>
-                <b>{template.price > 0 ? rupee(template.price) : "Free"}</b>
+                <b>Free</b>
+                {/* <b>{template.price > 0 ? rupee(template.price) : "Free"}</b> */}
               </span>
               <span className="ir-browse-desc">{descriptor(template)}</span>
             </Link>

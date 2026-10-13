@@ -709,8 +709,10 @@ export function hasComponent(template: Template, id: Template["meta"]["component
   return template.meta.components.some((item) => item.id === id);
 }
 
-export function formatPrice(template: Template) {
-  return template.free ? "Free" : `₹${template.price.toLocaleString("en-IN")}`;
+export function formatPrice(_template: Template) {
+  // Prices are paused. Restore the line below when charging again.
+  // return template.free ? "Free" : `₹${template.price.toLocaleString("en-IN")}`;
+  return "Free";
 }
 
 export function designCtaLabel(template: Template) {

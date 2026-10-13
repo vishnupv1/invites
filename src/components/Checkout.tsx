@@ -151,7 +151,8 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled, o
   const [serverHold, setServerHold] = useState<ServerHold | null>(null);
   const [error, setError] = useState(() => (readCapturedPayment(sessionStorage, template.id) ? RECOVERY : ""));
   const busy = useRef(false);
-  const listPrice = template.free ? 0 : template.price;
+  // const listPrice = template.free ? 0 : template.price;
+  const listPrice = 0;
   const saved = discountRupees(listPrice, applied?.percent ?? 0);
   const total = listPrice - saved;
 

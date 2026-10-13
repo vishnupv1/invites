@@ -4,7 +4,7 @@ import { getInviteRecord, listGreetings, signOut, updateHostName } from "../api"
 import { LiveShare } from "../components/LiveShare";
 import { Spinner } from "../components/Loader";
 import { packOf } from "../data/custom";
-import { formatPrice, getTemplate } from "../data/templates";
+import { getTemplate } from "../data/templates";
 import { formatShortDate } from "../lib/dates";
 import { guestInviteUrl } from "../lib/share";
 import { useSession } from "../session";
@@ -452,7 +452,8 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
       {shareOpen && selected ? (
         <LiveShare
           names={selected.names || "Your invitation"}
-          priceLabel={!template || template.free ? "Free" : formatPrice(template)}
+          priceLabel="Free"
+          // priceLabel={!template || template.free ? "Free" : formatPrice(template)}
           link={guestInviteUrl(selected.code, selected.templateId)}
           when={selected.date ? formatShortDate(selected.date) : ""}
           onClose={() => setShareOpen(false)}

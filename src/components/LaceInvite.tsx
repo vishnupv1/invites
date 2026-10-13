@@ -242,7 +242,7 @@ export function LaceInvite({
       return;
     }
     setPhase("fading");
-    timers.current.push(window.setTimeout(() => setPhase("scratch"), 6300));
+    timers.current.push(window.setTimeout(() => setPhase("scratch"), 4800));
   }
 
   function reveal() {

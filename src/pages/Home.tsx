@@ -22,23 +22,25 @@ const FEATURED = ["lace", "bloom", "hansa", "moonlit", "palace", "villa", "grand
 const STEPS = [
   ["01", "Pick a design", "Choose an opening. You can try it before you create an account."],
   ["02", "Add your details", "Names, functions, photos and music. The preview updates as you type."],
-  ["03", "Publish and share", "Pay when you publish, then send one link. Guests open it in the browser."],
+  // ["03", "Publish and share", "Pay when you publish, then send one link. Guests open it in the browser."],
+  ["03", "Publish and share", "Publish, then send one link. Guests open it in the browser."],
 ];
 
 const FAQS = [
   ["Do guests need an app?", "No. They open your link in the browser and can reply from that page."],
-  ["When do I pay?", "When you publish. Designing and previewing do not need an account."],
+  // ["When do I pay?", "When you publish. Designing and previewing do not need an account."],
+  ["When do I pay?", "Nothing right now. Every design is free to publish."],
   ["Can I edit after sharing?", "Yes. The link stays the same, and guests see the latest version."],
 ];
 
-function rupee(amount: number) {
-  return `₹${amount.toLocaleString("en-IN")}`;
-}
-
-function lowestPaid(templates: Template[]) {
-  const prices = templates.map((item) => item.price).filter((price) => price > 0);
-  return prices.length ? Math.min(...prices) : 0;
-}
+// function rupee(amount: number) {
+//   return `₹${amount.toLocaleString("en-IN")}`;
+// }
+//
+// function lowestPaid(templates: Template[]) {
+//   const prices = templates.map((item) => item.price).filter((price) => price > 0);
+//   return prices.length ? Math.min(...prices) : 0;
+// }
 
 function descriptor(template: Template) {
   const line = template.description.split(".")[0]?.trim() ?? template.tagline;
@@ -124,7 +126,7 @@ export function Home({ focus }: { focus?: string }) {
   const featured = FEATURED.map((id) => byId.get(id) ?? getTemplate(id)).filter((item): item is Template => Boolean(item));
   const lead = featured[0] ?? catalog[0];
   const second = featured[1];
-  const from = lowestPaid(catalog);
+  // const from = lowestPaid(catalog);
   const namesInMarquee = catalog.map((item) => item.name);
 
   function onNames(event: FormEvent) {
@@ -162,12 +164,16 @@ export function Home({ focus }: { focus?: string }) {
                   <span>to make yours</span>
                 </p>
                 <p>
-                  <b className="ir-display ir-hero-price">{from > 0 ? `From ${rupee(from)}` : "Free"}</b>
-                  <span>{from > 0 ? "one-time, pay at publish" : "to try a design"}</span>
+                  <b className="ir-display ir-hero-price">Free</b>
+                  {/* <b className="ir-display ir-hero-price">{from > 0 ? `From ${rupee(from)}` : "Free"}</b> */}
+                  <span>to publish</span>
+                  {/* <span>{from > 0 ? "one-time, pay at publish" : "to try a design"}</span> */}
                 </p>
                 <p className="ir-hero-stat-wide">
-                  <b className="ir-display">Pay later</b>
-                  <span>design before you sign in</span>
+                  <b className="ir-display">Free</b>
+                  {/* <b className="ir-display">Pay later</b> */}
+                  <span>every design, for now</span>
+                  {/* <span>design before you sign in</span> */}
                 </p>
               </div>
             </div>
@@ -177,7 +183,8 @@ export function Home({ focus }: { focus?: string }) {
               <button className="ir-namecard-go" type="submit" aria-label="Try it with your names">
                 <ArrowIcon />
               </button>
-              <p className="ir-namecard-chips">Free to try · No sign-up · Pay at publish</p>
+              <p className="ir-namecard-chips">Free to try · No sign-up · Free to publish</p>
+              {/* <p className="ir-namecard-chips">Free to try · No sign-up · Pay at publish</p> */}
             </form>
           </div>
         </header>
@@ -201,7 +208,8 @@ export function Home({ focus }: { focus?: string }) {
                 <span className="ir-home-card-name">{template.name}</span>
                 <span className="ir-home-card-meta">
                   {descriptor(template)}
-                  <b>{template.price > 0 ? rupee(template.price) : "Free"}</b>
+                  <b>Free</b>
+                  {/* <b>{template.price > 0 ? rupee(template.price) : "Free"}</b> */}
                 </span>
               </Link>
             ))}
@@ -225,8 +233,10 @@ export function Home({ focus }: { focus?: string }) {
 
         <section id="pricing" className="ir-priceband">
           <p className="ir-overline">Pricing</p>
-          <h2 className="ir-display">{from > 0 ? `From ${rupee(from)}` : "Free to try"}</h2>
-          <p>One-time, when you publish. Designing and previewing stay free.</p>
+          <h2 className="ir-display">Free</h2>
+          {/* <h2 className="ir-display">{from > 0 ? `From ${rupee(from)}` : "Free to try"}</h2> */}
+          <p>Every design is free to publish for now.</p>
+          {/* <p>One-time, when you publish. Designing and previewing stay free.</p> */}
           <PrimaryButton href="/browse">Browse templates</PrimaryButton>
         </section>
 
@@ -263,7 +273,8 @@ export function Home({ focus }: { focus?: string }) {
 
         {showSticky ? (
           <div className="ir-home-sticky">
-            <StickyFooterCTA href="/browse" label="Browse templates" note="Free until you publish" />
+            <StickyFooterCTA href="/browse" label="Browse templates" note="Free to publish" />
+            {/* <StickyFooterCTA href="/browse" label="Browse templates" note="Free until you publish" /> */}
           </div>
         ) : null}
       </div>

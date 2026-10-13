@@ -323,9 +323,11 @@
     font-weight: 600;
   }
 
+  /* Prices are paused.
   .ir-detail-price span::after {
     content: " · pay only when you publish";
   }
+  */
 
   .ir-detail-inc {
     margin: 8px 0 28px;

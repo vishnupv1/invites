@@ -249,7 +249,8 @@ export function Admin() {
                   </a>
                   <div>
                     <strong>{template.name}</strong>
-                    {template.free ? "Free" : `$${template.price}`} · {uses.get(template.id) ?? 0} published
+                    Free · {uses.get(template.id) ?? 0} published
+                    {/* {template.free ? "Free" : `$${template.price}`} · {uses.get(template.id) ?? 0} published */}
                   </div>
                 </article>
               ))}

@@ -156,8 +156,10 @@ export function TemplatePreview() {
   const liked = template ? favs.includes(template.id) : false;
   const owned = template ? owns(template.id, template.free) : false;
   const occasion = events.find((item) => item.id === event) ?? { id: event, label: event, cardLabel: event };
-  const useTo = template ? (owned ? `/create/${template.id}?event=${event}` : `/template/${template.id}?event=${event}`) : "/templates";
-  const useLabel = !template ? "" : owned ? "Use this template" : `Buy once · ${formatPrice(template)}`;
+  const useTo = template ? `/create/${template.id}?event=${event}` : "/templates";
+  // const useTo = template ? (owned ? `/create/${template.id}?event=${event}` : `/template/${template.id}?event=${event}`) : "/templates";
+  const useLabel = !template ? "" : "Use this template";
+  // const useLabel = !template ? "" : owned ? "Use this template" : `Buy once · ${formatPrice(template)}`;
 
   const similar = useMemo(() => {
     if (!template) return [];
@@ -221,7 +223,8 @@ export function TemplatePreview() {
           <div>
             <div className="pv-title">
               <h1>{template.name}</h1>
-              <span className={template.free ? "pv-badge free" : "pv-badge gold"}>{template.free ? "Free" : "Premium"}</span>
+              <span className="pv-badge free">Free</span>
+              {/* <span className={template.free ? "pv-badge free" : "pv-badge gold"}>{template.free ? "Free" : "Premium"}</span> */}
             </div>
           </div>
         </div>
@@ -716,9 +719,10 @@ export function TemplatePreview() {
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                 </svg>
                 <span>
-                  {template.free
+                  This design is free. Customise it, then share when you're ready.
+                  {/* {template.free
                     ? "This design is free. Customise it, then share when you're ready."
-                    : `One-time purchase of ${formatPrice(template)}. Try your details here, and pay only when you're ready to share.`}
+                    : `One-time purchase of ${formatPrice(template)}. Try your details here, and pay only when you're ready to share.`} */}
                 </span>
               </div>
               <Link className="pv-customise" to={useTo}>{owned ? "Customise this design" : useLabel}</Link>
@@ -740,7 +744,8 @@ export function TemplatePreview() {
                     </div>
                     <div className="pv-like-meta">
                       <strong>{item.name}</strong>
-                      <span className={item.free ? "pv-badge free" : "pv-badge gold"}>{item.free ? "Free" : "Premium"}</span>
+                      <span className="pv-badge free">Free</span>
+                      {/* <span className={item.free ? "pv-badge free" : "pv-badge gold"}>{item.free ? "Free" : "Premium"}</span> */}
                     </div>
                   </Link>
               ))}
@@ -751,8 +756,10 @@ export function TemplatePreview() {
 
       <div className="pv-dock">
         <div>
-          <div className="pv-dock-k">{template.free ? "Free" : "Premium"}</div>
-          <div className="pv-dock-v">{owned ? "Ready to use" : template.free ? "Included" : "Pay when you share"}</div>
+          <div className="pv-dock-k">Free</div>
+          {/* <div className="pv-dock-k">{template.free ? "Free" : "Premium"}</div> */}
+          <div className="pv-dock-v">Ready to use</div>
+          {/* <div className="pv-dock-v">{owned ? "Ready to use" : template.free ? "Included" : "Pay when you share"}</div> */}
         </div>
         <Link to={useTo}>{owned ? "Use this template" : useLabel}</Link>
       </div>

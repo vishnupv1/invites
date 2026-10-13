@@ -43,7 +43,8 @@ export function AccountTemplates() {
 
   return (
     <div className="rsvp-catalog">
-      <p>Pick a design and start it in the editor. You pay when you publish.</p>
+      <p>Pick a design and start it in the editor. Publishing is free for now.</p>
+      {/* <p>Pick a design and start it in the editor. You pay when you publish.</p> */}
       <div className="rsvp-catalog-tools" role="group" aria-label="Occasion">
         <button type="button" aria-pressed={occasion === "all"} className={occasion === "all" ? "on" : ""} onClick={() => setOccasion("all")}>All</button>
         {occasions.map((event) => (

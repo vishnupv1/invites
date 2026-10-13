@@ -405,10 +405,12 @@ export function AccountHub({
                   <div className="li-purchase" key={template.id}>
                     <div>
                       <strong>{template.name}</strong>
-                      <small>{getEvent(event)?.label ?? "Invitation"} · Premium invite</small>
+                      <small>{getEvent(event)?.label ?? "Invitation"}</small>
+                      {/* <small>{getEvent(event)?.label ?? "Invitation"} · Premium invite</small> */}
                     </div>
                     <span className="amt">{formatPrice(template)}</span>
-                    <span className="li-pill paid">Paid</span>
+                    <span className="li-pill">Free</span>
+                    {/* <span className="li-pill paid">Paid</span> */}
                     <Link className="li-btn-sm ghost" to={`/create/${template.id}?event=${event}`}>Use this design</Link>
                   </div>
                 );

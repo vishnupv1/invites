@@ -93,7 +93,8 @@ export function CreateGuest() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(requested ? 3 : saved.step === 1 || saved.step === 2 || saved.step === 3 ? saved.step : 1);
   const [eventId, setEventId] = useState<EventId>(startEvent ?? (saved.event && EVENTS.some((item) => item.id === saved.event) ? saved.event : "marriage"));
   const [templateId, setTemplateId] = useState(requested?.id || saved.templateId || "gazal");
-  const [price, setPrice] = useState<PriceFilter>(saved.price || "All");
+  const [price] = useState<PriceFilter>(saved.price || "All");
+  // const [price, setPrice] = useState<PriceFilter>(saved.price || "All");
   const [swatch, setSwatch] = useState(requested ? requested.meta.defaultTheme || palettesFor(requested)[0] || "" : saved.swatch || "terracotta");
   const [device] = useState<"phone" | "desk">(saved.device || "phone");
   const [name1] = useState(saved.name1 || "");
@@ -207,7 +208,8 @@ export function CreateGuest() {
   const orderedEvents = [...events].sort((a, b) => eventRank(a.id) - eventRank(b.id));
   const event = orderedEvents.find((item) => item.id === eventId) ?? orderedEvents[0];
   const matching = templates.filter((item) => item.events.includes(event.id));
-  const visible = matching.filter((item) => price === "All" || (price === "Free" ? item.free : !item.free));
+  // const visible = matching.filter((item) => price === "All" || (price === "Free" ? item.free : !item.free));
+  const visible = matching;
   const template = templates.find((item) => item.id === templateId && item.events.includes(event.id)) ?? matching[0] ?? templates[0];
   useEffect(() => {
     if (step < 3 || !template) return;
@@ -432,10 +434,10 @@ export function CreateGuest() {
 
   async function publish() {
     if (!template) return;
-    if (!ownsTemplate) {
-      setCheckout(true);
-      return;
-    }
+    // if (!ownsTemplate) {
+    //   setCheckout(true);
+    //   return;
+    // }
     await publishNow();
   }
 
@@ -554,15 +556,16 @@ export function CreateGuest() {
                   ← {event.label} · change
                 </button>
                 <h1>Pick a template you love</h1>
-                <p className="cg-muted">Every template is free to customise. Premium ones are paid only when you publish.</p>
+                <p className="cg-muted">Every template is free to customise and free to publish.</p>
+                {/* <p className="cg-muted">Every template is free to customise. Premium ones are paid only when you publish.</p> */}
               </div>
-              <div className="cg-pills" role="group" aria-label="Price">
+              {/* <div className="cg-pills" role="group" aria-label="Price">
                 {(["All", "Free", "Premium"] as const).map((label) => (
                   <button key={label} type="button" className={price === label ? "cg-pill on" : "cg-pill"} aria-pressed={price === label} onClick={() => setPrice(label)}>
                     {label}
                   </button>
                 ))}
-              </div>
+              </div> */}
             </div>
             {visible.length ? (
               <div className="cg-cards">
@@ -588,7 +591,8 @@ export function CreateGuest() {
                         }}
                       >
                         <PlayingInvite template={item} />
-                        <span className={item.free ? "cg-badge" : "cg-badge premium"}>{item.free ? "Free" : "Premium"}</span>
+                        <span className="cg-badge">Free</span>
+                        {/* <span className={item.free ? "cg-badge" : "cg-badge premium"}>{item.free ? "Free" : "Premium"}</span> */}
                         {selected ? (
                           <span className="cg-tick">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="3" aria-hidden="true">
@@ -672,20 +676,24 @@ export function CreateGuest() {
                     </div>
                   </label>
                   <p className="cg-muted">Publish when the preview looks right. The link stays the same if you edit later.</p>
-                  <div className={template.free ? "cg-plan" : "cg-plan premium"}>
+                  <div className="cg-plan">
+                    {/* <div className={template.free ? "cg-plan" : "cg-plan premium"}> */}
                     <header>
                       <strong>
-                        {template.name} · {template.free || ownsTemplate ? (template.free ? "Free" : "Owned") : "Premium"}
+                        {template.name} · Free
+                        {/* {template.name} · {template.free || ownsTemplate ? (template.free ? "Free" : "Owned") : "Premium"} */}
                       </strong>
-                      <b>{ownsTemplate && !template.free ? "Owned" : formatPrice(template)}</b>
+                      <b>Free</b>
+                      {/* <b>{ownsTemplate && !template.free ? "Owned" : formatPrice(template)}</b> */}
                     </header>
-                    <p>
+                    <p>Free for this event, with a small Made with InvitesReady credit on the page.</p>
+                    {/* <p>
                       {template.free
                         ? "Free for this event, with a small Made with InvitesReady credit on the page."
                         : ownsTemplate
                           ? "This design is already yours. Publishing does not charge you again."
                           : `One-time ${formatPrice(template)} for this design. You pay once at checkout, then you can publish.`}
-                    </p>
+                    </p> */}
                   </div>
                   <SmartButton
                     className="cg-publish"
@@ -744,7 +752,8 @@ export function CreateGuest() {
               <strong>{step === 2 ? `${template?.name ?? "Template"} selected` : shownNames}</strong>
               <span>
                 {step === 2
-                  ? `${event.label} · ${template?.free ? "Free to publish" : `${template ? formatPrice(template) : ""} when you publish`}`
+                  ? `${event.label} · Free to publish`
+                  // ? `${event.label} · ${template?.free ? "Free to publish" : `${template ? formatPrice(template) : ""} when you publish`}`
                   : host
                     ? "Draft on this device until you publish"
                     : "Guest draft · saved on this device"}

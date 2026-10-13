@@ -48,7 +48,7 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
 };
 
 const SAVED_KEY = "invitesready-saved-templates";
-type PriceFilter = "All" | "Free" | "Paid";
+// type PriceFilter = "All" | "Free" | "Paid";
 
 function readSaved() {
   try {
@@ -78,7 +78,7 @@ export function AllTemplates() {
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
   const [catalogReady, setCatalogReady] = useState(false);
   const [occasion, setOccasion] = useState("all");
-  const [price, setPrice] = useState<PriceFilter>("All");
+  // const [price, setPrice] = useState<PriceFilter>("All");
   const [categoryOpen, setCategoryOpen] = useState(false);
   const categoryRef = useRef<HTMLDivElement>(null);
   const [saved, setSaved] = useState<string[]>(readSaved);
@@ -155,11 +155,12 @@ export function AllTemplates() {
   const filtered = useMemo(() => {
     const list = catalog.filter((template) => {
       const occasionOk = occasion === "all" || template.events.includes(occasion as Template["events"][number]);
-      const priceOk = price === "All" || (price === "Free" ? template.free : !template.free);
+      // const priceOk = price === "All" || (price === "Free" ? template.free : !template.free);
+      const priceOk = true;
       return occasionOk && priceOk;
     });
     return [...list].sort((a, b) => look(b.id).pop - look(a.id).pop || a.name.localeCompare(b.name));
-  }, [catalog, occasion, price]);
+  }, [catalog, occasion]);
 
   const preview = catalog.find((template) => template.id === previewId) ?? null;
 
@@ -205,15 +206,16 @@ export function AllTemplates() {
           <h1>
             Find the invite that feels like <em>you.</em>
           </h1>
-          <p>Preview any design free. Pay once when you publish. Guests RSVP with no app.</p>
+          <p>Preview any design free. Publishing is free for now. Guests RSVP with no app.</p>
+          {/* <p>Preview any design free. Pay once when you publish. Guests RSVP with no app.</p> */}
           <div className="cat-tools">
-            <div className="cat-seg" role="group" aria-label="Price">
+            {/* <div className="cat-seg" role="group" aria-label="Price">
               {(["All", "Free", "Paid"] as const).map((label) => (
                 <button key={label} type="button" className={price === label ? "on" : ""} aria-pressed={price === label} onClick={() => setPrice(label)}>
                   {label}
                 </button>
               ))}
-            </div>
+            </div> */}
             <div className="cat-category" ref={categoryRef}>
               <span id="cat-category-label">Category</span>
               <div className={`cat-category-menu${categoryOpen ? " is-open" : ""}`}>
@@ -271,7 +273,8 @@ export function AllTemplates() {
                         {cover(template)}
                       </Link>
                       <div className="cat-badges">
-                        <span className={template.free ? "free" : "prem"}>{template.free ? "Free" : "Premium"}</span>
+                        <span className="free">Free</span>
+                        {/* <span className={template.free ? "free" : "prem"}>{template.free ? "Free" : "Premium"}</span> */}
                         {extra.isNew ? <span className="new">New</span> : null}
                       </div>
                       <button type="button" className={`cat-heart${loved ? " on" : ""}`} aria-pressed={loved} aria-label={`${loved ? "Remove" : "Save"} ${template.name}`} onClick={() => toggleSaved(template.id)}>
@@ -332,7 +335,8 @@ export function AllTemplates() {
             </div>
             <div className="cat-modal-copy">
               <div className="cat-badges static">
-                <span className={preview.free ? "free" : "prem"}>{preview.free ? "Free" : "Premium"}</span>
+                <span className="free">Free</span>
+                {/* <span className={preview.free ? "free" : "prem"}>{preview.free ? "Free" : "Premium"}</span> */}
                 {look(preview.id).styles.includes("Animated") ? <span className="anim"><Sparkle size={12} aria-hidden="true" /> Animated</span> : null}
               </div>
               <h2>{preview.name}</h2>
@@ -352,8 +356,10 @@ export function AllTemplates() {
                 ))}
               </div>
               <div className="cat-modal-price">
-                <strong>{formatPrice(preview)}</strong>
-                <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span>
+                <strong>Free</strong>
+                {/* <strong>{formatPrice(preview)}</strong> */}
+                <span>free to publish, with a small credit</span>
+                {/* <span>{preview.free ? "free forever, with a small credit" : "one-time for your event, no subscription"}</span> */}
               </div>
               <div className="cat-modal-actions">
                 <Link to={hrefFor(preview)}>{designCtaLabel(preview)}</Link>

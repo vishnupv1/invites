@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { getTemplateRecord } from "../api";
+// import { getTemplateRecord } from "../api";
 import { FavoriteHeart } from "../components/FavoriteHeart";
 import { BackIcon, HeartIcon, PlayIcon, SparkIcon } from "../components/shell/marks";
 import { IrApp } from "../components/shell/IrApp";
@@ -128,19 +128,19 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
     trackTemplatePreview(template);
   }, [template]);
   const { favs, toggle } = useFavs();
-  const [livePrice, setLivePrice] = useState<number | null>(null);
-  useEffect(() => {
-    if (!id) return;
-    let cancel = false;
-    getTemplateRecord(id)
-      .then((row) => {
-        if (!cancel && typeof row.price === "number") setLivePrice(row.price);
-      })
-      .catch(() => undefined);
-    return () => {
-      cancel = true;
-    };
-  }, [id]);
+  // const [livePrice, setLivePrice] = useState<number | null>(null);
+  // useEffect(() => {
+  //   if (!id) return;
+  //   let cancel = false;
+  //   getTemplateRecord(id)
+  //     .then((row) => {
+  //       if (!cancel && typeof row.price === "number") setLivePrice(row.price);
+  //     })
+  //     .catch(() => undefined);
+  //   return () => {
+  //     cancel = true;
+  //   };
+  // }, [id]);
   const { owns, purchase, grant } = useLibrary();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -195,8 +195,22 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
   const tamil = template.style === "thiruvizha";
   const seo = templateSeo(template.id);
   const topic = topicForTemplate(template.id);
-  const amount = livePrice ?? template.price;
-  const priceLabel = amount === 0 ? "Free" : `₹${amount.toLocaleString("en-IN")}`;
+  // const amount = livePrice ?? template.price;
+  // const priceLabel = amount === 0 ? "Free" : `₹${amount.toLocaleString("en-IN")}`;
+  const priceLabel = "Free";
+  /*
+  {owned ? null : (
+    <>
+      <div className="buy-lock">
+        <span>Design free. Pay {formatPrice(template)} once when you publish. Razorpay collects the payment.</span>
+      </div>
+      <button className="buy-ghost" type="button" onClick={() => setOpen(true)}>
+        Buy now · {formatPrice(template)}
+      </button>
+    </>
+  )}
+  <span>{amount === 0 ? "to publish" : "one-time"}</span>
+  */
   const sentence = template.description.split(".")[0]?.trim() || template.tagline;
   const blurb = sentence.length > 42 ? `${sentence.slice(0, 40).trim()}…` : sentence;
   const included = [
@@ -237,7 +251,8 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
           </div>
           <p className="ir-detail-price">
             <b className="ir-display">{priceLabel}</b>
-            <span>{amount === 0 ? "to publish" : "one-time"}</span>
+            <span>to publish</span>
+            {/* <span>{amount === 0 ? "to publish" : "one-time"}</span> */}
           </p>
         </div>
         <ul className="ir-detail-inc">
@@ -360,20 +375,11 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
               <Link to="/faq">FAQ</Link>
             </p>
 
-            {owned ? null : (
-              <>
-                <div className="buy-lock">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="4" y="10" width="16" height="11" rx="2" />
-                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-                  </svg>
-                  <span>Design free. Pay {formatPrice(template)} once when you publish. Razorpay collects the payment.</span>
-                </div>
-                <button className="buy-ghost" type="button" onClick={() => setOpen(true)}>
-                  Buy now · {formatPrice(template)}
-                </button>
-              </>
-            )}
+            {/*
+              Prices paused. Restore the buy block:
+              owned ? null : buy-lock "Design free. Pay formatPrice(template) once when you publish. Razorpay collects the payment."
+              and the button "Buy now · formatPrice(template)" that calls setOpen(true).
+            */}
         </details>
 
         {others.length ? (
@@ -401,8 +407,9 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
       </div>
 
       {open ? null : (
-        <StickyFooterCTA href={createTo} label="Try it with your names" note="Free to try — you only pay when you publish" />
+        <StickyFooterCTA href={createTo} label="Try it with your names" note="Free to publish" />
       )}
+      {/* Restore: note="Free to try — you only pay when you publish" */}
 
       {open ? (
         <Checkout
