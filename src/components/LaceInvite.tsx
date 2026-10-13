@@ -124,6 +124,7 @@ export function LaceInvite({
   const [desk, setDesk] = useState(false);
   const [embed, setEmbed] = useState(false);
   const [scale, setScale] = useState(1);
+  const [shift, setShift] = useState({ x: 0, y: 0 });
   const [phase, setPhase] = useState<Phase>(quiet ? "open" : "closed");
   const [gone, setGone] = useState(false);
   const [lang, setLang] = useState<"en" | "hi">("en");
@@ -181,17 +182,20 @@ export function LaceInvite({
       const width = fit.clientWidth;
       if (!width) return;
       const embedded = Boolean(fit.closest(".ir-preview, .ir-play"));
-      const nextDesk = width >= 860;
+      const visible = window.visualViewport?.height ?? window.innerHeight;
+      const nextDesk = width >= 860 || (!embedded && width > visible && width >= 640);
       const designW = nextDesk ? 1440 : 390;
       const designH = nextDesk ? 900 : 844;
       const revealed = page.classList.contains("ph-open");
-      const visible = window.visualViewport?.height ?? window.innerHeight;
       const widthScale = width / designW;
       const nextScale = revealed || embedded ? widthScale : Math.min(widthScale, visible / designH);
+      const shiftX = revealed || embedded ? 0 : Math.max(0, (width - designW * nextScale) / 2);
+      const shiftY = revealed || embedded ? 0 : Math.max(0, (visible - designH * nextScale) / 2);
       setDesk((value) => (value === nextDesk ? value : nextDesk));
       setEmbed((value) => (value === embedded ? value : embedded));
       setScale((value) => (Math.abs(value - nextScale) < 0.001 ? value : nextScale));
-      const nextHeight = (revealed ? page.offsetHeight : designH) * nextScale;
+      setShift((value) => (Math.abs(value.x - shiftX) < 0.5 && Math.abs(value.y - shiftY) < 0.5 ? value : { x: shiftX, y: shiftY }));
+      const nextHeight = revealed ? page.offsetHeight * nextScale : Math.max(designH * nextScale, visible);
       fit.style.overflow = "hidden";
       if (Math.abs(fit.getBoundingClientRect().height - nextHeight) > 1) fit.style.height = `${nextHeight}px`;
     };
@@ -413,7 +417,7 @@ export function LaceInvite({
       <div
         ref={pageRef}
         className={`lr ${desk ? "d" : "m"}${embed ? " is-embed" : ""} ph-${phase}`}
-        style={{ width: desk ? 1440 : 390, transform: `scale(${scale})`, transformOrigin: "top left" }}
+        style={{ width: desk ? 1440 : 390, transform: `translate(${shift.x}px, ${shift.y}px) scale(${scale})`, transformOrigin: "top left" }}
         data-motion={window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "off" : "on"}
       >
         <section className="stage" style={{ height: stage }}>
