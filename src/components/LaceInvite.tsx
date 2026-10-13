@@ -182,20 +182,37 @@ export function LaceInvite({
       const width = fit.clientWidth;
       if (!width) return;
       const embedded = Boolean(fit.closest(".ir-preview, .ir-play"));
-      const visible = window.visualViewport?.height ?? window.innerHeight;
+      const windowH = window.visualViewport?.height ?? window.innerHeight;
+      let visible = windowH;
+      const parent = fit.parentElement;
+      if (!embedded && parent) {
+        const overflowY = getComputedStyle(parent).overflowY;
+        const parentH = parent.clientHeight;
+        if ((overflowY === "hidden" || overflowY === "clip") && parentH > 80 && parentH < windowH - 4) visible = parentH;
+      }
       const nextDesk = width >= 860 || (!embedded && width > visible && width >= 640);
       const designW = nextDesk ? 1440 : 390;
       const designH = nextDesk ? 900 : 844;
       const revealed = page.classList.contains("ph-open");
-      const widthScale = width / designW;
-      const nextScale = revealed || embedded ? widthScale : Math.min(widthScale, visible / designH);
-      const shiftX = revealed || embedded ? 0 : Math.max(0, (width - designW * nextScale) / 2);
-      const shiftY = revealed || embedded ? 0 : Math.max(0, (visible - designH * nextScale) / 2);
+      const scratching = page.classList.contains("ph-scratch");
+      const nextScale = width / designW;
+      const scaledH = designH * nextScale;
+      let shiftY = 0;
+      if (!embedded && !revealed && scaledH > visible + 1) {
+        const focusTop = nextDesk ? (scratching ? 160 : 620) : (scratching ? 104 : 360);
+        shiftY = Math.min(0, Math.max(visible - scaledH, 12 - focusTop * nextScale));
+      } else if (!embedded && !revealed && scaledH + 1 < visible) {
+        shiftY = (visible - scaledH) / 2;
+      }
+      if (!embedded && scratching && !nextDesk) {
+        const hintTop = Math.max(0, (visible - 12 - shiftY) / nextScale - 140);
+        page.style.setProperty("--lr-hint-top", `${hintTop}px`);
+      } else page.style.removeProperty("--lr-hint-top");
       setDesk((value) => (value === nextDesk ? value : nextDesk));
       setEmbed((value) => (value === embedded ? value : embedded));
       setScale((value) => (Math.abs(value - nextScale) < 0.001 ? value : nextScale));
-      setShift((value) => (Math.abs(value.x - shiftX) < 0.5 && Math.abs(value.y - shiftY) < 0.5 ? value : { x: shiftX, y: shiftY }));
-      const nextHeight = revealed ? page.offsetHeight * nextScale : Math.max(designH * nextScale, visible);
+      setShift((value) => (Math.abs(value.x) < 0.5 && Math.abs(value.y - shiftY) < 0.5 ? value : { x: 0, y: shiftY }));
+      const nextHeight = revealed ? page.offsetHeight * nextScale : embedded ? scaledH : visible;
       fit.style.overflow = "hidden";
       if (Math.abs(fit.getBoundingClientRect().height - nextHeight) > 1) fit.style.height = `${nextHeight}px`;
     };
@@ -203,7 +220,13 @@ export function LaceInvite({
     const observer = new ResizeObserver(apply);
     observer.observe(fit);
     observer.observe(page);
-    return () => observer.disconnect();
+    window.addEventListener("resize", apply);
+    window.visualViewport?.addEventListener("resize", apply);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", apply);
+      window.visualViewport?.removeEventListener("resize", apply);
+    };
   }, [phase, desk, lang, done, events.length]);
 
   useEffect(() => {
@@ -439,7 +462,7 @@ export function LaceInvite({
           </div>
 
           {phase === "scratch" && !gone ? (
-            <div className="hint" style={{ top: desk ? 736 : 676 }}>
+            <div className="hint" style={desk ? { top: 742, left: 270, width: 420, right: "auto" } : undefined}>
               <svg className="finger" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A88B5E" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.6 14.5a1.6 1.6 0 0 1 2.6-1.8L9 15" />
               </svg>
