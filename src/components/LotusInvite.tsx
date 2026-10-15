@@ -43,6 +43,8 @@ const FALLS = [
 ];
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const SAMPLE_DATE = "2027-11-29";
+const SAMPLE_RSVP = "2027-09-30";
 
 function whenOf(iso: string) {
   const day = new Date(`${iso}T12:00:00`);
@@ -59,6 +61,40 @@ function pretty(iso: string) {
   const day = new Date(`${iso}T12:00:00`);
   if (Number.isNaN(day.getTime())) return iso;
   return day.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function parseKick(kick: string, year: number) {
+  const match = kick.toUpperCase().match(/(\d{1,2})\s+([A-Z]{3,})(?:\s+(\d{4}))?/);
+  if (!match) return null;
+  const month = MONTHS.indexOf(match[2].slice(0, 3));
+  const day = Number(match[1]);
+  if (month < 0 || !day) return null;
+  const parsedYear = match[3] ? Number(match[3]) : year;
+  const date = new Date(parsedYear, month, day, 12);
+  if (date.getMonth() !== month || date.getDate() !== day) return null;
+  return date;
+}
+
+function addDays(date: Date, days: number) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function isoOf(date: Date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+function rsvpFor(date: string, rsvpBy: string) {
+  if (rsvpBy !== SAMPLE_RSVP || date === SAMPLE_DATE) return rsvpBy;
+  const wedding = new Date(`${date}T12:00:00`);
+  const sample = new Date(`${SAMPLE_DATE}T12:00:00`);
+  const deadline = new Date(`${SAMPLE_RSVP}T12:00:00`);
+  if (Number.isNaN(wedding.getTime())) return rsvpBy;
+  const delta = Math.round((wedding.getTime() - sample.getTime()) / 86400000);
+  return isoOf(addDays(deadline, delta));
 }
 
 function cityOf(address: string) {
@@ -116,20 +152,44 @@ export function LotusInvite({
 
   const pack = packOf("lotus", fields.lines);
   const when = whenOf(fields.date);
-  const events = (pack.programme?.length ? pack.programme : []).map((item) => {
-    const bits = (item.kick || "").split(/\s+/);
-    return { d: bits[0] || when.d, m: bits[1] || when.mon, n: item.title, t: item.time, v: item.text };
-  });
-  const shown = events.length
-    ? events
+  const wedding = new Date(`${fields.date}T12:00:00`);
+  const weddingOk = !Number.isNaN(wedding.getTime());
+  const source = pack.programme?.length
+    ? pack.programme
     : [
-        { d: "28", m: "NOV", n: "Haldi & Mehendi", t: "11:00 AM onwards", v: "The Lotus Garden" },
-        { d: "28", m: "NOV", n: "Sangeet", t: "7:30 PM onwards", v: "The Lakeside Terrace" },
-        { d: "29", m: "NOV", n: "The Wedding", t: "6:00 PM · Pheras at dusk", v: "The Lotus Courtyard" },
-        { d: "30", m: "NOV", n: "Reception", t: "8:00 PM onwards", v: "The Palace Lawns" },
+        { kick: "28 NOV", title: "Haldi & Mehendi", time: "11:00 AM onwards", text: "The Lotus Garden" },
+        { kick: "28 NOV", title: "Sangeet", time: "7:30 PM onwards", text: "The Lakeside Terrace" },
+        { kick: "29 NOV", title: "The Wedding", time: "6:00 PM · Pheras at dusk", text: "The Lotus Courtyard" },
+        { kick: "30 NOV", title: "Reception", time: "8:00 PM onwards", text: "The Palace Lawns" },
       ];
-  const days = shown.map((item) => Number.parseInt(item.d, 10)).filter((day) => !Number.isNaN(day));
-  const span = days.length > 1 ? `${Math.min(...days)} – ${Math.max(...days)}` : shown[0]?.d || when.d;
+  const year = weddingOk ? wedding.getFullYear() : 2027;
+  const parsed = source.map((item) => ({
+    n: item.title,
+    t: item.time,
+    v: item.text,
+    at: parseKick(item.kick || "", year),
+  }));
+  const anchor = parsed.find((item) => /wedding/i.test(item.n) && item.at) ?? parsed.find((item) => item.at);
+  const delta = weddingOk && anchor?.at ? Math.round((wedding.getTime() - anchor.at.getTime()) / 86400000) : 0;
+  const shown = parsed.map((item) => {
+    const at = item.at ? addDays(item.at, delta) : weddingOk ? wedding : null;
+    return {
+      d: at ? String(at.getDate()).padStart(2, "0") : when.d,
+      m: at ? MONTHS[at.getMonth()] : when.mon,
+      n: item.n,
+      t: item.t,
+      v: item.v,
+    };
+  });
+  const replyBy = rsvpFor(fields.date, fields.rsvpBy);
+  const sameMonth = shown.length > 0 && shown.every((item) => item.m === shown[0].m);
+  const dayNums = shown.map((item) => Number.parseInt(item.d, 10)).filter((day) => !Number.isNaN(day));
+  const span = !sameMonth && shown.length > 1
+    ? `${Number(shown[0].d)} ${shown[0].m} – ${Number(shown[shown.length - 1].d)} ${shown[shown.length - 1].m}`
+    : dayNums.length > 1
+      ? `${Math.min(...dayNums)} – ${Math.max(...dayNums)}`
+      : shown[0]?.d || when.d;
+  const spanMonth = sameMonth ? (shown[0]?.m || when.mon) : "";
   const couple = fields.names.split("&").map((part) => part.trim());
   const first = couple[0] || "Aarohi";
   const second = couple[1] || "Vihaan";
@@ -301,7 +361,7 @@ export function LotusInvite({
             <div className="ll-intro">
               <span className="ll-sub">A LITTLE MOMENT FOR YOU</span>
               <span className="ll-names">{first} &amp; {second}</span>
-              <span className="ll-sub ll-stamp">SAVE THE DATE · {shown[0]?.d || when.d} · {when.m} · {when.y}</span>
+              <span className="ll-sub ll-stamp">SAVE THE DATE · {when.d} · {when.m} · {when.y}</span>
             </div>
             <span className="ll-tap">TAP TO CLICK A PHOTO</span>
             <div className="ll-ph">
@@ -344,7 +404,7 @@ export function LotusInvite({
           <span className="ll-k" style={{ color: "#6B3F4A" }}>{fields.hosts || "Together with their families"}</span>
           <span className="ll-big">Save the Date</span>
           <span className="ll-couple">{first} <i>&amp;</i> {second}</span>
-          <span className="ll-dates"><span>{shown[0]?.m || when.mon}</span><b>{span}</b><span>{when.y}</span></span>
+          <span className="ll-dates"><span>{spanMonth}</span><b>{span}</b><span>{when.y}</span></span>
           <span className="ll-place">{place}</span>
         </div>
       </section>
@@ -407,7 +467,7 @@ export function LotusInvite({
         <img className="ll-cor tl" src={ART.corner} alt="" />
         <span className="ll-k">RSVP</span>
         <h2>Will you be there?</h2>
-        {fields.rsvpBy ? <span className="ll-k" style={{ color: "#8C6F6A" }}>Kindly let us know by {pretty(fields.rsvpBy)}</span> : null}
+        {replyBy ? <span className="ll-k" style={{ color: "#8C6F6A" }}>Kindly let us know by {pretty(replyBy)}</span> : null}
         <form className="ll-form" onSubmit={(event) => { event.preventDefault(); void submit(); }}>
           {done ? (
             <div className="ll-done">

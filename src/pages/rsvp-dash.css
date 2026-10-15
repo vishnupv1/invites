@@ -778,6 +778,29 @@
     font-weight: 600;
   }
 
+  .rsvp-side button.rsvp-logout {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: #5e655f;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .rsvp-side button.rsvp-logout:hover {
+    background: #f4eee3;
+    color: #17201c;
+  }
+
   .rsvp-card b {
     color: #17201c;
     display: block;
@@ -939,4 +962,61 @@
 @media (min-width: 861px) {
   .rsvp-catalog { padding: 0; }
   .rsvp-catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.rsvp-block {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(23, 32, 28, 0.46);
+}
+
+.rsvp-block-card {
+  width: min(100%, 420px);
+  padding: 28px 24px;
+  border-radius: 24px;
+  background: #fffdf8;
+  color: #17201c;
+}
+
+.rsvp-block-card h2 {
+  margin: 0;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 32px;
+  font-weight: 560;
+}
+
+.rsvp-block-card p {
+  margin: 10px 0 0;
+  color: #5e655f;
+}
+
+.rsvp-block-card a,
+.rsvp-block-card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 18px;
+  margin-right: 10px;
+  padding: 0 18px;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.rsvp-block-card a {
+  background: #0e4d3c;
+  color: #fffdf8;
+  text-decoration: none;
+}
+
+.rsvp-block-card button {
+  border: 0;
+  background: transparent;
+  color: #0e4d3c;
 }

@@ -392,14 +392,14 @@ export function MoonlitInvite({
         <h2 className="mj-h2 mj-gold">Written in the stars</h2>
         <div className="mj-story">
           <div className="mj-jh">
-            <button type="button" className="mj-jh-slot" aria-label="Add a couple photo" onClick={() => setToast("Couples add their own photos here in the editor.")}>
-              {storyPhoto ? <img src={storyPhoto} alt="" /> : (
+            <div className="mj-jh-slot">
+              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E9BE6A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
-                  <span className="mj-small">ADD PHOTO</span>
+                  <span className="mj-small">PHOTO</span>
                 </>
               )}
-            </button>
+            </div>
             <img src="/moonlit/frame.webp" alt="" />
           </div>
           <div className="mj-beats">
@@ -465,14 +465,13 @@ export function MoonlitInvite({
         <h2 className="mj-h2 mj-gold">Our gallery</h2>
         <div className="mj-gal">
           {gallery.map((photo, index) => (
-            <button key={index} type="button" className={index % 2 ? "mj-slot" : "mj-slot arch"} aria-label={`Add gallery photo ${index + 1}`} onClick={() => setToast("Couples add their own photos here in the editor.")}>
+            <div key={index} className={index % 2 ? "mj-slot" : "mj-slot arch"}>
               {photo ? <img src={photo} alt="" /> : (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
               )}
-            </button>
+            </div>
           ))}
         </div>
-        <span className="mj-small">ADD YOUR PHOTOS IN THE EDITOR</span>
       </section>
 
       <section className="mj-sec">

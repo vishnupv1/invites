@@ -380,14 +380,14 @@ export function VillaInvite({
         <h2 className="vs-h2">How it all began</h2>
         <div className="vs-story">
           <div className="vs-frame">
-            <button type="button" className="vs-slot" aria-label="Add a couple photo" onClick={() => setToast("Couples add their own photos here in the editor.")}>
-              {storyPhoto ? <img src={storyPhoto} alt="" /> : (
+            <div className="vs-slot">
+              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#66703F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
-                  <span className="vs-small">ADD YOUR PHOTO</span>
+                  <span className="vs-small">PHOTO</span>
                 </>
               )}
-            </button>
+            </div>
             <img src="/villa/oval.webp" alt="" />
           </div>
           <div className="vs-beats">

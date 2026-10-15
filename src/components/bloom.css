@@ -522,7 +522,7 @@
   max-width: 400px;
   margin: 8px 0 4px;
 }
-.bl-gal button {
+.bl-gal > div {
   aspect-ratio: 3 / 4;
   border: 1px solid #efdcd4;
   background: rgba(255, 253, 250, 0.9);
@@ -530,14 +530,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   padding: 0;
   overflow: hidden;
 }
-.bl-gal button.arch { border-radius: 999px 999px 18px 18px; }
-.bl-gal button.card { border-radius: 18px; }
+.bl-gal > div.arch { border-radius: 999px 999px 18px 18px; }
+.bl-gal > div.card { border-radius: 18px; }
 .bl-gal img { width: 100%; height: 100%; object-fit: cover; }
-.bl-gal button img.mark { width: 34%; height: auto; object-fit: contain; opacity: 0.85; }
+.bl-gal img.mark { width: 34%; height: auto; object-fit: contain; opacity: 0.85; }
 
 .bl-wishes { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; max-width: 420px; margin-top: 6px; }
 .bl-wish {

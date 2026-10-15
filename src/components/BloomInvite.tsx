@@ -245,14 +245,14 @@ export function BloomInvite({
         <h2>How we bloomed</h2>
         <div className="bl-story">
           <div className="bl-frame">
-            <button type="button" className="bl-slot" aria-label="Add a couple photo" onClick={() => setToast("Couples add their own photos here in the editor.")}>
-              {storyPhoto ? <img src={storyPhoto} alt="" /> : (
+            <div className="bl-slot">
+              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B9786E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
-                  <span className="bl-small">ADD YOUR PHOTO</span>
+                  <span className="bl-small">PHOTO</span>
                 </>
               )}
-            </button>
+            </div>
             <img src="/bloom/wreath.webp" alt="" />
           </div>
           <div className="bl-beats">
@@ -344,13 +344,12 @@ export function BloomInvite({
           {Array.from({ length: 6 }, (_, index) => {
             const photo = photos[index + 1];
             return (
-              <button key={index} type="button" className={index % 2 ? "card" : "arch"} aria-label={`Add gallery photo ${index + 1}`} onClick={() => setToast("Couples add their own photos here in the editor.")}>
+              <div key={index} className={index % 2 ? "card" : "arch"}>
                 {photo ? <img src={assetUrl(photo)} alt="" /> : <img className="mark" src={FLOWER[(index * 3 + 1) % FLOWER.length]} alt="" />}
-              </button>
+              </div>
             );
           })}
         </div>
-        <span className="bl-small">COUPLES ADD PHOTOGRAPHS IN THE EDITOR</span>
       </section>
 
       <section className="bl-sec alt">

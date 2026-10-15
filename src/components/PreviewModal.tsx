@@ -30,7 +30,7 @@ export function PreviewModal({ template, event, onEvent, onClose }: Props) {
           ))}
         </div>
         <div className="shop-actions">
-          <Link className="solid" to={`/create/${template.id}?event=${active}`} onClick={onClose}>
+          <Link className="solid" to={`/create/${template.id}?event=${active}&fresh=1`} onClick={onClose}>
             {designCtaLabel(template)}
           </Link>
           <button type="button" className="ghost" onClick={onClose}>

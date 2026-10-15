@@ -69,14 +69,14 @@ export function AccountTemplates() {
           const owned = owns(template.id, template.free);
           return (
             <article className="rsvp-catalog-card" key={template.id}>
-              <Link className="rsvp-catalog-shot" to={`/create/${template.id}?event=${event}`} aria-label={`Use ${template.name}`}>
+              <Link className="rsvp-catalog-shot" to={`/create/${template.id}?event=${event}&fresh=1`} aria-label={`Use ${template.name}`}>
                 <PlayingInvite template={template} />
                 {owned && !template.free ? <span className="rsvp-catalog-owned">Owned</span> : null}
               </Link>
               <FavoriteHeart className="overlay" liked={favs.includes(template.id)} name={template.name} onClick={() => toggle(template.id)} />
               <b>{template.name}</b>
               <small>{formatPrice(template)}</small>
-              <Link to={`/create/${template.id}?event=${event}`}>Use this design</Link>
+              <Link to={`/create/${template.id}?event=${event}&fresh=1`}>Use this design</Link>
             </article>
           );
         })}

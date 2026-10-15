@@ -136,7 +136,7 @@ export function Home({ focus }: { focus?: string }) {
       saveCoupleNames(value);
       trackNamesEntered();
     }
-    if (lead) navigate(`/create/${lead.id}`);
+    if (lead) navigate(`/create/${lead.id}?fresh=1`);
   }
 
   return (

@@ -325,9 +325,9 @@ export function PalaceInvite({
         <h2 className="pq-h2">How it all began</h2>
         <div className="pq-story">
           <div className="pq-arch">
-            <button type="button" className="pq-arch-slot" aria-label="Add a couple photo" onClick={() => setToast("Couples add their own photos here in the editor.")}>
-              {storyPhoto ? <img src={storyPhoto} alt="" /> : <><Camera /><span className="pq-small">ADD YOUR PHOTO</span></>}
-            </button>
+            <div className="pq-arch-slot">
+              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : <><Camera /><span className="pq-small">PHOTO</span></>}
+            </div>
             <img className="pq-arch-frame" src="/palace/arch.webp" alt="" />
           </div>
           <div className="pq-story-list">
@@ -396,22 +396,18 @@ export function PalaceInvite({
         <h2 className="pq-h2">Our gallery</h2>
         <div className="pq-gal">
           {gallery.map((photo, index) => (
-            <button
+            <div
               key={index}
-              type="button"
               className={index % 2 ? "pq-slot sq" : "pq-slot arch"}
-              aria-label={photo ? `Gallery photo ${index + 1}` : `Add gallery photo ${index + 1}`}
-              onClick={() => { if (!photo) setToast("Couples add their own photos here in the editor."); }}
             >
               {photo ? <img src={photo} alt="" /> : (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               )}
-            </button>
+            </div>
           ))}
         </div>
-        <span className="pq-small">ADD YOUR PHOTOS IN THE EDITOR</span>
       </section>
 
       <section className="pq-sec">

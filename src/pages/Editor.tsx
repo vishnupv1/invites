@@ -381,7 +381,6 @@ export function Editor({
 
   useEffect(() => {
     if (!model) return;
-    if (signedIn && !inviteQuery && !inviteIdRef.current) dirtyRef.current = true;
     if (!dirtyRef.current) return;
     const timer = window.setTimeout(() => {
       void persistRef.current();
@@ -578,7 +577,12 @@ export function Editor({
       } catch {
         /* Sign-in still works if the browser blocks session storage. */
       }
-      navigate(`/login?next=${encodeURIComponent(`/create/${template.id}`)}`);
+      const nextPath = inviteIdRef.current
+        ? `/create/${template.id}?invite=${inviteIdRef.current}`
+        : params.get("fresh") === "1"
+          ? `/create/${template.id}?fresh=1`
+          : `/create/${template.id}`;
+      navigate(`/login?next=${encodeURIComponent(nextPath)}`);
       return;
     }
     void persistRef.current();
@@ -831,9 +835,11 @@ export function Editor({
       setError("");
       setSaveLabel("Saved");
       setPubPhase("done");
-      await hold();
       setLink(guestInviteUrl(saved.code, template.id));
       setShowQr(false);
+      setGuestPreview(false);
+      setLiveOpen(true);
+      await hold();
       setSaveLabel("Saved");
       trackPublish(template);
       return true;
@@ -907,7 +913,7 @@ export function Editor({
       : "/templates";
 
   const editor = (
-    <div className={`ed-root${embedded ? " ed-embedded" : " ed-shell"}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}${expanded || guestPreview ? " is-expanded" : ""}${guestPreview ? " is-guest-preview" : ""}`}>
+    <div className={`ed-root ed-shell${embedded ? " ed-embedded" : ""}${sheet ? " ed-sheet" : ""}${!embedded && !signedIn ? " ed-as-guest" : ""}${expanded || guestPreview ? " is-expanded" : ""}${guestPreview ? " is-guest-preview" : ""}`}>
       <header className="ed-top">
         <div className="ed-brand">
           {embedded ? null : (
@@ -1623,7 +1629,7 @@ export function Editor({
                   <div className="ed-gp-sheet">
                     <button type="button" onClick={() => setGuestPreview(false)}>Edit</button>
                     <button type="button" className="ed-gp-go" onClick={beginPublish}>
-                      <span>Publish · {formatPrice(template)}</span>
+                      <span>{link ? "Share invitation" : `Publish · ${formatPrice(template)}`}</span>
                       <b aria-hidden="true"><ArrowIcon /></b>
                     </button>
                     <p>Edits stay free</p>
@@ -1657,7 +1663,7 @@ export function Editor({
             <h2>Happy with <i>how it opens?</i></h2>
             <p>Edits stay free forever — guests always see the latest version.</p>
             <button type="button" className="ed-gp-go" onClick={beginPublish}>
-              <span>Publish · {formatPrice(template)}</span>
+              <span>{link ? "Share invitation" : `Publish · ${formatPrice(template)}`}</span>
               <b aria-hidden="true"><ArrowIcon /></b>
             </button>
             <button type="button" className="ed-gp-keep" onClick={() => setGuestPreview(false)}>

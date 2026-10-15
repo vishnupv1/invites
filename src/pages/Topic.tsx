@@ -32,7 +32,7 @@ export function Topic() {
       {topic.id === "birthday" && templates[0] ? (
         <div className="topic-demo">
           <InlandInvite fields={sampleFor(templates[0], "birthday")} demo autoOpen />
-          <Link className="solid" to={`/create/${templates[0].id}`}>{designCtaLabel(templates[0])}</Link>
+          <Link className="solid" to={`/create/${templates[0].id}?fresh=1`}>{designCtaLabel(templates[0])}</Link>
         </div>
       ) : null}
       {related.length ? (

@@ -215,7 +215,7 @@ export function LoggedInHome({ onToast }: { onToast: (message: string, tone?: No
         </div>
         <Link className="li-btn ghost li-center" to="/templates">See all templates</Link>
       </section>
-      {demo ? <CatalogDemo template={demo} href={`/create/${demo.id}?event=${demo.events[0]}`} label="Customise this" onClose={() => setDemo(null)} /> : null}
+      {demo ? <CatalogDemo template={demo} href={`/create/${demo.id}?event=${demo.events[0]}&fresh=1`} label="Customise this" onClose={() => setDemo(null)} /> : null}
     </>
   );
 }
@@ -358,7 +358,7 @@ export function AccountHub({
           <div className="li-tiles">
             {favoriteTemplates.map((template) => {
               const event = template.events[0] ?? "marriage";
-              const destination = `/create/${template.id}?event=${event}`;
+              const destination = `/create/${template.id}?event=${event}&fresh=1`;
               return (
                 <article className="li-tile" key={template.id}>
                   <div className="li-shot">
@@ -411,7 +411,7 @@ export function AccountHub({
                     <span className="amt">{formatPrice(template)}</span>
                     <span className="li-pill">Free</span>
                     {/* <span className="li-pill paid">Paid</span> */}
-                    <Link className="li-btn-sm ghost" to={`/create/${template.id}?event=${event}`}>Use this design</Link>
+                    <Link className="li-btn-sm ghost" to={`/create/${template.id}?event=${event}&fresh=1`}>Use this design</Link>
                   </div>
                 );
               })}

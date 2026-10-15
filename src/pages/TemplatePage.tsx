@@ -189,7 +189,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
 
   if (!template || !event) return <Navigate to="/browse" replace />;
   const owned = account && owns(template.id, template.free);
-  const createTo = `/create/${template.id}?event=${event}&from=template`;
+  const createTo = `/create/${template.id}?event=${event}&from=template&fresh=1`;
   if (owned && !library) return <Navigate to="/templates" replace />;
   const catalogTo = "/browse";
   const previewTo = `/browse/${template.id}`;

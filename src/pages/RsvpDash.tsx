@@ -199,6 +199,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
   const [functions, setFunctions] = useState<string[]>([]);
   const [query, setQuery] = useState("");
   const [shareOpen, setShareOpen] = useState(false);
+  const [needsPublish, setNeedsPublish] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pane = mode;
@@ -301,6 +302,15 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
         <Link className={pane === "drafts" ? "on" : ""} to="/drafts"><PencilIcon /> Drafts</Link>
         <Link className={pane === "favorites" ? "on" : ""} to="/favorites"><HeartIcon /> Favorites</Link>
         <Link className={pane === "purchases" ? "on" : ""} to="/purchases"><ReceiptIcon /> Purchases</Link>
+        <button
+          type="button"
+          className="rsvp-logout"
+          onClick={() => {
+            void signOut().finally(() => window.location.assign("/"));
+          }}
+        >
+          Log out
+        </button>
         {selected && template ? (
           <div className="rsvp-card">
             <b>{template.name}</b>
@@ -359,9 +369,9 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
               {selected && !libraryTitle && pane !== "settings" && pane !== "templates" ? (
                 <>
                   <Link className="rsvp-chip line rsvp-text" to={`/create/${selected.templateId}?invite=${selected.id}`}><PencilIcon /> Edit</Link>
-                  <button type="button" className="rsvp-chip rsvp-text" onClick={() => setShareOpen(true)}><ShareIcon /> Share</button>
+                  <button type="button" className="rsvp-chip rsvp-text" onClick={() => (selected.status === "live" ? setShareOpen(true) : setNeedsPublish(true))}><ShareIcon /> Share</button>
                   <Link className="rsvp-round rsvp-icon" aria-label="Edit" to={`/create/${selected.templateId}?invite=${selected.id}`}><PencilIcon /></Link>
-                  <button type="button" className="rsvp-round rsvp-icon" aria-label="Share" onClick={() => setShareOpen(true)}><ShareIcon /></button>
+                  <button type="button" className="rsvp-round rsvp-icon" aria-label="Share" onClick={() => (selected.status === "live" ? setShareOpen(true) : setNeedsPublish(true))}><ShareIcon /></button>
                 </>
               ) : null}
             </header>
@@ -449,7 +459,17 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
         <Link className={pane === "wishes" ? "on" : ""} to="/wishes"><i><HeartIcon /></i>Wishes</Link>
         <Link className={pane === "settings" ? "on" : ""} to="/settings"><i><SettingsIcon /></i>Settings</Link>
       </nav>
-      {shareOpen && selected ? (
+      {needsPublish && selected ? (
+        <div className="rsvp-block" role="dialog" aria-label="Not live yet">
+          <div className="rsvp-block-card">
+            <h2>Not live yet</h2>
+            <p>{selected.names || "This invitation"} is still a draft. Publish it before sharing the link.</p>
+            <Link to={`/create/${selected.templateId}?invite=${selected.id}`}>Open the editor</Link>
+            <button type="button" onClick={() => setNeedsPublish(false)}>Close</button>
+          </div>
+        </div>
+      ) : null}
+      {shareOpen && selected?.status === "live" ? (
         <LiveShare
           names={selected.names || "Your invitation"}
           priceLabel="Free"

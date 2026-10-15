@@ -69,7 +69,7 @@ function hrefFor(template: Template, occasion = "all") {
   const event = occasion !== "all" && template.events.includes(occasion as Template["events"][number])
     ? occasion
     : template.events[0];
-  return `/create/${template.id}?event=${event}`;
+  return `/create/${template.id}?event=${event}&fresh=1`;
 }
 
 export function AllTemplates() {

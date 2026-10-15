@@ -158,7 +158,7 @@ export function TemplatePreview() {
   const liked = template ? favs.includes(template.id) : false;
   const owned = template ? owns(template.id, template.free) : false;
   const occasion = events.find((item) => item.id === event) ?? { id: event, label: event, cardLabel: event };
-  const useTo = template ? `/create/${template.id}?event=${event}` : "/templates";
+  const useTo = template ? `/create/${template.id}?event=${event}&fresh=1` : "/templates";
   // const useTo = template ? (owned ? `/create/${template.id}?event=${event}` : `/template/${template.id}?event=${event}`) : "/templates";
   const useLabel = !template ? "" : "Use this template";
   // const useLabel = !template ? "" : owned ? "Use this template" : `Buy once · ${formatPrice(template)}`;

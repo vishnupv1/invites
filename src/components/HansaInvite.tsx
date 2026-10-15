@@ -316,14 +316,14 @@ export function HansaInvite({
         <h2>Two swans, one lake</h2>
         <div className="hs-story">
           <div className="hs-frame">
-            <button type="button" className="hs-slot" aria-label={photos[0] ? "Couple photograph" : "Add a couple photo"} onClick={() => { if (!photos[0]) setToast("Couples add their own photos here in the editor."); }}>
-              {photos[0] ? <img src={photos[0]} alt="" /> : (
+            <div className="hs-slot">
+              {photos[0] ? <img src={photos[0]} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6F7390" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
-                  <span className="hs-small">ADD YOUR PHOTO</span>
+                  <span className="hs-small">PHOTO</span>
                 </>
               )}
-            </button>
+            </div>
             <img className="hs-flower l" src={ART.petal} alt="" />
             <img className="hs-flower r" src={ART.petal} alt="" />
           </div>
@@ -371,14 +371,13 @@ export function HansaInvite({
         <h2>Our gallery</h2>
         <div className="hs-gal">
           {Array.from({ length: 6 }, (_, index) => (
-            <button key={index} type="button" aria-label={photos[index] ? `Photograph ${index + 1}` : `Add gallery photo ${index + 1}`} onClick={() => { if (!photos[index]) setToast("Couples add their own photos here in the editor."); }}>
+            <div key={index}>
               {photos[index] ? <img src={photos[index]} alt="" /> : (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
               )}
-            </button>
+            </div>
           ))}
         </div>
-        <span className="hs-small">COUPLES ADD PHOTOGRAPHS IN THE EDITOR</span>
       </section>
 
       <section className="hs-sec alt">

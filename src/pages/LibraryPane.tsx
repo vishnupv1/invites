@@ -173,7 +173,7 @@ export function LibraryPane({ view }: { view: View }) {
               <FavoriteHeart liked name={template.name} onClick={() => toggle(template.id)} />
               <b>{template.name}</b>
               <small>{formatPrice(template)}</small>
-              <Link to={`/create/${template.id}?event=${event}`}>Use this design</Link>
+              <Link to={`/create/${template.id}?event=${event}&fresh=1`}>Use this design</Link>
             </article>
           );
         })}
@@ -202,7 +202,7 @@ export function LibraryPane({ view }: { view: View }) {
               <b>{template.name}</b>
               <small>{getEvent(event)?.label ?? "Invitation"} · {formatPrice(template)}</small>
               <div className="rsvp-lib-actions">
-                <Link to={`/create/${template.id}?event=${event}`}>Use this design</Link>
+                <Link to={`/create/${template.id}?event=${event}&fresh=1`}>Use this design</Link>
               </div>
             </div>
           </article>
