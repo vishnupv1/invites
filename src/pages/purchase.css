@@ -26,13 +26,13 @@
 }
 .buy-board .modal-back { z-index: 20; }
 .buy {
-  background: #F4F8F5;
-  color: #1C3A2A;
-  font-family: Geist, "Segoe UI", sans-serif;
+  background: #f4eee3;
+  color: #17201c;
+  font-family: Manrope, "Segoe UI", sans-serif;
 }
-.buy a { color: #1C3A2A; }
+.buy a { color: #17201c; }
 .buy button:focus-visible,
-.buy a:focus-visible { outline: 3px solid #1C3A2A; outline-offset: 2px; }
+.buy a:focus-visible { outline: 3px solid #17201c; outline-offset: 2px; }
 
 .buy-head {
   height: 80px;
@@ -43,7 +43,7 @@
   justify-content: space-between;
   gap: 16px;
   background: #FFFFFF;
-  border-bottom: 1px solid #D7E6DC;
+  border-bottom: 1px solid rgba(23, 32, 28, 0.12);
 }
 .buy-id { display: flex; align-items: center; gap: 20px; min-width: 0; }
 .buy-back {
@@ -53,8 +53,8 @@
   gap: 8px;
   padding: 0 14px 0 8px;
   border-radius: 999px;
-  border: 1.5px solid #D7E6DC;
-  color: #1C3A2A;
+  border: 1.5px solid rgba(23, 32, 28, 0.12);
+  color: #17201c;
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
@@ -63,16 +63,16 @@
 .buy-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .buy-title h1 {
   margin: 0;
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
   font-size: 26px;
-  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.buy-badge { padding: 3px 10px; border-radius: 999px; background: #C5E0D2; color: #1C3A2A; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+.buy-badge { padding: 3px 10px; border-radius: 999px; background: #0e4d3c; color: #fffdf8; font-size: 11px; font-weight: 800; flex-shrink: 0; }
 .buy-head-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
 .buy-ghost, .buy-solid {
   min-height: 46px;
@@ -82,18 +82,18 @@
   justify-content: center;
   gap: 8px;
   padding: 0 20px;
-  border-radius: 999px;
-  font-family: Geist, "Segoe UI", sans-serif;
+  border-radius: 18px;
+  font-family: Manrope, "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
 }
-.buy-ghost { border: 1.5px solid #D7E6DC; background: #FFFFFF; color: #1C3A2A; }
+.buy-ghost { border: 1.5px solid rgba(23, 32, 28, 0.12); background: #FFFFFF; color: #17201c; }
 .buy a.buy-solid,
-.buy button.buy-solid { border: none; background: #C5E0D2; color: #1C3A2A; }
+.buy button.buy-solid { border: none; background: #0e4d3c; color: #fffdf8; }
 
-.buy-crumbs { margin: 0; padding: 10px 40px; background: #FFFFFF; border-bottom: 1px solid #D7E6DC; }
+.buy-crumbs { margin: 0; padding: 10px 40px; background: #FFFFFF; border-bottom: 1px solid rgba(23, 32, 28, 0.12); }
 .buy-crumbs.crumbs { margin: 0; }
 
 .buy-body { flex: 1; min-height: 0; overflow: auto; padding: 28px 40px 72px; display: flex; flex-direction: column; gap: 36px; }
@@ -106,8 +106,8 @@
 .buy-stage {
   min-width: 0;
   border-radius: 28px;
-  background: #E3F0E8;
-  border: 1px solid #D7E6DC;
+  background: #ebe3d4;
+  border: 1px solid rgba(23, 32, 28, 0.12);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -115,21 +115,21 @@
   align-items: center;
 }
 .buy-tools { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.buy-seg { display: flex; gap: 4px; padding: 4px; background: #FFFFFF; border: 1px solid #D7E6DC; border-radius: 999px; }
+.buy-seg { display: flex; gap: 4px; padding: 4px; background: #fffdf8; border: 1px solid rgba(23, 32, 28, 0.12); border-radius: 18px; }
 .buy-seg button {
   min-height: 38px;
   padding: 0 16px;
   border: none;
-  border-radius: 999px;
+  border-radius: 14px;
   background: transparent;
-  color: #5E7368;
-  font-family: Geist, "Segoe UI", sans-serif;
+  color: #5e655f;
+  font-family: Manrope, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
-.buy-seg button[aria-pressed="true"] { background: #C5E0D2; color: #1C3A2A; }
-.buy-tools p { margin: 0; font-size: 13px; color: #5E7368; }
+.buy-seg button[aria-pressed="true"] { background: #0e4d3c; color: #fffdf8; }
+.buy-tools p { margin: 0; font-size: 13px; color: #5e655f; }
 
 .buy-screen {
   position: relative;
@@ -158,7 +158,7 @@
 
 .buy-panel {
   background: #FFFFFF;
-  border: 1px solid #D7E6DC;
+  border: 1px solid rgba(23, 32, 28, 0.12);
   border-radius: 24px;
   padding: 26px;
   display: flex;
@@ -171,11 +171,11 @@
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 700;
-  color: #5E7368;
+  color: #5e655f;
 }
 .buy-price {
   margin: 0;
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Manrope, "Segoe UI", sans-serif;
   font-size: 48px;
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -183,51 +183,51 @@
 }
 .buy-search {
   margin: 0 0 8px;
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Manrope, "Segoe UI", sans-serif;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.2;
-  color: #1C3A2A;
+  color: #17201c;
 }
-.buy-lede { margin: 0; font-size: 15px; line-height: 1.5; color: #5E7368; }
-.buy-note { margin: 0; font-size: 15px; line-height: 1.55; color: #5E7368; }
+.buy-lede { margin: 0; font-size: 15px; line-height: 1.5; color: #5e655f; }
+.buy-note { margin: 0; font-size: 15px; line-height: 1.55; color: #5e655f; }
 
 .buy-facts { display: grid; gap: 10px; margin: 0; }
 .buy-facts div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0e7df; }
-.buy-facts dt { margin: 0; font-size: 13px; color: #5E7368; }
+.buy-facts dt { margin: 0; font-size: 13px; color: #5e655f; }
 .buy-facts dd { margin: 0; font-size: 14px; font-weight: 700; text-align: right; }
 
 .buy-block { display: flex; flex-direction: column; gap: 10px; }
-.buy-block > span { font-size: 13px; font-weight: 700; color: #5E7368; }
+.buy-block > span { font-size: 13px; font-weight: 700; color: #5e655f; }
 .buy-swatches, .buy-langs { display: flex; flex-wrap: wrap; gap: 8px; }
 .buy-swatches button {
   width: 42px;
   height: 42px;
   padding: 0;
   border-radius: 50%;
-  border: 2px solid #D7E6DC;
-  box-shadow: 0 0 0 1px #D7E6DC;
+  border: 2px solid rgba(23, 32, 28, 0.12);
+  box-shadow: 0 0 0 1px rgba(23, 32, 28, 0.12);
   cursor: pointer;
 }
-.buy-swatches button[aria-pressed="true"] { box-shadow: 0 0 0 2px #1C3A2A; }
+.buy-swatches button[aria-pressed="true"] { box-shadow: 0 0 0 2px #17201c; }
 .buy-swatches i { display: block; width: 14px; height: 14px; margin: 12px auto; border-radius: 50%; }
 .buy-langs button {
   min-height: 38px;
   padding: 0 14px;
-  border-radius: 999px;
-  border: 1.5px solid #D7E6DC;
-  background: #FFFFFF;
-  font-family: "Noto Sans Tamil", Geist, "Segoe UI", sans-serif;
+  border-radius: 18px;
+  border: 1.5px solid rgba(23, 32, 28, 0.12);
+  background: #fffdf8;
+  font-family: "Noto Sans Tamil", Manrope, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
-.buy-langs button[aria-pressed="true"] { background: #C5E0D2; color: #1C3A2A; border-color: #1C3A2A; }
+.buy-langs button[aria-pressed="true"] { background: #0e4d3c; color: #fffdf8; border-color: #0e4d3c; }
 
 .buy-panel h2 {
   margin: 0;
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Manrope, "Segoe UI", sans-serif;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -259,7 +259,7 @@
   align-items: flex-start;
   padding: 12px 14px;
   border-radius: 14px;
-  background: #E3F0E8;
+  background: #ebe3d4;
   color: #3E6B42;
   font-size: 13px;
   line-height: 1.4;
@@ -268,15 +268,15 @@
 
 .buy-more { display: flex; flex-direction: column; gap: 16px; }
 .buy-more-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
-.buy-more h2 { margin: 0; font-family: Geist, "Segoe UI", sans-serif; font-size: 28px; font-weight: 600; }
+.buy-more h2 { margin: 0; font-family: Manrope, "Segoe UI", sans-serif; font-size: 28px; font-weight: 600; }
 .buy-more-head a { font-size: 14px; font-weight: 700; text-decoration: none; }
 .buy-like { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
-.buy-like a { display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #1C3A2A; }
-.buy-like-shot { position: relative; aspect-ratio: 390 / 844; height: auto; overflow: hidden; border-radius: 18px; border: 1px solid #D7E6DC; background: #FFFFFF; }
+.buy-like a { display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #17201c; }
+.buy-like-shot { position: relative; aspect-ratio: 390 / 844; height: auto; overflow: hidden; border-radius: 18px; border: 1px solid rgba(23, 32, 28, 0.12); background: #FFFFFF; }
 .buy-like-shot img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
 .buy-like-meta { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
 .buy-like-meta strong { font-size: 15px; }
-.buy-like-meta span { font-size: 13px; color: #5E7368; }
+.buy-like-meta span { font-size: 13px; color: #5e655f; }
 
 .buy-dock { display: none; }
 
@@ -315,10 +315,10 @@
     box-sizing: border-box;
     padding: 12px 16px calc(14px + env(safe-area-inset-bottom));
     background: #FFFFFF;
-    border-top: 1px solid #D7E6DC;
+    border-top: 1px solid rgba(23, 32, 28, 0.12);
   }
-  .buy-dock-k { display: block; font-size: 12px; color: #5E7368; }
-  .buy-dock-v { font-family: Geist, "Segoe UI", sans-serif; font-size: 20px; font-weight: 600; }
+  .buy-dock-k { display: block; font-size: 12px; color: #5e655f; }
+  .buy-dock-v { font-family: Manrope, "Segoe UI", sans-serif; font-size: 20px; font-weight: 600; }
   .buy-dock .buy-solid { flex: 1; min-height: 52px; font-size: 16px; }
   .buy-board.is-account .buy-dock { bottom: 82px; }
   .buy-board .buy-body { padding-bottom: 120px; }

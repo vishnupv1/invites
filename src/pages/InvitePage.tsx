@@ -4,10 +4,13 @@ import { getPublicInvite, sendGreeting } from "../api";
 import { GuestCta } from "../components/GuestCta";
 import { InviteSite } from "../components/InviteSite";
 import { Spinner } from "../components/Loader";
+import { DesktopNav } from "../components/shell/DesktopNav";
+import { IrApp } from "../components/shell/IrApp";
 import { getTemplate } from "../data/templates";
 import { trackRsvpSubmit } from "../lib/analytics";
 import { decodeInvite } from "../lib/codec";
 import type { InviteFields, Template } from "../types";
+import "./legal.css";
 
 export function InvitePage() {
   const { code = "" } = useParams();
@@ -43,11 +46,18 @@ export function InvitePage() {
         ? "We couldn’t open that invitation."
         : "We couldn’t find that invitation.";
     return (
-      <main className="public missing">
-        <h1>{heading}</h1>
-        <p>{missing === "missing" ? "Check the link, or ask the host to send it again." : "Check the link and try again."}</p>
-        <Link to="/">Back to invitesready</Link>
-      </main>
+      <IrApp>
+        <DesktopNav />
+        <div className="legal">
+          <main>
+            <h1>{heading}</h1>
+            <p className="legal-lede">{missing === "missing" ? "Check the link, or ask the host to send it again." : "Check the link and try again."}</p>
+            <div className="legal-actions">
+              <Link className="legal-go" to="/">Back to home</Link>
+            </div>
+          </main>
+        </div>
+      </IrApp>
     );
   }
 

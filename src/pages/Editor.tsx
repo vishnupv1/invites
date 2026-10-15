@@ -32,7 +32,6 @@ import { Checkout } from "../components/Checkout";
 import { LiveShare } from "../components/LiveShare";
 import { GuestAuthDialog } from "../components/GuestAuthDialog";
 import { ArrowIcon, BackIcon, CheckIcon, PencilIcon, PlayIcon } from "../components/shell/marks";
-import { CatalogDemo } from "./AllTemplates";
 import { getEvent } from "../data/events";
 import { eventName, withEventName } from "../data/custom";
 import { DateField, TimeField } from "../components/WhenFields";
@@ -283,7 +282,6 @@ export function Editor({
   const [publishOpen, setPublishOpen] = useState(false);
   const [liveOpen, setLiveOpen] = useState(false);
   const [payOpen, setPayOpen] = useState(false);
-  const [demoOpen, setDemoOpen] = useState(false);
   const [pubPhase, setPubPhase] = useState<"idle" | "loading" | "done">("idle");
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
@@ -1719,7 +1717,6 @@ export function Editor({
               </div>
             ) : needsPay ? (
               <div className="ed-stack">
-                <button type="button" className="ed-go quiet" onClick={() => { setPublishOpen(false); setDemoOpen(true); }}>See your demo</button>
                 <button type="button" className="ed-go" onClick={() => setPayOpen(true)}>Pay {formatPrice(template)} and publish</button>
               </div>
             ) : (
@@ -1730,7 +1727,6 @@ export function Editor({
       ) : null}
 
       {toast ? <Notice message={toast} tone={toastTone} onClose={() => setToast("")} /> : null}
-      {demoOpen ? <CatalogDemo template={template} fields={previewFields} onClose={() => { setDemoOpen(false); setPublishOpen(true); }} /> : null}
       {authOpen ? (
         <GuestAuthDialog
           heading="Sign in to save your invitation"

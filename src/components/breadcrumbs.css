@@ -7,15 +7,15 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Manrope, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #5E7368;
+  color: #5e655f;
 }
 .crumbs li { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .crumbs a,
 .crumbs button {
-  color: #1C3A2A;
+  color: #17201c;
   text-decoration: none;
   background: none;
   border: none;
@@ -27,7 +27,7 @@
 .crumbs a:hover,
 .crumbs button:hover { text-decoration: underline; }
 .crumbs [aria-current="page"] {
-  color: #1C3A2A;
+  color: #17201c;
   font-weight: 700;
   max-width: 36ch;
   overflow: hidden;
