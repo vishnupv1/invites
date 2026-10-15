@@ -11,6 +11,7 @@ type Library = {
   purchase: (id: string, coupon?: string, payment?: RazorpayPayment) => Promise<void>;
   grant: (id: string) => void;
   remember: (invite: SavedInvite) => void;
+  forget: (id: string) => void;
 };
 
 const LibraryContext = createContext<Library | null>(null);
@@ -61,6 +62,9 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       },
       remember: (invite) => {
         setInvites((current) => [invite, ...current.filter((item) => item.id !== invite.id)]);
+      },
+      forget: (id) => {
+        setInvites((current) => current.filter((item) => item.id !== id));
       },
     }),
     [owned, invites, ready],

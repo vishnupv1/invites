@@ -276,6 +276,10 @@ export function getInviteRecord(id: string) {
   return request<InviteRecord>(`/api/invites/record/${id}`);
 }
 
+export function deleteInvite(id: string) {
+  return request<{ ok: true }>(`/api/invites/record/${id}`, { method: "DELETE" });
+}
+
 export function getPublicInvite(slug: string) {
   return request<{ slug: string; templateId: string; fields: InviteFields; swatch?: string; greetings?: { name: string; note: string; attending?: boolean }[] }>(`/api/invites/${slug}`);
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listTemplates } from "../api";
+import { deleteInvite, listTemplates } from "../api";
 import { FavoriteHeart } from "../components/FavoriteHeart";
 import { Spinner } from "../components/Loader";
 import { getEvent } from "../data/events";
@@ -29,11 +29,13 @@ function eventMeta(invite: SavedInvite) {
 }
 
 export function LibraryPane({ view }: { view: View }) {
-  const { invites, ready, owned } = useLibrary();
+  const { invites, ready, owned, forget } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>([]);
   const [catalogReady, setCatalogReady] = useState(false);
   const [note, setNote] = useState("");
+  const [pending, setPending] = useState("");
+  const [busy, setBusy] = useState(false);
   const drafts = invites.filter((invite) => invite.status === "draft");
   const published = invites.filter((invite) => invite.status !== "draft");
   const favoriteTemplates = favs.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
@@ -57,6 +59,37 @@ export function LibraryPane({ view }: { view: View }) {
     }
   }
 
+  async function remove(invite: SavedInvite) {
+    if (pending !== invite.id) {
+      setPending(invite.id);
+      setNote("");
+      return;
+    }
+    setBusy(true);
+    try {
+      await deleteInvite(invite.id);
+      forget(invite.id);
+      setPending("");
+      setNote(`${invite.names || "Event"} deleted.`);
+    } catch (reason) {
+      setNote(reason instanceof Error ? reason.message : "Could not delete that event.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function removeActions(invite: SavedInvite) {
+    const confirming = pending === invite.id;
+    return confirming ? (
+      <>
+        <button type="button" disabled={busy} onClick={() => setPending("")}>Cancel</button>
+        <button type="button" className="is-danger is-confirm" disabled={busy} onClick={() => void remove(invite)}>{busy ? "Deleting…" : invite.status === "draft" ? "Delete draft" : "Delete event"}</button>
+      </>
+    ) : (
+      <button type="button" className="is-danger" onClick={() => void remove(invite)}>Delete</button>
+    );
+  }
+
   if (view === "events") {
     return (
       <div className="rsvp-lib">
@@ -69,8 +102,13 @@ export function LibraryPane({ view }: { view: View }) {
               <b>{invite.names || "Untitled event"}</b>
               {eventMeta(invite) ? <small>{eventMeta(invite)}</small> : null}
               <div className="rsvp-lib-actions">
-                <Link to={`/create/${invite.templateId}?invite=${invite.id}`}>Edit</Link>
-                <button type="button" onClick={() => void share(invite)}>Share</button>
+                {pending === invite.id ? null : (
+                  <>
+                    <Link to={`/create/${invite.templateId}?invite=${invite.id}`}>Edit</Link>
+                    <button type="button" onClick={() => void share(invite)}>Share</button>
+                  </>
+                )}
+                {removeActions(invite)}
               </div>
             </div>
           </article>
@@ -104,7 +142,10 @@ export function LibraryPane({ view }: { view: View }) {
             <img src={invite.cover || `/covers/${invite.templateId}.jpg`} alt="" />
             <b>{invite.names || "Untitled draft"}</b>
             <small>{editedLabel(invite.createdAt)}</small>
-            <Link to={`/create/${invite.templateId}?invite=${invite.id}`}>Continue</Link>
+            <div className="rsvp-lib-actions">
+              {pending === invite.id ? null : <Link to={`/create/${invite.templateId}?invite=${invite.id}`}>Continue</Link>}
+              {removeActions(invite)}
+            </div>
           </article>
         ))}
       </div>

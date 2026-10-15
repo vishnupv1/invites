@@ -641,6 +641,17 @@
   border: 1.5px solid rgba(23, 32, 28, 0.12);
 }
 
+.rsvp-lib-actions button.is-danger {
+  color: #9a3412;
+  border-color: rgba(154, 52, 18, 0.4);
+}
+
+.rsvp-lib-actions button.is-danger.is-confirm {
+  background: #9a3412;
+  color: #fffdf8;
+  border-color: #9a3412;
+}
+
 .rsvp-lib-new {
   min-height: 124px;
   display: flex;
