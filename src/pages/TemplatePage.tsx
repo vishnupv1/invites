@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { NotFound } from "./Unauthorized";
 // import { getTemplateRecord } from "../api";
 import { FavoriteHeart } from "../components/FavoriteHeart";
 import { BackIcon, HeartIcon, PlayIcon, SparkIcon } from "../components/shell/marks";
@@ -221,7 +222,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
         ? requested
         : template?.events[0];
 
-  if (!template || !event) return <Navigate to="/browse" replace />;
+  if (!template || !event) return <NotFound />;
   const owned = account && owns(template.id, template.free);
   const createTo = `/create/${template.id}?event=${event}&from=template&fresh=1`;
   if (owned && !library) return <Navigate to="/templates" replace />;

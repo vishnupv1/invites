@@ -1,10 +1,50 @@
 {
+  "trailingSlash": false,
   "redirects": [
+    {
+      "source": "/:path*/",
+      "has": [{ "type": "host", "value": "www.invitesready.com" }],
+      "destination": "https://invitesready.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.invitesready.com" }],
+      "destination": "https://invitesready.com/:path*",
+      "permanent": true
+    },
     { "source": "/c/marriage", "destination": "/wedding", "permanent": true },
     { "source": "/c/birthday", "destination": "/birthday", "permanent": true },
     { "source": "/c/baptism", "destination": "/baptism", "permanent": true },
     { "source": "/c/housewarming", "destination": "/housewarming", "permanent": true },
-    { "source": "/c/:id", "destination": "/occasions", "permanent": true }
+    { "source": "/c/:id", "destination": "/occasions", "permanent": true },
+    { "source": "/pricing", "destination": "/", "permanent": true }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/app.html" }]
+  "headers": [
+    {
+      "source": "/i/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+    }
+  ],
+  "rewrites": [
+    { "source": "/login", "destination": "/app.html" },
+    { "source": "/admin", "destination": "/app.html" },
+    { "source": "/unauthorized", "destination": "/app.html" },
+    { "source": "/design-check", "destination": "/app.html" },
+    { "source": "/templates", "destination": "/app.html" },
+    { "source": "/preview/:id", "destination": "/app.html" },
+    { "source": "/open/:id", "destination": "/app.html" },
+    { "source": "/embed/:id", "destination": "/app.html" },
+    { "source": "/create", "destination": "/app.html" },
+    { "source": "/create/:id", "destination": "/app.html" },
+    { "source": "/studio", "destination": "/app.html" },
+    { "source": "/events", "destination": "/app.html" },
+    { "source": "/drafts", "destination": "/app.html" },
+    { "source": "/favorites", "destination": "/app.html" },
+    { "source": "/guests", "destination": "/app.html" },
+    { "source": "/wishes", "destination": "/app.html" },
+    { "source": "/purchases", "destination": "/app.html" },
+    { "source": "/settings", "destination": "/app.html" },
+    { "source": "/i/:code", "destination": "/app.html" }
+  ]
 }

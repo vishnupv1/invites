@@ -312,7 +312,7 @@ function bodyFor(page, templates, events) {
     const template = page.template;
     if (template.description) parts.push(`<p>${escapeText(template.description)}</p>`);
     parts.push(`<p>${escapeText(priceText(template))}</p>`);
-    parts.push(`<img src="${escapeAttr(page.image)}" alt="${escapeAttr(`${template.name} invitation template cover`)}" width="600" height="800" />`);
+    parts.push(`<img src="${escapeAttr(page.image)}" alt="${escapeAttr(`${template.name} invitation cover`)}" width="1200" height="630" loading="lazy" />`);
     const matched = topicsForTemplate(template);
     if (matched.length) {
       parts.push("<h2>Occasions</h2>", linkList(matched.map((topic) => [topic.path, `${topic.label} invitations`])));
@@ -511,9 +511,11 @@ function ensureIcons(html) {
 function pageHtml(base, page, templates, events) {
   const url = `${SITE}${canonicalPath(page)}`;
   let html = ensureIcons(base);
+  html = html.replace(/<html lang="[^"]*">/, '<html lang="en-IN">');
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(page.title)}</title>`);
   html = replaceMeta(html, "name", "description", page.description);
-  html = replaceMeta(html, "name", "robots", "index, follow");
+  const indexable = canonicalPath(page) === page.path && page.index !== false;
+  html = replaceMeta(html, "name", "robots", indexable ? "index, follow" : "noindex, nofollow");
   html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`);
   html = replaceMeta(html, "property", "og:title", page.title);
   html = replaceMeta(html, "property", "og:description", page.description);
