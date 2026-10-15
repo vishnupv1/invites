@@ -345,18 +345,38 @@ function organization() {
     url: `${SITE}/`,
     email: "invitesreadyforyou@gmail.com",
     logo: `${SITE}/brand/logo-mark.png`,
+    sameAs: [
+      "https://www.instagram.com/TODO-invitesready",
+      "https://www.facebook.com/TODO-invitesready",
+    ],
   };
 }
 
-function faqEntity() {
+function breadcrumbList(items) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: item.href ? `${SITE}${item.href}` : `${SITE}${items.at(-1)?.href || "/"}`,
+    })),
+  };
+}
+
+function faqPage(items) {
   return {
     "@type": "FAQPage",
-    mainEntity: FAQS.map(([question, answer]) => ({
+    mainEntity: items.map(([question, answer]) => ({
       "@type": "Question",
       name: question,
       acceptedAnswer: { "@type": "Answer", text: answer },
     })),
   };
+}
+
+function faqEntity() {
+  return faqPage(FAQS);
 }
 
 function graphFor(page, templates) {
@@ -382,6 +402,8 @@ function graphFor(page, templates) {
   } else if (page.path === "/faq") {
     graph.push(faqEntity());
   } else if (page.template) {
+    const matched = topicsForTemplate(page.template);
+    const primary = matched.find((topic) => topic.id === "wedding") ?? matched[0];
     graph.push({
       "@type": "Product",
       name: `${page.template.name} invitation template`,
@@ -396,6 +418,24 @@ function graphFor(page, templates) {
         url: `${SITE}/template/${page.template.id}`,
       },
     });
+    graph.push(breadcrumbList([
+      { href: "/", label: "Home" },
+      primary ? { href: primary.path, label: primary.label } : { href: "/browse", label: "Templates" },
+      { href: `/template/${page.template.id}`, label: page.template.name },
+    ]));
+  } else if (page.topic) {
+    const body = occasionContent[page.topic.id];
+    if (body?.faqs?.length) {
+      graph.push(faqPage(body.faqs.map((item) => [item.q, item.a])));
+    }
+    const parent = page.topic.path !== "/wedding" && (page.topic.related ?? []).includes("/wedding")
+      ? orderedTopics().find((topic) => topic.path === "/wedding")
+      : undefined;
+    graph.push(breadcrumbList([
+      { href: "/", label: "Home" },
+      ...(parent ? [{ href: parent.path, label: parent.label }] : []),
+      { href: page.topic.path, label: page.topic.label },
+    ]));
   } else if (page.event) {
     const matches = templates.filter((template) => template.events.includes(page.event.id));
     graph.push({
