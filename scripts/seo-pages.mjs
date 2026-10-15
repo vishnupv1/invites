@@ -8,6 +8,18 @@ const root = path.resolve(import.meta.dirname, "..");
 const HOME_IMAGE = `${SITE}/og/home.jpg`;
 const BROWSE_IMAGE = `${SITE}/og/browse.jpg`;
 const seoCopy = JSON.parse(fs.readFileSync(path.join(root, "src/data/seo-copy.json"), "utf8"));
+const redirects = JSON.parse(fs.readFileSync(path.join(root, "src/data/redirects.json"), "utf8"));
+
+const EVENT_OCCASION = {
+  marriage: "/wedding",
+  birthday: "/birthday",
+  baptism: "/baptism",
+  housewarming: "/housewarming",
+};
+
+function occasionPathForEvent(eventId) {
+  return EVENT_OCCASION[eventId] ?? "/occasions";
+}
 const HOME_DESCRIPTION = seoCopy.pages["/"].description;
 
 const FAQS = [
@@ -131,7 +143,10 @@ function bodyFor(page, templates, events) {
     parts.push(`<img src="${escapeAttr(page.image)}" alt="${escapeAttr(`${template.name} invitation template cover`)}" width="600" height="800" />`);
     const occasions = events.filter((event) => template.events.includes(event.id));
     if (occasions.length) {
-      parts.push("<h2>Occasions</h2>", linkList(occasions.map((event) => [`/c/${event.id}`, `${event.label} invitations`])));
+      parts.push(
+        "<h2>Occasions</h2>",
+        linkList(occasions.map((event) => [occasionPathForEvent(event.id), `${event.label} invitations`])),
+      );
     }
     const related = relatedTemplates(template, templates);
     parts.push(`<p><a href="/browse">Browse invitation templates</a></p>`);
@@ -358,19 +373,7 @@ function pages(templates, events) {
       lastmod: copyDay,
     });
   }
-  for (const event of events) {
-    if (!templates.some((template) => template.events.includes(event.id))) continue;
-    const line = seoCopy.categories[event.id];
-    list.push({
-      path: `/c/${event.id}`,
-      title: line?.title ?? `${event.label} invitations | InvitesReady`,
-      description: line?.lead ?? `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
-      image: HOME_IMAGE,
-      event,
-      lastmod: copyDay,
-    });
-  }
-  return list;
+  return list.filter((page) => !page.path.startsWith("/c/") && !redirects[page.path]);
 }
 
 const UNLISTED = new Set(["/design-check"]);

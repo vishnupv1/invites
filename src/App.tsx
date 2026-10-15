@@ -1,8 +1,7 @@
 import { lazy, Suspense, useLayoutEffect, type ReactNode } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Auth } from "./pages/Auth";
-import { Category } from "./pages/Category";
 import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
@@ -18,6 +17,7 @@ import { BrowsePage } from "./pages/BrowsePage";
 import { EmbedInvite } from "./pages/EmbedInvite";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
+import { redirectTarget } from "./data/paths";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 import { NotFound, Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
@@ -47,6 +47,13 @@ function ScrollToTop() {
   return null;
 }
 
+function LegacyRedirect() {
+  const { pathname } = useLocation();
+  const { id } = useParams();
+  const target = redirectTarget(pathname) ?? (id ? redirectTarget(`/c/${id}`) : undefined) ?? "/occasions";
+  return <Navigate to={target} replace />;
+}
+
 function Shell({ children }: { children: ReactNode }) {
   return (
     <IrApp>
@@ -65,7 +72,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/how" element={<Home focus="how" />} />
         <Route path="/features" element={<Home focus="features" />} />
-        <Route path="/pricing" element={<Navigate to="/" replace />} />
+        <Route path="/pricing" element={<LegacyRedirect />} />
         <Route path="/faq" element={<Home focus="faq" />} />
         <Route path="/occasions" element={<Home focus="occasions" />} />
         <Route path="/login" element={<Auth />} />
@@ -98,14 +105,7 @@ export default function App() {
             }
           />
         ))}
-        <Route
-          path="/c/:id"
-          element={
-            <Shell>
-              <Category />
-            </Shell>
-          }
-        />
+        <Route path="/c/:id" element={<LegacyRedirect />} />
         <Route path="/embed/:id" element={<EmbedInvite />} />
         <Route path="/template/:id" element={<TemplatePage />} />
         <Route path="/create" element={<CreateGuest />} />

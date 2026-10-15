@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getEvent } from "../data/events";
-import { SEO_CATEGORIES, SEO_PAGES, topicByPath, templateSeo } from "../data/topics";
-import { getTemplate, templatesFor } from "../data/templates";
+import { SEO_PAGES, topicByPath, templateSeo } from "../data/topics";
+import { redirectTarget } from "../data/paths";
+import { getTemplate } from "../data/templates";
 import { trackPageView } from "./analytics";
 import { generatedTemplateSeo } from "./template-seo.mjs";
 
@@ -113,18 +113,15 @@ function describe(pathname: string): Meta {
     }
   }
 
-  const category = pathname.match(/^\/c\/([^/]+)$/);
-  if (category) {
-    const event = getEvent(category[1]);
-    if (event.id === category[1] && templatesFor(event.id).length > 0) {
-      const line = SEO_CATEGORIES[event.id];
-      return {
-        title: line?.title ?? `${event.label} invitations | InvitesReady`,
-        description: line?.description ?? `Invitation templates for a ${event.label.toLowerCase()}. Preview a design, then share one link with your guests.`,
-        index: true,
-        image: HOME_IMAGE,
-      };
-    }
+  const redirected = redirectTarget(pathname);
+  if (redirected) {
+    return {
+      title: "InvitesReady",
+      description: HOME_DESCRIPTION,
+      index: false,
+      image: HOME_IMAGE,
+      canonical: redirected,
+    };
   }
 
   if (pathname.startsWith("/embed/")) {

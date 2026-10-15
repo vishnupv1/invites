@@ -234,6 +234,12 @@
       "description": "Digital wedding invitations for a garden, beach, floral, or palace celebration. Share one link. Guests RSVP with no app.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "lotus",
+        "goa",
+        "gazal",
+        "vivah",
+        "shaadi",
+        "thiruvizha",
         "lace",
         "rose",
         "bloom",

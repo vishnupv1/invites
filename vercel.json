@@ -1,3 +1,10 @@
 {
+  "redirects": [
+    { "source": "/c/marriage", "destination": "/wedding", "permanent": true },
+    { "source": "/c/birthday", "destination": "/birthday", "permanent": true },
+    { "source": "/c/baptism", "destination": "/baptism", "permanent": true },
+    { "source": "/c/housewarming", "destination": "/housewarming", "permanent": true },
+    { "source": "/c/:id", "destination": "/occasions", "permanent": true }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/app.html" }]
 }
