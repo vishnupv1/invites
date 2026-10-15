@@ -1,0 +1,203 @@
+{
+  "wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "A digital wedding invitation on InvitesReady is one link, not a stack of cards. Guests tap it on WhatsApp and the design opens in the browser, with an animated opening that feels closer to a sealed envelope than to a PDF. TODO: review copy.",
+      "Inside the page you can list the schedule of functions, the venue with a map, photographs, and a reply. Wishes sit on the same page. If a time or a venue changes after you have sent the link, you edit it in the browser and the same link shows the new version. Nobody has to be sent a second card."
+    ],
+    "howItWorks": [
+      "Pick a design and preview the opening before you type a word.",
+      "Personalise it in the browser: names, functions, venues, photos, and the line you want guests to read.",
+      "Share one link on WhatsApp. Guests open it and RSVP there. They do not install an app."
+    ],
+    "wording": [
+      "Together with their families, Aarohi and Vihaan request the pleasure of your company at their wedding.",
+      "With the blessings of our parents, we invite you to the wedding celebrations of Meera and Kabir.",
+      "You are warmly invited to the wedding of Ananya and Rohan. Kindly reply on this page."
+    ],
+    "price": "From ₹379, paid once. You are not buying a print run. The listed price is for the design, and you can edit the page after it is sent. Publishing is free for now while prices are paused. TODO: review copy.",
+    "faqs": [
+      { "q": "Can one wedding link include every function?", "a": "TODO: review copy. Yes. Add the ceremony, the reception, and any other gathering, each with its own time and place. Guests reply on the same page." },
+      { "q": "Do guests need WhatsApp installed to open it?", "a": "TODO: review copy. No. WhatsApp is only how you send the link. The invitation opens in the phone's browser." },
+      { "q": "Can I change the venue after I have shared the link?", "a": "TODO: review copy. Yes. Edit the page and the same link updates. You do not send a new invitation." },
+      { "q": "Is ₹379 the price for every wedding design?", "a": "TODO: review copy. No. ₹379 is the starting listed price. Each template shows its own one-time price. Some designs are free to publish." },
+      { "q": "Can parents and the couple both be named?", "a": "TODO: review copy. Yes. The host line and the couple's names are separate fields, so you can follow the wording your families prefer." }
+    ]
+  },
+  "shaadi": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "A Hindu wedding invitation here is a digital page for the muhurtham and the festivities around it. The opening is animated: doors, a veil, or a temple frame, depending on the design. Guests reach it from one link. TODO: review copy.",
+      "You can set out the functions, the venue and a map, photographs, and a place for wishes. RSVP stays on the page, so you are not collecting replies in a dozen chats. Edit after sending and the link does not change. The same page is what every guest sees."
+    ],
+    "howItWorks": [
+      "Pick a Hindu wedding design and watch the opening.",
+      "Personalise the names, the muhurtham, the festivities, and the venues in the browser.",
+      "Share one link on WhatsApp. Guests open it and reply. No app."
+    ],
+    "wording": [
+      "With the blessings of our elders, we invite you to the wedding of Ananya and Rohan.",
+      "Shri and Smt Sharma request the honour of your presence at the muhurtham of their daughter.",
+      "You are invited to the wedding festivities. The schedule is on this page. Kindly reply here."
+    ],
+    "price": "From ₹379, paid once, for a Vivah design. Other Hindu wedding templates list their own one-time price. You edit after sending on the same link. TODO: review copy.",
+    "faqs": [
+      { "q": "Can the page list haldi, mehendi, and the reception?", "a": "TODO: review copy. Yes. Add each function with its own time, place, and dress note. This page is still one link, not a separate card per function." },
+      { "q": "Is this a printed Hindu wedding card?", "a": "TODO: review copy. No. It is a digital invitation. Guests open it on their phone. You can still use your own wording." },
+      { "q": "Which design should we use for a temple wedding?", "a": "TODO: review copy. Vivah opens like temple doors onto the muhurtham. Shaadi lifts a veil onto a set of festivities. Both are Hindu wedding invitations." },
+      { "q": "Can we write the invitation line in Hindi?", "a": "TODO: review copy. You type the wording yourself, so the line can be in Hindi, English, or both. The rest of the chrome stays in the design's type." },
+      { "q": "Do guests RSVP separately for each function?", "a": "TODO: review copy. They reply on the page. You can see the response against the invitation, including when several functions are listed." }
+    ]
+  },
+  "nikah": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "A digital nikah invitation on this page is built for the ceremony and the walima, not for a generic party. Gazal opens in emerald and carries both gatherings, plus a place for duas and wishes. TODO: review copy.",
+      "Guests get one link. They see the families, the couple, the nikah, the walima, and they reply in the browser. You can edit the time or the venue after sending. The link stays the same, so the WhatsApp message you already sent does not go stale."
+    ],
+    "howItWorks": [
+      "Pick the nikah design and preview the opening card.",
+      "Personalise the families, the couple, the nikah, and the walima in the browser.",
+      "Share one link on WhatsApp. Guests RSVP on the page. No app."
+    ],
+    "wording": [
+      "Mr and Mrs Khan request the honour of your presence at the nikah of their daughter.",
+      "With the blessings of our parents, you are invited to the nikah and walima of Ayesha and Imran.",
+      "Your duas and your company are requested. Kindly reply on this page."
+    ],
+    "price": "Gazal is free to publish. There is no print cost and no per-guest fee. You still get the animated opening, both events, and RSVP on the link. TODO: review copy.",
+    "faqs": [
+      { "q": "Can the nikah and the walima be on one invitation?", "a": "TODO: review copy. Yes. Gazal has a place for the ceremony and a place for the walima, each with its own venue and time." },
+      { "q": "Can guests leave a dua?", "a": "TODO: review copy. Yes. Wishes and duas sit on the page with the reply. They do not need a separate chat." },
+      { "q": "Is an app required for the nikah card?", "a": "TODO: review copy. No. The link opens in the browser, including from WhatsApp." },
+      { "q": "Can we hide the house address?", "a": "TODO: review copy. Yes. Share the venue name and hold the full address back, or protect the page with a password." },
+      { "q": "Can we edit after the link is in the family group?", "a": "TODO: review copy. Yes. The same link shows the latest version." }
+    ]
+  },
+  "tamil-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "Thiruvizha is a digital Tamil wedding invitation. A kolam gate opens onto the muhurtham and the rituals. The page can be read in English, Tamil, or both, and it carries one nadaswaram. TODO: review copy.",
+      "You still get one link: the schedule, the venue and map, photographs, RSVP, and wishes. Edit after sending and guests keep the same link. It is not a separate Tamil PDF plus an English one.",
+      "Families often send one version to cousins abroad and another to elders at home. This page is meant to replace that split. You choose the language once, share the link in the family group, and the reply comes back on the invitation instead of as a string of separate messages you then have to count by hand. TODO: review copy."
+    ],
+    "howItWorks": [
+      "Pick Thiruvizha and choose English, Tamil, or both.",
+      "Personalise the names, the muhurtham, the rituals, and the venue in the browser.",
+      "Share one link on WhatsApp. Guests open it and reply. No app."
+    ],
+    "wording": [
+      "With the blessings of our parents and elders, we invite you to our muhurtham.",
+      { "lang": "ta", "text": "எங்கள் பெற்றோரின் ஆசியுடன், எங்கள் முகூர்த்தத்திற்கு உங்களை அழைக்கிறோம்." },
+      "The rituals and the venue are on this page. Kindly reply here."
+    ],
+    "price": "Thiruvizha is listed at ₹449, paid once. That covers the animated opening, the language choice, and RSVP on the link. TODO: review copy.",
+    "faqs": [
+      { "q": "Can the invitation be in Tamil and English together?", "a": "TODO: review copy. Yes. Choose English, Tamil, or both. Guests see the version you pick. You do not send two links." },
+      { "q": "Is there music?", "a": "TODO: review copy. The design includes one nadaswaram. You do not upload a playlist." },
+      { "q": "Can we list the rituals, not only the muhurtham?", "a": "TODO: review copy. Yes. The page is meant for the muhurtham and the rituals around it, each with a time and place." },
+      { "q": "Do guests need an app to read the Tamil?", "a": "TODO: review copy. No. The Tamil is on the web page. A current phone browser can show it." },
+      { "q": "Can we correct a name after sending?", "a": "TODO: review copy. Yes. Edit the page. The WhatsApp link does not change." }
+    ]
+  },
+  "birthday": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "A digital birthday invitation here opens like a letter. Inland Letter tears open, balloons rise, and the party details sit on the same page as the reply. TODO: review copy.",
+      "You add the name, the date, the place, photos if you want them, and a map. Guests RSVP in the browser. If the party moves by an hour, you edit the page and the link you already sent stays valid.",
+      "A paper invite for a birthday is easy to lose in a school bag. The link stays in the chat. Guests open it the morning of the party, see the time and the map, and you already know who is coming because they answered on the page. You are not chasing replies one conversation at a time. TODO: review copy."
+    ],
+    "howItWorks": [
+      "Pick the birthday letter and tap it open.",
+      "Personalise the name, the date, the place, and a short note in the browser.",
+      "Share one link on WhatsApp. Guests RSVP on the page. No app."
+    ],
+    "wording": [
+      "You are invited to Meera's birthday. Come for cake, and reply on this page.",
+      "Join us to celebrate Arjun turning seven. The time and the place are below.",
+      "We are gathering for a birthday. Kindly tell us if you can come."
+    ],
+    "price": "Inland Letter is listed at ₹299, paid once. There is no per-guest charge. TODO: review copy.",
+    "faqs": [
+      { "q": "Is this only for a child's birthday?", "a": "TODO: review copy. No. The letter works for a child or an adult. You write the name and the line." },
+      { "q": "Can guests reply without an account?", "a": "TODO: review copy. Yes. They open the link and answer on the page." },
+      { "q": "Can I add a photo of the person?", "a": "TODO: review copy. Yes. The design accepts photographs. Guests see them on the invitation." },
+      { "q": "What if the venue changes?", "a": "TODO: review copy. Edit the page. Everyone with the link sees the new place." }
+    ]
+  },
+  "baptism": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "The baptism invitation opens with a dove and carries the day, the godparents, and a place for a blessing. It is a digital card, shared as one link, not a paper insert in a church pew. TODO: review copy.",
+      "Guests see the child's name, the time, the church or venue, and they reply in the browser. You can edit the page after sending. Wishes and blessings stay with the invitation.",
+      "Godparents, grandparents, and friends in another city all get the same link. They do not need to be on the same messaging app as each other. If the service time is confirmed late, you change it on the page and the people who already saved the link see the update the next time they open it. A blessing left on the page stays with the invitation after the day. TODO: review copy."
+    ],
+    "howItWorks": [
+      "Pick the dove design and preview the opening.",
+      "Personalise the child, the godparents, the day, and the venue in the browser.",
+      "Share one link on WhatsApp. Guests RSVP on the page. No app."
+    ],
+    "wording": [
+      "With joy we invite you to the baptism of our daughter, Anna.",
+      "Please join us for the baptism and a blessing afterwards. The details are on this page.",
+      "Your presence and your prayers are requested. Kindly reply here."
+    ],
+    "price": "The baptism design is listed at ₹1299, paid once. TODO: review copy.",
+    "faqs": [
+      { "q": "Can we name the godparents?", "a": "TODO: review copy. Yes. The page has a place for them beside the child and the day." },
+      { "q": "Can guests leave a blessing?", "a": "TODO: review copy. Yes. Blessings sit on the page with the reply." },
+      { "q": "Is this the same card as a baby shower?", "a": "TODO: review copy. No. This design is for a baptism. A baby shower should use a different template and your own wording." },
+      { "q": "Do guests need an app?", "a": "TODO: review copy. No. The link opens in the browser." }
+    ]
+  },
+  "baby-shower": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "There is no baby-shower-only template yet. The designs on this page are general celebration cards — a floral letter, a wreath, a garden card — that you can customise with the parents' names, the date, and a short note. They are not labelled as baby shower designs, and the Baptism template is not shown here. TODO: review copy.",
+      "You still get an animated opening, one link, a place for the venue, photos, wishes, and RSVP. Guests do not need an app. If the gathering moves, edit the page and the link stays the same."
+    ],
+    "howItWorks": [
+      "Pick one of the general designs and preview the opening.",
+      "Personalise the names, the date, and the wording so it reads as your baby shower.",
+      "Share one link on WhatsApp. Guests RSVP on the page. No app."
+    ],
+    "wording": [
+      "Join us for a baby shower. The afternoon, the place, and how to reply are on this page.",
+      "We are gathering before the baby arrives. Come if you can, and tell us on this link.",
+      "You are invited to celebrate with us. Please reply here so we can plan the table."
+    ],
+    "price": "These designs are listed from ₹299, paid once. You are customising a general template, not buying a separate baby-shower illustration. TODO: review copy.",
+    "faqs": [
+      { "q": "Why is the Baptism card not on this page?", "a": "TODO: review copy. It is a baptism design, with a dove, godparents, and a blessing. It is not a baby shower template, so it is not listed here." },
+      { "q": "Can I make a floral card say baby shower?", "a": "TODO: review copy. Yes. You write the heading and the note. The illustration stays a floral or garden opening." },
+      { "q": "Do guests need an app?", "a": "TODO: review copy. No. They open the link in the browser and reply there." },
+      { "q": "Can we edit the date after sending?", "a": "TODO: review copy. Yes. The same link shows the new date." }
+    ]
+  },
+  "housewarming": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "Hearth is a digital housewarming invitation for a griha pravesh. The front door opens onto the new home. Guests get one link with the gathering, the address or the area you choose to show, photographs, and a reply. TODO: review copy.",
+      "You can edit the time after you have sent the link. Wishes sit on the page. There is no app for your guests and no second card if the puja time shifts.",
+      "A griha pravesh often has a muhurat that moves. The door design is still the right invitation: one link for the household, the gathering, and the reply. Guests who need directions open the map on the page. You decide how much of the address to show before someone has said yes. TODO: review copy."
+    ],
+    "howItWorks": [
+      "Pick Hearth and preview the door opening.",
+      "Personalise the household, the date, and the new home in the browser.",
+      "Share one link on WhatsApp. Guests RSVP on the page. No app."
+    ],
+    "wording": [
+      "Please join us for the griha pravesh of our new home.",
+      "With happiness we invite you to a housewarming. The day and the place are on this page.",
+      "Come and bless the house. Kindly reply here."
+    ],
+    "price": "Hearth is listed at ₹599, paid once. The griha pravesh uses this same page — there is not a second URL. TODO: review copy.",
+    "faqs": [
+      { "q": "Is griha pravesh a different page from housewarming?", "a": "TODO: review copy. No. This is the page for both. Use the wording that fits your gathering. /griha-pravesh sends people here." },
+      { "q": "Can I hide the full address until someone says yes?", "a": "TODO: review copy. Yes. Show the neighbourhood, or reveal the address after a guest accepts." },
+      { "q": "Can we add a photo of the house?", "a": "TODO: review copy. Yes. The design accepts photographs of the home." },
+      { "q": "Do guests need an app?", "a": "TODO: review copy. No. The link opens in the browser." },
+      { "q": "What if the muhurat changes?", "a": "TODO: review copy. Edit the page. Everyone with the link sees the new time." }
+    ]
+  }
+}

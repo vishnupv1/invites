@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { generatedTemplateSeo } from "../src/lib/template-seo.mjs";
+import { templateFacts } from "../src/lib/template-facts.mjs";
 import { writeShareImages } from "./og-images.mjs";
 
 const SITE = "https://invitesready.com";
@@ -12,6 +13,8 @@ const redirects = JSON.parse(fs.readFileSync(path.join(root, "src/data/redirects
 const siteFacts = JSON.parse(fs.readFileSync(path.join(root, "src/data/site-facts.json"), "utf8"));
 const legalPages = JSON.parse(fs.readFileSync(path.join(root, "src/data/legal-pages.json"), "utf8"));
 const phrases = JSON.parse(fs.readFileSync(path.join(root, "src/data/template-phrases.json"), "utf8"));
+const occasionContent = JSON.parse(fs.readFileSync(path.join(root, "src/data/occasion-content.json"), "utf8"));
+const templateMeta = JSON.parse(fs.readFileSync(path.join(root, "src/data/template-meta.json"), "utf8"));
 const HOME_DESCRIPTION = seoCopy.pages["/"].description;
 const CONTACT_EMAIL = "invitesreadyforyou@gmail.com";
 
@@ -97,6 +100,73 @@ function celebrationItems() {
     const noun = count === 1 ? "template" : "templates";
     return `<li><a href="${escapeAttr(topic.path)}">${escapeText(topic.label)}</a> — ${escapeText(topic.description)} (${count} ${noun})</li>`;
   });
+}
+
+function sampleText(sample) {
+  return typeof sample === "string" ? sample : sample.text;
+}
+
+function occasionWords(page) {
+  const bits = [
+    ...page.whatYouGet,
+    ...page.howItWorks,
+    ...page.wording.map(sampleText),
+    page.price,
+    ...page.faqs.flatMap((item) => [item.q, item.a]),
+  ];
+  return bits.join(" ").split(/\s+/).filter(Boolean).length;
+}
+
+function occasionArticle(id) {
+  const page = occasionContent[id];
+  if (!page) return "";
+  const wording = page.wording.map((sample) => {
+    const text = sampleText(sample);
+    const lang = typeof sample === "string" || !sample.lang ? "" : ` lang="${escapeAttr(sample.lang)}"`;
+    return `<p${lang}>${escapeText(text)}</p>`;
+  }).join("");
+  const faqs = page.faqs
+    .map((item) => `<details open><summary>${escapeText(item.q)}</summary><p>${escapeText(item.a)}</p></details>`)
+    .join("");
+  return [
+    `<p>${escapeText(page.review)}</p>`,
+    "<h2>What you get</h2>",
+    page.whatYouGet.map((paragraph) => `<p>${escapeText(paragraph)}</p>`).join(""),
+    "<h2>How it works</h2>",
+    `<ol>${page.howItWorks.map((step) => `<li>${escapeText(step)}</li>`).join("")}</ol>`,
+    "<h2>Invitation wording</h2>",
+    wording,
+    "<h2>Price</h2>",
+    `<p>${escapeText(page.price)}</p>`,
+    "<h2>Questions</h2>",
+    faqs,
+  ].join("");
+}
+
+function templateArticle(template) {
+  const facts = templateFacts(
+    { ...template, meta: { components: templateMeta[template.id]?.components || [] } },
+    phrases[template.id],
+    topicsForTemplate(template).map((topic) => topic.label),
+  );
+  const faqs = facts.faqs
+    .map((item) => `<details open><summary>${escapeText(item.q)}</summary><p>${escapeText(item.a)}</p></details>`)
+    .join("");
+  return [
+    `<p>${escapeText(facts.review)}</p>`,
+    "<h2>What's included</h2>",
+    `<ul>${facts.included.map((item) => `<li>${escapeText(item)}</li>`).join("")}</ul>`,
+    "<h2>Suitable for</h2>",
+    `<p>${escapeText(facts.suitable.join(", "))}</p>`,
+    "<h2>Languages</h2>",
+    `<p>${escapeText(facts.languages.join(", "))}</p>`,
+    "<h2>What guests see</h2>",
+    `<p>${escapeText(facts.guestSees)}</p>`,
+    "<h2>Price</h2>",
+    `<p>${escapeText(facts.price)}</p>`,
+    "<h2>Questions</h2>",
+    faqs,
+  ].join("");
 }
 
 function faqHtml() {
@@ -216,6 +286,7 @@ function bodyFor(page, templates, events) {
     const related = relatedTemplates(template, templates);
     parts.push(`<p><a href="/browse">Browse invitation templates</a></p>`);
     if (related.length) parts.push("<h2>Related templates</h2>", templateLinks(related));
+    parts.push(templateArticle(template));
   } else if (page.event) {
     const matches = templates.filter((template) => template.events.includes(page.event.id));
     const items = matches.map(
@@ -238,6 +309,7 @@ function bodyFor(page, templates, events) {
     if (related.length) {
       parts.push("<h2>Related</h2>", linkList(related.map((topic) => [topic.path, topic.heading])));
     }
+    parts.push(occasionArticle(page.topic.id));
   } else if (page.path === "/" || page.path === "/browse") {
     parts.push("<h2>Invitation templates</h2>", templateLinks(templates));
     if (page.path === "/") parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
@@ -454,6 +526,12 @@ function pages(templates, events) {
       lastmod: copyDay,
       index: topic.index !== false,
     });
+    if (topic.index !== false) {
+      const body = occasionContent[topic.id];
+      if (!body) throw new Error(`SEO: missing occasion copy for ${topic.id}`);
+      const count = occasionWords(body);
+      if (count < 300) throw new Error(`SEO: ${topic.id} copy is ${count} words`);
+    }
   }
   const published = list.filter((page) => !page.path.startsWith("/c/") && !redirects[page.path]);
   assertUnique(published);

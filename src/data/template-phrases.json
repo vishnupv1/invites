@@ -1,27 +1,180 @@
 {
-  "lotus": { "style": "Courtyard", "occasion": "Wedding" },
-  "goa": { "style": "Garden Gate", "occasion": "Wedding" },
-  "lace": { "style": "Ivory Lace", "occasion": "Wedding" },
-  "gazal": { "style": "Emerald", "occasion": "Nikah" },
-  "aurelia": { "style": "Navy Gold", "occasion": "Wedding" },
-  "anna": { "style": "Garden Card", "occasion": "Wedding" },
-  "baptism": { "style": "Dove", "occasion": "Baptism" },
-  "vivah": { "style": "Temple Door", "occasion": "Hindu Wedding" },
-  "beach": { "style": "Sunset Shore", "occasion": "Wedding" },
-  "botanica": { "style": "Floral Wreath", "occasion": "Wedding" },
-  "heavenly": { "style": "Palace Light", "occasion": "Wedding" },
-  "pull": { "style": "Curtain Pull", "occasion": "Wedding" },
-  "inland": { "style": "Tear-open", "occasion": "Birthday" },
-  "hearth": { "style": "Front Door", "occasion": "Housewarming" },
-  "shaadi": { "style": "Veil Reveal", "occasion": "Hindu Wedding" },
-  "thiruvizha": { "style": "Kolam Gate", "occasion": "Tamil Wedding" },
-  "peace": { "style": "Gift Hamper", "occasion": "Wedding" },
-  "grandoor": { "style": "Lake Palace", "occasion": "Wedding" },
-  "grandenvelope": { "style": "Wax Seal", "occasion": "Wedding" },
-  "palace": { "style": "Paper Door", "occasion": "Wedding" },
-  "moonlit": { "style": "Window", "occasion": "Wedding" },
-  "villa": { "style": "Tuscan Villa", "occasion": "Wedding" },
-  "bloom": { "style": "Floral Letter", "occasion": "Wedding" },
-  "hansa": { "style": "Moonlight Lake", "occasion": "Wedding" },
-  "rose": { "style": "Stained Glass", "occasion": "Wedding" }
+  "lotus": {
+    "style": "Courtyard",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "goa": {
+    "style": "Garden Gate",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "lace": {
+    "style": "Ivory Lace",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "gazal": {
+    "style": "Emerald",
+    "occasion": "Nikah",
+    "languages": [
+      "English"
+    ]
+  },
+  "aurelia": {
+    "style": "Navy Gold",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "anna": {
+    "style": "Garden Card",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "baptism": {
+    "style": "Dove",
+    "occasion": "Baptism",
+    "languages": [
+      "English"
+    ]
+  },
+  "vivah": {
+    "style": "Temple Door",
+    "occasion": "Hindu Wedding",
+    "languages": [
+      "English",
+      "Hindi"
+    ]
+  },
+  "beach": {
+    "style": "Sunset Shore",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "botanica": {
+    "style": "Floral Wreath",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "heavenly": {
+    "style": "Palace Light",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "pull": {
+    "style": "Curtain Pull",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "inland": {
+    "style": "Tear-open",
+    "occasion": "Birthday",
+    "languages": [
+      "English"
+    ]
+  },
+  "hearth": {
+    "style": "Front Door",
+    "occasion": "Housewarming",
+    "languages": [
+      "English"
+    ]
+  },
+  "shaadi": {
+    "style": "Veil Reveal",
+    "occasion": "Hindu Wedding",
+    "languages": [
+      "English",
+      "Hindi"
+    ]
+  },
+  "thiruvizha": {
+    "style": "Kolam Gate",
+    "occasion": "Tamil Wedding",
+    "languages": [
+      "English",
+      "Tamil"
+    ]
+  },
+  "peace": {
+    "style": "Gift Hamper",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "grandoor": {
+    "style": "Lake Palace",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "grandenvelope": {
+    "style": "Wax Seal",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "palace": {
+    "style": "Paper Door",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "moonlit": {
+    "style": "Window",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "villa": {
+    "style": "Tuscan Villa",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "bloom": {
+    "style": "Floral Letter",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "hansa": {
+    "style": "Moonlight Lake",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  },
+  "rose": {
+    "style": "Stained Glass",
+    "occasion": "Wedding",
+    "languages": [
+      "English"
+    ]
+  }
 }

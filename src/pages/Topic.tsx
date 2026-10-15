@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { PreviewModal } from "../components/PreviewModal";
 import { Breadcrumbs } from "../components/Breadcrumbs";
+import { OccasionArticle } from "../components/OccasionArticle";
 import { formatPrice, getTemplate, sampleFor, designCtaLabel } from "../data/templates";
 import { topicByPath, TOPICS } from "../data/topics";
 import { InlandInvite } from "../components/InlandInvite";
@@ -91,6 +92,7 @@ export function Topic() {
           );
         })}
       </div>
+      <OccasionArticle id={topic.id} />
       {preview ? (
         <PreviewModal
           template={preview}

@@ -41,7 +41,9 @@ import { Breadcrumbs } from "../components/Breadcrumbs";
 import { SiteFooter } from "../components/SiteFooter";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
+import phrases from "../data/template-phrases.json" with { type: "json" };
 import { primaryTopicForTemplate, templateSeo, topicsForTemplate } from "../data/topics";
+import { templateFacts } from "../lib/template-facts.mjs";
 import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
@@ -126,6 +128,34 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
     default:
       return <InviteView template={template} fields={fields} />;
   }
+}
+
+function TemplateFacts({ template, occasions }: { template: Template; occasions: string[] }) {
+  const facts = templateFacts(template, phrases[template.id as keyof typeof phrases], occasions);
+  return (
+    <section className="occasion-copy">
+      <p className="occasion-review">{facts.review}</p>
+      <h2>What's included</h2>
+      <ul>
+        {facts.included.map((item) => <li key={item}>{item}</li>)}
+      </ul>
+      <h2>Suitable for</h2>
+      <p>{facts.suitable.join(", ")}</p>
+      <h2>Languages</h2>
+      <p>{facts.languages.join(", ")}</p>
+      <h2>What guests see</h2>
+      <p>{facts.guestSees}</p>
+      <h2>Price</h2>
+      <p>{facts.price}</p>
+      <h2>Questions</h2>
+      {facts.faqs.map((item) => (
+        <details key={item.q} open>
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </section>
+  );
 }
 
 export function TemplatePage({ library = false }: { library?: boolean }) {
@@ -296,6 +326,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
           <PrimaryButton href={createTo}>Try it with your names</PrimaryButton>
           <p>No sign-up needed to try</p>
         </div>
+        <TemplateFacts template={template} occasions={occasionTopics.map((item) => item.label)} />
         <details className="ir-detail-more">
           <summary>More options</summary>
           {seo ? <p>{seo.lead}</p> : null}

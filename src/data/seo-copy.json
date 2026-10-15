@@ -317,9 +317,11 @@
       "heading": "Digital baby shower invitations",
       "title": "Baby Shower Invitation – Digital with RSVP | InvitesReady",
       "description": "Animated digital baby shower invitations from ₹299. One link for the day. Guests RSVP with no app. Share on WhatsApp.",
-      "lead": "A digital baby shower invitation guests open from one link. They see the day, leave a wish, and RSVP in the browser. Do they need an app? No. Can you edit after sending? Yes — the same link always shows the latest version.",
+      "lead": "There is no baby-shower-only design yet. The cards below are general celebration templates you can customise — names, date, and a short note — for a baby shower. The Baptism template is not one of them.",
       "templates": [
-        "baptism"
+        "bloom",
+        "botanica",
+        "anna"
       ],
       "related": [
         "/baptism",
