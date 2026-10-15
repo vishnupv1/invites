@@ -17,6 +17,9 @@
     { "source": "/c/birthday", "destination": "/birthday", "permanent": true },
     { "source": "/c/baptism", "destination": "/baptism", "permanent": true },
     { "source": "/c/housewarming", "destination": "/housewarming", "permanent": true },
+    { "source": "/c/engagement", "destination": "/engagement", "permanent": true },
+    { "source": "/c/reception", "destination": "/reception", "permanent": true },
+    { "source": "/griha-pravesh", "destination": "/housewarming", "permanent": true },
     { "source": "/c/:id", "destination": "/occasions", "permanent": true },
     { "source": "/pricing", "destination": "/", "permanent": true }
   ],

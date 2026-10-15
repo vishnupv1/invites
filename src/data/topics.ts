@@ -40,7 +40,7 @@ export const SEO_CATEGORIES = copy.categories;
 export const SEO_TEMPLATES = copy.templates;
 export const TOPICS: Topic[] = copy.topics;
 
-const OCCASION_ORDER = ["wedding", "shaadi", "nikah", "tamil-wedding", "birthday", "baptism", "baby-shower", "housewarming"];
+const OCCASION_ORDER = ["wedding", "shaadi", "nikah", "tamil-wedding", "save-the-date", "birthday", "baptism", "baby-shower", "housewarming"];
 
 export function publishedTopics() {
   const rank = new Map(OCCASION_ORDER.map((id, index) => [id, index]));

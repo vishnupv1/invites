@@ -327,6 +327,150 @@
         "/baptism",
         "/birthday"
       ]
+    },
+    {
+      "id": "save-the-date",
+      "path": "/save-the-date",
+      "label": "Save the date",
+      "heading": "Digital save-the-date cards",
+      "title": "Save the Date – Digital Wedding Card | InvitesReady",
+      "description": "Animated digital save-the-date cards from ₹499. One link for the wedding dates. Guests RSVP with no app. Share on WhatsApp.",
+      "lead": "Lotus Lens is a courtyard save-the-date. Guests tap the camera, the window opens, and the days by the lake follow. TODO: review copy.",
+      "templates": ["lotus"],
+      "related": ["/wedding", "/shaadi"],
+      "index": true
+    },
+    {
+      "id": "telugu-wedding",
+      "path": "/telugu-wedding",
+      "index": false,
+      "label": "Telugu wedding",
+      "heading": "Telugu wedding invitations",
+      "title": "Telugu Wedding Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital Telugu wedding invitation. No Telugu-language template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no Telugu-language wedding template yet. The cards below are Hindu wedding designs you can edit. This page is a draft and is not indexed.",
+      "templates": ["vivah", "shaadi"],
+      "related": ["/wedding", "/shaadi"]
+    },
+    {
+      "id": "malayalam-wedding",
+      "path": "/malayalam-wedding",
+      "index": false,
+      "label": "Malayalam wedding",
+      "heading": "Malayalam wedding invitations",
+      "title": "Malayalam Wedding Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital Malayalam wedding invitation. No Malayalam template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no Malayalam wedding template yet. The cards below are Hindu wedding designs you can edit. This page is a draft and is not indexed.",
+      "templates": ["vivah", "shaadi"],
+      "related": ["/wedding", "/shaadi"]
+    },
+    {
+      "id": "kannada-wedding",
+      "path": "/kannada-wedding",
+      "index": false,
+      "label": "Kannada wedding",
+      "heading": "Kannada wedding invitations",
+      "title": "Kannada Wedding Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital Kannada wedding invitation. No Kannada template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no Kannada wedding template yet. The cards below are Hindu wedding designs you can edit. This page is a draft and is not indexed.",
+      "templates": ["vivah", "shaadi"],
+      "related": ["/wedding", "/shaadi"]
+    },
+    {
+      "id": "marathi-wedding",
+      "path": "/marathi-wedding",
+      "index": false,
+      "label": "Marathi wedding",
+      "heading": "Marathi wedding invitations",
+      "title": "Marathi Wedding Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital Marathi wedding invitation. No Marathi template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no Marathi wedding template yet. The cards below are Hindu wedding designs you can edit. This page is a draft and is not indexed.",
+      "templates": ["vivah", "shaadi"],
+      "related": ["/wedding", "/shaadi"]
+    },
+    {
+      "id": "bengali-wedding",
+      "path": "/bengali-wedding",
+      "index": false,
+      "label": "Bengali wedding",
+      "heading": "Bengali wedding invitations",
+      "title": "Bengali Wedding Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital Bengali wedding invitation. No Bengali template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no Bengali wedding template yet. The cards below are Hindu wedding designs you can edit. This page is a draft and is not indexed.",
+      "templates": ["vivah", "shaadi"],
+      "related": ["/wedding", "/shaadi"]
+    },
+    {
+      "id": "christian-wedding",
+      "path": "/christian-wedding",
+      "index": false,
+      "label": "Christian wedding",
+      "heading": "Christian wedding invitations",
+      "title": "Christian Wedding Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital Christian wedding invitation. No church wedding template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no Christian wedding template yet. The cards below are garden and formal wedding designs you can edit. They are not church designs. This page is a draft and is not indexed.",
+      "templates": ["anna", "aurelia"],
+      "related": ["/wedding"]
+    },
+    {
+      "id": "engagement",
+      "path": "/engagement",
+      "index": false,
+      "label": "Engagement",
+      "heading": "Engagement invitations",
+      "title": "Engagement Invitation – Digital Card | InvitesReady",
+      "description": "Draft page for a digital engagement invitation. No engagement-only template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no engagement-only template yet. The cards below are wedding designs you can retitle. This page is a draft and is not indexed.",
+      "templates": ["aurelia", "anna"],
+      "related": ["/wedding"]
+    },
+    {
+      "id": "haldi",
+      "path": "/haldi",
+      "index": false,
+      "label": "Haldi",
+      "heading": "Haldi invitations",
+      "title": "Haldi Invitation – Digital Card | InvitesReady",
+      "description": "Draft page for a digital haldi invitation. No haldi-only template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no haldi-only template yet. Shaadi can list a haldi among other festivities. This page is a draft and is not indexed.",
+      "templates": ["shaadi"],
+      "related": ["/shaadi", "/wedding"]
+    },
+    {
+      "id": "mehendi",
+      "path": "/mehendi",
+      "index": false,
+      "label": "Mehendi",
+      "heading": "Mehendi invitations",
+      "title": "Mehendi Invitation – Digital Card | InvitesReady",
+      "description": "Draft page for a digital mehendi invitation. No mehendi-only template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no mehendi-only template yet. Shaadi can list a mehendi among other festivities. This page is a draft and is not indexed.",
+      "templates": ["shaadi"],
+      "related": ["/shaadi", "/wedding"]
+    },
+    {
+      "id": "sangeet",
+      "path": "/sangeet",
+      "index": false,
+      "label": "Sangeet",
+      "heading": "Sangeet invitations",
+      "title": "Sangeet Invitation – Digital Card | InvitesReady",
+      "description": "Draft page for a digital sangeet invitation. No sangeet-only template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no sangeet-only template yet. Shaadi can list a sangeet among other festivities. This page is a draft and is not indexed.",
+      "templates": ["shaadi"],
+      "related": ["/shaadi", "/wedding"]
+    },
+    {
+      "id": "reception",
+      "path": "/reception",
+      "index": false,
+      "label": "Reception",
+      "heading": "Reception invitations",
+      "title": "Wedding Reception Invitation – Digital | InvitesReady",
+      "description": "Draft page for a digital wedding reception invitation. No reception-only template yet. Not indexed.",
+      "lead": "TODO: review copy. There is no reception-only template yet. Wedding designs can include a reception beside the ceremony. This page is a draft and is not indexed.",
+      "templates": ["aurelia", "anna"],
+      "related": ["/wedding"]
     }
   ]
 }

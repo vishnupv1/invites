@@ -72,7 +72,7 @@ function canonicalPath(page) {
   return page.canonical ?? page.path;
 }
 
-const OCCASION_ORDER = ["wedding", "shaadi", "nikah", "tamil-wedding", "birthday", "baptism", "baby-shower", "housewarming"];
+const OCCASION_ORDER = ["wedding", "shaadi", "nikah", "tamil-wedding", "save-the-date", "birthday", "baptism", "baby-shower", "housewarming"];
 
 function orderedTopics() {
   const rank = new Map(OCCASION_ORDER.map((id, index) => [id, index]));

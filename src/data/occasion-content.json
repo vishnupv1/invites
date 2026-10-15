@@ -199,5 +199,119 @@
       { "q": "Do guests need an app?", "a": "TODO: review copy. No. The link opens in the browser." },
       { "q": "What if the muhurat changes?", "a": "TODO: review copy. Edit the page. Everyone with the link sees the new time." }
     ]
+  },
+  "save-the-date": {
+    "review": "TODO: review copy",
+    "whatYouGet": [
+      "A save-the-date on InvitesReady is the short digital card you send before the full wedding invitation exists. Lotus Lens is built for that moment. Guests tap a camera, a courtyard window opens, and the days by the lake follow. The opening is animated. The whole card is one link, not a PDF and not a printed note. TODO: review copy.",
+      "The page holds the names, the dates you want people to keep free, the place, and a reply. You can add photographs of the couple or the venue. If a day shifts after the link is already in the family groups, you edit the page in the browser and the same link updates. Guests do not install an app. They open the card from WhatsApp in the phone's browser, read the dates, and RSVP on the page.",
+      "Use it when the wedding days are fixed and the longer card is not. A formal invitation can follow later, on its own link, once the schedule of functions is ready. This page is only the early note: hold these dates, here is where we will be, please tell us if you can come."
+    ],
+    "howItWorks": [
+      "Pick Lotus Lens and preview the courtyard opening.",
+      "Personalise the names, the dates, and the place in the browser.",
+      "Share one link on WhatsApp. Guests RSVP on the page. No app."
+    ],
+    "wording": [
+      "Please keep these dates free. A formal invitation will follow.",
+      "Aarohi and Vihaan are getting married. The days, the place, and how to reply are on this page.",
+      "Save the date for our wedding celebrations. Kindly reply here so we know you can come."
+    ],
+    "price": "Lotus Lens is listed at ₹499, paid once. This is the save-the-date, not a second product beside a later wedding invitation. Publishing is free for now while prices are paused. TODO: review copy.",
+    "faqs": [
+      { "q": "Is a save-the-date different from the wedding invitation?", "a": "TODO: review copy. It is the early note that holds the dates. Lotus Lens is written as a save-the-date. A full wedding design can follow later, on its own link." },
+      { "q": "Can guests reply before the formal card?", "a": "TODO: review copy. Yes. RSVP is on this page, in the browser, with no app to install." },
+      { "q": "What if a date changes after we send the link?", "a": "TODO: review copy. Edit the page. Everyone who already has the link sees the new day. You do not send a second card." },
+      { "q": "Can we share it on WhatsApp?", "a": "TODO: review copy. Yes. You send one link. The card opens in the phone's browser." },
+      { "q": "Do we still need a printed save-the-date?", "a": "TODO: review copy. No. The link is the card. You are not buying a print run." }
+    ]
+  },
+  "telugu-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no Telugu-language wedding template yet. Vivah and Shaadi are Hindu wedding designs you can edit. They are not Telugu cards. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a Hindu wedding design.", "Personalise the wording in the browser.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a Telugu wording sample when a Telugu template exists."],
+    "price": "TODO: review copy. Do not publish this page until a Telugu template exists.",
+    "faqs": [{ "q": "Is there a Telugu wedding template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "malayalam-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no Malayalam wedding template yet. The cards shown are Hindu wedding designs, not Malayalam cards. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a Hindu wedding design.", "Personalise the wording in the browser.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a Malayalam wording sample when a Malayalam template exists."],
+    "price": "TODO: review copy. Do not publish this page until a Malayalam template exists.",
+    "faqs": [{ "q": "Is there a Malayalam wedding template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "kannada-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no Kannada wedding template yet. The cards shown are Hindu wedding designs, not Kannada cards. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a Hindu wedding design.", "Personalise the wording in the browser.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a Kannada wording sample when a Kannada template exists."],
+    "price": "TODO: review copy. Do not publish this page until a Kannada template exists.",
+    "faqs": [{ "q": "Is there a Kannada wedding template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "marathi-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no Marathi wedding template yet. The cards shown are Hindu wedding designs, not Marathi cards. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a Hindu wedding design.", "Personalise the wording in the browser.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a Marathi wording sample when a Marathi template exists."],
+    "price": "TODO: review copy. Do not publish this page until a Marathi template exists.",
+    "faqs": [{ "q": "Is there a Marathi wedding template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "bengali-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no Bengali wedding template yet. The cards shown are Hindu wedding designs, not Bengali cards. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a Hindu wedding design.", "Personalise the wording in the browser.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a Bengali wording sample when a Bengali template exists."],
+    "price": "TODO: review copy. Do not publish this page until a Bengali template exists.",
+    "faqs": [{ "q": "Is there a Bengali wedding template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "christian-wedding": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no Christian wedding template yet. Anna and Aurelia are garden and formal wedding designs, not church cards. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a wedding design.", "Personalise the wording in the browser.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a Christian wedding wording sample when a church template exists."],
+    "price": "TODO: review copy. Do not publish this page until a Christian wedding template exists.",
+    "faqs": [{ "q": "Is there a Christian wedding template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "engagement": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no engagement-only template yet. The cards shown are wedding designs you could retitle. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a wedding design.", "Change the heading to an engagement.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add an engagement wording sample when an engagement template exists."],
+    "price": "TODO: review copy. Do not publish this page until an engagement template exists.",
+    "faqs": [{ "q": "Is there an engagement template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "haldi": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no haldi-only template yet. Shaadi can list a haldi among other festivities. It is not a haldi card. This page is a draft and is not indexed."],
+    "howItWorks": ["Open Shaadi.", "Add a haldi function beside the wedding.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a haldi wording sample when a haldi template exists."],
+    "price": "TODO: review copy. Do not publish this page until a haldi template exists.",
+    "faqs": [{ "q": "Is there a haldi template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "mehendi": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no mehendi-only template yet. Shaadi can list a mehendi among other festivities. It is not a mehendi card. This page is a draft and is not indexed."],
+    "howItWorks": ["Open Shaadi.", "Add a mehendi function beside the wedding.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a mehendi wording sample when a mehendi template exists."],
+    "price": "TODO: review copy. Do not publish this page until a mehendi template exists.",
+    "faqs": [{ "q": "Is there a mehendi template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "sangeet": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no sangeet-only template yet. Shaadi can list a sangeet among other festivities. It is not a sangeet card. This page is a draft and is not indexed."],
+    "howItWorks": ["Open Shaadi.", "Add a sangeet function beside the wedding.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a sangeet wording sample when a sangeet template exists."],
+    "price": "TODO: review copy. Do not publish this page until a sangeet template exists.",
+    "faqs": [{ "q": "Is there a sangeet template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
+  },
+  "reception": {
+    "review": "TODO: review copy",
+    "whatYouGet": ["TODO: review copy. There is no reception-only template yet. Wedding designs can include a reception beside the ceremony. This page is a draft and is not indexed."],
+    "howItWorks": ["Pick a wedding design.", "Add the reception as a function.", "Share one link on WhatsApp."],
+    "wording": ["TODO: review copy. Add a reception wording sample when a reception template exists."],
+    "price": "TODO: review copy. Do not publish this page until a reception template exists.",
+    "faqs": [{ "q": "Is there a reception template?", "a": "TODO: review copy. Not yet. This draft is noindex." }]
   }
 }
