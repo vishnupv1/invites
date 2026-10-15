@@ -413,8 +413,6 @@
   background: #0e4d3c;
   color: #fffdf8;
 }
-  color: #17201c;
-}
 
 .cg-cards {
   display: grid;
@@ -723,9 +721,7 @@
 .cg-lang.on {
   background: #0e4d3c;
   color: #fffdf8;
-}
-  color: #17201c;
-  border-color: #17201c;
+  border-color: #0e4d3c;
 }
 
 .cg-stage {
