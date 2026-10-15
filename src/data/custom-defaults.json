@@ -341,6 +341,14 @@
       { "kick": "15 FEB 2027", "title": "Reception", "time": "8:30 PM", "text": "The Pearl Ballroom", "note": "" }
     ]
   },
+  "lotus": {
+    "programme": [
+      { "kick": "28 NOV", "title": "Haldi & Mehendi", "time": "11:00 AM onwards", "text": "The Lotus Garden", "note": "" },
+      { "kick": "28 NOV", "title": "Sangeet", "time": "7:30 PM onwards", "text": "The Lakeside Terrace", "note": "" },
+      { "kick": "29 NOV", "title": "The Wedding", "time": "6:00 PM · Pheras at dusk", "text": "The Lotus Courtyard", "note": "" },
+      { "kick": "30 NOV", "title": "Reception", "time": "8:00 PM onwards", "text": "The Palace Lawns", "note": "" }
+    ]
+  },
   "goa": {
     "people": [
       { "name": "Mrs. Kavita & Mr. Sunil Mehta", "role": "D/o" },

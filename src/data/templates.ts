@@ -28,6 +28,34 @@ function sample(
 
 export const TEMPLATES: Template[] = [
   {
+    id: "lotus",
+    name: "Lotus Lens",
+    style: "lotus",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A courtyard save-the-date. Guests tap the camera, the window opens, and the three days by the lake follow.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.lotus,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Aarohi & Vihaan",
+        title: "A little moment for you",
+        detail: "",
+        date: "2027-11-29",
+        time: "18:00",
+        venue: "The Lotus Courtyard",
+        address: "Lake Pichola, Udaipur, Rajasthan",
+        message: "Formal invitation to follow — but please keep these dates free for us.",
+        dress: "",
+        rsvpBy: "2027-09-30",
+        lines: linesFor("lotus"),
+      }),
+    },
+  },
+  {
     id: "goa",
     name: "Goa Gates",
     style: "goa",

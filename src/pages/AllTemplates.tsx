@@ -36,6 +36,7 @@ const LOOK: Record<string, { styles: StyleTag[]; pop: number; added: number; isN
   grandoor: { styles: ["Animated", "Royal"], pop: 96, added: 17, isNew: true, tags: "palace doors blush lanterns udaipur lake grand door", swatches: ["#120608", "#E8C987", "#F7A8B8"] },
   grandenvelope: { styles: ["Animated", "Royal"], pop: 97, added: 18, isNew: true, tags: "envelope wax seal burgundy gold munnar flap parchment", swatches: ["#1A0C0A", "#6E2032", "#E8C987"] },
   palace: { styles: ["Animated", "Royal"], pop: 99, added: 20, isNew: true, tags: "paper palace drapes roses jaipur plaque ribbon doors", swatches: ["#F3E2D8", "#6E4A42"] },
+  lotus: { styles: ["Animated", "Royal"], pop: 105, added: 26, isNew: true, tags: "lotus lens camera polaroid udaipur courtyard save the date", swatches: ["#FBF3EC", "#C76B86", "#B9925A"] },
   goa: { styles: ["Animated", "Modern"], pop: 104, added: 25, isNew: true, tags: "goa gates destination wedding sea palm boarding pass", swatches: ["#FFF9F1", "#23395B", "#D06B55"] },
   bloom: { styles: ["Animated", "Modern"], pop: 103, added: 24, isNew: true, tags: "bloom letter floral seal envelope jaipur garden pastels wreath", swatches: ["#FBF3EE", "#B9786E"] },
   hansa: { styles: ["Animated", "Royal"], pop: 102, added: 23, isNew: true, tags: "moonlight swans lake udaipur seal envelope lilies", swatches: ["#E4E0E6", "#4A4E68"] },

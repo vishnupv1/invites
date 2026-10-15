@@ -33,6 +33,7 @@ import { HansaInvite } from "../components/HansaInvite";
 import { BloomInvite } from "../components/BloomInvite";
 import { LaceInvite } from "../components/LaceInvite";
 import { GoaInvite } from "../components/GoaInvite";
+import { LotusInvite } from "../components/LotusInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -108,6 +109,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <LaceInvite fields={fields} />;
     case "goa":
       return <GoaInvite fields={fields} />;
+    case "lotus":
+      return <LotusInvite fields={fields} />;
     case "home":
       return <HomeInvite fields={fields} theme={homeThemeOf(swatch)} demo />;
     case "shaadi":

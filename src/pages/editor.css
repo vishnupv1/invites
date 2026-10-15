@@ -563,6 +563,7 @@
 .ed-frame.ed-phone .il:not(.is-open),
 .ed-frame.ed-phone .bf-root.is-load,
 .ed-frame.ed-phone .bf-root.is-fade,
+.ed-frame.ed-phone .ll:not(.is-open),
 .ed-frame.ed-phone .bf-root.is-open {
   height: 100cqh;
   min-height: 0;

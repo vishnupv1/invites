@@ -23,6 +23,7 @@ import { HansaInvite } from "../components/HansaInvite";
 import { BloomInvite } from "../components/BloomInvite";
 import { LaceInvite } from "../components/LaceInvite";
 import { GoaInvite } from "../components/GoaInvite";
+import { LotusInvite } from "../components/LotusInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -1598,6 +1599,8 @@ export function Editor({
                     <LaceInvite fields={previewFields} />
                   ) : template.style === "goa" ? (
                     <GoaInvite fields={previewFields} />
+                  ) : template.style === "lotus" ? (
+                    <LotusInvite fields={previewFields} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

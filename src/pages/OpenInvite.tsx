@@ -22,6 +22,7 @@ import { HansaInvite } from "../components/HansaInvite";
 import { BloomInvite } from "../components/BloomInvite";
 import { LaceInvite } from "../components/LaceInvite";
 import { GoaInvite } from "../components/GoaInvite";
+import { LotusInvite } from "../components/LotusInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { getTemplate, sampleFor } from "../data/templates";
 import { trackTemplatePreview } from "../lib/analytics";
@@ -64,6 +65,7 @@ export function OpenInvite() {
       {template.style === "bloom" ? <BloomInvite fields={fields} /> : null}
       {template.style === "lace" ? <LaceInvite fields={fields} /> : null}
       {template.style === "goa" ? <GoaInvite fields={fields} /> : null}
+      {template.style === "lotus" ? <LotusInvite fields={fields} /> : null}
     </div>
   );
 }

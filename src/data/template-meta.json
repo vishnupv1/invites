@@ -705,6 +705,26 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "lotus": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [{ "id": "lotus", "name": "Lotus blush" }],
+    "defaultTheme": "lotus",
+    "shots": [{ "label": "Our photo" }, { "label": "Our photo" }, { "label": "Our photo" }],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The camera", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Blessing", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The Lotus Courtyard", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "goa": {
     "names": "couple",
     "ceremony": "The wedding",
