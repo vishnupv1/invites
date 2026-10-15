@@ -793,6 +793,7 @@ function assertTemplateHtml(html, page) {
   if (!html.includes(`"price": "${page.template.price}"`)) problems.push("schema price");
   if (!html.includes('https://schema.org/InStock')) problems.push("availability");
   if (!html.includes('href="/browse"')) problems.push("browse link");
+  if (html.includes("?event=")) problems.push("event query");
   const related = [...html.matchAll(/href="\/template\/([^"]+)"/g)].map((match) => match[1]);
   if (related.length !== 3) problems.push(`related ${related.length}`);
   if (problems.length) throw new Error(`SEO HTML ${id}: ${problems.join(", ")}`);

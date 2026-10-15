@@ -11,9 +11,8 @@ Disallow: /settings
 Disallow: /purchases
 Disallow: /templates
 Disallow: /unauthorized
-Disallow: /preview
+# /preview and /embed send X-Robots-Tag: noindex. Left crawlable so Google can drop the URLs it already indexed.
 Disallow: /design-check
-Disallow: /embed
 Disallow: /i/
 Disallow: /api/
 

@@ -8,6 +8,16 @@ function seoRedirects(): Plugin {
     const [path, query] = (req.url ?? '').split('?')
     const bare = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
     const dest = map[bare] ?? (bare.startsWith('/c/') ? '/occasions' : undefined)
+    if (bare.startsWith('/template/') && query) {
+      const params = new URLSearchParams(query)
+      if (params.has('event')) {
+        params.delete('event')
+        const rest = params.toString()
+        res.writeHead(301, { Location: rest ? `${bare}?${rest}` : bare })
+        res.end()
+        return
+      }
+    }
     if (!dest || dest === bare) {
       next()
       return

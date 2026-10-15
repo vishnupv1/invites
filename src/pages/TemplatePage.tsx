@@ -456,7 +456,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
             </div>
             <div className="buy-like">
               {others.map((item) => (
-                <Link key={item.id} to={`/template/${item.id}?event=${event}`}>
+                <Link key={item.id} to={`/template/${item.id}`}>
                   <div className="buy-like-shot">
                     <PlayingInvite template={item} />
                   </div>
