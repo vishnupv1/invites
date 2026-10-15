@@ -233,10 +233,44 @@ function dayOf(file) {
   return new Date(fs.statSync(file).mtime).toISOString().slice(0, 10);
 }
 
+function latestDay(files) {
+  const days = files.map((file) => dayOf(file)).filter(Boolean).sort();
+  return days.at(-1) || null;
+}
+
 function templateLastmod(template) {
-  return dayOf(path.join(root, "public/covers", `${template.id}.jpg`))
-    || dayOf(path.join(root, "src/data/templates.ts"))
-    || new Date().toISOString().slice(0, 10);
+  return latestDay([
+    path.join(root, "public/covers", `${template.id}.jpg`),
+    path.join(root, "src/data/templates.ts"),
+    path.join(root, "src/data/template-phrases.json"),
+    path.join(root, "src/data/template-meta.json"),
+    path.join(root, "src/data/seo-copy.json"),
+  ]);
+}
+
+function staticLastmod(pathname) {
+  if (["/privacy", "/terms", "/refunds", "/contact"].includes(pathname)) {
+    return dayOf(path.join(root, "src/data/legal-pages.json"));
+  }
+  if (["/", "/how", "/features", "/faq"].includes(pathname)) {
+    return latestDay([
+      path.join(root, "src/pages/Home.tsx"),
+      path.join(root, "src/data/site-facts.json"),
+    ]);
+  }
+  if (pathname === "/browse") {
+    return latestDay([
+      path.join(root, "src/data/templates.ts"),
+      path.join(root, "src/data/seo-copy.json"),
+    ]);
+  }
+  if (pathname === "/occasions") {
+    return latestDay([
+      path.join(root, "src/data/seo-copy.json"),
+      path.join(root, "src/data/occasion-content.json"),
+    ]);
+  }
+  return null;
 }
 
 function lineFor(template) {
@@ -532,14 +566,13 @@ function fallbackHtml(base) {
 }
 
 function pages(templates, events) {
-  const copyDay = dayOf(path.join(root, "src/data/seo-copy.json")) || new Date().toISOString().slice(0, 10);
   const list = STATIC.map(([pathname, title, description, image, heading]) => ({
     path: pathname,
     title,
     heading,
     description,
     image,
-    lastmod: copyDay,
+    lastmod: staticLastmod(pathname),
   }));
   const headings = new Set();
   for (const template of templates) {
@@ -571,7 +604,10 @@ function pages(templates, events) {
       image: `${SITE}/og/occasion-${topic.id}.jpg`,
       imageAlt: `${topic.label} digital invitation`,
       topic,
-      lastmod: copyDay,
+      lastmod: latestDay([
+        path.join(root, "src/data/occasion-content.json"),
+        path.join(root, "src/data/seo-copy.json"),
+      ]),
       index: topic.index !== false,
     });
     if (topic.index !== false) {
@@ -604,12 +640,20 @@ function assertUnique(list) {
 
 const UNLISTED = new Set(["/design-check"]);
 
+function sitemapEntry(page) {
+  const loc = `  <url><loc>${SITE}${page.path === "/" ? "/" : page.path}</loc>${page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : ""}`;
+  const cover = page.template ? path.join(root, "public/covers", `${page.template.id}.jpg`) : "";
+  if (!page.template || !fs.existsSync(cover)) return `${loc}</url>`;
+  const title = escapeText(`${page.template.name} invitation cover`);
+  return `${loc}<image:image><image:loc>${SITE}/covers/${page.template.id}.jpg</image:loc><image:title>${title}</image:title></image:image></url>`;
+}
+
 function writeSitemap(list) {
   const urls = list
     .filter((page) => canonicalPath(page) === page.path && !UNLISTED.has(page.path) && page.index !== false)
-    .map((page) => `  <url><loc>${SITE}${page.path}</loc><lastmod>${page.lastmod}</lastmod></url>`)
+    .map((page) => sitemapEntry(page))
     .join("\n");
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls}\n</urlset>\n`;
   fs.writeFileSync(path.join(root, "public/sitemap.xml"), xml);
   const dist = path.join(root, "dist/sitemap.xml");
   if (fs.existsSync(path.dirname(dist))) fs.writeFileSync(dist, xml);
