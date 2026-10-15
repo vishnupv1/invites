@@ -144,6 +144,12 @@
       "description": "Break the seal and swans open a moonlight lake wedding. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
       "lead": "Linen, a wax seal and two swans under a full moon. Made for a wedding on Lake Pichola."
     },
+    "rose": {
+      "heading": "Rose glass wedding invitation",
+      "title": "Rose Glass – Stained-Glass Wedding Invitation | InvitesReady",
+      "description": "Tap the seal, the stained-glass doors open, and you rub the glass to see the couple. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
+      "lead": "Blush paper, a wax seal and rose stained glass. Made for a wedding at a haveli in Jaipur."
+    },
     "villa": {
       "heading": "Tuscan villa wedding invitation",
       "title": "Villa Serena – Tuscan Wedding Invitation | InvitesReady",
@@ -229,6 +235,7 @@
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
         "lace",
+        "rose",
         "bloom",
         "hansa",
         "villa",

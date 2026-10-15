@@ -20,6 +20,7 @@ import { BloomInvite } from "./BloomInvite";
 import { LaceInvite } from "./LaceInvite";
 import { GoaInvite } from "./GoaInvite";
 import { LotusInvite } from "./LotusInvite";
+import { RoseInvite } from "./RoseInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { VivahInvite } from "./VivahInvite";
 import { AureliaInvite } from "./AureliaInvite";
@@ -243,6 +244,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <GoaInvite fields={fields} quiet={!live} />;
     case "lotus":
       return <LotusInvite fields={fields} quiet={!live} />;
+    case "rose":
+      return <RoseInvite fields={fields} quiet={!live} />;
     case "home":
       return <HomeInvite fields={fields} quiet={quiet} demo={demo} />;
     case "shaadi":

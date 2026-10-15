@@ -308,6 +308,21 @@
     "caption": "Riya · Sanya · Meher · Tara · Isha · Kavya",
     "instagram": "#DiyaAryanInBloom"
   },
+  "rose": {
+    "ceremonyName": "Having you with us means the world. We can’t wait to celebrate with the people we love most.",
+    "programme": [
+      { "title": "Guest Arrival", "time": "4:00 PM", "text": "" },
+      { "title": "The Pheras", "time": "5:30 PM", "text": "" },
+      { "title": "Cocktail Hour", "time": "7:30 PM", "text": "" },
+      { "title": "First Dance", "time": "9:00 PM", "text": "" }
+    ],
+    "venueNote": "Think rose, blush, ivory and sage — lehengas, sarees, sherwanis and bandhgalas. Dancing shoes encouraged.",
+    "gift": "Having you celebrate with us is the greatest gift. If you wish to bless us further, a contribution towards our first home together would be lovely.",
+    "caption": "Hotel Gulab Bagh",
+    "instagram": "SAANVIARJUN27",
+    "airport": "22 – 24 May 2027",
+    "stay": "A special rate for our guests, 22 – 24 May 2027. Double room ₹9,500 / night · Single ₹7,500 / night"
+  },
   "hansa": {
     "people": [
       { "role": "Daughter of", "name": "Mrs. Sunita & Mr. Rajiv Sen" },

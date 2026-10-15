@@ -722,6 +722,34 @@ export const TEMPLATES: Template[] = [
       }),
     },
   },
+  {
+    id: "rose",
+    name: "Rose Glass",
+    style: "rose",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Tap the wax seal, the stained-glass doors open, and a rose window in Jaipur welcomes Saanvi and Arjun.",
+    asks: { photos: 1, audio: false, location: true },
+    meta: META.rose,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Saanvi & Arjun",
+        title: "request the honour of your presence at the wedding of",
+        detail: "We’re so happy to share this day with you",
+        date: "2027-05-23",
+        time: "17:30",
+        venue: "The Rose Haveli",
+        address: "Amer Road, near Jal Mahal, Jaipur, Rajasthan",
+        message: "With hearts full of joy, the Mehra and Kapoor families invite you to witness Saanvi and Arjun take their pheras and begin a lifetime together. We hope you’ll join us for an evening of love, laughter and dancing.",
+        dress: "Festive Formal",
+        rsvpBy: "2027-04-01",
+        lines: linesFor("rose"),
+      }),
+    },
+  },
 ];
 
 export function getTemplate(id: string | undefined) {
