@@ -340,5 +340,23 @@
       { "kick": "14 FEB 2027", "title": "The Wedding", "time": "6:30 PM", "text": "The Lake Villa", "note": "" },
       { "kick": "15 FEB 2027", "title": "Reception", "time": "8:30 PM", "text": "The Pearl Ballroom", "note": "" }
     ]
+  },
+  "goa": {
+    "people": [
+      { "name": "Mrs. Kavita & Mr. Sunil Mehta", "role": "D/o" },
+      { "name": "Mrs. Neha & Mr. Arjun Kapoor", "role": "S/o" }
+    ],
+    "facts": [
+      { "label": "From", "value": "BOM" },
+      { "label": "To", "value": "GOI" },
+      { "label": "Flight", "value": "IR 1701" },
+      { "label": "Seat", "value": "1A" }
+    ],
+    "programme": [
+      { "kick": "THURSDAY · 16 JANUARY 2027", "title": "Mehendi & Bhaat", "time": "11:30 AM onwards · Followed by lunch", "text": "The Courtyard Garden", "note": "Sunshine yellows & greens" },
+      { "kick": "THURSDAY · 16 JANUARY 2027", "title": "Sangeet & Cocktails", "time": "7:30 PM onwards", "text": "The Sea Terrace", "note": "Ivory, gold & glitter" },
+      { "kick": "THURSDAY · 16 JANUARY 2027", "title": "After Party", "time": "11:00 PM till late", "text": "The Beach Deck", "note": "Neon, sequins & dancing shoes" },
+      { "kick": "FRIDAY · 17 JANUARY 2027", "title": "The Wedding", "time": "4:30 PM · Pheras at sunset", "text": "The Shoreline Mandap", "note": "Blush & pastel ethnic" }
+    ]
   }
 }

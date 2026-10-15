@@ -704,5 +704,26 @@
       { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
+  },
+  "goa": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "themes": [{ "id": "sea", "name": "Sea & coral" }],
+    "defaultTheme": "sea",
+    "shots": [{ "label": "The couple" }],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The gates", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Blessing", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The Palm Cove", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "gallery", "label": "Photograph", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
   }
 }

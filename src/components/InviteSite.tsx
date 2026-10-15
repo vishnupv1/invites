@@ -26,6 +26,7 @@ import { VillaInvite } from "./VillaInvite";
 import { HansaInvite } from "./HansaInvite";
 import { BloomInvite } from "./BloomInvite";
 import { LaceInvite } from "./LaceInvite";
+import { GoaInvite } from "./GoaInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
 import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
@@ -404,6 +405,9 @@ export function InviteSite({
   }
   if (template.style === "lace") {
     return <LaceInvite fields={fields} onReply={onReply} />;
+  }
+  if (template.style === "goa") {
+    return <GoaInvite fields={fields} onReply={onReply} />;
   }
   let body: ReactNode;
   switch (template.style) {

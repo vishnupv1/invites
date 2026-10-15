@@ -28,6 +28,34 @@ function sample(
 
 export const TEMPLATES: Template[] = [
   {
+    id: "goa",
+    name: "Goa Gates",
+    style: "goa",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A Goa destination wedding. Guests tap to open the garden gates, then the sea, the celebrations, and a reply.",
+    asks: { photos: 1, audio: false, location: true },
+    meta: META.goa,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "With the blessings of our families",
+        names: "Ananya & Rohan",
+        title: "We cordially invite you to the wedding celebrations of",
+        detail: "",
+        date: "2027-01-17",
+        time: "16:30",
+        venue: "The Palm Cove",
+        address: "Candolim Beach Road, North Goa",
+        message: "Three days of sun, sea and celebrations by the Arabian Sea — and it wouldn’t be complete without you.",
+        dress: "Blush & pastel ethnic",
+        rsvpBy: "2026-12-15",
+        lines: linesFor("goa"),
+      }),
+    },
+  },
+  {
     id: "lace",
     name: "Lace Reveal",
     style: "lace",

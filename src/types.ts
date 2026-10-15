@@ -126,7 +126,8 @@ export type TemplateStyle =
   | "villa"
   | "hansa"
   | "bloom"
-  | "lace";
+  | "lace"
+  | "goa";
 
 export type Template = {
   id: string;
