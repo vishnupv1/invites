@@ -17,6 +17,7 @@ export type Topic = {
   lead: string;
   templates: string[];
   related: string[];
+  index?: boolean;
 };
 
 export type CategoryCopy = {
@@ -39,12 +40,30 @@ export const SEO_CATEGORIES = copy.categories;
 export const SEO_TEMPLATES = copy.templates;
 export const TOPICS: Topic[] = copy.topics;
 
+const OCCASION_ORDER = ["wedding", "shaadi", "nikah", "tamil-wedding", "birthday", "baptism", "baby-shower", "housewarming"];
+
+export function publishedTopics() {
+  const rank = new Map(OCCASION_ORDER.map((id, index) => [id, index]));
+  return TOPICS.filter((topic) => topic.index !== false).sort(
+    (a, b) => (rank.get(a.id) ?? 50) - (rank.get(b.id) ?? 50),
+  );
+}
+
 export function topicByPath(pathname: string) {
   return TOPICS.find((topic) => topic.path === pathname);
 }
 
+export function topicsForTemplate(id: string) {
+  return publishedTopics().filter((topic) => topic.templates.includes(id));
+}
+
+export function primaryTopicForTemplate(id: string) {
+  const topics = topicsForTemplate(id);
+  return topics.find((topic) => topic.id === "wedding") ?? topics[0];
+}
+
 export function topicForTemplate(id: string) {
-  return TOPICS.find((topic) => topic.templates.includes(id));
+  return primaryTopicForTemplate(id);
 }
 
 export function templateSeo(id: string) {

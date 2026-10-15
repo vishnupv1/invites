@@ -18,11 +18,19 @@ export function Topic() {
 
   const templates = topic.templates.map((id) => getTemplate(id)).filter((item) => item != null);
   const related = topic.related.map((path) => TOPICS.find((item) => item.path === path)).filter((item) => item != null);
+  const parent = topic.path !== "/wedding" && topic.related.includes("/wedding")
+    ? TOPICS.find((item) => item.path === "/wedding")
+    : undefined;
+  const crumbs = [
+    { label: "Home", to: "/" },
+    ...(parent ? [{ label: parent.label, to: parent.path }] : []),
+    { label: topic.label },
+  ];
   const preview = previewId ? getTemplate(previewId) : undefined;
 
   return (
     <section className="shop">
-      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Celebrations", to: "/occasions" }, { label: topic.label }]} />
+      <Breadcrumbs items={crumbs} separator="›" />
       <div className="section-head topic-head">
         <div>
           <h1>{topic.heading}</h1>

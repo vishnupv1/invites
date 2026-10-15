@@ -3,7 +3,7 @@ import "./breadcrumbs.css";
 
 export type Crumb = { label: string; to?: string; onClick?: () => void };
 
-export function Breadcrumbs({ items, className = "" }: { items: Crumb[]; className?: string }) {
+export function Breadcrumbs({ items, className = "", separator = "/" }: { items: Crumb[]; className?: string; separator?: string }) {
   if (!items.length) return null;
   return (
     <nav className={`crumbs${className ? ` ${className}` : ""}`} aria-label="Breadcrumb">
@@ -12,7 +12,7 @@ export function Breadcrumbs({ items, className = "" }: { items: Crumb[]; classNa
           const current = index === items.length - 1;
           return (
             <li key={`${item.label}-${index}`}>
-              {index > 0 ? <span className="crumbs-sep" aria-hidden="true">/</span> : null}
+              {index > 0 ? <span className="crumbs-sep" aria-hidden="true">{separator}</span> : null}
               {current ? (
                 <span aria-current="page">{item.label}</span>
               ) : item.onClick ? (

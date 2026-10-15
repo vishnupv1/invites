@@ -75,6 +75,8 @@
   font-weight: 700;
 }
 
+.ir-detail-crumbs { padding: 16px 20px 0; }
+
 .ir-detail-head {
   display: flex;
   align-items: flex-end;
@@ -181,6 +183,8 @@
     min-height: 100vh;
     overflow: visible;
   }
+
+  .ir-detail-crumbs { display: none; }
 
   .ir-detail-bar {
     position: sticky;

@@ -6,6 +6,7 @@ import { CreateGuest } from "./pages/CreateGuest";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { InvitePage } from "./pages/InvitePage";
+import { SiteFooter } from "./components/SiteFooter";
 import { DesktopNav } from "./components/shell/DesktopNav";
 import { IrApp } from "./components/shell/IrApp";
 import { PageMeta } from "./lib/seo";
@@ -59,6 +60,7 @@ function Shell({ children }: { children: ReactNode }) {
     <IrApp>
       <DesktopNav />
       <main className="wrap">{children}</main>
+      <SiteFooter />
     </IrApp>
   );
 }

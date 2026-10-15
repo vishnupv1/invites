@@ -38,9 +38,10 @@ import { RoseInvite } from "../components/RoseInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
+import { SiteFooter } from "../components/SiteFooter";
 import { getEvent } from "../data/events";
 import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "../data/templates";
-import { templateSeo, topicForTemplate } from "../data/topics";
+import { primaryTopicForTemplate, templateSeo, topicsForTemplate } from "../data/topics";
 import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
@@ -203,7 +204,13 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
   const others = templatesFor(event).filter((item) => item.id !== template.id).slice(0, 4);
   const tamil = template.style === "thiruvizha";
   const seo = templateSeo(template.id);
-  const topic = topicForTemplate(template.id);
+  const occasionTopics = topicsForTemplate(template.id);
+  const topic = primaryTopicForTemplate(template.id);
+  const crumbs = [
+    { label: "Home", to: "/" },
+    ...(topic ? [{ label: topic.label, to: topic.path }] : [{ label: "Templates", to: "/browse" }]),
+    { label: template.name },
+  ];
   // const amount = livePrice ?? template.price;
   // const priceLabel = amount === 0 ? "Free" : `₹${amount.toLocaleString("en-IN")}`;
   const priceLabel = "Free";
@@ -236,7 +243,13 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
     <div className="ir-detail">
       <header className="ir-detail-bar">
         <Link className="ir-detail-bar-back" to={catalogTo} aria-label="Back to templates"><BackIcon /></Link>
-        <p><Link to={catalogTo}>Templates</Link> <span>/</span> {template.name}</p>
+        <p>
+          <Link to="/">Home</Link>
+          <span>›</span>
+          {topic ? <Link to={topic.path}>{topic.label}</Link> : <Link to={catalogTo}>Templates</Link>}
+          <span>›</span>
+          {template.name}
+        </p>
         <button className="ir-detail-save-desk" type="button" aria-pressed={favs.includes(template.id)} onClick={() => toggle(template.id)}>
           <HeartIcon /> {favs.includes(template.id) ? "Saved" : "Save"}
         </button>
@@ -251,12 +264,22 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
         <p className="ir-detail-pill"><PlayIcon /> Playing the opening</p>
       </div>
       <div className="ir-detail-info">
+        <Breadcrumbs className="ir-detail-crumbs" items={account
+          ? [{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]
+          : crumbs} separator="›" />
         <div className="ir-detail-head">
           <div>
             <p className="ir-detail-kicker">{getEvent(event).label}</p>
             <h1 className="ir-display">{template.name}</h1>
             <p className="ir-detail-blurb">{blurb}</p>
             <p className="ir-detail-lead">{template.description}</p>
+            {occasionTopics.length ? (
+              <nav className="topic-links" aria-label="Occasions">
+                {occasionTopics.map((item) => (
+                  <Link key={item.id} to={item.path}>{item.label}</Link>
+                ))}
+              </nav>
+            ) : null}
           </div>
           <p className="ir-detail-price">
             <b className="ir-display">{priceLabel}</b>
@@ -277,11 +300,13 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
           <summary>More options</summary>
           {seo ? <p>{seo.lead}</p> : null}
           <p>{template.description}</p>
-          <Breadcrumbs
-            items={account
-              ? [{ label: "Dashboard", to: "/studio" }, { label: "Templates", to: "/templates" }, { label: template.name }]
-              : [{ label: "Home", to: "/" }, ...(topic ? [{ label: topic.label, to: topic.path }] : [{ label: "Templates", to: "/browse" }]), { label: template.name }]}
-          />
+          {occasionTopics.length > 1 ? (
+            <p className="buy-help">
+              {occasionTopics.map((item) => (
+                <Link key={item.id} to={item.path}>{item.label}</Link>
+              ))}
+            </p>
+          ) : null}
           <div className="buy-seg" role="group" aria-label="Invitation size">
             <button type="button" aria-pressed={device === "phone"} onClick={() => setDevice("phone")}>Mobile</button>
             <button type="button" aria-pressed={device === "desk"} onClick={() => setDevice("desk")}>Desktop</button>
@@ -412,6 +437,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
             </div>
           </section>
         ) : null}
+        <SiteFooter />
       </div>
       </div>
 

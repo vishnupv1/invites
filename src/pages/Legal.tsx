@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { SiteFooter } from "../components/SiteFooter";
 import { DesktopNav } from "../components/shell/DesktopNav";
 import { IrApp } from "../components/shell/IrApp";
 import "./legal.css";
@@ -16,16 +17,7 @@ function Frame({ title, lede, children }: { title: string; lede: string; childre
         <p className="legal-lede">{lede}</p>
         {children}
       </main>
-      <footer>
-        <nav aria-label="Footer">
-          <Link to="/browse">Templates</Link>
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/terms">Terms</Link>
-          <Link to="/refunds">Refunds</Link>
-          <Link to="/contact">Contact</Link>
-        </nav>
-        <small>© 2026 InvitesReady.com</small>
-      </footer>
+      <SiteFooter variant="legal" />
       </div>
     </IrApp>
   );

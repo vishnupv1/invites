@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { listTemplates } from "../api";
+import { SiteFooter } from "../components/SiteFooter";
 import { DesktopNav } from "../components/shell/DesktopNav";
 import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { IrApp } from "../components/shell/IrApp";
@@ -153,6 +154,7 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
           {ready && visible.length === 0 ? <p className="ir-browse-empty">No templates in this filter.</p> : null}
         </div>
         </div>
+        <SiteFooter />
       </div>
     </IrApp>
   );

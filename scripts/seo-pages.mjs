@@ -9,17 +9,6 @@ const HOME_IMAGE = `${SITE}/og/home.jpg`;
 const BROWSE_IMAGE = `${SITE}/og/browse.jpg`;
 const seoCopy = JSON.parse(fs.readFileSync(path.join(root, "src/data/seo-copy.json"), "utf8"));
 const redirects = JSON.parse(fs.readFileSync(path.join(root, "src/data/redirects.json"), "utf8"));
-
-const EVENT_OCCASION = {
-  marriage: "/wedding",
-  birthday: "/birthday",
-  baptism: "/baptism",
-  housewarming: "/housewarming",
-};
-
-function occasionPathForEvent(eventId) {
-  return EVENT_OCCASION[eventId] ?? "/occasions";
-}
 const HOME_DESCRIPTION = seoCopy.pages["/"].description;
 
 const FAQS = [
@@ -82,6 +71,19 @@ function canonicalPath(page) {
   return page.canonical ?? page.path;
 }
 
+const OCCASION_ORDER = ["wedding", "shaadi", "nikah", "tamil-wedding", "birthday", "baptism", "baby-shower", "housewarming"];
+
+function orderedTopics() {
+  const rank = new Map(OCCASION_ORDER.map((id, index) => [id, index]));
+  return seoCopy.topics
+    .filter((topic) => topic.index !== false)
+    .sort((a, b) => (rank.get(a.id) ?? 50) - (rank.get(b.id) ?? 50));
+}
+
+function topicsForTemplate(template) {
+  return orderedTopics().filter((topic) => topic.templates.includes(template.id));
+}
+
 const SITE_LINKS = [
   ["/browse", "Browse templates"],
   ["/how", "How it works"],
@@ -90,6 +92,24 @@ const SITE_LINKS = [
   ["/occasions", "Celebrations"],
   ["/contact", "Contact"],
 ];
+
+function celebrationItems() {
+  return orderedTopics().map((topic) => {
+    const count = topic.templates.length;
+    const noun = count === 1 ? "template" : "templates";
+    return `<li><a href="${escapeAttr(topic.path)}">${escapeText(topic.label)}</a> — ${escapeText(topic.description)} (${count} ${noun})</li>`;
+  });
+}
+
+function breadcrumb(items) {
+  const html = items
+    .map((item, index) => {
+      const body = item.href ? `<a href="${escapeAttr(item.href)}">${escapeText(item.label)}</a>` : escapeText(item.label);
+      return `${index ? " › " : ""}${body}`;
+    })
+    .join("");
+  return `<nav aria-label="Breadcrumb">${html}</nav>`;
+}
 
 function linkList(links) {
   const items = links.map(([href, label]) => `<li><a href="${escapeAttr(href)}">${escapeText(label)}</a></li>`);
@@ -135,18 +155,34 @@ function lineFor(template) {
 
 function bodyFor(page, templates, events) {
   const heading = page.heading ?? page.title.replace(/ \| InvitesReady$/, "");
-  const parts = [`<h1>${escapeText(heading)}</h1>`, `<p>${escapeText(page.description)}</p>`];
+  const parts = [];
+  if (page.template) {
+    const matched = topicsForTemplate(page.template);
+    const primary = matched.find((topic) => topic.id === "wedding") ?? matched[0];
+    parts.push(breadcrumb([
+      { href: "/", label: "Home" },
+      primary ? { href: primary.path, label: primary.label } : { href: "/browse", label: "Templates" },
+      { label: page.template.name },
+    ]));
+  } else if (page.topic) {
+    const parent = page.topic.path !== "/wedding" && (page.topic.related ?? []).includes("/wedding")
+      ? orderedTopics().find((topic) => topic.path === "/wedding")
+      : undefined;
+    parts.push(breadcrumb([
+      { href: "/", label: "Home" },
+      ...(parent ? [{ href: parent.path, label: parent.label }] : []),
+      { label: page.topic.label },
+    ]));
+  }
+  parts.push(`<h1>${escapeText(heading)}</h1>`, `<p>${escapeText(page.description)}</p>`);
   if (page.template) {
     const template = page.template;
     if (template.description) parts.push(`<p>${escapeText(template.description)}</p>`);
     parts.push(`<p>${escapeText(priceText(template))}</p>`);
     parts.push(`<img src="${escapeAttr(page.image)}" alt="${escapeAttr(`${template.name} invitation template cover`)}" width="600" height="800" />`);
-    const occasions = events.filter((event) => template.events.includes(event.id));
-    if (occasions.length) {
-      parts.push(
-        "<h2>Occasions</h2>",
-        linkList(occasions.map((event) => [occasionPathForEvent(event.id), `${event.label} invitations`])),
-      );
+    const matched = topicsForTemplate(template);
+    if (matched.length) {
+      parts.push("<h2>Occasions</h2>", linkList(matched.map((topic) => [topic.path, `${topic.label} invitations`])));
     }
     const related = relatedTemplates(template, templates);
     parts.push(`<p><a href="/browse">Browse invitation templates</a></p>`);
@@ -175,7 +211,11 @@ function bodyFor(page, templates, events) {
     }
   } else if (page.path === "/" || page.path === "/browse") {
     parts.push("<h2>Invitation templates</h2>", templateLinks(templates));
+    if (page.path === "/") parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
+  } else if (page.path === "/occasions") {
+    parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
   }
+  parts.push(`<nav aria-label="Celebrations">${linkList(orderedTopics().map((topic) => [topic.path, topic.label]))}</nav>`);
   parts.push(`<nav aria-label="InvitesReady">${linkList(SITE_LINKS)}</nav>`);
   return `<div class="seo-shell">${parts.join("")}</div>`;
 }

@@ -11,6 +11,8 @@ import { TemplatePreview } from "../components/shell/TemplatePreview";
 import { UnderlineField } from "../components/shell/UnderlineField";
 import { ArrowIcon } from "../components/shell/marks";
 import { listTemplates } from "../api";
+import { publishedTopics } from "../data/topics";
+import { SiteFooter } from "../components/SiteFooter";
 import { TEMPLATES, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
 import { trackNamesEntered } from "../lib/analytics";
 import { saveCoupleNames } from "../lib/couple-names";
@@ -117,7 +119,7 @@ export function Home({ focus }: { focus?: string }) {
   }, []);
 
   useEffect(() => {
-    const id = focus === "occasions" ? "templates" : focus || hash.replace(/^#/, "");
+    const id = focus || hash.replace(/^#/, "");
     if (!id) return;
     document.getElementById(id)?.scrollIntoView({ block: "start" });
   }, [focus, hash, catalog]);
@@ -261,15 +263,21 @@ export function Home({ focus }: { focus?: string }) {
           </div>
         </section>
 
-        <footer className="ir-home-foot">
-          <Link to="/browse">Templates</Link>
-          <Link to="/how">How it works</Link>
-          <Link to="/pricing">Pricing</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/terms">Terms</Link>
-          <Link to="/refunds">Refunds</Link>
-        </footer>
+        <section id="occasions" className="ir-home-sec">
+          <h2 className="ir-display">Celebrations</h2>
+          <ul className="ir-plain">
+            {publishedTopics().map((topic) => (
+              <li key={topic.id}>
+                <Link to={topic.path}>{topic.label}</Link>
+                {" — "}
+                {topic.description}
+                {` · ${topic.templates.length} ${topic.templates.length === 1 ? "template" : "templates"}`}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <SiteFooter />
 
         {showSticky ? (
           <div className="ir-home-sticky">

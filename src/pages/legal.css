@@ -91,10 +91,13 @@
 
 .legal footer {
   margin-top: auto;
+  flex-wrap: wrap;
   background: #f4eee3;
   border-top: 1px solid rgba(23, 32, 28, 0.12);
   color: #5e655f;
 }
+
+.legal footer nav { width: 100%; }
 
 .legal footer a { color: #5e655f; }
 .legal footer small { font-size: 13px; }
