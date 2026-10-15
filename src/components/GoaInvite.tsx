@@ -216,11 +216,15 @@ export function GoaInvite({
       const wide = width >= 1100;
       const windowH = window.visualViewport?.height ?? window.innerHeight;
       let visible = windowH;
-      const parent = stage.parentElement?.parentElement;
-      if (parent) {
-        const overflowY = getComputedStyle(parent).overflowY;
-        const parentH = parent.clientHeight;
-        if ((overflowY === "hidden" || overflowY === "clip") && parentH > 80 && parentH < windowH - 4) visible = parentH;
+      let box = stage.parentElement;
+      while (box) {
+        const overflowY = getComputedStyle(box).overflowY;
+        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+          visible = box.clientHeight;
+          break;
+        }
+        box = box.parentElement;
       }
       const designW = wide ? 1440 : 390;
       const designH = wide ? 900 : 844;
@@ -229,6 +233,8 @@ export function GoaInvite({
       fit.style.width = `${designW}px`;
       fit.style.height = `${designH}px`;
       fit.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      const root = rootRef.current;
+      if (root) root.style.height = root.classList.contains("is-open") ? "" : `${visible}px`;
     };
     apply();
     const observer = new ResizeObserver(apply);
@@ -240,7 +246,7 @@ export function GoaInvite({
       window.removeEventListener("resize", apply);
       window.visualViewport?.removeEventListener("resize", apply);
     };
-  }, []);
+  }, [phase]);
 
   useEffect(() => {
     if (phase === "closed") return;
