@@ -6,6 +6,7 @@ import { getTemplate } from "../data/templates";
 import phrases from "../data/template-phrases.json" with { type: "json" };
 import { trackPageView } from "./analytics";
 import { generatedTemplateSeo } from "./template-seo.mjs";
+import { guideBySlug } from "./guides";
 
 export const SITE = "https://invitesready.com";
 
@@ -56,6 +57,27 @@ function describe(pathname: string): Meta {
       index: true,
       image: HOME_IMAGE,
     };
+  }
+  if (pathname === "/guides") {
+    return {
+      title: SEO_PAGES["/guides"].title,
+      description: SEO_PAGES["/guides"].description,
+      index: true,
+      image: HOME_IMAGE,
+    };
+  }
+  const guideMatch = pathname.match(/^\/guides\/([^/]+)$/);
+  if (guideMatch) {
+    const guide = guideBySlug(guideMatch[1]);
+    if (guide) {
+      return {
+        title: guide.seoTitle,
+        description: guide.description,
+        index: guide.index,
+        image: HOME_IMAGE,
+        canonical: guide.path,
+      };
+    }
   }
   if (pathname === "/browse" || pathname === "/templates") {
     return {

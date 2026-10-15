@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { parseGuide } from "../src/lib/guide-markdown.mjs";
 import { generatedTemplateSeo } from "../src/lib/template-seo.mjs";
 import { templateFacts } from "../src/lib/template-facts.mjs";
 import { writeShareImages } from "./og-images.mjs";
@@ -26,6 +27,7 @@ const STATIC = [
   ["/features", "Digital Invitation Features – RSVP & WhatsApp | InvitesReady", "Digital invitation features: one link, RSVP with no app, a schedule of functions, photos, and WhatsApp sharing for weddings and family events.", HOME_IMAGE, "What a digital invitation includes"],
   ["/faq", "Digital Invitation FAQs – RSVP, WhatsApp, Editing | InvitesReady", "Answers on digital invitations: no app, RSVP on the link, editing after sending, WhatsApp sharing, languages, and what the one-time price includes.", HOME_IMAGE, "Questions about digital invitations"],
   ["/occasions", seoCopy.pages["/occasions"].title, seoCopy.pages["/occasions"].description, HOME_IMAGE, "Invitations for every celebration"],
+  ["/guides", seoCopy.pages["/guides"].title, seoCopy.pages["/guides"].description, HOME_IMAGE, "Wedding invitation guides"],
   ["/browse", seoCopy.pages["/browse"].title, seoCopy.pages["/browse"].description, BROWSE_IMAGE, "All invitation templates"],
   ["/privacy", "Privacy policy | InvitesReady", "How InvitesReady collects, uses, and stores account details, invitation content, guest replies, and payments.", HOME_IMAGE],
   ["/terms", "Terms of use | InvitesReady", "The terms for creating an account, designing an invitation, and buying a template on InvitesReady.", HOME_IMAGE],
@@ -91,6 +93,7 @@ const SITE_LINKS = [
   ["/features", "Features"],
   ["/faq", "Questions"],
   ["/occasions", "Celebrations"],
+  ["/guides", "Guides"],
   ["/contact", "Contact"],
 ];
 
@@ -270,7 +273,38 @@ function staticLastmod(pathname) {
       path.join(root, "src/data/occasion-content.json"),
     ]);
   }
+  if (pathname === "/guides") {
+    const dir = path.join(root, "content/guides");
+    return latestDay(fs.readdirSync(dir).map((name) => path.join(dir, name)));
+  }
   return null;
+}
+
+function readGuides() {
+  const dir = path.join(root, "content/guides");
+  return fs.readdirSync(dir)
+    .filter((name) => name.endsWith(".md"))
+    .map((name) => {
+      const file = path.join(dir, name);
+      const guide = parseGuide(name.replace(/\.md$/, ""), fs.readFileSync(file, "utf8"));
+      guide.file = file;
+      return guide;
+    })
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
+
+function renderParts(parts) {
+  return parts.map((part) => (
+    part.href ? `<a href="${escapeAttr(part.href)}">${escapeText(part.label)}</a>` : escapeText(part.text)
+  )).join("");
+}
+
+function guideHtml(guide) {
+  return guide.blocks.map((block) => {
+    if (block.type === "h2") return `<h2>${escapeText(block.text)}</h2>`;
+    if (block.type === "ul") return `<ul>${block.items.map((item) => `<li>${renderParts(item)}</li>`).join("")}</ul>`;
+    return `<p>${renderParts(block.parts)}</p>`;
+  }).join("");
 }
 
 function lineFor(template) {
@@ -305,6 +339,14 @@ function bodyFor(page, templates, events) {
       ...(parent ? [{ href: parent.path, label: parent.label }] : []),
       { label: page.topic.label },
     ]));
+  } else if (page.guide) {
+    parts.push(breadcrumb([
+      { href: "/", label: "Home" },
+      { href: "/guides", label: "Guides" },
+      { label: page.guide.title },
+    ]));
+  } else if (page.path === "/guides") {
+    parts.push(breadcrumb([{ href: "/", label: "Home" }, { label: "Guides" }]));
   }
   parts.push(`<h1>${escapeText(heading)}</h1>`, `<p>${escapeText(page.description)}</p>`);
   if (page.lead && page.lead !== page.description) parts.push(`<p>${escapeText(page.lead)}</p>`);
@@ -349,6 +391,11 @@ function bodyFor(page, templates, events) {
     if (page.path === "/") parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
   } else if (page.path === "/occasions") {
     parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
+  } else if (page.path === "/guides") {
+    parts.push("<h2>Articles</h2>", linkList(readGuides().map((guide) => [guide.path, guide.title])));
+  } else if (page.guide) {
+    parts.push(`<p>${escapeText(page.guide.author)} · <time datetime="${escapeAttr(page.guide.date)}">${escapeText(page.guide.date)}</time></p>`);
+    parts.push(guideHtml(page.guide));
   }
   if (page.path === "/" || page.path === "/how") {
     parts.push(
@@ -474,6 +521,31 @@ function graphFor(page, templates) {
       ...(parent ? [{ href: parent.path, label: parent.label }] : []),
       { href: page.topic.path, label: page.topic.label },
     ]));
+  } else if (page.guide) {
+    graph.push({
+      "@type": "Article",
+      headline: page.guide.title,
+      description: page.guide.description,
+      datePublished: page.guide.date,
+      dateModified: page.guide.date,
+      author: { "@type": "Organization", name: page.guide.author },
+      publisher: {
+        "@type": "Organization",
+        name: "InvitesReady",
+        logo: { "@type": "ImageObject", url: `${SITE}/brand/logo-mark.png` },
+      },
+      mainEntityOfPage: `${SITE}${page.guide.path}`,
+    });
+    graph.push(breadcrumbList([
+      { href: "/", label: "Home" },
+      { href: "/guides", label: "Guides" },
+      { href: page.guide.path, label: page.guide.title },
+    ]));
+  } else if (page.path === "/guides") {
+    graph.push(breadcrumbList([
+      { href: "/", label: "Home" },
+      { href: "/guides", label: "Guides" },
+    ]));
   } else if (page.event) {
     const matches = templates.filter((template) => template.events.includes(page.event.id));
     graph.push({
@@ -595,6 +667,18 @@ function pages(templates, events) {
     };
     list.push({ ...shared, path: `/template/${template.id}` });
     list.push({ ...shared, path: `/browse/${template.id}` });
+  }
+  for (const guide of readGuides()) {
+    list.push({
+      path: guide.path,
+      title: guide.seoTitle,
+      heading: guide.title,
+      description: guide.description,
+      image: HOME_IMAGE,
+      guide,
+      index: guide.index,
+      lastmod: dayOf(guide.file),
+    });
   }
   for (const topic of seoCopy.topics) {
     list.push({

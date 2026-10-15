@@ -11,6 +11,10 @@
     "/occasions": {
       "title": "Wedding & Celebration Invitation Pages | InvitesReady",
       "description": "Occasion pages for a digital wedding, nikah, shaadi, Tamil wedding, birthday, baptism, baby shower, or housewarming invitation."
+    },
+    "/guides": {
+      "title": "Wedding Invitation Guides | InvitesReady",
+      "description": "Outlines for Hindu, nikah, and Tamil wedding wording, WhatsApp messages, printed cards, and how to collect RSVPs."
     }
   },
   "categories": {

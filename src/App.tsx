@@ -16,6 +16,7 @@ import { Spinner } from "./components/Loader";
 import { OpenInvite } from "./pages/OpenInvite";
 import { BrowsePage } from "./pages/BrowsePage";
 import { EmbedInvite } from "./pages/EmbedInvite";
+import { GuideArticle, GuidesIndex } from "./pages/Guides";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
 import { redirectTarget } from "./data/paths";
@@ -90,6 +91,8 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/guides" element={<GuidesIndex />} />
+        <Route path="/guides/:slug" element={<GuideArticle />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/browse/:id?" element={<BrowsePage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
