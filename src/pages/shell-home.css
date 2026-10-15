@@ -20,8 +20,8 @@
 
 .ir-hero h1 {
   margin: 10px 0 0;
-  max-width: 12ch;
-  font-size: 44px;
+  max-width: 18ch;
+  font-size: 36px;
   color: var(--card);
 }
 
@@ -407,8 +407,8 @@
   }
 
   .ir-hero h1 {
-    max-width: 12ch;
-    font-size: 84px;
+    max-width: 18ch;
+    font-size: 56px;
   }
 
   .ir-hero-sub { font-size: 18px; }

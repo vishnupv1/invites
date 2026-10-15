@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { SEO_PAGES, topicByPath, templateSeo } from "../data/topics";
 import { redirectTarget } from "../data/paths";
 import { getTemplate } from "../data/templates";
+import phrases from "../data/template-phrases.json" with { type: "json" };
 import { trackPageView } from "./analytics";
 import { generatedTemplateSeo } from "./template-seo.mjs";
 
@@ -26,24 +27,24 @@ function describe(pathname: string): Meta {
   }
   if (pathname === "/how") {
     return {
-      title: "How digital invitations work | InvitesReady",
-      description: "Pick a template, add your details, and share one link. Guests open it in the browser and RSVP without an app.",
+      title: "How Digital Wedding Invitations Work | InvitesReady",
+      description: "How a digital invitation works: pick a template, add your details in the browser, and share one link. Guests RSVP with no app.",
       index: true,
       image: HOME_IMAGE,
     };
   }
   if (pathname === "/features") {
     return {
-      title: "Invitation features | InvitesReady",
-      description: "RSVPs, a guest list, and a photo wall for wedding and family invitations.",
+      title: "Digital Invitation Features – RSVP & WhatsApp | InvitesReady",
+      description: "Digital invitation features: one link, RSVP with no app, a schedule of functions, photos, and WhatsApp sharing for weddings and family events.",
       index: true,
       image: HOME_IMAGE,
     };
   }
   if (pathname === "/faq") {
     return {
-      title: "Invitation questions | InvitesReady",
-      description: "Guests do not need an app. You can design before you sign up, edit after sending, and keep the address private.",
+      title: "Digital Invitation FAQs – RSVP, WhatsApp, Editing | InvitesReady",
+      description: "Answers on digital invitations: no app, RSVP on the link, editing after sending, WhatsApp sharing, languages, and what the one-time price includes.",
       index: true,
       image: HOME_IMAGE,
     };
@@ -102,7 +103,13 @@ function describe(pathname: string): Meta {
     const template = getTemplate(preview[1]);
     if (template) {
       const accountOnly = pathname.startsWith("/preview/");
-      const line = templateSeo(template.id) ?? generatedTemplateSeo(template);
+      const stored = templateSeo(template.id);
+      const generated = generatedTemplateSeo(template, phrases[template.id as keyof typeof phrases]);
+      const line = {
+        title: generated.title,
+        description: generated.description,
+        heading: stored?.heading ?? generated.heading,
+      };
       return {
         title: line.title,
         description: line.description,

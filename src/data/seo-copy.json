@@ -1,16 +1,16 @@
 {
   "pages": {
     "/": {
-      "title": "InvitesReady — Animated Digital Invitations for Every Celebration",
-      "description": "Animated digital invitations for weddings, birthdays, baptisms, and housewarmings. Preview a design, personalise it in the browser, and share one link. Guests RSVP with no app."
+      "title": "Digital Wedding & Event Invitations with RSVP | InvitesReady",
+      "description": "Animated digital invitations for weddings and events. Share one link on WhatsApp. Guests RSVP in the browser, with no app."
     },
     "/browse": {
-      "title": "Invitation Templates — Wedding, Birthday & More | InvitesReady",
-      "description": "Browse animated invitation templates for weddings, nikah, shaadi, birthdays, baptisms, and housewarmings. Pick a design, add your details, and share one RSVP link."
+      "title": "Browse Digital Invitation Templates | InvitesReady",
+      "description": "Browse animated digital invitation templates for weddings and other celebrations. Preview a design, then share one RSVP link on WhatsApp."
     },
     "/occasions": {
-      "title": "Wedding, nikah, baptism, and housewarming invitations | InvitesReady",
-      "description": "Digital invitations for a wedding, nikah, shaadi, Tamil wedding, baptism, birthday, or housewarming. Guests open one link and RSVP with no app."
+      "title": "Wedding & Celebration Invitation Pages | InvitesReady",
+      "description": "Occasion pages for a digital wedding, nikah, shaadi, Tamil wedding, birthday, baptism, baby shower, or housewarming invitation."
     }
   },
   "categories": {
@@ -180,9 +180,9 @@
       "id": "nikah",
       "path": "/nikah",
       "label": "Nikah",
-      "heading": "Nikah invitations",
-      "title": "Nikah invitations with RSVP | InvitesReady",
-      "description": "A digital nikah invitation for the ceremony and walima. Guests open one link and RSVP in the browser, with no app.",
+      "heading": "Digital nikah invitations",
+      "title": "Nikah Invitation – Digital Card with RSVP | InvitesReady",
+      "description": "Animated digital nikah invitations. One link for the ceremony and walima. Guests RSVP with no app. Share on WhatsApp. Free to publish.",
       "lead": "A digital nikah invitation for the ceremony and the walima. Guests open one link, see the details, and RSVP in the browser. They do not need an app or an account.",
       "templates": [
         "gazal"
@@ -196,9 +196,9 @@
       "id": "shaadi",
       "path": "/shaadi",
       "label": "Shaadi",
-      "heading": "Hindu wedding invitations",
-      "title": "Hindu wedding invitations | InvitesReady",
-      "description": "Digital shaadi invitations for the muhurtham and the festivities. Share one link. Guests RSVP with no app.",
+      "heading": "Hindu wedding invitations, digital and animated",
+      "title": "Hindu Wedding Invitation – Digital & Animated | InvitesReady",
+      "description": "Animated digital Hindu wedding invitations from ₹379. One link for the muhurtham and festivities. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital invitations for a Hindu wedding. One design opens onto the muhurtham. Another lifts a veil onto six festivities. Guests reply from the link.",
       "templates": [
         "shaadi",
@@ -213,9 +213,9 @@
       "id": "tamil-wedding",
       "path": "/tamil-wedding",
       "label": "Tamil wedding",
-      "heading": "Tamil wedding invitations",
-      "title": "Tamil wedding invitations | InvitesReady",
-      "description": "A Tamil wedding invitation for the muhurtham and rituals, in English, Tamil, or both. Guests open one link and reply on the page.",
+      "heading": "Tamil wedding invitations in English, Tamil or both",
+      "title": "Tamil Wedding Invitation – Digital, English & Tamil | InvitesReady",
+      "description": "Animated digital Tamil wedding invitations from ₹449. One link in English, Tamil, or both. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "A Tamil wedding invitation for the muhurtham and the rituals. The page can be in English, Tamil, or both, with one nadaswaram. Guests open the link and reply there.",
       "templates": [
         "thiruvizha"
@@ -229,9 +229,9 @@
       "id": "wedding",
       "path": "/wedding",
       "label": "Wedding",
-      "heading": "Wedding invitations",
-      "title": "Digital wedding invitations | InvitesReady",
-      "description": "Digital wedding invitations for a garden, beach, floral, or palace celebration. Share one link. Guests RSVP with no app.",
+      "heading": "Digital wedding invitations",
+      "title": "Digital Wedding Invitations with RSVP – from ₹379 | InvitesReady",
+      "description": "Animated digital wedding invitations from ₹379. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
         "lotus",
@@ -267,9 +267,9 @@
       "id": "baptism",
       "path": "/baptism",
       "label": "Baptism",
-      "heading": "Baptism invitations",
-      "title": "Baptism invitations | InvitesReady",
-      "description": "A digital baptism invitation with the day, the godparents, and a blessing. Guests open one link and reply in the browser.",
+      "heading": "Digital baptism invitations",
+      "title": "Baptism Invitation – Digital Card with RSVP | InvitesReady",
+      "description": "Animated digital baptism invitations from ₹1299. One link for the day and the blessing. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "A digital baptism invitation. Guests see the day, the godparents, and leave a blessing. They open one link and reply with no app.",
       "templates": [
         "baptism"
@@ -283,9 +283,9 @@
       "id": "housewarming",
       "path": "/housewarming",
       "label": "Housewarming",
-      "heading": "Housewarming invitations",
-      "title": "Housewarming invitations | InvitesReady",
-      "description": "A digital housewarming invitation for a griha pravesh. Guests open one link, see the new home, and RSVP with no app.",
+      "heading": "Digital housewarming and griha pravesh invitations",
+      "title": "Housewarming / Griha Pravesh Invitation – Digital | InvitesReady",
+      "description": "Animated digital housewarming and griha pravesh invitations from ₹599. One link for the new home. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "A digital housewarming invitation for a griha pravesh. The front door opens onto the new home, and guests RSVP from the link.",
       "templates": [
         "hearth"
@@ -298,9 +298,9 @@
       "id": "birthday",
       "path": "/birthday",
       "label": "Birthday",
-      "heading": "Birthday invitations",
-      "title": "Birthday invitations | InvitesReady",
-      "description": "A digital birthday invitation that opens like a letter. Tap to open the demo, then personalise names, date, and photos. Guests RSVP with no app.",
+      "heading": "Digital birthday invitations",
+      "title": "Digital Birthday Invitation with RSVP | InvitesReady",
+      "description": "Animated digital birthday invitations from ₹299. One link for the party. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Tap the inland letter to tear it open. Balloons rise, then you can use this design, add the party details, and share one link. Guests reply in the browser, with no app.",
       "templates": [
         "inland"
@@ -314,9 +314,9 @@
       "id": "baby-shower",
       "path": "/baby-shower",
       "label": "Baby shower",
-      "heading": "Baby shower invitations",
-      "title": "Baby shower invitations | InvitesReady",
-      "description": "Digital baby shower invitations with a short opening, the day, and RSVP on one link. Guests do not need an app. Preview a design, then make yours.",
+      "heading": "Digital baby shower invitations",
+      "title": "Baby Shower Invitation – Digital with RSVP | InvitesReady",
+      "description": "Animated digital baby shower invitations from ₹299. One link for the day. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "A digital baby shower invitation guests open from one link. They see the day, leave a wish, and RSVP in the browser. Do they need an app? No. Can you edit after sending? Yes — the same link always shows the latest version.",
       "templates": [
         "baptism"

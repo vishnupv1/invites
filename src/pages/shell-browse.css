@@ -72,8 +72,17 @@
 }
 
 .ir-browse-side {
-  display: none;
+  display: block;
+  padding: 16px 20px 0;
 }
+
+.ir-browse-side h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.05;
+}
+
+.ir-browse-side-rest { display: none; }
 
 .ir-browse-grid {
   display: grid;
@@ -200,6 +209,8 @@
     padding: 36px 28px 40px 56px;
     border-right: 1px solid var(--line);
   }
+
+  .ir-browse-side-rest { display: contents; }
 
   .ir-browse-side h1 {
     margin: 0;

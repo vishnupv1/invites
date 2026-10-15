@@ -114,6 +114,28 @@ export function Home({ focus }: { focus?: string }) {
     document.getElementById(id)?.scrollIntoView({ block: "start" });
   }, [focus, hash, catalog]);
 
+  if (focus === "faq") {
+    return (
+      <IrApp>
+        <div className="ir-home">
+          <DesktopNav tone="emerald" />
+          <section id="faq" className="ir-home-sec">
+            <h1 className="ir-display">Questions about digital invitations</h1>
+            <div className="ir-faqs">
+              {FAQS.map((item) => (
+                <details key={item.q} open>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+          <SiteFooter />
+        </div>
+      </IrApp>
+    );
+  }
+
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const featured = FEATURED.map((id) => byId.get(id) ?? getTemplate(id)).filter((item): item is Template => Boolean(item));
   const lead = featured[0] ?? catalog[0];
@@ -140,7 +162,7 @@ export function Home({ focus }: { focus?: string }) {
             <div className="ir-hero-copy">
               <p className="ir-overline ir-hero-kicker">Wedding invitations · India</p>
               <h1 className="ir-display">
-                Your wedding, <span className="ir-em">unsealed</span> on every phone.
+                Animated digital invitations for <span className="ir-em">weddings</span> and every celebration
               </h1>
               <p className="ir-hero-sub">
                 An invitation guests open like a real card — envelope, seal and all. Shared on WhatsApp, with RSVPs for every function.

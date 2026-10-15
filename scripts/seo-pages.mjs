@@ -11,18 +11,19 @@ const seoCopy = JSON.parse(fs.readFileSync(path.join(root, "src/data/seo-copy.js
 const redirects = JSON.parse(fs.readFileSync(path.join(root, "src/data/redirects.json"), "utf8"));
 const siteFacts = JSON.parse(fs.readFileSync(path.join(root, "src/data/site-facts.json"), "utf8"));
 const legalPages = JSON.parse(fs.readFileSync(path.join(root, "src/data/legal-pages.json"), "utf8"));
+const phrases = JSON.parse(fs.readFileSync(path.join(root, "src/data/template-phrases.json"), "utf8"));
 const HOME_DESCRIPTION = seoCopy.pages["/"].description;
 const CONTACT_EMAIL = "invitesreadyforyou@gmail.com";
 
 const FAQS = siteFacts.faqs.map((item) => [item.q, item.a]);
 
 const STATIC = [
-  ["/", seoCopy.pages["/"].title, HOME_DESCRIPTION, HOME_IMAGE],
-  ["/how", "How digital invitations work | InvitesReady", "Pick a template, add your details, and share one link. Guests open it in the browser and RSVP without an app.", HOME_IMAGE],
-  ["/features", "Invitation features | InvitesReady", "RSVPs, guest groups, reminders, a photo wall, and password-protected pages for wedding and family invitations.", HOME_IMAGE],
-  ["/faq", "Invitation questions | InvitesReady", "Guests do not need an app. You can design before you sign up, edit after sending, and keep the address private.", HOME_IMAGE],
-  ["/occasions", seoCopy.pages["/occasions"].title, seoCopy.pages["/occasions"].description, HOME_IMAGE],
-  ["/browse", seoCopy.pages["/browse"].title, seoCopy.pages["/browse"].description, BROWSE_IMAGE],
+  ["/", seoCopy.pages["/"].title, seoCopy.pages["/"].description, HOME_IMAGE, "Animated digital invitations for weddings and every celebration"],
+  ["/how", "How Digital Wedding Invitations Work | InvitesReady", "How a digital invitation works: pick a template, add your details in the browser, and share one link. Guests RSVP with no app.", HOME_IMAGE, "How digital wedding invitations work"],
+  ["/features", "Digital Invitation Features – RSVP & WhatsApp | InvitesReady", "Digital invitation features: one link, RSVP with no app, a schedule of functions, photos, and WhatsApp sharing for weddings and family events.", HOME_IMAGE, "What a digital invitation includes"],
+  ["/faq", "Digital Invitation FAQs – RSVP, WhatsApp, Editing | InvitesReady", "Answers on digital invitations: no app, RSVP on the link, editing after sending, WhatsApp sharing, languages, and what the one-time price includes.", HOME_IMAGE, "Questions about digital invitations"],
+  ["/occasions", seoCopy.pages["/occasions"].title, seoCopy.pages["/occasions"].description, HOME_IMAGE, "Invitations for every celebration"],
+  ["/browse", seoCopy.pages["/browse"].title, seoCopy.pages["/browse"].description, BROWSE_IMAGE, "All invitation templates"],
   ["/privacy", "Privacy policy | InvitesReady", "How InvitesReady collects, uses, and stores account details, invitation content, guest replies, and payments.", HOME_IMAGE],
   ["/terms", "Terms of use | InvitesReady", "The terms for creating an account, designing an invitation, and buying a template on InvitesReady.", HOME_IMAGE],
   ["/refunds", "Refunds | InvitesReady", "When a one-time InvitesReady template purchase can be refunded, and how to ask.", HOME_IMAGE],
@@ -170,9 +171,14 @@ function templateLastmod(template) {
 
 function lineFor(template) {
   const stored = seoCopy.templates[template.id];
-  if (stored?.title && stored?.description && stored?.heading) return stored;
-  console.warn(`SEO: generated copy for ${template.id}`);
-  return generatedTemplateSeo(template);
+  const generated = generatedTemplateSeo(template, phrases[template.id]);
+  if (!stored?.heading) console.warn(`SEO: generated heading for ${template.id}`);
+  return {
+    heading: stored?.heading || generated.heading,
+    title: generated.title,
+    description: generated.description,
+    lead: stored?.lead || generated.lead,
+  };
 }
 
 function bodyFor(page, templates, events) {
@@ -197,6 +203,7 @@ function bodyFor(page, templates, events) {
     ]));
   }
   parts.push(`<h1>${escapeText(heading)}</h1>`, `<p>${escapeText(page.description)}</p>`);
+  if (page.lead && page.lead !== page.description) parts.push(`<p>${escapeText(page.lead)}</p>`);
   if (page.template) {
     const template = page.template;
     if (template.description) parts.push(`<p>${escapeText(template.description)}</p>`);
@@ -408,10 +415,10 @@ function fallbackHtml(base) {
 
 function pages(templates, events) {
   const copyDay = dayOf(path.join(root, "src/data/seo-copy.json")) || new Date().toISOString().slice(0, 10);
-  const list = STATIC.map(([pathname, title, description, image]) => ({
+  const list = STATIC.map(([pathname, title, description, image, heading]) => ({
     path: pathname,
     title,
-    heading: pathname === "/" ? "Invitations your guests open, answer and remember." : pathname === "/browse" ? "Invitation templates" : undefined,
+    heading,
     description,
     image,
     lastmod: copyDay,
@@ -421,7 +428,7 @@ function pages(templates, events) {
     const line = lineFor(template);
     if (headings.has(line.heading)) throw new Error(`SEO: duplicate H1 for ${template.id}`);
     headings.add(line.heading);
-    if (line.title.length > 60) throw new Error(`SEO: title too long for ${template.id} (${line.title.length})`);
+    if (line.title.length > 70) throw new Error(`SEO: title too long for ${template.id} (${line.title.length}): ${line.title}`);
     if (line.description.length > 155) throw new Error(`SEO: description too long for ${template.id} (${line.description.length})`);
     const shared = {
       canonical: `/template/${template.id}`,
@@ -440,20 +447,40 @@ function pages(templates, events) {
       path: topic.path,
       title: topic.title,
       heading: topic.heading,
-      description: topic.lead,
+      description: topic.description,
+      lead: topic.lead,
       image: HOME_IMAGE,
       topic,
       lastmod: copyDay,
+      index: topic.index !== false,
     });
   }
-  return list.filter((page) => !page.path.startsWith("/c/") && !redirects[page.path]);
+  const published = list.filter((page) => !page.path.startsWith("/c/") && !redirects[page.path]);
+  assertUnique(published);
+  return published;
+}
+
+function assertUnique(list) {
+  const titles = new Map();
+  const descriptions = new Map();
+  for (const page of list) {
+    if (page.index === false || canonicalPath(page) !== page.path) continue;
+    if (titles.has(page.title)) throw new Error(`SEO: duplicate title on ${page.path} and ${titles.get(page.title)}: ${page.title}`);
+    titles.set(page.title, page.path);
+    if (descriptions.has(page.description)) {
+      throw new Error(`SEO: duplicate description on ${page.path} and ${descriptions.get(page.description)}`);
+    }
+    descriptions.set(page.description, page.path);
+    if (page.title.length > 70) throw new Error(`SEO: title too long for ${page.path} (${page.title.length}): ${page.title}`);
+    if (page.description.length > 155) throw new Error(`SEO: description too long for ${page.path} (${page.description.length})`);
+  }
 }
 
 const UNLISTED = new Set(["/design-check"]);
 
 function writeSitemap(list) {
   const urls = list
-    .filter((page) => canonicalPath(page) === page.path && !UNLISTED.has(page.path))
+    .filter((page) => canonicalPath(page) === page.path && !UNLISTED.has(page.path) && page.index !== false)
     .map((page) => `  <url><loc>${SITE}${page.path}</loc><lastmod>${page.lastmod}</lastmod></url>`)
     .join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
@@ -469,7 +496,7 @@ function assertTemplateHtml(html, page) {
   const problems = [];
   const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "";
   const description = html.match(/name="description"[^>]*content="([^"]*)"/)?.[1] ?? "";
-  if (!title || title.length > 60) problems.push(`title ${title.length}`);
+  if (!title || title.length > 70) problems.push(`title ${title.length}`);
   if (!description || description.length > 155) problems.push(`description ${description.length}`);
   if (!/RSVP/.test(description) || !/WhatsApp/.test(description)) problems.push("description missing RSVP or WhatsApp");
   if (page.template.free || page.template.price === 0) {

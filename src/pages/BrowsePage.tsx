@@ -114,6 +114,8 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
 
         <div className="ir-browse-body">
         <aside className="ir-browse-side">
+          <h1>All invitation templates</h1>
+          <div className="ir-browse-side-rest">
           <p className="ir-overline">Occasion</p>
           <div className="ir-browse-side-list">
             <button type="button" aria-pressed={occasion === "all"} onClick={() => setOccasion("all")}>All</button>
@@ -135,6 +137,7 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
             <span className="ir-overline">Search</span>
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name or style" />
           </label>
+          </div>
         </aside>
 
         <div className="ir-browse-grid">

@@ -16,4 +16,7 @@ export type TemplateSeoLine = {
 };
 
 export function priceLabel(template: Pick<TemplateSeoInput, "price" | "free">): string;
-export function generatedTemplateSeo(template: TemplateSeoInput): TemplateSeoLine;
+export function generatedTemplateSeo(
+  template: TemplateSeoInput,
+  extra?: { style?: string; occasion?: string },
+): TemplateSeoLine;
