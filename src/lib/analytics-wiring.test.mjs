@@ -66,7 +66,7 @@ function assertAllowed(payload, label) {
 
 test("tracked events follow the funnel rules and stay free of personal fields", () => {
   analytics.trackPageView("/create/gazal", "Design your invitation | InvitesReady");
-  assert.equal(named("config")[0][2].send_page_view, false);
+  assert.equal(named("config").length, 0);
 
   analytics.trackPageView("/create/gazal", "Design your invitation | InvitesReady");
   assert.equal(named("event", "page_view").length, 1);

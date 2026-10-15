@@ -1,8 +1,9 @@
 import { outcomeEvent, saveDraftEvent } from "./funnel-events.ts";
 import { purchaseEventKey } from "./purchase-event-key.ts";
 
-const measurementId = "G-NNF07Q6XYV";
-const pixelId = String(import.meta.env.VITE_META_PIXEL_ID || "1134319392613426").trim();
+const env = import.meta.env ?? {};
+const measurementId = String(env.VITE_GA_MEASUREMENT_ID || "").trim();
+const pixelId = String(env.VITE_META_PIXEL_ID || "1134319392613426").trim();
 const INTERNAL_KEY = "invitesready.internal";
 
 type MetaPixel = {
@@ -80,16 +81,17 @@ function initialize() {
     window.dataLayer.push(arguments);
   };
 
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-  document.head.appendChild(script);
-
-  window.gtag("js", new Date());
-  const config: Record<string, unknown> = { send_page_view: false };
-  if (internal) config.traffic_type = "internal";
-  window.gtag("config", measurementId, config);
-  if (internal) window.gtag("set", { traffic_type: "internal" });
+  if (measurementId) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+    document.head.appendChild(script);
+    window.gtag("js", new Date());
+    const config: Record<string, unknown> = { send_page_view: false };
+    if (internal) config.traffic_type = "internal";
+    window.gtag("config", measurementId, config);
+    if (internal) window.gtag("set", { traffic_type: "internal" });
+  }
   installMetaPixel();
 }
 

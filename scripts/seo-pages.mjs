@@ -62,6 +62,22 @@ function readEvents() {
   }));
 }
 
+function envValue(name) {
+  if (process.env[name]?.trim()) return process.env[name].trim();
+  for (const file of [".env.production", ".env.local", ".env"]) {
+    const full = path.join(root, file);
+    if (!fs.existsSync(full)) continue;
+    for (const line of fs.readFileSync(full, "utf8").split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const cut = trimmed.indexOf("=");
+      if (cut < 0 || trimmed.slice(0, cut).trim() !== name) continue;
+      return trimmed.slice(cut + 1).trim().replace(/^["']|["']$/g, "");
+    }
+  }
+  return "";
+}
+
 function escapeAttr(value) {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 }
@@ -584,6 +600,8 @@ function pageHtml(base, page, templates, events) {
   const url = `${SITE}${canonicalPath(page)}`;
   let html = ensureIcons(base);
   html = html.replace(/<html lang="[^"]*">/, '<html lang="en-IN">');
+  const verification = envValue("VITE_GSC_VERIFICATION") || envValue("GOOGLE_SITE_VERIFICATION");
+  if (verification) html = replaceMeta(html, "name", "google-site-verification", verification);
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(page.title)}</title>`);
   html = replaceMeta(html, "name", "description", page.description);
   const indexable = canonicalPath(page) === page.path && page.index !== false;
