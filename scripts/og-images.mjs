@@ -111,7 +111,7 @@ function writeAll(dirs, name, buffer) {
   for (const dir of dirs) fs.writeFileSync(path.join(dir, name), buffer);
 }
 
-export async function writeShareImages(root, templates) {
+export async function writeShareImages(root, templates, occasions = []) {
   const dirs = [path.join(root, "public/og")];
   if (fs.existsSync(path.join(root, "dist"))) dirs.push(path.join(root, "dist/og"));
   for (const dir of dirs) fs.mkdirSync(dir, { recursive: true });
@@ -140,6 +140,15 @@ export async function writeShareImages(root, templates) {
     if (!src) missing.push(template.id);
     const image = await raster(templateCard(template.name, src), fonts);
     writeAll(dirs, `${template.id}.jpg`, image);
+  }
+  for (const occasion of occasions) {
+    const coverId = occasion.templates?.find((id) => fs.existsSync(path.join(root, "public/covers", `${id}.jpg`)));
+    const src = coverId ? await coverSrc(root, coverId) : null;
+    const image = await raster(
+      src ? templateCard(occasion.label, src) : wordmarkCard(occasion.label, "INVITESREADY"),
+      fonts,
+    );
+    writeAll(dirs, `occasion-${occasion.id}.jpg`, image);
   }
   if (missing.length) console.log(`SEO: no cover for ${missing.join(", ")}; those share images are name-only`);
   return { width: WIDTH, height: HEIGHT };

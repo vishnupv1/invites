@@ -334,7 +334,11 @@ function bodyFor(page, templates, events) {
 
 function replaceMeta(html, attribute, key, content) {
   const pattern = new RegExp(`(<meta[^>]*${attribute}="${key}"[^>]*content=")[^"]*(")`);
-  if (!pattern.test(html)) throw new Error(`Missing meta ${attribute}=${key}`);
+  if (!pattern.test(html)) {
+    const tag = `<meta ${attribute}="${key}" content="${escapeAttr(content)}" />`;
+    if (!html.includes("</head>")) throw new Error(`Missing meta ${attribute}=${key}`);
+    return html.replace("</head>", `    ${tag}\n  </head>`);
+  }
   return html.replace(pattern, `$1${escapeAttr(content)}$2`);
 }
 
@@ -483,6 +487,8 @@ function pageHtml(base, page, templates, events) {
   html = replaceMeta(html, "property", "og:image", page.image);
   html = replaceMeta(html, "property", "og:image:width", "1200");
   html = replaceMeta(html, "property", "og:image:height", "630");
+  html = replaceMeta(html, "property", "og:image:alt", page.imageAlt || page.title);
+  html = replaceMeta(html, "name", "twitter:image:alt", page.imageAlt || page.title);
   html = replaceMeta(html, "name", "twitter:title", page.title);
   html = replaceMeta(html, "name", "twitter:description", page.description);
   html = replaceMeta(html, "name", "twitter:image", page.image);
@@ -548,6 +554,7 @@ function pages(templates, events) {
       heading: line.heading,
       description: line.description,
       image: `${SITE}/og/${template.id}.jpg`,
+      imageAlt: `${template.name} invitation cover`,
       template,
       lastmod: templateLastmod(template),
     };
@@ -561,7 +568,8 @@ function pages(templates, events) {
       heading: topic.heading,
       description: topic.description,
       lead: topic.lead,
-      image: HOME_IMAGE,
+      image: `${SITE}/og/occasion-${topic.id}.jpg`,
+      imageAlt: `${topic.label} digital invitation`,
       topic,
       lastmod: copyDay,
       index: topic.index !== false,
@@ -628,6 +636,7 @@ function assertTemplateHtml(html, page) {
   if (!html.includes(`property="og:image" content="${SITE}/og/${id}.jpg"`)) problems.push("og:image");
   if (!html.includes('property="og:image:width" content="1200"')) problems.push("og:image:width");
   if (!html.includes('property="og:image:height" content="630"')) problems.push("og:image:height");
+  if (!html.includes('property="og:image:alt"')) problems.push("og:image:alt");
   if (!html.includes('name="twitter:card" content="summary_large_image"')) problems.push("twitter:card");
   if (!html.includes(`name="twitter:image" content="${SITE}/og/${id}.jpg"`)) problems.push("twitter:image");
   if (!html.includes(`<h1>${escapeText(page.heading)}</h1>`)) problems.push("h1");
@@ -675,7 +684,7 @@ function prerender(list, templates, events) {
 const templates = readTemplates();
 const events = readEvents();
 const list = pages(templates, events);
-await writeShareImages(root, templates);
+await writeShareImages(root, templates, seoCopy.topics.filter((topic) => topic.index !== false));
 writeSitemap(list);
 prerender(list, templates, events);
 console.log(`SEO: ${list.length} public URLs`);

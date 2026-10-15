@@ -14,7 +14,7 @@ const HOME_DESCRIPTION = SEO_PAGES["/"].description;
 const HOME_IMAGE = `${SITE}/og/home.jpg`;
 const BROWSE_IMAGE = `${SITE}/og/browse.jpg`;
 
-type Meta = { title: string; description: string; index: boolean; image: string; canonical?: string };
+type Meta = { title: string; description: string; index: boolean; image: string; imageAlt?: string; canonical?: string };
 
 function describe(pathname: string): Meta {
   if (pathname === "/") {
@@ -164,7 +164,13 @@ function describe(pathname: string): Meta {
 
   const topic = topicByPath(pathname);
   if (topic) {
-    return { title: topic.title, description: topic.description, index: true, image: HOME_IMAGE };
+    return {
+      title: topic.title,
+      description: topic.description,
+      index: topic.index !== false,
+      image: `${SITE}/og/occasion-${topic.id}.jpg`,
+      imageAlt: `${topic.label} digital invitation`,
+    };
   }
 
   return {
@@ -213,12 +219,12 @@ export function PageMeta() {
     setMeta("og:image", meta.image, "property");
     setMeta("og:image:width", "1200", "property");
     setMeta("og:image:height", "630", "property");
-    setMeta("og:image:alt", meta.title, "property");
+    setMeta("og:image:alt", meta.imageAlt || meta.title, "property");
     setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", meta.title);
     setMeta("twitter:description", meta.description);
     setMeta("twitter:image", meta.image);
-    setMeta("twitter:image:alt", meta.title);
+    setMeta("twitter:image:alt", meta.imageAlt || meta.title);
     trackPageView(`${pathname}${search}${hash}`, meta.title, pathname.startsWith("/i/") ? "guest" : undefined);
   }, [pathname, search, hash]);
 
