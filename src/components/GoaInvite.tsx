@@ -159,6 +159,7 @@ export function GoaInvite({
   const timers = useRef<number[]>([]);
   const nameId = useId();
   const noteId = useId();
+  const ribbonId = useId().replace(/:/g, "");
   const [desk, setDesk] = useState(false);
   const [phase, setPhase] = useState<"closed" | "go" | "open">("closed");
   const [seen, setSeen] = useState(false);
@@ -324,8 +325,13 @@ export function GoaInvite({
             <img className="gulls" src="/goa/gulls.webp" alt="" style={{ width: hero.gull[0], left: hero.gull[1], top: hero.gull[2], ["--fx" as string]: hero.gull[3] }} />
             <div className="crestW" style={{ width: hero.crest[0], top: hero.crest[1], transform: "translateX(-50%)" }}>
               <img src="/goa/crest.webp" alt="" />
-              <span className="ini" style={{ fontSize: hero.crest[2] }}>{names.first[0]?.toUpperCase()} <span style={{ fontSize: "0.5em", verticalAlign: "middle" }}>&amp;</span> {names.second[0]?.toUpperCase()}</span>
-              <span className="rib" style={{ fontSize: hero.crest[3] }}>{ribbon(fields.date)}</span>
+              <span className="ini">{names.first[0]?.toUpperCase()} <span>&amp;</span> {names.second[0]?.toUpperCase()}</span>
+              <svg className="rib" viewBox="0 0 200 48" aria-hidden="true">
+                <path id={ribbonId} d="M 22 6 Q 100 42 178 6" fill="none" />
+                <text>
+                  <textPath href={`#${ribbonId}`} startOffset="50%" textAnchor="middle" textLength="148" lengthAdjust="spacing">{ribbon(fields.date)}</textPath>
+                </text>
+              </svg>
             </div>
             <div className="hero" style={{ top: hero.heroTop }}>
               <span className="nm" style={{ fontSize: hero.name }}>{names.first}</span>

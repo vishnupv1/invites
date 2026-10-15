@@ -31,10 +31,12 @@
 .gg .scene { position: absolute; inset: 0; transform-origin: 50% 70%; }
 .gg .sky, .gg .resort, .gg .pillar, .gg .palm { position: absolute; max-width: none; }
 .gg .gulls { position: absolute; opacity: 0; pointer-events: none; }
-.gg .crestW { position: absolute; left: 50%; opacity: 0; }
+.gg .crestW { position: absolute; left: 50%; opacity: 0; container-type: inline-size; }
 .gg .crestW img { width: 100%; }
-.gg .crestW .ini { position: absolute; left: 0; right: 0; top: 49%; transform: translateY(-50%); text-align: center; font-family: "Pinyon Script", cursive; color: var(--ink); line-height: 1; }
-.gg .crestW .rib { position: absolute; left: 0; right: 0; top: 76.2%; transform: translateY(-50%); text-align: center; font-family: Cinzel, serif; font-weight: 600; letter-spacing: 0.22em; color: var(--ink); }
+.gg .crestW .ini { position: absolute; left: 27%; right: 27%; top: 47%; transform: translateY(-50%); text-align: center; font-family: "Pinyon Script", cursive; font-size: 13.2cqw; color: var(--ink); line-height: 0.85; white-space: nowrap; }
+.gg .crestW .ini span { font-size: 0.46em; vertical-align: middle; }
+.gg .crestW .rib { position: absolute; left: 17%; width: 66%; top: 71.6%; height: 14%; overflow: visible; }
+.gg .crestW .rib text { font-family: Cinzel, serif; font-weight: 600; font-size: 4.6cqw; letter-spacing: 0; fill: var(--ink); }
 .gg .hero { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; pointer-events: none; }
 .gg .hero > * { opacity: 0; }
 .gg .hero .nm { font-family: "Pinyon Script", cursive; color: var(--ink); line-height: 1.05; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6); }
