@@ -1,0 +1,19 @@
+{
+  "steps": [
+    { "n": "01", "title": "Pick a design", "text": "Choose an opening. You can try it before you create an account." },
+    { "n": "02", "title": "Add your details", "text": "Names, functions, photos and music. The preview updates as you type." },
+    { "n": "03", "title": "Publish and share", "text": "Publish, then send one link. Guests open it in the browser." }
+  ],
+  "features": [
+    "They open one link. No app and no account.",
+    "Each function can have its own time, place and dress.",
+    "Replies come back on the same invitation."
+  ],
+  "faqs": [
+    { "q": "Do my guests need an app or an account?", "a": "No. Guests open your link in any browser and RSVP in one tap. It works on basic phones too." },
+    { "q": "Can I design before signing up?", "a": "Yes. Pick a template and customise it as a guest. We only ask you to log in when you publish, and your draft comes with you." },
+    { "q": "Can different guests see different functions?", "a": "Yes. Put guests into groups and choose which functions each group sees." },
+    { "q": "Is our family information private?", "a": "Pages can be password-protected, and the address can stay hidden until a guest says yes." },
+    { "q": "Can I edit after sending?", "a": "Yes. Every guest sees the latest version through the same link." }
+  ]
+}

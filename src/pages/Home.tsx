@@ -11,6 +11,7 @@ import { TemplatePreview } from "../components/shell/TemplatePreview";
 import { UnderlineField } from "../components/shell/UnderlineField";
 import { ArrowIcon } from "../components/shell/marks";
 import { listTemplates } from "../api";
+import facts from "../data/site-facts.json" with { type: "json" };
 import { publishedTopics } from "../data/topics";
 import { SiteFooter } from "../components/SiteFooter";
 import { TEMPLATES, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
@@ -21,19 +22,8 @@ import "./shell-home.css";
 
 const FEATURED = ["lotus", "goa", "lace", "rose", "bloom", "hansa", "moonlit", "palace"];
 
-const STEPS = [
-  ["01", "Pick a design", "Choose an opening. You can try it before you create an account."],
-  ["02", "Add your details", "Names, functions, photos and music. The preview updates as you type."],
-  // ["03", "Publish and share", "Pay when you publish, then send one link. Guests open it in the browser."],
-  ["03", "Publish and share", "Publish, then send one link. Guests open it in the browser."],
-];
-
-const FAQS = [
-  ["Do guests need an app?", "No. They open your link in the browser and can reply from that page."],
-  // ["When do I pay?", "When you publish. Designing and previewing do not need an account."],
-  ["When do I pay?", "Nothing right now. Every design is free to publish."],
-  ["Can I edit after sharing?", "Yes. The link stays the same, and guests see the latest version."],
-];
+const STEPS = facts.steps;
+const FAQS = facts.faqs;
 
 // function rupee(amount: number) {
 //   return `₹${amount.toLocaleString("en-IN")}`;
@@ -221,12 +211,12 @@ export function Home({ focus }: { focus?: string }) {
         <section id="how" className="ir-home-sec">
           <h2 className="ir-display">How it works</h2>
           <ol className="ir-steps">
-            {STEPS.map(([n, title, text]) => (
-              <li key={n}>
-                <span>{n}</span>
+            {STEPS.map((step) => (
+              <li key={step.n}>
+                <span>{step.n}</span>
                 <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
                 </div>
               </li>
             ))}
@@ -254,10 +244,10 @@ export function Home({ focus }: { focus?: string }) {
         <section id="faq" className="ir-home-sec">
           <h2 className="ir-display">Questions</h2>
           <div className="ir-faqs">
-            {FAQS.map(([question, answer]) => (
-              <details key={question}>
-                <summary>{question}</summary>
-                <p>{answer}</p>
+            {FAQS.map((item) => (
+              <details key={item.q}>
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
               </details>
             ))}
           </div>

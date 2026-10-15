@@ -9,15 +9,12 @@ const HOME_IMAGE = `${SITE}/og/home.jpg`;
 const BROWSE_IMAGE = `${SITE}/og/browse.jpg`;
 const seoCopy = JSON.parse(fs.readFileSync(path.join(root, "src/data/seo-copy.json"), "utf8"));
 const redirects = JSON.parse(fs.readFileSync(path.join(root, "src/data/redirects.json"), "utf8"));
+const siteFacts = JSON.parse(fs.readFileSync(path.join(root, "src/data/site-facts.json"), "utf8"));
+const legalPages = JSON.parse(fs.readFileSync(path.join(root, "src/data/legal-pages.json"), "utf8"));
 const HOME_DESCRIPTION = seoCopy.pages["/"].description;
+const CONTACT_EMAIL = "invitesreadyforyou@gmail.com";
 
-const FAQS = [
-  ["Do my guests need an app or an account?", "No. Guests open your link in any browser and RSVP in one tap — it works on basic phones too."],
-  ["Can I design before signing up?", "Yes. Pick a template and customise it as a guest. We only ask you to log in when you publish, and your draft comes with you."],
-  ["Can different guests see different functions?", "Yes. Put guests into groups and choose which functions each group sees."],
-  ["Is our family information private?", "Pages can be password-protected, and the address can stay hidden until a guest says yes."],
-  ["Can I edit after sending?", "Of course — every guest sees the latest version through the same link."],
-];
+const FAQS = siteFacts.faqs.map((item) => [item.q, item.a]);
 
 const STATIC = [
   ["/", seoCopy.pages["/"].title, HOME_DESCRIPTION, HOME_IMAGE],
@@ -99,6 +96,31 @@ function celebrationItems() {
     const noun = count === 1 ? "template" : "templates";
     return `<li><a href="${escapeAttr(topic.path)}">${escapeText(topic.label)}</a> — ${escapeText(topic.description)} (${count} ${noun})</li>`;
   });
+}
+
+function faqHtml() {
+  return siteFacts.faqs
+    .map((item) => `<details open><summary>${escapeText(item.q)}</summary><p>${escapeText(item.a)}</p></details>`)
+    .join("");
+}
+
+function legalHtml(pathname) {
+  const page = legalPages[pathname];
+  if (!page) return "";
+  return page.blocks.map((block) => {
+    if (block.type === "h2") return `<h2>${escapeText(block.text)}</h2>`;
+    if (block.type === "ul") return `<ul>${block.items.map((item) => `<li>${escapeText(item)}</li>`).join("")}</ul>`;
+    if (block.type === "links") {
+      return `<p>${block.items.map((item) => `<a href="${escapeAttr(item.href)}">${escapeText(item.label)}</a>`).join(" · ")}</p>`;
+    }
+    const text = block.text
+      .replaceAll("{{email}}", CONTACT_EMAIL)
+      .replaceAll("{{refund-policy}}", "refund policy");
+    const linked = text.includes(CONTACT_EMAIL)
+      ? escapeText(text).replaceAll(CONTACT_EMAIL, `<a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>`)
+      : escapeText(text).replace("refund policy", `<a href="/refunds">refund policy</a>`);
+    return `<p>${linked}</p>`;
+  }).join("");
 }
 
 function breadcrumb(items) {
@@ -215,6 +237,17 @@ function bodyFor(page, templates, events) {
   } else if (page.path === "/occasions") {
     parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
   }
+  if (page.path === "/" || page.path === "/how") {
+    parts.push(
+      "<h2>How it works</h2>",
+      `<ol>${siteFacts.steps.map((step) => `<li><h3>${escapeText(step.title)}</h3><p>${escapeText(step.text)}</p></li>`).join("")}</ol>`,
+    );
+  }
+  if (page.path === "/" || page.path === "/features") {
+    parts.push("<h2>What guests get</h2>", `<ul>${siteFacts.features.map((line) => `<li>${escapeText(line)}</li>`).join("")}</ul>`);
+  }
+  if (page.path === "/" || page.path === "/faq") parts.push("<h2>Questions</h2>", faqHtml());
+  if (legalPages[page.path]) parts.push(legalHtml(page.path));
   parts.push(`<nav aria-label="Celebrations">${linkList(orderedTopics().map((topic) => [topic.path, topic.label]))}</nav>`);
   parts.push(`<nav aria-label="InvitesReady">${linkList(SITE_LINKS)}</nav>`);
   return `<div class="seo-shell">${parts.join("")}</div>`;
