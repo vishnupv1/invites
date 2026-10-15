@@ -227,8 +227,9 @@ export function PageMeta() {
   const { pathname, search, hash } = useLocation();
 
   useEffect(() => {
-    const meta = describe(pathname);
-    const url = `${SITE}${meta.canonical ?? pathname}`;
+    const path = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+    const meta = describe(path);
+    const url = `${SITE}${meta.canonical ?? path}`;
     document.title = meta.title;
     setMeta("description", meta.description);
     setMeta("robots", meta.index ? "index, follow" : "noindex, nofollow");
@@ -247,7 +248,7 @@ export function PageMeta() {
     setMeta("twitter:description", meta.description);
     setMeta("twitter:image", meta.image);
     setMeta("twitter:image:alt", meta.imageAlt || meta.title);
-    trackPageView(`${pathname}${search}${hash}`, meta.title, pathname.startsWith("/i/") ? "guest" : undefined);
+    trackPageView(`${path}${search}${hash}`, meta.title, path.startsWith("/i/") ? "guest" : undefined);
   }, [pathname, search, hash]);
 
   return null;
