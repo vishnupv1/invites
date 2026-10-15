@@ -538,7 +538,40 @@
   background: #F4F8F5;
   transform: translateZ(0);
 }
-.ed-frame.ed-phone .ed-screen { border-radius: 36px; }
+.ed-frame.ed-phone .ed-screen { border-radius: 36px; container: preview / size; }
+/* Closed covers are sized to the guest window. Inside the phone frame they
+   should fill that frame instead, so the open prompt stays on screen. */
+.ed-frame.ed-phone .gazal-open,
+.ed-frame.ed-phone .anna-open,
+.ed-frame.ed-phone .au-splash,
+.ed-frame.ed-phone .bp-open,
+.ed-frame.ed-phone .bw-open,
+.ed-frame.ed-phone .hw-open,
+.ed-frame.ed-phone .wd-open,
+.ed-frame.ed-phone .sh-open,
+.ed-frame.ed-phone .hv-open,
+.ed-frame.ed-phone .pc:not(.is-entered),
+.ed-frame.ed-phone .pl.is-sealed,
+.ed-frame.ed-phone .ge:not([data-phase="suite"]),
+.ed-frame.ed-phone .bl:not(.is-open),
+.ed-frame.ed-phone .hs:not(.is-open),
+.ed-frame.ed-phone .tv:not(.is-entered),
+.ed-frame.ed-phone .pq:not(.is-open),
+.ed-frame.ed-phone .mj:not(.is-open),
+.ed-frame.ed-phone .vs:not(.is-open),
+.ed-frame.ed-phone .gd:not([data-phase="hero"]),
+.ed-frame.ed-phone .il:not(.is-open),
+.ed-frame.ed-phone .bf-root.is-load,
+.ed-frame.ed-phone .bf-root.is-fade,
+.ed-frame.ed-phone .bf-root.is-open {
+  height: 100cqh;
+  min-height: 0;
+  max-height: 100cqh;
+}
+.ed-frame.ed-phone .tv:not(.is-entered) .tv-hero {
+  min-height: 0;
+  height: 100%;
+}
 .ed-zoom { width: 100%; transform-origin: top left; }
 .ed-frame.ed-phone .ed-zoom { min-height: 100%; display: flex; flex-direction: column; }
 .ed-frame.ed-phone .ed-zoom > * { flex: 1 0 auto; width: 100%; min-height: 100%; }

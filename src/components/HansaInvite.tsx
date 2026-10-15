@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { madeWithHref } from "../lib/share";
 import { packOf } from "../data/custom";
 import { useFonts } from "../lib/fonts";
@@ -30,45 +30,7 @@ const EVENTS = [
   ["14 FEB", "Reception", "8:30 PM", "The Moonlit Lawns"],
 ] as const;
 
-const PHONE: [number, number, number, number, boolean][] = [
-  [4, 480, -38.3, 2.2, false],
-  [-1, 406, -31.5, 2.33, false],
-  [0, 330, -24.7, 2.46, false],
-  [11, 258, -17.6, 2.59, false],
-  [31, 193, -9.3, 2.72, false],
-  [57, 138, 1, 2.85, false],
-  [89, 96, 14.8, 2.98, false],
-  [125, 69, 33.9, 3.11, false],
-  [327, 480, -38.3, 2.24, true],
-  [333, 406, -31.5, 2.37, true],
-  [331, 330, -24.7, 2.5, true],
-  [320, 258, -17.6, 2.63, true],
-  [300, 193, -9.3, 2.76, true],
-  [274, 138, 1, 2.89, true],
-  [242, 96, 14.8, 3.02, true],
-  [206, 69, 33.9, 3.15, true],
-];
-
-const DESK: [number, number, number, number, boolean][] = [
-  [399, 502, -42.3, 2.2, false],
-  [388, 427, -33.4, 2.33, false],
-  [390, 351, -24.6, 2.46, false],
-  [402, 276, -15.7, 2.59, false],
-  [426, 207, -6.2, 2.72, false],
-  [460, 145, 4, 2.85, false],
-  [503, 93, 15.4, 2.98, false],
-  [553, 54, 28, 3.11, false],
-  [607, 28, 41.9, 3.24, false],
-  [956, 502, -42.3, 2.24, true],
-  [967, 427, -33.4, 2.37, true],
-  [965, 351, -24.6, 2.5, true],
-  [953, 276, -15.7, 2.63, true],
-  [929, 207, -6.2, 2.76, true],
-  [895, 145, 4, 2.89, true],
-  [852, 93, 15.4, 3.02, true],
-  [802, 54, 28, 3.15, true],
-  [748, 28, 41.9, 3.28, true],
-];
+const FALLING = 24;
 
 function coupleOf(names: string) {
   const parts = names.split(/\s+&\s+/).map((part) => part.trim()).filter(Boolean);
@@ -102,18 +64,6 @@ function clock(time: string) {
   return `${hour % 12 || 12}:${String(minute || 0).padStart(2, "0")} ${mark}`;
 }
 
-function petals(list: [number, number, number, number, boolean][], width: number, height: number, size: number) {
-  return list.map(([x, y, rotate, delay, flip]) => (
-    <span
-      key={`${width}-${x}-${y}`}
-      className="hs-petal"
-      style={{ left: `${(x / width) * 100}%`, top: `${(y / height) * 100}%`, width: `${(size / width) * 100}%`, ["--d" as string]: `${delay}s` }}
-    >
-      <img src={ART.petal} alt="" style={{ transform: `${flip ? "scaleX(-1) " : ""}rotate(${rotate}deg)` }} />
-    </span>
-  ));
-}
-
 export function HansaInvite({
   fields,
   quiet = false,
@@ -126,6 +76,7 @@ export function HansaInvite({
   onReply?: (reply: Reply) => void | Promise<void>;
 }) {
   useFonts("Pinyon Script", "Cinzel", "Cormorant Garamond", "Jost");
+  const rootRef = useRef<HTMLDivElement>(null);
   const nameId = useId();
   const noteId = useId();
   const [phase, setPhase] = useState<Phase>(quiet ? "open" : "closed");
@@ -151,6 +102,36 @@ export function HansaInvite({
     if (phase !== "opening") return;
     const id = window.setTimeout(() => setPhase("open"), 3500);
     return () => window.clearTimeout(id);
+  }, [phase]);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const apply = () => {
+      const windowH = window.visualViewport?.height ?? window.innerHeight;
+      let frame = windowH;
+      let box = root.parentElement;
+      while (box) {
+        const overflowY = getComputedStyle(box).overflowY;
+        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+          frame = box.clientHeight;
+          break;
+        }
+        box = box.parentElement;
+      }
+      const closed = !root.classList.contains("is-open") && !root.classList.contains("is-opening");
+      root.style.height = closed && frame < windowH - 4 ? `${frame}px` : "";
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(root);
+    if (root.parentElement) observer.observe(root.parentElement);
+    window.addEventListener("resize", apply);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", apply);
+    };
   }, [phase]);
 
   const couple = coupleOf(fields.names);
@@ -218,24 +199,24 @@ export function HansaInvite({
   }
 
   return (
-    <div className={`hs${live ? " is-live" : ""}${phase === "opening" ? " is-opening" : ""}${phase === "open" ? " is-open" : ""}`}>
+    <div ref={rootRef} className={`hs${live ? " is-live" : ""}${phase === "opening" ? " is-opening" : ""}${phase === "open" ? " is-open" : ""}`}>
       <section className="hs-stage" aria-label="Opening">
         <span className="hs-moon-glow" aria-hidden="true" />
         <img className="hs-moon" src={ART.moon} alt="" />
-        <div className="hs-arch hs-arch-phone" data-on={live ? "true" : "false"}>{petals(PHONE, 390, 844, 58)}</div>
-        <div className="hs-arch hs-arch-desk" data-on={live ? "true" : "false"}>{petals(DESK, 1440, 900, 84)}</div>
-        {Array.from({ length: 6 }, (_, index) => (
+        {Array.from({ length: FALLING }, (_, index) => (
           <img
             key={index}
             className="hs-drift"
             src={ART.petal}
             alt=""
             style={{
-              left: `${((index * 0.17 + 0.08) % 0.9) * 100}%`,
-              ["--x" as string]: `${index % 2 ? 50 : -50}px`,
-              ["--r" as string]: `${index % 2 ? 160 : -140}deg`,
-              ["--dur" as string]: `${14 + (index % 3) * 4}s`,
-              ["--delay" as string]: `${4 + index * 2.2}s`,
+              left: `${(index * 37) % 92 + 4}%`,
+              ["--s" as string]: 22 + (index % 5) * 8,
+              ["--flip" as string]: index % 3 === 0 ? -1 : 1,
+              ["--x" as string]: `${index % 2 ? 30 + (index % 4) * 16 : -(24 + (index % 5) * 12)}px`,
+              ["--r" as string]: `${index % 2 ? 140 + index * 11 : -(120 + index * 9)}deg`,
+              ["--dur" as string]: `${11 + (index % 7) * 1.5}s`,
+              ["--delay" as string]: `${(index * 0.7) % 8}s`,
             }}
           />
         ))}

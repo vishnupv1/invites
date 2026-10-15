@@ -235,6 +235,14 @@
   animation: tv-pulse 2.2s ease-in-out infinite;
 }
 .tv-enter .tv-pair { align-items: center; }
+@container preview (max-height: 700px) {
+  .tv-gate { justify-content: flex-start; padding: 14px 12px 10px; gap: 8px; overflow: hidden; }
+  .tv-gopuram { width: 72px; }
+  .tv-gate-copy { gap: 2px; }
+  .tv-names b { font-size: 32px; }
+  .tv-names-ta { font-size: 16px; }
+  .tv-enter { min-height: 44px; }
+}
 
 .tv-world { position: relative; z-index: 1; animation: tv-up 0.8s ease both; }
 .tv-nav { display: none; }

@@ -178,6 +178,11 @@
   color: inherit;
 }
 .bw-bob { display: block; transform-origin: 50% 80%; animation: bw-bob 3s ease-in-out infinite; }
+@container preview (max-height: 700px) {
+  .bw-open .bw-sun { top: calc(52% - 80px); }
+  .bw-open .bw-sea { top: 54%; }
+  .bw-bottle { top: calc(50% + 4px); }
+}
 .bw-hint {
   padding: 12px 20px;
   border-radius: 999px;

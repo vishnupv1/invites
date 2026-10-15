@@ -154,13 +154,23 @@ export function MoonlitInvite({
     const apply = () => {
       const width = stage.clientWidth;
       const desk = width >= 860;
-      const visible = window.visualViewport?.height ?? window.innerHeight;
+      const windowH = window.visualViewport?.height ?? window.innerHeight;
+      let frame = windowH;
+      let box = stage.parentElement;
+      while (box) {
+        const overflowY = getComputedStyle(box).overflowY;
+        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+          frame = box.clientHeight;
+          break;
+        }
+        box = box.parentElement;
+      }
+      const preview = frame < windowH - 4;
       const designW = desk ? 1440 : 390;
       const designH = desk ? 900 : 844;
-      const height = desk
-        ? visible
-        : Math.min(width * (designH / designW), Math.max(visible, 480));
-      const scale = Math.min(width / designW, height / designH);
+      const height = preview ? frame : desk ? frame : Math.min(width * (designH / designW), Math.max(frame, 480));
+      const scale = preview && !desk ? width / designW : Math.min(width / designW, height / designH);
       stage.style.aspectRatio = "auto";
       stage.style.maxHeight = "none";
       stage.style.minHeight = "0";
@@ -171,8 +181,17 @@ export function MoonlitInvite({
       fit.style.aspectRatio = "auto";
       fit.style.position = "absolute";
       fit.style.left = "50%";
-      fit.style.top = "50%";
-      fit.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      if (preview && !desk) {
+        fit.style.top = "auto";
+        fit.style.bottom = "0";
+        fit.style.transformOrigin = "bottom center";
+        fit.style.transform = `translate(-50%, 0) scale(${scale})`;
+      } else {
+        fit.style.top = "50%";
+        fit.style.bottom = "auto";
+        fit.style.transformOrigin = "center";
+        fit.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      }
     };
     apply();
     const observer = new ResizeObserver(apply);

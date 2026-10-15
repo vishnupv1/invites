@@ -184,21 +184,30 @@ export function LaceInvite({
       const embedded = Boolean(fit.closest(".ir-preview, .ir-play"));
       const windowH = window.visualViewport?.height ?? window.innerHeight;
       let visible = windowH;
-      const parent = fit.parentElement;
-      if (!embedded && parent) {
-        const overflowY = getComputedStyle(parent).overflowY;
-        const parentH = parent.clientHeight;
-        if ((overflowY === "hidden" || overflowY === "clip") && parentH > 80 && parentH < windowH - 4) visible = parentH;
+      let box = fit.parentElement;
+      while (!embedded && box) {
+        const overflowY = getComputedStyle(box).overflowY;
+        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+          visible = box.clientHeight;
+          break;
+        }
+        box = box.parentElement;
       }
+      const preview = visible < windowH - 4;
       const nextDesk = width >= 860 || (!embedded && width > visible && width >= 640);
       const designW = nextDesk ? 1440 : 390;
       const designH = nextDesk ? 900 : 844;
       const revealed = page.classList.contains("ph-open");
       const scratching = page.classList.contains("ph-scratch");
-      const nextScale = width / designW;
+      const widthScale = width / designW;
+      const nextScale = widthScale;
       const scaledH = designH * nextScale;
       let shiftY = 0;
-      if (!embedded && !revealed && scaledH > visible + 1) {
+      if (preview && !revealed) {
+        const anchor = (nextDesk ? 860 : 720) * nextScale;
+        shiftY = Math.min(0, visible - 12 - anchor);
+      } else if (!embedded && !revealed && scaledH > visible + 1) {
         const focusTop = nextDesk ? (scratching ? 160 : 620) : (scratching ? 104 : 360);
         shiftY = Math.min(0, Math.max(visible - scaledH, 12 - focusTop * nextScale));
       } else if (!embedded && !revealed && scaledH + 1 < visible) {
@@ -212,7 +221,7 @@ export function LaceInvite({
       setEmbed((value) => (value === embedded ? value : embedded));
       setScale((value) => (Math.abs(value - nextScale) < 0.001 ? value : nextScale));
       setShift((value) => (Math.abs(value.x) < 0.5 && Math.abs(value.y - shiftY) < 0.5 ? value : { x: 0, y: shiftY }));
-      const nextHeight = revealed ? page.offsetHeight * nextScale : embedded ? scaledH : visible;
+      const nextHeight = revealed ? page.offsetHeight * nextScale : preview ? visible : embedded ? scaledH : visible;
       fit.style.overflow = "hidden";
       if (Math.abs(fit.getBoundingClientRect().height - nextHeight) > 1) fit.style.height = `${nextHeight}px`;
     };

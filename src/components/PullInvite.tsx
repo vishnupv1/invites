@@ -218,8 +218,20 @@ export function PullInvite({
     const measure = () => {
       const width = node.clientWidth || window.innerWidth;
       const wide = width >= 860;
+      const windowH = window.visualViewport?.height ?? window.innerHeight;
+      let frame = windowH;
+      let box = node.parentElement;
+      while (box) {
+        const overflowY = getComputedStyle(box).overflowY;
+        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+          frame = box.clientHeight;
+          break;
+        }
+        box = box.parentElement;
+      }
       setDesk(wide);
-      setStageH(wide ? 900 : 844);
+      setStageH(frame < windowH - 4 ? frame : wide ? 900 : 844);
     };
     measure();
     const observer = new ResizeObserver(measure);
