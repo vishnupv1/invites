@@ -7,6 +7,7 @@ const SITE = [
   ["/faq", "Questions"],
   ["/occasions", "Celebrations"],
   ["/guides", "Guides"],
+  ["/feedback", "Feedback"],
   ["/contact", "Contact"],
   ["/privacy", "Privacy"],
   ["/terms", "Terms"],

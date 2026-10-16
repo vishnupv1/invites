@@ -20,6 +20,7 @@ import { GuideArticle, GuidesIndex } from "./pages/Guides";
 import { Topic } from "./pages/Topic";
 import { TOPICS } from "./data/topics";
 import { redirectTarget } from "./data/paths";
+import { Feedback } from "./pages/Feedback";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 import { NotFound, Unauthorized } from "./pages/Unauthorized";
 import { useSession } from "./session";
@@ -91,6 +92,7 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/refunds" element={<Refunds />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/feedback" element={<Feedback />} />
         <Route path="/guides" element={<GuidesIndex />} />
         <Route path="/guides/:slug" element={<GuideArticle />} />
         <Route path="/admin" element={<Admin />} />

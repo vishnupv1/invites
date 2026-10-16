@@ -257,6 +257,16 @@
 .user-row { grid-template-columns: 2.2fr 0.7fr 1fr; }
 .event-row { grid-template-columns: 2fr 1.3fr 1fr 0.7fr 0.8fr auto; }
 .pay-row { grid-template-columns: 1.4fr 1.4fr 1fr 0.8fr; }
+.fb-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 8px;
+  border-bottom: 1px solid rgba(23, 32, 28, 0.12);
+}
+.fb-admin div { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.fb-admin p { margin: 0; }
+.fb-admin strong { color: #e9a23b; letter-spacing: 1px; }
 .head-row {
   display: grid;
   gap: 12px;

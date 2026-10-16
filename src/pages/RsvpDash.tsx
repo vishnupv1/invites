@@ -10,7 +10,7 @@ import { guestInviteUrl } from "../lib/share";
 import { useSession } from "../session";
 import { useLibrary } from "../state";
 import { Logo } from "../components/shell/Logo";
-import { CheckIcon, EventsIcon, GridIcon, GuestsIcon, HeartIcon, OverviewIcon, PencilIcon, ReceiptIcon, SettingsIcon, ShareIcon } from "../components/shell/marks";
+import { CheckIcon, EventsIcon, GridIcon, GuestsIcon, HeartIcon, OverviewIcon, PencilIcon, ReceiptIcon, SettingsIcon, ShareIcon, StarIcon } from "../components/shell/marks";
 import { LibraryPane } from "./LibraryPane";
 import { AccountTemplates } from "./Templates";
 import "./rsvp-dash.css";
@@ -29,6 +29,7 @@ const JUMPS = [
   { to: "/drafts", label: "Drafts" },
   { to: "/favorites", label: "Favorites" },
   { to: "/purchases", label: "Purchases" },
+  { to: "/feedback", label: "Feedback" },
 ];
 const SETTINGS_KEY = "invitesready.settings.v1";
 const NOTICE_ROWS = [
@@ -167,6 +168,11 @@ function SettingsForm() {
           </select>
         </label>
       </div>
+      <div className="rsvp-panel">
+        <h2>Feedback</h2>
+        <p className="rsvp-note">Tell us how the designs, the editor, and replies are working.</p>
+        <Link className="rsvp-go" to="/feedback">Rate InvitesReady</Link>
+      </div>
       <div className="rsvp-settings-save">
         <button type="submit" className="rsvp-save" disabled={saving}>{saving ? "Saving…" : "Save changes"}</button>
         {note ? <p className="rsvp-note">{note}</p> : null}
@@ -297,6 +303,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
         <Link className={pane === "wishes" ? "on" : ""} to="/wishes"><HeartIcon /> Wishes</Link>
         {selected ? <Link to={`/create/${selected.templateId}?invite=${selected.id}`}><PencilIcon /> Edit invitation</Link> : <span className="off"><PencilIcon /> Edit invitation</span>}
         <Link className={pane === "settings" ? "on" : ""} to="/settings"><SettingsIcon /> Settings</Link>
+        <Link to="/feedback"><StarIcon /> Feedback</Link>
         <Link className={pane === "templates" ? "on" : ""} to="/templates"><GridIcon /> Templates</Link>
         <Link className={pane === "events" ? "on" : ""} to="/events"><EventsIcon /> Events</Link>
         <Link className={pane === "drafts" ? "on" : ""} to="/drafts"><PencilIcon /> Drafts</Link>

@@ -10,7 +10,7 @@ import { TEMPLATES } from "../data/templates";
 import { formatShortDate } from "../lib/dates";
 import "./admin.css";
 
-const SECTIONS = ["Overview", "Templates", "Users", "Events", "Payments", "Settings"] as const;
+const SECTIONS = ["Overview", "Templates", "Users", "Events", "Payments", "Feedback", "Settings"] as const;
 type Section = (typeof SECTIONS)[number] | "More";
 
 const MOBILE_NAV: { label: string; section: Section; icon: string }[] = [
@@ -27,6 +27,7 @@ const ICONS: Record<(typeof SECTIONS)[number], string> = {
   Users: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c.8-4 3.6-6 7-6s6.2 2 7 6",
   Events: "M3 5h18v16H3zM16 3v4M8 3v4M3 10h18",
   Payments: "M2 6h20v12H2zM2 10h20M6 15h4",
+  Feedback: "M12 3.2 14.7 8.8l6.1.6-4.6 4 1.4 6L12 16.4 6.4 19.4l1.4-6-4.6-4 6.1-.6L12 3.2z",
   Settings: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
 };
 
@@ -36,6 +37,7 @@ const SUBS: Record<Section, string> = {
   Users: "Accounts that have signed up.",
   Events: "Invitations hosts have published.",
   Payments: "Template purchases recorded by the API.",
+  Feedback: "Ratings and notes from hosts and guests.",
   Settings: "Who can open this console.",
   More: "Purchases and this console.",
 };
@@ -44,6 +46,37 @@ const COLORS = ["#1C3A2A", "#6F9A82", "#2E8B57", "#C8392B", "#1C3A2A", "#1C3A2A"
 
 function initials(name: string) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
+}
+
+const TOPIC_LABEL: Record<string, string> = {
+  designs: "Designs",
+  editor: "Editor",
+  sharing: "Sharing",
+  replies: "Replies",
+  payments: "Payments",
+  other: "Something else",
+  general: "General",
+};
+
+function FeedbackList({ rows }: { rows: AdminSummary["feedback"] }) {
+  return (
+    <section className="panel">
+      <div className="pay-kpis">
+        <article className="pay-kpi"><em>Recent notes</em><strong>{rows.length}</strong></article>
+      </div>
+      {rows.map((row) => (
+        <article className="fb-admin" key={row.id}>
+          <div>
+            <strong>{"★".repeat(row.rating)}{"☆".repeat(Math.max(0, 5 - row.rating))}</strong>
+            <span className="muted">{TOPIC_LABEL[row.topic] ?? row.topic}</span>
+          </div>
+          {row.message ? <p>{row.message}</p> : null}
+          <span className="muted">{[row.name || "Guest", row.email, row.at ? formatShortDate(row.at.slice(0, 10)) : ""].filter(Boolean).join(" · ")}</span>
+        </article>
+      ))}
+      {rows.length === 0 ? <p className="empty">No feedback yet.</p> : null}
+    </section>
+  );
 }
 
 function weekKey(iso: string) {
@@ -311,6 +344,8 @@ export function Admin() {
             {shownEvents.length === 0 ? <p className="empty">No invitations published yet.</p> : null}
           </section>
         ) : null}
+
+        {section === "Feedback" || section === "More" ? <FeedbackList rows={data.feedback ?? []} /> : null}
 
         {section === "Payments" || section === "More" ? (
           <section className="panel">

@@ -101,3 +101,7 @@ export function LockIcon() {
 export function CopyIcon() {
   return <Icon><path d="M9 9h9v11H9zM6 15V5h9" /></Icon>;
 }
+
+export function StarIcon() {
+  return <Icon><path d="M12 3.2 14.7 8.8l6.1.6-4.6 4 1.4 6L12 16.4 6.4 19.4l1.4-6-4.6-4 6.1-.6L12 3.2z" /></Icon>;
+}

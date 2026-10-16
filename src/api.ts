@@ -118,7 +118,15 @@ export type AdminSummary = {
   users: { id: string; name: string; email: string; events: number; joined: string }[];
   events: { id: string; name: string; templateId: string; host: string; date: string; replies: number; yes: number; code: string }[];
   purchases: { id: string; templateId: string; host: string; price: number; at: string }[];
+  feedback: { id: string; rating: number; topic: string; message: string; name: string; email: string; at: string }[];
 };
+
+export function sendFeedback(body: { rating: number; topic: string; message: string; name: string; email: string }) {
+  return request<{ ok: true }>("/api/feedback", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
 
 export function adminSummary() {
   return request<AdminSummary>("/api/admin/summary");

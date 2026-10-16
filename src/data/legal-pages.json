@@ -22,7 +22,8 @@
           "Invitation content you type or upload: names, dates, venues, photos, music, and messages.",
           "Guest replies: the name and response someone submits on an invitation page.",
           "Purchase records: the template, the price, a coupon code if you used one, and the Razorpay order and payment identifiers. Card, UPI, and bank details are entered on Razorpay’s page, not on ours.",
-          "Drafts saved in this browser before you publish."
+          "Drafts saved in this browser before you publish.",
+          "Feedback you send: a star rating, an optional note, and the name or email you include with it."
         ]
       },
       {
@@ -31,7 +32,7 @@
       },
       {
         "type": "p",
-        "text": "We use this information to create your account, show your invitation, store replies, confirm a purchase, and answer support email. We do not sell personal information."
+        "text": "We use this information to create your account, show your invitation, store replies, confirm a purchase, answer support email, and read the ratings and notes you send. We do not sell personal information."
       },
       {
         "type": "h2",

@@ -119,6 +119,14 @@ function describe(pathname: string): Meta {
       image: HOME_IMAGE,
     };
   }
+  if (pathname === "/feedback") {
+    return {
+      title: "Feedback | InvitesReady",
+      description: "Rate InvitesReady and tell us what to keep or change. A star and a sentence is enough.",
+      index: true,
+      image: HOME_IMAGE,
+    };
+  }
 
   const preview = pathname.match(/^\/(?:preview|template|browse)\/([^/]+)$/);
   if (preview) {

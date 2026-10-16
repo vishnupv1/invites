@@ -757,7 +757,8 @@ function writeSitemap(list) {
     .filter((page) => canonicalPath(page) === page.path && !UNLISTED.has(page.path) && page.index !== false)
     .map((page) => sitemapEntry(page))
     .join("\n");
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls}\n</urlset>\n`;
+  const feedback = `  <url><loc>${SITE}/feedback</loc></url>`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls}\n${feedback}\n</urlset>\n`;
   fs.writeFileSync(path.join(root, "public/sitemap.xml"), xml);
   const dist = path.join(root, "dist/sitemap.xml");
   if (fs.existsSync(path.dirname(dist))) fs.writeFileSync(dist, xml);
