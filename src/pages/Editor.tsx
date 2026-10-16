@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
-import { BaptismInvite } from "../components/BaptismInvite";
 import { Baptism2Invite } from "../components/Baptism2Invite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
@@ -42,7 +41,7 @@ import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "..
 import { readCoupleNames } from "../lib/couple-names";
 import { assetUrl, ensureSession, getInviteRecord, getToken, listPurchases, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptism2ThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { hold, SmartButton, Spinner } from "../components/Loader";
@@ -109,11 +108,9 @@ function receptionLabel(template: Template, draft: InviteFields) {
   if ((draft.lines ?? "").trim().startsWith("[")) return template.meta.reception ?? "";
   const fallback = template.id === "anna"
     ? "Reception & dinner"
-    : template.id === "gazal"
+      : template.id === "gazal"
       ? "Walima reception"
-      : template.id === "baptism"
-        ? "Lunch & cake"
-        : template.meta.reception ?? "";
+      : template.meta.reception ?? "";
   return eventName(draft.lines, "receptionName", fallback);
 }
 
@@ -1571,8 +1568,6 @@ export function Editor({
                     <AureliaInvite fields={previewFields} />
                   ) : template.style === "anna" ? (
                     <AnnaInvite fields={previewFields} theme={annaThemeOf(model.swatch)} onTheme={(next) => update({ swatch: swatchForAnna(next) })} />
-                  ) : template.style === "baptism" ? (
-                    <BaptismInvite fields={previewFields} theme={baptismThemeOf(model.swatch)} />
                   ) : template.style === "baptism2" ? (
                     <Baptism2Invite fields={previewFields} theme={baptism2ThemeOf(model.swatch)} />
                   ) : template.style === "vivah" ? (

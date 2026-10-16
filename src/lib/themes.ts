@@ -1,5 +1,4 @@
 import type { AnnaTheme } from "../components/AnnaInvite";
-import type { BaptismTheme } from "../components/BaptismInvite";
 import type { Baptism2Theme } from "../components/Baptism2Invite";
 import type { BeachTheme } from "../components/BeachInvite";
 import type { BotanicaTheme } from "../components/BotanicaInvite";
@@ -85,12 +84,6 @@ export function pullThemeOf(swatch: string): PullTheme {
   if (swatch === "emerald") return "emerald";
   if (swatch === "plum") return "plum";
   return "burgundy";
-}
-
-export function baptismThemeOf(swatch: string): BaptismTheme {
-  if (swatch === "rose") return "blush";
-  if (swatch === "emerald") return "sage";
-  return "sky";
 }
 
 export function baptism2ThemeOf(swatch: string): Baptism2Theme {

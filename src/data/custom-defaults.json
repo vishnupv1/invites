@@ -37,18 +37,6 @@
       { "q": "Is there parking?", "a": "Yes, at both venues, with people to guide you in." }
     ]
   },
-  "baptism": {
-    "people": [
-      { "name": "Tony Mathew", "role": "Godfather" },
-      { "name": "Anita George", "role": "Godmother" }
-    ],
-    "facts": [
-      { "label": "Born", "value": "2 November 2026" },
-      { "label": "Loves", "value": "Milk & long naps" },
-      { "label": "First smile", "value": "Christmas Eve" },
-      { "label": "Best friend", "value": "Bruno the bear" }
-    ]
-  },
   "baptism2": {
     "people": [
       { "name": "Tony Mathew", "role": "Godfather" },

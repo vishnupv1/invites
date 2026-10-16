@@ -21,7 +21,9 @@
     { "source": "/c/reception", "destination": "/reception", "permanent": true },
     { "source": "/griha-pravesh", "destination": "/housewarming", "permanent": true },
     { "source": "/c/:id", "destination": "/occasions", "permanent": true },
-    { "source": "/pricing", "destination": "/", "permanent": true }
+    { "source": "/pricing", "destination": "/", "permanent": true },
+    { "source": "/template/baptism", "destination": "/template/baptism2", "permanent": true },
+    { "source": "/open/baptism", "destination": "/open/baptism2", "permanent": true }
   ],
   "headers": [
     {

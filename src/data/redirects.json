@@ -6,5 +6,7 @@
   "/c/engagement": "/engagement",
   "/c/reception": "/reception",
   "/griha-pravesh": "/housewarming",
-  "/pricing": "/"
+  "/pricing": "/",
+  "/template/baptism": "/template/baptism2",
+  "/open/baptism": "/open/baptism2"
 }

@@ -12,7 +12,6 @@ import { useFavs } from "../lib/favorites";
 import { useSession } from "../session";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
-import { BaptismInvite } from "../components/BaptismInvite";
 import { Baptism2Invite } from "../components/Baptism2Invite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
@@ -81,8 +80,6 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <AureliaInvite fields={fields} />;
     case "anna":
       return <AnnaInvite fields={fields} theme={annaThemeOf(swatch)} />;
-    case "baptism":
-      return <BaptismInvite fields={fields} demo />;
     case "baptism2":
       return <Baptism2Invite fields={fields} theme={baptism2ThemeOf(swatch)} demo />;
     case "vivah":

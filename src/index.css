@@ -405,7 +405,6 @@ svg.glyph {
   div.bf-root.is-load,
   div.bf-root.is-fade,
   div.bf-root.is-open,
-  .bp-frame .bp-open:not(.is-quiet),
   .bap2 .bap2-open,
   .hv .hv-open,
   .tv:not(.is-entered) {
@@ -443,7 +442,6 @@ svg.glyph {
   .pv-live.phone .bf-root.is-load,
   .pv-live.phone .bf-root.is-fade,
   .pv-live.phone .bf-root.is-open,
-  .bp-frame .bp-open:not(.is-quiet),
   .bap2 .bap2-open,
   .hv .hv-open,
   .tv:not(.is-entered) {
