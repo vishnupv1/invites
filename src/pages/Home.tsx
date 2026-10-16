@@ -12,6 +12,7 @@ import { UnderlineField } from "../components/shell/UnderlineField";
 import { ArrowIcon } from "../components/shell/marks";
 import { listTemplates } from "../api";
 import facts from "../data/site-facts.json" with { type: "json" };
+import pageCopy from "../data/page-copy.json" with { type: "json" };
 import { publishedTopics } from "../data/topics";
 import { SiteFooter } from "../components/SiteFooter";
 import { TEMPLATES, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
@@ -113,6 +114,47 @@ export function Home({ focus }: { focus?: string }) {
     if (!id) return;
     document.getElementById(id)?.scrollIntoView({ block: "start" });
   }, [focus, hash, catalog]);
+
+  if (focus === "how" || focus === "features") {
+    const heading = focus === "how" ? "How digital wedding invitations work" : "What a digital invitation includes";
+    const paragraphs = focus === "how" ? pageCopy.how : pageCopy.features;
+    return (
+      <IrApp>
+        <div className="ir-home">
+          <DesktopNav tone="emerald" />
+          <section id={focus} className="ir-home-sec">
+            <h1 className="ir-display">{heading}</h1>
+            {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            {focus === "how" ? (
+              <ol className="ir-steps">
+                {STEPS.map((step) => (
+                  <li key={step.n}>
+                    <span>{step.n}</span>
+                    <div>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <ul className="ir-plain">
+                {facts.features.map((line) => <li key={line}>{line}</li>)}
+              </ul>
+            )}
+            <p>
+              <Link to="/wedding">Digital wedding invitations</Link>
+              {" · "}
+              <Link to="/faq">Questions</Link>
+              {" · "}
+              <Link to="/browse">Browse templates</Link>
+            </p>
+          </section>
+          <SiteFooter />
+        </div>
+      </IrApp>
+    );
+  }
 
   if (focus === "faq") {
     return (

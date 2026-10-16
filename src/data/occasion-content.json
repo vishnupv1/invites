@@ -15,12 +15,12 @@
       "With the blessings of our parents, we invite you to the wedding celebrations of Meera and Kabir.",
       "You are warmly invited to the wedding of Ananya and Rohan. Kindly reply on this page."
     ],
-    "price": "From ₹379, paid once. You are not buying a print run. The listed price is for the design, and you can edit the page after it is sent. Publishing is free for now while prices are paused. TODO: review copy.",
+    "price": "Some wedding designs, including Gazal, are free to publish. Paid designs list their own price: Vivah is ₹379, and others differ. You pay once for a paid design, not per guest. Publishing is free for now while prices are paused. TODO: review copy.",
     "faqs": [
       { "q": "Can one wedding link include every function?", "a": "TODO: review copy. Yes. Add the ceremony, the reception, and any other gathering, each with its own time and place. Guests reply on the same page." },
       { "q": "Do guests need WhatsApp installed to open it?", "a": "TODO: review copy. No. WhatsApp is only how you send the link. The invitation opens in the phone's browser." },
       { "q": "Can I change the venue after I have shared the link?", "a": "TODO: review copy. Yes. Edit the page and the same link updates. You do not send a new invitation." },
-      { "q": "Is ₹379 the price for every wedding design?", "a": "TODO: review copy. No. ₹379 is the starting listed price. Each template shows its own one-time price. Some designs are free to publish." },
+      { "q": "Is every wedding design ₹379?", "a": "TODO: review copy. No. Gazal and Aurelia are free to publish. Vivah is listed at ₹379, and other designs show their own one-time price. There is no single from-price." },
       { "q": "Can parents and the couple both be named?", "a": "TODO: review copy. Yes. The host line and the couple's names are separate fields, so you can follow the wording your families prefer." }
     ]
   },

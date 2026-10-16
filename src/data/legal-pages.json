@@ -58,16 +58,23 @@
   },
   "/contact": {
     "title": "Contact",
-    "lede": "InvitesReady makes digital invitations for weddings and other celebrations.",
+    "lede": "Write to InvitesReady about a digital wedding invitation, an account, or a payment. TODO: review copy.",
     "blocks": [
+      { "type": "p", "text": "TODO: review copy. InvitesReady makes animated digital invitations for weddings and other celebrations. Guests open one link and RSVP in the browser. If something about that page, your account, or a payment is stuck, email us. There is no phone line and no chat widget." },
       { "type": "h2", "text": "Email" },
       { "type": "p", "text": "{{email}}" },
-      { "type": "p", "text": "Write to us about an account, a payment, a refund, or an invitation that will not open. Include the email on the account and, for a payment, the date you paid." },
+      { "type": "p", "text": "For an account, use the email you signed in with. For a payment, include the date you paid and the design name, such as Vivah or Gazal. For an invitation that will not open, send the link your guests have. Do not send a guest's phone number or a full address unless we have asked for it." },
+      { "type": "h2", "text": "What we can help with" },
+      { "type": "p", "text": "We can help you find a wedding design, understand a one-time price, or see why a link is not opening. Gazal is free to publish. Other designs list their own price, and publishing is free for now while prices are paused. A refund follows the refund policy: email within 7 days if you paid and have not published that template." },
+      { "type": "p", "text": "Wedding planners can write from the same address. Tell us the couple's names, the date, and whether you need a Hindu wedding, a nikah, a Tamil wedding, or a save-the-date. We do not design a custom illustration by email. You pick a template and edit it in the browser." },
+      { "type": "p", "text": "We read the inbox on weekdays. If a guest list or a venue is urgent, say so in the first line. The invitation itself is still edited by you: the link stays the same when you change a time or a place, so you do not need us to resend a card." },
       { "type": "h2", "text": "Policies" },
       { "type": "links", "items": [
         { "href": "/privacy", "label": "Privacy policy" },
         { "href": "/terms", "label": "Terms of use" },
-        { "href": "/refunds", "label": "Refunds" }
+        { "href": "/refunds", "label": "Refunds" },
+        { "href": "/wedding", "label": "Digital wedding invitations" },
+        { "href": "/faq", "label": "Questions" }
       ] }
     ]
   }

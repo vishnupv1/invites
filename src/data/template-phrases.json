@@ -4,49 +4,56 @@
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a courtyard window that opens onto the days by the lake"
   },
   "goa": {
     "style": "Garden Gate",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with garden gates that open onto a wedding by the sea"
   },
   "lace": {
     "style": "Ivory Lace",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "in ivory lace that opens by the lake after you break the seal"
   },
   "gazal": {
     "style": "Emerald",
     "occasion": "Nikah",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "in emerald, opening onto the nikah and the walima"
   },
   "aurelia": {
     "style": "Navy Gold",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "in navy and gold, opening onto the ceremony and reception"
   },
   "anna": {
     "style": "Garden Card",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "on a cream garden card that flips open onto the day"
   },
   "baptism": {
     "style": "Dove",
     "occasion": "Baptism",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a dove that opens onto the day and a blessing"
   },
   "vivah": {
     "style": "Temple Door",
@@ -54,49 +61,56 @@
     "languages": [
       "English",
       "Hindi"
-    ]
+    ],
+    "hook": "with temple doors that open onto the muhurtham"
   },
   "beach": {
     "style": "Sunset Shore",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a bottle on the shore that opens onto sunset vows"
   },
   "botanica": {
     "style": "Floral Wreath",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a gold wreath that opens into floral frames"
   },
   "heavenly": {
     "style": "Palace Light",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with palace doors that open into a lantern-lit hall"
   },
   "pull": {
     "style": "Curtain Pull",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a velvet rope, parting curtains, and a gold scroll"
   },
   "inland": {
     "style": "Tear-open",
     "occasion": "Birthday",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a letter that tears open onto a birthday party"
   },
   "hearth": {
     "style": "Front Door",
     "occasion": "Housewarming",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a front door that opens onto a griha pravesh"
   },
   "shaadi": {
     "style": "Veil Reveal",
@@ -104,7 +118,8 @@
     "languages": [
       "English",
       "Hindi"
-    ]
+    ],
+    "hook": "with a veil that lifts onto the festivities"
   },
   "thiruvizha": {
     "style": "Kolam Gate",
@@ -112,69 +127,79 @@
     "languages": [
       "English",
       "Tamil"
-    ]
+    ],
+    "hook": "with a kolam gate that opens onto the muhurtham"
   },
   "peace": {
     "style": "Gift Hamper",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a ribbon that opens a gift hamper onto the day"
   },
   "grandoor": {
     "style": "Lake Palace",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with palace doors that open onto a lake"
   },
   "grandenvelope": {
     "style": "Wax Seal",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a wax seal and a gold-edged card"
   },
   "palace": {
     "style": "Paper Door",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with paper doors that open onto the celebrations"
   },
   "moonlit": {
     "style": "Window",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a jharokha that opens onto the lake"
   },
   "villa": {
     "style": "Tuscan Villa",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a sealed oval that opens onto a Tuscan garden"
   },
   "bloom": {
     "style": "Floral Letter",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a wax seal and a blossom wreath"
   },
   "hansa": {
     "style": "Moonlight Lake",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with a seal that opens onto swans and a full moon"
   },
   "rose": {
     "style": "Stained Glass",
     "occasion": "Wedding",
     "languages": [
       "English"
-    ]
+    ],
+    "hook": "with stained-glass doors that open onto a rose window"
   }
 }

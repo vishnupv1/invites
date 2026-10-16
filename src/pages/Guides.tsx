@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { SiteFooter } from "../components/SiteFooter";
 import { DesktopNav } from "../components/shell/DesktopNav";
 import { IrApp } from "../components/shell/IrApp";
+import pageCopy from "../data/page-copy.json" with { type: "json" };
 import { guideBySlug, loadGuides, type GuidePart } from "../lib/guides";
 import { NotFound } from "./Unauthorized";
 import "./legal.css";
@@ -36,7 +37,7 @@ export function GuidesIndex() {
     <Frame>
       <nav aria-label="Breadcrumb"><Link to="/">Home</Link>{" › "}Guides</nav>
       <h1>Wedding invitation guides</h1>
-      <p className="legal-lede">Outlines for wording, WhatsApp messages, cost, and RSVPs. TODO: write the articles.</p>
+      {pageCopy.guides.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       <ul>
         {guides.map((guide) => (
           <li key={guide.slug}>

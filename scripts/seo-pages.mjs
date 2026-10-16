@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { parseGuide } from "../src/lib/guide-markdown.mjs";
@@ -15,6 +16,7 @@ const siteFacts = JSON.parse(fs.readFileSync(path.join(root, "src/data/site-fact
 const legalPages = JSON.parse(fs.readFileSync(path.join(root, "src/data/legal-pages.json"), "utf8"));
 const phrases = JSON.parse(fs.readFileSync(path.join(root, "src/data/template-phrases.json"), "utf8"));
 const occasionContent = JSON.parse(fs.readFileSync(path.join(root, "src/data/occasion-content.json"), "utf8"));
+const pageCopy = JSON.parse(fs.readFileSync(path.join(root, "src/data/page-copy.json"), "utf8"));
 const templateMeta = JSON.parse(fs.readFileSync(path.join(root, "src/data/template-meta.json"), "utf8"));
 const HOME_DESCRIPTION = seoCopy.pages["/"].description;
 const CONTACT_EMAIL = "invitesreadyforyou@gmail.com";
@@ -247,52 +249,41 @@ function relatedTemplates(template, templates) {
   return [...pool.slice(start), ...pool.slice(0, start)].slice(0, 3);
 }
 
-function dayOf(file) {
-  if (!fs.existsSync(file)) return null;
-  return new Date(fs.statSync(file).mtime).toISOString().slice(0, 10);
-}
+const gitDays = new Map();
 
-function latestDay(files) {
-  const days = files.map((file) => dayOf(file)).filter(Boolean).sort();
-  return days.at(-1) || null;
+function gitDay(file) {
+  const rel = path.relative(root, file);
+  if (gitDays.has(rel)) return gitDays.get(rel);
+  let day = null;
+  if (fs.existsSync(file)) {
+    try {
+      const out = execFileSync("git", ["log", "-1", "--format=%cs", "--", rel], {
+        cwd: root,
+        encoding: "utf8",
+      }).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(out)) day = out;
+    } catch {
+      day = null;
+    }
+  }
+  gitDays.set(rel, day);
+  return day;
 }
 
 function templateLastmod(template) {
-  return latestDay([
-    path.join(root, "public/covers", `${template.id}.jpg`),
-    path.join(root, "src/data/templates.ts"),
-    path.join(root, "src/data/template-phrases.json"),
-    path.join(root, "src/data/template-meta.json"),
-    path.join(root, "src/data/seo-copy.json"),
-  ]);
+  return gitDay(path.join(root, "public/covers", `${template.id}.jpg`));
 }
 
 function staticLastmod(pathname) {
   if (["/privacy", "/terms", "/refunds", "/contact"].includes(pathname)) {
-    return dayOf(path.join(root, "src/data/legal-pages.json"));
+    return gitDay(path.join(root, "src/data/legal-pages.json"));
   }
-  if (["/", "/how", "/features", "/faq"].includes(pathname)) {
-    return latestDay([
-      path.join(root, "src/pages/Home.tsx"),
-      path.join(root, "src/data/site-facts.json"),
-    ]);
-  }
-  if (pathname === "/browse") {
-    return latestDay([
-      path.join(root, "src/data/templates.ts"),
-      path.join(root, "src/data/seo-copy.json"),
-    ]);
-  }
-  if (pathname === "/occasions") {
-    return latestDay([
-      path.join(root, "src/data/seo-copy.json"),
-      path.join(root, "src/data/occasion-content.json"),
-    ]);
-  }
-  if (pathname === "/guides") {
-    const dir = path.join(root, "content/guides");
-    return latestDay(fs.readdirSync(dir).map((name) => path.join(dir, name)));
-  }
+  if (pathname === "/") return gitDay(path.join(root, "src/pages/Home.tsx"));
+  if (pathname === "/how" || pathname === "/features") return gitDay(path.join(root, "src/data/page-copy.json"));
+  if (pathname === "/faq") return gitDay(path.join(root, "src/data/site-facts.json"));
+  if (pathname === "/browse") return gitDay(path.join(root, "src/pages/BrowsePage.tsx"));
+  if (pathname === "/occasions") return gitDay(path.join(root, "src/data/seo-copy.json"));
+  if (pathname === "/guides") return gitDay(path.join(root, "src/data/page-copy.json"));
   return null;
 }
 
@@ -313,6 +304,12 @@ function renderParts(parts) {
   return parts.map((part) => (
     part.href ? `<a href="${escapeAttr(part.href)}">${escapeText(part.label)}</a>` : escapeText(part.text)
   )).join("");
+}
+
+function prose(id) {
+  const paragraphs = pageCopy[id];
+  if (!paragraphs?.length) return "";
+  return paragraphs.map((paragraph) => `<p>${escapeText(paragraph)}</p>`).join("");
 }
 
 function guideHtml(guide) {
@@ -408,6 +405,7 @@ function bodyFor(page, templates, events) {
   } else if (page.path === "/occasions") {
     parts.push("<h2>Celebrations</h2>", `<ul>${celebrationItems().join("")}</ul>`);
   } else if (page.path === "/guides") {
+    parts.push(prose("guides"));
     parts.push("<h2>Articles</h2>", linkList(readGuides().map((guide) => [guide.path, guide.title])));
   } else if (page.guide) {
     parts.push(`<p>${escapeText(page.guide.author)} · <time datetime="${escapeAttr(page.guide.date)}">${escapeText(page.guide.date)}</time></p>`);
@@ -418,9 +416,11 @@ function bodyFor(page, templates, events) {
       "<h2>How it works</h2>",
       `<ol>${siteFacts.steps.map((step) => `<li><h3>${escapeText(step.title)}</h3><p>${escapeText(step.text)}</p></li>`).join("")}</ol>`,
     );
+    if (page.path === "/how") parts.push(prose("how"));
   }
   if (page.path === "/" || page.path === "/features") {
     parts.push("<h2>What guests get</h2>", `<ul>${siteFacts.features.map((line) => `<li>${escapeText(line)}</li>`).join("")}</ul>`);
+    if (page.path === "/features") parts.push(prose("features"));
   }
   if (page.path === "/" || page.path === "/faq") parts.push("<h2>Questions</h2>", faqHtml());
   if (legalPages[page.path]) parts.push(legalHtml(page.path));
@@ -695,7 +695,7 @@ function pages(templates, events) {
       image: HOME_IMAGE,
       guide,
       index: guide.index,
-      lastmod: dayOf(guide.file),
+      lastmod: gitDay(guide.file),
     });
   }
   for (const topic of seoCopy.topics) {
@@ -708,10 +708,7 @@ function pages(templates, events) {
       image: `${SITE}/og/occasion-${topic.id}.jpg`,
       imageAlt: `${topic.label} digital invitation`,
       topic,
-      lastmod: latestDay([
-        path.join(root, "src/data/occasion-content.json"),
-        path.join(root, "src/data/seo-copy.json"),
-      ]),
+      lastmod: gitDay(path.join(root, "src/data/occasion-content.json")),
       index: topic.index !== false,
     });
     if (topic.index !== false) {
@@ -829,6 +826,21 @@ function prerender(list, templates, events) {
     fs.writeFileSync(path.join(dir, "index.html"), html);
   }
 }
+
+function wordCount(text) {
+  return String(text).split(/\s+/).filter(Boolean).length;
+}
+
+for (const id of ["how", "features", "guides"]) {
+  const count = wordCount(pageCopy[id].join(" "));
+  if (count < 200) throw new Error(`SEO: /${id} copy is ${count} words`);
+}
+const contactPage = legalPages["/contact"];
+const contactWords = wordCount([
+  contactPage.lede,
+  ...contactPage.blocks.flatMap((block) => (block.text ? [block.text] : (block.items || []).map((item) => item.label || ""))),
+].join(" "));
+if (contactWords < 200) throw new Error(`SEO: /contact copy is ${contactWords} words`);
 
 const templates = readTemplates();
 const events = readEvents();

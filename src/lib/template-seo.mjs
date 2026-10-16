@@ -6,11 +6,6 @@ export function priceLabel(template) {
   return `₹${Number(template.price)} one-time`;
 }
 
-function capitalise(value) {
-  if (!value) return "Wedding";
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
-
 function fitTitle(name, style, occasion, priceBit) {
   const price = ` (${priceBit})`;
   let words = String(style || "Animated").split(/\s+/).filter(Boolean);
@@ -25,13 +20,21 @@ function fitTitle(name, style, occasion, priceBit) {
   return short.length <= TITLE_LIMIT ? short : short.slice(0, TITLE_LIMIT).trim();
 }
 
-function fitDescription(template, occasion) {
+function sentenceOccasion(occasion) {
+  const text = String(occasion || "Wedding").trim();
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
+function fitDescription(template, occasion, hook) {
   const price = template.free || Number(template.price) === 0 ? "Free." : `₹${Number(template.price)} one-time.`;
-  const tail = `Animated opening, RSVP on the page, share on WhatsApp. ${price}`;
-  const keyword = capitalise(occasion);
-  const named = `${keyword} invitation, ${template.name}. ${tail}`;
-  if (named.length <= 155) return named;
-  const plain = `${keyword} invitation. ${tail}`;
+  const tail = `RSVP on the page, share on WhatsApp. ${price}`;
+  const clause = String(hook || "").replace(/\.$/, "").trim();
+  const lead = clause
+    ? `${sentenceOccasion(occasion)} invitation ${clause}.`
+    : `${sentenceOccasion(occasion)} invitation.`;
+  const full = `${lead} ${tail}`;
+  if (full.length <= 155) return full;
+  const plain = `${sentenceOccasion(occasion)} invitation. ${tail}`;
   return plain.length <= 155 ? plain : plain.slice(0, 155).trim();
 }
 
@@ -47,7 +50,7 @@ export function generatedTemplateSeo(template, extra = {}) {
           : "Wedding");
   const style = extra.style || "Animated";
   const priceBit = template.free || Number(template.price) === 0 ? "Free" : `₹${Number(template.price)}`;
-  const description = fitDescription(template, occasion);
+  const description = fitDescription(template, occasion, extra.hook);
   return {
     heading: `${template.name} ${occasion.toLowerCase()} invitation`,
     title: fitTitle(template.name, style, occasion, priceBit),
