@@ -397,6 +397,7 @@ svg.glyph {
 @media (max-width: 759px) {
   .pc-gate:has(.pc-hint),
   .beach .bw-open,
+  .b2 .b2-open,
   .home .hw-open,
   .anna-frame .anna-open,
   .vivah .wd-open:has(.wd-tap),
@@ -460,6 +461,7 @@ svg.glyph {
 @container invite-phone (min-height: 240px) {
   .pc-gate:has(.pc-hint),
   .beach .bw-open,
+  .b2 .b2-open,
   .home .hw-open,
   .anna-frame .anna-open,
   .vivah .wd-open:has(.wd-tap),

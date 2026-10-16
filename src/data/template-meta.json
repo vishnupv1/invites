@@ -195,6 +195,39 @@
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
   },
+  "beach2": {
+    "names": "couple",
+    "ceremony": "Sunset vows",
+    "reception": "Beach reception",
+    "themes": [
+      { "id": "terracotta", "name": "Sunset" },
+      { "id": "sky", "name": "Tropical" },
+      { "id": "plum", "name": "Dusk" }
+    ],
+    "defaultTheme": "terracotta",
+    "shots": [
+      { "label": "Surf school" },
+      { "label": "Island hopping" },
+      { "label": "The proposal" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "Message in a bottle", "configurable": false, "fields": [] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "Date and time", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Sunset vows", "configurable": true, "fields": ["venue", "address"] },
+      { "id": "reception", "label": "Beach reception", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
+      { "id": "story", "label": "How we washed ashore", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "travel", "label": "Getting there", "configurable": true, "fields": ["message"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
+  },
   "hearth": {
     "names": "family",
     "ceremony": "Griha Pravesh",

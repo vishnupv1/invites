@@ -76,6 +76,12 @@
       "description": "A bottle on the shore opens onto sunset vows by the sea. Animated opening, RSVP on the page, share on WhatsApp. ₹549 one-time.",
       "lead": "A beach wedding invitation. A bottle on the shore opens onto sunset vows, a reception by the sea, and a reply."
     },
+    "beach2": {
+      "heading": "Beach version 2 wedding invitation",
+      "title": "Beach 2 – Sunset Wedding Invitation | InvitesReady",
+      "description": "A message in a bottle opens onto sunset vows by the sea. Animated opening, RSVP on the page, share on WhatsApp. ₹549 one-time.",
+      "lead": "Beach 2 is a sunset wedding invitation. A message in a bottle opens onto the vows, a reception by the sea, and a reply."
+    },
     "botanica": {
       "heading": "Floral wreath wedding invitation",
       "title": "Blush Botanica – Floral Wedding Invitation | InvitesReady",
@@ -254,6 +260,7 @@
         "aurelia",
         "anna",
         "beach",
+        "beach2",
         "botanica",
         "heavenly",
         "pull",

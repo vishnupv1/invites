@@ -22,6 +22,18 @@
     "bonfireWhen": "Saturday · 10:30 PM onwards",
     "bonfireVenue": "North Cliff shore"
   },
+  "beach2": {
+    "story": [
+      { "year": "2020", "title": "Surf school, day one", "text": "Both wiped out on the same wave in Kovalam." },
+      { "year": "2023", "title": "Island hopping", "text": "Lakshadweep, a leaky kayak and zero regrets." },
+      { "year": "2026", "title": "The proposal", "text": "Written in the sand at Varkala. The tide nearly won." }
+    ],
+    "travelFrom": "Trivandrum Airport",
+    "travelKm": "50 km",
+    "bonfireName": "Bonfire after-party",
+    "bonfireWhen": "Saturday · 10:30 PM onwards",
+    "bonfireVenue": "North Cliff shore"
+  },
   "anna": {
     "story": [
       { "year": "2016", "title": "First day of college", "text": "Assigned the same lab bench in first-year chemistry. One broken beaker, and a laugh that stayed." },

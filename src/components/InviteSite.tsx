@@ -7,6 +7,7 @@ import "./invite-site.css";
 import { AnnaInvite } from "./AnnaInvite";
 import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
+import { Beach2Invite } from "./Beach2Invite";
 import { BotanicaInvite } from "./BotanicaInvite";
 import { GrandDoorInvite } from "./GrandDoorInvite";
 import { GrandEnvelopeInvite } from "./GrandEnvelopeInvite";
@@ -31,7 +32,7 @@ import { LotusInvite } from "./LotusInvite";
 import { RoseInvite } from "./RoseInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beach2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
 
@@ -356,6 +357,9 @@ export function InviteSite({
   }
   if (template.style === "beach") {
     return <BeachInvite fields={fields} wishes={wishes} onReply={onReply} theme={beachThemeOf(swatch)} />;
+  }
+  if (template.style === "beach2") {
+    return <Beach2Invite fields={fields} wishes={wishes} onReply={onReply} theme={beach2ThemeOf(swatch)} />;
   }
   if (template.style === "botanica") {
     return <BotanicaInvite fields={fields} wishes={wishes} onReply={onReply} theme={botanicaThemeOf(swatch)} />;

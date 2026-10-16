@@ -2,6 +2,7 @@ import type { InviteFields, Template } from "../types";
 import { AnnaInvite } from "./AnnaInvite";
 import { BaptismInvite } from "./BaptismInvite";
 import { BeachInvite } from "./BeachInvite";
+import { Beach2Invite } from "./Beach2Invite";
 import { BotanicaInvite } from "./BotanicaInvite";
 import { GrandDoorInvite } from "./GrandDoorInvite";
 import { GrandEnvelopeInvite } from "./GrandEnvelopeInvite";
@@ -214,6 +215,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <VivahInvite fields={fields} quiet={quiet} demo={demo} />;
     case "beach":
       return <BeachInvite fields={fields} quiet={quiet} />;
+    case "beach2":
+      return <Beach2Invite fields={fields} quiet={quiet} />;
     case "botanica":
       return <BotanicaInvite fields={fields} quiet={quiet} />;
     case "heavenly":
