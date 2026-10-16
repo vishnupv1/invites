@@ -64,6 +64,12 @@
       "description": "A dove opens a baptism invitation for the day and the blessing. Animated opening, RSVP on the page, share on WhatsApp. ₹1299 one-time.",
       "lead": "A digital baptism invitation. A dove opens the page, then guests see the day, the godparents, and leave a blessing. They reply from the link, with no app."
     },
+    "baptism2": {
+      "heading": "Sealed card baptism invitation",
+      "title": "Baptism 2 – Sealed Card Baptism Invitation | InvitesReady",
+      "description": "A sealed card opens onto a dove, the Holy Baptism, and a blessing. Animated opening, RSVP on the page, share on WhatsApp. ₹1299 one-time.",
+      "lead": "Baptism 2 is a baptism invitation. Guests tap the seal, then see the day, the godparents, and leave a blessing."
+    },
     "vivah": {
       "heading": "Temple door wedding invitation",
       "title": "Vivah – Temple Door Wedding Invitation | InvitesReady",
@@ -276,7 +282,8 @@
       "description": "Animated digital baptism invitations. One link for the day and the blessing. Guests RSVP with no app. Share on WhatsApp. Free to publish.",
       "lead": "A digital baptism invitation. Guests see the day, the godparents, and leave a blessing. They open one link and reply with no app.",
       "templates": [
-        "baptism"
+        "baptism",
+        "baptism2"
       ],
       "related": [
         "/birthday",

@@ -126,6 +126,40 @@
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
   },
+  "baptism2": {
+    "names": "child",
+    "ceremony": "Holy Baptism",
+    "reception": "Lunch and cake",
+    "themes": [
+      { "id": "sky", "name": "Sky" },
+      { "id": "rose", "name": "Blush" },
+      { "id": "emerald", "name": "Sage" }
+    ],
+    "defaultTheme": "sky",
+    "shots": [
+      { "label": "Baby photo" },
+      { "label": "Family photo" },
+      { "label": "Tiny feet" },
+      { "label": "First smile" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 12 },
+    "components": [
+      { "id": "opening", "label": "Sealed card", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Parents", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Child", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Relationship", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "Verse", "configurable": true, "fields": ["message"] },
+      { "id": "story", "label": "Godparents and little facts", "configurable": true, "fields": ["lines"] },
+      { "id": "when", "label": "Date and time", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Holy Baptism", "configurable": true, "fields": ["venue", "address"] },
+      { "id": "reception", "label": "Lunch and cake", "configurable": true, "fields": ["receptionVenue", "receptionAddress", "receptionTime"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
+  },
   "vivah": {
     "names": "couple",
     "ceremony": "Muhurtham",

@@ -55,6 +55,14 @@
     ],
     "hook": "with a dove that opens onto the day and a blessing"
   },
+  "baptism2": {
+    "style": "Sealed Card",
+    "occasion": "Baptism",
+    "languages": [
+      "English"
+    ],
+    "hook": "with a sealed card that opens onto a dove and a blessing"
+  },
   "vivah": {
     "style": "Temple Door",
     "occasion": "Hindu Wedding",

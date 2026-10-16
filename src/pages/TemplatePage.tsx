@@ -13,6 +13,7 @@ import { useSession } from "../session";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
+import { Baptism2Invite } from "../components/Baptism2Invite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { Checkout } from "../components/Checkout";
@@ -45,7 +46,7 @@ import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "
 import phrases from "../data/template-phrases.json" with { type: "json" };
 import { primaryTopicForTemplate, templateSeo, topicsForTemplate } from "../data/topics";
 import { templateFacts } from "../lib/template-facts.mjs";
-import { annaThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import { formatShortDate } from "../lib/dates";
@@ -82,6 +83,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <AnnaInvite fields={fields} theme={annaThemeOf(swatch)} />;
     case "baptism":
       return <BaptismInvite fields={fields} demo />;
+    case "baptism2":
+      return <Baptism2Invite fields={fields} theme={baptism2ThemeOf(swatch)} demo />;
     case "vivah":
       return <VivahInvite fields={fields} theme={vivahThemeOf(swatch)} demo />;
     case "beach":

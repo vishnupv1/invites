@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-r
 import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
+import { Baptism2Invite } from "../components/Baptism2Invite";
 import { BeachInvite } from "../components/BeachInvite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { GrandDoorInvite } from "../components/GrandDoorInvite";
@@ -41,7 +42,7 @@ import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "..
 import { readCoupleNames } from "../lib/couple-names";
 import { assetUrl, ensureSession, getInviteRecord, getToken, listPurchases, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptism2ThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { hold, SmartButton, Spinner } from "../components/Loader";
@@ -1572,6 +1573,8 @@ export function Editor({
                     <AnnaInvite fields={previewFields} theme={annaThemeOf(model.swatch)} onTheme={(next) => update({ swatch: swatchForAnna(next) })} />
                   ) : template.style === "baptism" ? (
                     <BaptismInvite fields={previewFields} theme={baptismThemeOf(model.swatch)} />
+                  ) : template.style === "baptism2" ? (
+                    <Baptism2Invite fields={previewFields} theme={baptism2ThemeOf(model.swatch)} />
                   ) : template.style === "vivah" ? (
                     <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
                   ) : template.style === "beach" ? (

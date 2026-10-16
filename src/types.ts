@@ -108,6 +108,7 @@ export type TemplateStyle =
   | "aurelia"
   | "anna"
   | "baptism"
+  | "baptism2"
   | "vivah"
   | "beach"
   | "home"

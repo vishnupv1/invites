@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { InviteView } from "../components/InviteView";
 import { getTemplate, sampleFor } from "../data/templates";
 
-const OPENER = /^(break the seal|open invitation|open the invitation|tear open|untie the ribbon|light the lantern|pull the rope|open the doors|enter the invitation|lift the veil|open the door|open your gift|reveal the date|tap the bottle)/i;
+const OPENER = /^(break the seal|open invitation|open the invitation|tear open|untie the ribbon|light the lantern|pull the rope|open the doors|enter the invitation|lift the veil|open the door|open your gift|reveal the date|tap the bottle|tap the seal)/i;
 
 function controlName(button: HTMLButtonElement) {
   return (button.getAttribute("aria-label") || button.textContent || "").replace(/\s+/g, " ").trim();
