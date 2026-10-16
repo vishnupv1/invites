@@ -227,20 +227,25 @@ export function LotusInvite({
     if (!root || !stage || !board) return;
     const apply = () => {
       const width = stage.clientWidth || root.clientWidth || 390;
-      const wide = width >= 900;
+      const embedded = Boolean(root.closest(".ir-preview, .ir-play"));
+      const wide = !embedded && width >= 900;
       const designW = wide ? 1440 : 390;
       const designH = wide ? 900 : 844;
       const windowH = window.visualViewport?.height ?? window.innerHeight;
       let frame = windowH;
-      let box = root.parentElement;
-      while (box) {
-        const overflowY = getComputedStyle(box).overflowY;
-        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
-        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
-          frame = box.clientHeight;
-          break;
+      if (embedded) {
+        frame = root.closest(".ir-preview-stage")?.clientHeight || 844;
+      } else {
+        let box = root.parentElement;
+        while (box) {
+          const overflowY = getComputedStyle(box).overflowY;
+          const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+          if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+            frame = box.clientHeight;
+            break;
+          }
+          box = box.parentElement;
         }
-        box = box.parentElement;
       }
       const scale = width / designW;
       const scaled = designH * scale;

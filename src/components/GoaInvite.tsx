@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { assetUrl } from "../api";
 import { packOf, type ProgrammeItem } from "../data/custom";
 import { calendarUrl } from "../lib/dates";
@@ -207,24 +207,29 @@ export function GoaInvite({
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stage = stageRef.current;
     const fit = fitRef.current;
     if (!stage || !fit) return;
     const apply = () => {
       const width = stage.clientWidth;
-      const wide = width >= 1100;
+      const embedded = Boolean(stage.closest(".ir-preview, .ir-play"));
+      const wide = !embedded && width >= 1100;
       const windowH = window.visualViewport?.height ?? window.innerHeight;
       let visible = windowH;
-      let box = stage.parentElement;
-      while (box) {
-        const overflowY = getComputedStyle(box).overflowY;
-        const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
-        if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
-          visible = box.clientHeight;
-          break;
+      if (embedded) {
+        visible = stage.closest(".ir-preview-stage")?.clientHeight || 844;
+      } else {
+        let box = stage.parentElement;
+        while (box) {
+          const overflowY = getComputedStyle(box).overflowY;
+          const clips = overflowY === "hidden" || overflowY === "clip" || overflowY === "auto" || overflowY === "scroll";
+          if (clips && box.clientHeight > 80 && box.clientHeight < windowH - 4) {
+            visible = box.clientHeight;
+            break;
+          }
+          box = box.parentElement;
         }
-        box = box.parentElement;
       }
       const designW = wide ? 1440 : 390;
       const designH = wide ? 900 : 844;
