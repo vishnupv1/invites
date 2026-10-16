@@ -3,7 +3,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import { PreviewModal } from "../components/PreviewModal";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { OccasionArticle } from "../components/OccasionArticle";
-import { formatPrice, getTemplate, sampleFor, designCtaLabel } from "../data/templates";
+import { formatPrice, getTemplate, sampleFor, designCtaLabel, compareTemplatesNewestFirst } from "../data/templates";
 import { topicByPath, TOPICS } from "../data/topics";
 import { InlandInvite } from "../components/InlandInvite";
 import { PlayingInvite } from "../components/shell/PlayingInvite";
@@ -17,7 +17,7 @@ export function Topic() {
   const [previewId, setPreviewId] = useState<string | null>(null);
   if (!topic) return <Navigate to="/browse" replace />;
 
-  const templates = topic.templates.map((id) => getTemplate(id)).filter((item) => item != null);
+  const templates = topic.templates.map((id) => getTemplate(id)).filter((item) => item != null).sort(compareTemplatesNewestFirst);
   const related = topic.related.map((path) => TOPICS.find((item) => item.path === path)).filter((item) => item != null);
   const parent = topic.path !== "/wedding" && topic.related.includes("/wedding")
     ? TOPICS.find((item) => item.path === "/wedding")

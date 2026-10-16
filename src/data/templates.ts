@@ -6,6 +6,46 @@ import catalogMeta from "./template-meta.json" with { type: "json" };
 
 const META = catalogMeta as Record<string, TemplateMeta>;
 
+/** When each design was first added. Newer dates sort first in every catalog. */
+const TEMPLATE_CREATED: Record<string, string> = {
+  rose: "2026-10-16T00:37:07+05:30",
+  lotus: "2026-10-15T21:55:20+05:30",
+  goa: "2026-10-15T14:00:26+05:30",
+  lace: "2026-10-13T01:16:37+05:30",
+  bloom: "2026-10-09T17:41:58+05:30",
+  hansa: "2026-10-09T15:23:02+05:30",
+  villa: "2026-10-09T13:41:05+05:30",
+  moonlit: "2026-10-08T21:26:17+05:30",
+  palace: "2026-10-08T20:52:52+05:30",
+  grandenvelope: "2026-10-05T12:20:23+05:30",
+  grandoor: "2026-10-05T00:12:44+05:30",
+  inland: "2026-10-04T16:45:25+05:30",
+  pull: "2026-10-04T16:27:42+05:30",
+  heavenly: "2026-10-03T13:40:15+05:30",
+  botanica: "2026-09-30T22:41:54+05:30",
+  peace: "2026-09-28T18:43:30+05:30",
+  thiruvizha: "2026-09-28T15:56:00+05:30",
+  shaadi: "2026-09-28T13:40:46+05:30",
+  beach: "2026-09-27T15:21:51+05:30",
+  vivah: "2026-09-27T14:37:39+05:30",
+  baptism: "2026-09-27T12:24:39+05:30",
+  anna: "2026-09-27T11:51:38+05:30",
+  aurelia: "2026-09-25T17:45:47+05:30",
+  gazal: "2026-09-25T16:46:17+05:30",
+  hearth: "2026-09-25T13:40:49+05:30",
+};
+
+export function compareTemplatesNewestFirst(a: { id: string }, b: { id: string }) {
+  const ad = TEMPLATE_CREATED[a.id] ?? "";
+  const bd = TEMPLATE_CREATED[b.id] ?? "";
+  if (ad !== bd) {
+    if (!ad) return 1;
+    if (!bd) return -1;
+    return bd.localeCompare(ad);
+  }
+  return a.id.localeCompare(b.id);
+}
+
 function sample(
   event: EventId,
   fields: Omit<InviteFields, "event" | "hostEmail" | "receptionTime" | "receptionVenue" | "receptionAddress" | "photos" | "audio" | "lat" | "lng" | "lines"> &
@@ -751,6 +791,8 @@ export const TEMPLATES: Template[] = [
     },
   },
 ];
+
+TEMPLATES.sort(compareTemplatesNewestFirst);
 
 export function getTemplate(id: string | undefined) {
   return TEMPLATES.find((template) => template.id === id);

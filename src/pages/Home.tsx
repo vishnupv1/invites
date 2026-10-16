@@ -15,7 +15,7 @@ import facts from "../data/site-facts.json" with { type: "json" };
 import pageCopy from "../data/page-copy.json" with { type: "json" };
 import { publishedTopics } from "../data/topics";
 import { SiteFooter } from "../components/SiteFooter";
-import { TEMPLATES, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
+import { TEMPLATES, compareTemplatesNewestFirst, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
 import { trackNamesEntered } from "../lib/analytics";
 import { saveCoupleNames } from "../lib/couple-names";
 import type { Template } from "../types";
@@ -179,7 +179,7 @@ export function Home({ focus }: { focus?: string }) {
   }
 
   const byId = new Map(catalog.map((item) => [item.id, item]));
-  const featured = FEATURED.map((id) => byId.get(id) ?? getTemplate(id)).filter((item): item is Template => Boolean(item));
+  const featured = FEATURED.map((id) => byId.get(id) ?? getTemplate(id)).filter((item): item is Template => Boolean(item)).sort(compareTemplatesNewestFirst);
   const lead = featured[0] ?? catalog[0];
   const second = featured[1];
   // const from = lowestPaid(catalog);

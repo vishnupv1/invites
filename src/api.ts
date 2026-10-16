@@ -1,4 +1,4 @@
-import { TEMPLATES } from "./data/templates";
+import { TEMPLATES, compareTemplatesNewestFirst } from "./data/templates";
 import type { EventId, InviteFields, SavedInvite, Template } from "./types";
 
 const TOKEN = "invitesready.token.v1";
@@ -154,7 +154,7 @@ export function listEvents() {
 export async function listTemplates() {
   const rows = (await request<Template[]>("/api/templates")).filter((row) => row.id !== "pastal");
   const seen = new Set(rows.map((row) => row.id));
-  return [...TEMPLATES.filter((template) => !seen.has(template.id)), ...rows];
+  return [...TEMPLATES.filter((template) => !seen.has(template.id)), ...rows].sort(compareTemplatesNewestFirst);
 }
 
 export function getTemplateRecord(id: string) {
