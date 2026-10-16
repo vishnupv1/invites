@@ -237,15 +237,22 @@ function templateLinks(templates) {
   return linkList(templates.map((template) => [`/template/${template.id}`, `${template.name} invitation template`]));
 }
 
+function rotateTemplates(pool, templates, template) {
+  const place = templates.findIndex((item) => item.id === template.id);
+  const next = pool.findIndex((other) => templates.findIndex((item) => item.id === other.id) > place);
+  const start = next === -1 ? Math.max(0, pool.length - 3) : next;
+  return [...pool.slice(start), ...pool.slice(0, start)];
+}
+
 function relatedTemplates(template, templates) {
   const sameEvent = templates.filter(
     (other) => other.id !== template.id && other.events.some((event) => template.events.includes(event)),
   );
-  const pool = sameEvent.length ? sameEvent : templates.filter((other) => other.id !== template.id);
-  const place = templates.findIndex((item) => item.id === template.id);
-  const next = pool.findIndex((other) => templates.findIndex((item) => item.id === other.id) > place);
-  const start = next === -1 ? Math.max(0, pool.length - 3) : next;
-  return [...pool.slice(start), ...pool.slice(0, start)].slice(0, 3);
+  if (sameEvent.length >= 3) return rotateTemplates(sameEvent, templates, template).slice(0, 3);
+  const rest = templates.filter(
+    (other) => other.id !== template.id && !sameEvent.some((item) => item.id === other.id),
+  );
+  return [...sameEvent, ...rotateTemplates(rest, templates, template)].slice(0, 3);
 }
 
 const gitDays = new Map();
