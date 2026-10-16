@@ -961,7 +961,11 @@
 
 @media (min-width: 861px) {
   .rsvp-catalog { padding: 0; }
-  .rsvp-catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rsvp-catalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1440px) {
+  .rsvp-catalog-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
 .rsvp-block {
