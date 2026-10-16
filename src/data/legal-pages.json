@@ -3,79 +3,211 @@
     "title": "Privacy policy",
     "lede": "Last updated 29 September 2026. This page explains what InvitesReady collects when you design, buy, or reply to an invitation.",
     "blocks": [
-      { "type": "h2", "text": "Who we are" },
-      { "type": "p", "text": "InvitesReady (invitesready.com) lets you design a digital invitation, share one link, and collect replies. Questions about this policy can go to {{email}}." },
-      { "type": "h2", "text": "What we collect" },
-      { "type": "ul", "items": [
-        "Account details you give us: your name, email address, and a password. We store the password only as a hash.",
-        "Invitation content you type or upload: names, dates, venues, photos, music, and messages.",
-        "Guest replies: the name and response someone submits on an invitation page.",
-        "Purchase records: the template, the price, a coupon code if you used one, and the Razorpay order and payment identifiers. Card, UPI, and bank details are entered on Razorpay’s page, not on ours.",
-        "Drafts saved in this browser before you publish."
-      ] },
-      { "type": "h2", "text": "How we use it" },
-      { "type": "p", "text": "We use this information to create your account, show your invitation, store replies, confirm a purchase, and answer support email. We do not sell personal information." },
-      { "type": "h2", "text": "Analytics" },
-      { "type": "p", "text": "We use Google Analytics to see which pages are visited. Google may set cookies and receive your IP address and the page address. We also use the Meta Pixel to measure visits from Meta ads. Meta may set a cookie and receive the page address. You can block these cookies in your browser. We use these visits to understand the site and to measure advertising." },
-      { "type": "h2", "text": "How long we keep it" },
-      { "type": "p", "text": "We keep your account, invitations, replies, and purchase records while the account is in use. Email {{email}} if you want an invitation or account removed." },
-      { "type": "h2", "text": "Who else sees it" },
-      { "type": "p", "text": "People with the invitation link can see the invitation and, if you turn replies on, can submit a reply. Razorpay processes the payment. Google processes analytics. Meta processes the pixel. We host the site and its database so the product can run." }
+      {
+        "type": "h2",
+        "text": "Who we are"
+      },
+      {
+        "type": "p",
+        "text": "InvitesReady (invitesready.com) lets you design a digital invitation, share one link, and collect replies. Questions about this policy can go to {{email}}."
+      },
+      {
+        "type": "h2",
+        "text": "What we collect"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Account details you give us: your name, email address, and a password. We store the password only as a hash.",
+          "Invitation content you type or upload: names, dates, venues, photos, music, and messages.",
+          "Guest replies: the name and response someone submits on an invitation page.",
+          "Purchase records: the template, the price, a coupon code if you used one, and the Razorpay order and payment identifiers. Card, UPI, and bank details are entered on Razorpay’s page, not on ours.",
+          "Drafts saved in this browser before you publish."
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "How we use it"
+      },
+      {
+        "type": "p",
+        "text": "We use this information to create your account, show your invitation, store replies, confirm a purchase, and answer support email. We do not sell personal information."
+      },
+      {
+        "type": "h2",
+        "text": "Analytics"
+      },
+      {
+        "type": "p",
+        "text": "We use Google Analytics to see which pages are visited. Google may set cookies and receive your IP address and the page address. We also use the Meta Pixel to measure visits from Meta ads. Meta may set a cookie and receive the page address. You can block these cookies in your browser. We use these visits to understand the site and to measure advertising."
+      },
+      {
+        "type": "h2",
+        "text": "How long we keep it"
+      },
+      {
+        "type": "p",
+        "text": "We keep your account, invitations, replies, and purchase records while the account is in use. Email {{email}} if you want an invitation or account removed."
+      },
+      {
+        "type": "h2",
+        "text": "Who else sees it"
+      },
+      {
+        "type": "p",
+        "text": "People with the invitation link can see the invitation and, if you turn replies on, can submit a reply. Razorpay processes the payment. Google processes analytics. Meta processes the pixel. We host the site and its database so the product can run."
+      }
     ]
   },
   "/terms": {
     "title": "Terms of use",
     "lede": "Last updated 29 September 2026. By creating an account or buying a template, you agree to these terms.",
     "blocks": [
-      { "type": "h2", "text": "The product" },
-      { "type": "p", "text": "InvitesReady provides invitation templates and a page your guests can open. You may design a draft without an account. Publishing a paid template requires a one-time purchase, unless a valid coupon applies or the template is free." },
-      { "type": "h2", "text": "Your content" },
-      { "type": "p", "text": "You keep the names, photos, music, and wording you add. You confirm you have the right to use them. You give InvitesReady permission to store and display that content so the invitation works. You may not resell a template or present our designs as your own product." },
-      { "type": "h2", "text": "Accounts" },
-      { "type": "p", "text": "Keep your login to yourself. You are responsible for invitations published from your account and for the replies those pages collect." },
-      { "type": "h2", "text": "Payments" },
-      { "type": "p", "text": "Prices are shown in Indian rupees before you pay. Razorpay collects the payment. A coupon that we accept reduces the price at checkout, and some coupons make the template free. Buying a template once lets you publish invitations with that design without paying again. See the {{refund-policy}} for cancellations." },
-      { "type": "h2", "text": "Acceptable use" },
-      { "type": "p", "text": "Do not use InvitesReady for unlawful, misleading, or abusive invitations, or to collect guest information you are not entitled to collect." }
+      {
+        "type": "h2",
+        "text": "The product"
+      },
+      {
+        "type": "p",
+        "text": "InvitesReady provides invitation templates and a page your guests can open. You may design a draft without an account. Publishing a paid template requires a one-time purchase, unless a valid coupon applies or the template is free."
+      },
+      {
+        "type": "h2",
+        "text": "Your content"
+      },
+      {
+        "type": "p",
+        "text": "You keep the names, photos, music, and wording you add. You confirm you have the right to use them. You give InvitesReady permission to store and display that content so the invitation works. You may not resell a template or present our designs as your own product."
+      },
+      {
+        "type": "h2",
+        "text": "Accounts"
+      },
+      {
+        "type": "p",
+        "text": "Keep your login to yourself. You are responsible for invitations published from your account and for the replies those pages collect."
+      },
+      {
+        "type": "h2",
+        "text": "Payments"
+      },
+      {
+        "type": "p",
+        "text": "Prices are shown in Indian rupees before you pay. Razorpay collects the payment. A coupon that we accept reduces the price at checkout, and some coupons make the template free. Buying a template once lets you publish invitations with that design without paying again. See the {{refund-policy}} for cancellations."
+      },
+      {
+        "type": "h2",
+        "text": "Acceptable use"
+      },
+      {
+        "type": "p",
+        "text": "Do not use InvitesReady for unlawful, misleading, or abusive invitations, or to collect guest information you are not entitled to collect."
+      }
     ]
   },
   "/refunds": {
     "title": "Refunds",
     "lede": "Last updated 29 September 2026. Template purchases are one-time payments for a digital design.",
     "blocks": [
-      { "type": "h2", "text": "What you are buying" },
-      { "type": "p", "text": "A paid template is a digital licence to use that design on InvitesReady. The price on the checkout screen is the amount you pay. A valid coupon can reduce that price, and some coupons make it free. Free templates are not charged." },
-      { "type": "h2", "text": "When we refund" },
-      { "type": "p", "text": "Email {{email}} within 7 days of payment if you have not published an invitation with that template and you cannot use the design. We will refund the amount Razorpay charged for that order." },
-      { "type": "h2", "text": "When we do not refund" },
-      { "type": "ul", "items": [
-        "The template was free, or a coupon already reduced the price to zero.",
-        "You have published an invitation with that template.",
-        "You changed your mind after the design was available in your account and the 7 days have passed."
-      ] },
-      { "type": "p", "text": "If a payment is taken and the template does not unlock, email us and we will either unlock it or refund the charge." }
+      {
+        "type": "h2",
+        "text": "What you are buying"
+      },
+      {
+        "type": "p",
+        "text": "A paid template is a digital licence to use that design on InvitesReady. The price on the checkout screen is the amount you pay. A valid coupon can reduce that price, and some coupons make it free. Free templates are not charged."
+      },
+      {
+        "type": "h2",
+        "text": "When we refund"
+      },
+      {
+        "type": "p",
+        "text": "Email {{email}} within 7 days of payment if you have not published an invitation with that template and you cannot use the design. We will refund the amount Razorpay charged for that order."
+      },
+      {
+        "type": "h2",
+        "text": "When we do not refund"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "The template was free, or a coupon already reduced the price to zero.",
+          "You have published an invitation with that template.",
+          "You changed your mind after the design was available in your account and the 7 days have passed."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "If a payment is taken and the template does not unlock, email us and we will either unlock it or refund the charge."
+      }
     ]
   },
   "/contact": {
     "title": "Contact",
-    "lede": "Write to InvitesReady about a digital wedding invitation, an account, or a payment. TODO: review copy.",
+    "lede": "Write to InvitesReady about a digital wedding invitation, an account, or a payment.",
     "blocks": [
-      { "type": "p", "text": "TODO: review copy. InvitesReady makes animated digital invitations for weddings and other celebrations. Guests open one link and RSVP in the browser. If something about that page, your account, or a payment is stuck, email us. There is no phone line and no chat widget." },
-      { "type": "h2", "text": "Email" },
-      { "type": "p", "text": "{{email}}" },
-      { "type": "p", "text": "For an account, use the email you signed in with. For a payment, include the date you paid and the design name, such as Vivah or Gazal. For an invitation that will not open, send the link your guests have. Do not send a guest's phone number or a full address unless we have asked for it." },
-      { "type": "h2", "text": "What we can help with" },
-      { "type": "p", "text": "We can help you find a wedding design, understand a one-time price, or see why a link is not opening. Gazal is free to publish. Other designs list their own price, and publishing is free for now while prices are paused. A refund follows the refund policy: email within 7 days if you paid and have not published that template." },
-      { "type": "p", "text": "Wedding planners can write from the same address. Tell us the couple's names, the date, and whether you need a Hindu wedding, a nikah, a Tamil wedding, or a save-the-date. We do not design a custom illustration by email. You pick a template and edit it in the browser." },
-      { "type": "p", "text": "We read the inbox on weekdays. If a guest list or a venue is urgent, say so in the first line. The invitation itself is still edited by you: the link stays the same when you change a time or a place, so you do not need us to resend a card." },
-      { "type": "h2", "text": "Policies" },
-      { "type": "links", "items": [
-        { "href": "/privacy", "label": "Privacy policy" },
-        { "href": "/terms", "label": "Terms of use" },
-        { "href": "/refunds", "label": "Refunds" },
-        { "href": "/wedding", "label": "Digital wedding invitations" },
-        { "href": "/faq", "label": "Questions" }
-      ] }
+      {
+        "type": "p",
+        "text": "InvitesReady makes animated digital invitations for weddings and other celebrations. Guests open one link and RSVP in the browser. If something about that page, your account, or a payment is stuck, email us. There is no phone line and no chat widget."
+      },
+      {
+        "type": "h2",
+        "text": "Email"
+      },
+      {
+        "type": "p",
+        "text": "{{email}}"
+      },
+      {
+        "type": "p",
+        "text": "For an account, use the email you signed in with. For a payment, include the date you paid and the design name, such as Vivah or Gazal. For an invitation that will not open, send the link your guests have. Do not send a guest's phone number or a full address unless we have asked for it."
+      },
+      {
+        "type": "h2",
+        "text": "What we can help with"
+      },
+      {
+        "type": "p",
+        "text": "We can help you find a wedding design, understand a one-time price, or see why a link is not opening. Gazal is free to publish. Other designs list their own price, and publishing is free for now while prices are paused. A refund follows the refund policy: email within 7 days if you paid and have not published that template."
+      },
+      {
+        "type": "p",
+        "text": "Wedding planners can write from the same address. Tell us the couple's names, the date, and whether you need a Hindu wedding, a nikah, a Tamil wedding, or a save-the-date. We do not design a custom illustration by email. You pick a template and edit it in the browser."
+      },
+      {
+        "type": "p",
+        "text": "We read the inbox on weekdays. If a guest list or a venue is urgent, say so in the first line. The invitation itself is still edited by you: the link stays the same when you change a time or a place, so you do not need us to resend a card."
+      },
+      {
+        "type": "h2",
+        "text": "Policies"
+      },
+      {
+        "type": "links",
+        "items": [
+          {
+            "href": "/privacy",
+            "label": "Privacy policy"
+          },
+          {
+            "href": "/terms",
+            "label": "Terms of use"
+          },
+          {
+            "href": "/refunds",
+            "label": "Refunds"
+          },
+          {
+            "href": "/wedding",
+            "label": "Digital wedding invitations"
+          },
+          {
+            "href": "/faq",
+            "label": "Questions"
+          }
+        ]
+      }
     ]
   }
 }

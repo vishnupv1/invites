@@ -22,7 +22,7 @@ export function OccasionArticle({ id }: { id: string }) {
   if (!page) return null;
   return (
     <article className="occasion-copy">
-      <p className="occasion-review">{page.review}</p>
+      {page.review ? <p className="occasion-review">{page.review}</p> : null}
       <h2>What you get</h2>
       {page.whatYouGet.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       <h2>How it works</h2>

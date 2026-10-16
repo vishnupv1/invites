@@ -1,8 +1,20 @@
 {
   "steps": [
-    { "n": "01", "title": "Pick a design", "text": "Choose an opening. You can try it before you create an account." },
-    { "n": "02", "title": "Add your details", "text": "Names, functions, photos and music. The preview updates as you type." },
-    { "n": "03", "title": "Publish and share", "text": "Publish, then send one link. Guests open it in the browser." }
+    {
+      "n": "01",
+      "title": "Pick a design",
+      "text": "Choose an opening. You can try it before you create an account."
+    },
+    {
+      "n": "02",
+      "title": "Add your details",
+      "text": "Names, functions, photos and music. The preview updates as you type."
+    },
+    {
+      "n": "03",
+      "title": "Publish and share",
+      "text": "Publish, then send one link. Guests open it in the browser."
+    }
   ],
   "features": [
     "They open one link. No app and no account.",
@@ -10,17 +22,53 @@
     "Replies come back on the same invitation."
   ],
   "faqs": [
-    { "q": "Do my guests need an app or an account?", "a": "TODO: review copy. No. Guests open your link in any browser and RSVP on the page. They do not install an app or create an account. It works on a basic phone." },
-    { "q": "How does RSVP work?", "a": "TODO: review copy. Each guest replies on the invitation itself. You see who is coming, and for a wedding you can collect a reply per function. There is no separate form to send around." },
-    { "q": "Can I edit the invitation after sending?", "a": "TODO: review copy. Yes. The link stays the same. Change a time, a venue, or a name, and every guest sees the latest version the next time they open it." },
-    { "q": "Can I hide our home address?", "a": "TODO: review copy. Yes. You can leave the address off the page, or show the venue name and reveal the full address only after a guest says yes. Pages can also be password-protected." },
-    { "q": "How do I share it on WhatsApp?", "a": "TODO: review copy. Copy the link and paste it into a WhatsApp chat or a group. Guests tap the link and the invitation opens in the browser. You do not attach a PDF or an image for the RSVP." },
-    { "q": "Which languages can the invitation use?", "a": "TODO: review copy. Most designs are written in English, and you can type your own wording in the language you need. Thiruvizha can show the page in English, Tamil, or both." },
-    { "q": "What does the price include?", "a": "TODO: review copy. Each template lists its own one-time price. Some wedding designs, including Gazal, are free. A paid design covers the animated opening, the schedule, the venue and map, photos, music where the design has it, RSVP, and edits after you send. Publishing is free for now while prices are paused." },
-    { "q": "Can I get a refund?", "a": "TODO: review copy. Email us within 7 days of payment if you have not published an invitation with that template and you cannot use the design. The refund policy on this site has the full rules." },
-    { "q": "How long does the link stay live?", "a": "TODO: review copy. The link stays on the same address while your account is in use, including after the celebration, so guests can still open the page. Email us if you want an invitation removed." },
-    { "q": "Can one invitation cover several functions?", "a": "TODO: review copy. Yes. A wedding design can list the muhurtham, sangeet, reception, and other gatherings, each with its own time and place. Guests can reply for the functions they are invited to." },
-    { "q": "Can I add photos and music?", "a": "TODO: review copy. Yes, on designs that include a gallery or a track. You upload them in the browser. Guests see the photos on the page and can hear the music if you add it." },
-    { "q": "Can I export the guest list?", "a": "TODO: review copy. Yes. Replies collect on your invitation, and from your account you can review the guest list and take it with you. Guests never see other people's replies." }
+    {
+      "q": "Do my guests need an app or an account?",
+      "a": "No. Guests open your link in any browser and RSVP on the page. They do not install an app or create an account. It works on a basic phone."
+    },
+    {
+      "q": "How does RSVP work?",
+      "a": "Each guest replies on the invitation itself. You see who is coming, and for a wedding you can collect a reply per function. There is no separate form to send around."
+    },
+    {
+      "q": "Can I edit the invitation after sending?",
+      "a": "Yes. The link stays the same. Change a time, a venue, or a name, and every guest sees the latest version the next time they open it."
+    },
+    {
+      "q": "Can I hide our home address?",
+      "a": "Yes. You can leave the address off the page, or show the venue name and reveal the full address only after a guest says yes. Pages can also be password-protected."
+    },
+    {
+      "q": "How do I share it on WhatsApp?",
+      "a": "Copy the link and paste it into a WhatsApp chat or a group. Guests tap the link and the invitation opens in the browser. You do not attach a PDF or an image for the RSVP."
+    },
+    {
+      "q": "Which languages can the invitation use?",
+      "a": "Most designs are written in English, and you can type your own wording in the language you need. Thiruvizha can show the page in English, Tamil, or both."
+    },
+    {
+      "q": "What does the price include?",
+      "a": "Each template lists its own one-time price. Some wedding designs, including Gazal, are free. A paid design covers the animated opening, the schedule, the venue and map, photos, music where the design has it, RSVP, and edits after you send. Publishing is free for now while prices are paused."
+    },
+    {
+      "q": "Can I get a refund?",
+      "a": "Email us within 7 days of payment if you have not published an invitation with that template and you cannot use the design. The refund policy on this site has the full rules."
+    },
+    {
+      "q": "How long does the link stay live?",
+      "a": "The link stays on the same address while your account is in use, including after the celebration, so guests can still open the page. Email us if you want an invitation removed."
+    },
+    {
+      "q": "Can one invitation cover several functions?",
+      "a": "Yes. A wedding design can list the muhurtham, sangeet, reception, and other gatherings, each with its own time and place. Guests can reply for the functions they are invited to."
+    },
+    {
+      "q": "Can I add photos and music?",
+      "a": "Yes, on designs that include a gallery or a track. You upload them in the browser. Guests see the photos on the page and can hear the music if you add it."
+    },
+    {
+      "q": "Can I export the guest list?",
+      "a": "Yes. Replies collect on your invitation, and from your account you can review the guest list and take it with you. Guests never see other people's replies."
+    }
   ]
 }

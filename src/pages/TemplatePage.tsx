@@ -135,7 +135,6 @@ function TemplateFacts({ template, occasions }: { template: Template; occasions:
   const facts = templateFacts(template, phrases[template.id as keyof typeof phrases], occasions);
   return (
     <section className="occasion-copy">
-      <p className="occasion-review">{facts.review}</p>
       <h2>What's included</h2>
       <ul>
         {facts.included.map((item) => <li key={item}>{item}</li>)}

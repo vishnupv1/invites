@@ -13,9 +13,13 @@ function seoRedirects(): Plugin {
       if (params.has('event')) {
         params.delete('event')
         const rest = params.toString()
-        res.writeHead(301, { Location: rest ? `${bare}?${rest}` : bare })
-        res.end()
-        return
+        const location = rest ? `${bare}?${rest}` : bare
+        const current = `${path}${query ? `?${query}` : ''}`
+        if (location !== current && location !== `${bare}?${query}`) {
+          res.writeHead(301, { Location: location })
+          res.end()
+          return
+        }
       }
     }
     if (!dest || dest === bare) {

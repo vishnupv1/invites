@@ -150,7 +150,7 @@ function occasionArticle(id) {
     .map((item) => `<details open><summary>${escapeText(item.q)}</summary><p>${escapeText(item.a)}</p></details>`)
     .join("");
   return [
-    `<p>${escapeText(page.review)}</p>`,
+    page.review ? `<p>${escapeText(page.review)}</p>` : "",
     "<h2>What you get</h2>",
     page.whatYouGet.map((paragraph) => `<p>${escapeText(paragraph)}</p>`).join(""),
     "<h2>How it works</h2>",
@@ -174,7 +174,6 @@ function templateArticle(template) {
     .map((item) => `<details open><summary>${escapeText(item.q)}</summary><p>${escapeText(item.a)}</p></details>`)
     .join("");
   return [
-    `<p>${escapeText(facts.review)}</p>`,
     "<h2>What's included</h2>",
     `<ul>${facts.included.map((item) => `<li>${escapeText(item)}</li>`).join("")}</ul>`,
     "<h2>Suitable for</h2>",

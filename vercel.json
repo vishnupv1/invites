@@ -21,13 +21,7 @@
     { "source": "/c/reception", "destination": "/reception", "permanent": true },
     { "source": "/griha-pravesh", "destination": "/housewarming", "permanent": true },
     { "source": "/c/:id", "destination": "/occasions", "permanent": true },
-    { "source": "/pricing", "destination": "/", "permanent": true },
-    {
-      "source": "/template/:id",
-      "has": [{ "type": "query", "key": "event" }],
-      "destination": "/template/:id?",
-      "permanent": true
-    }
+    { "source": "/pricing", "destination": "/", "permanent": true }
   ],
   "headers": [
     {
