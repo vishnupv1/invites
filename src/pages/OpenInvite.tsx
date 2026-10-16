@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { AnnaInvite } from "../components/AnnaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
-import { Beach2Invite } from "../components/Beach2Invite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { GrandDoorInvite } from "../components/GrandDoorInvite";
 import { GrandEnvelopeInvite } from "../components/GrandEnvelopeInvite";
@@ -50,7 +49,6 @@ export function OpenInvite() {
       {template.style === "baptism" ? <BaptismInvite fields={fields} demo /> : null}
       {template.style === "vivah" ? <VivahInvite fields={fields} demo /> : null}
       {template.style === "beach" ? <BeachInvite fields={fields} /> : null}
-      {template.style === "beach2" ? <Beach2Invite fields={fields} /> : null}
       {template.style === "botanica" ? <BotanicaInvite fields={fields} /> : null}
       {template.style === "heavenly" ? <HeavenlyInvite fields={fields} demo /> : null}
       {template.style === "grandoor" ? <GrandDoorInvite fields={fields} demo /> : null}

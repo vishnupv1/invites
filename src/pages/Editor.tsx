@@ -4,7 +4,6 @@ import { AnnaInvite, type AnnaTheme } from "../components/AnnaInvite";
 import { AureliaInvite } from "../components/AureliaInvite";
 import { BaptismInvite } from "../components/BaptismInvite";
 import { BeachInvite } from "../components/BeachInvite";
-import { Beach2Invite } from "../components/Beach2Invite";
 import { BotanicaInvite } from "../components/BotanicaInvite";
 import { GrandDoorInvite } from "../components/GrandDoorInvite";
 import { GrandEnvelopeInvite } from "../components/GrandEnvelopeInvite";
@@ -42,7 +41,7 @@ import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "..
 import { readCoupleNames } from "../lib/couple-names";
 import { assetUrl, ensureSession, getInviteRecord, getToken, listPurchases, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptismThemeOf, beach2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptismThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { hold, SmartButton, Spinner } from "../components/Loader";
@@ -1577,8 +1576,6 @@ export function Editor({
                     <VivahInvite fields={previewFields} theme={vivahThemeOf(model.swatch)} />
                   ) : template.style === "beach" ? (
                     <BeachInvite fields={previewFields} theme={beachThemeOf(model.swatch)} />
-                  ) : template.style === "beach2" ? (
-                    <Beach2Invite fields={previewFields} theme={beach2ThemeOf(model.swatch)} />
                   ) : template.style === "botanica" ? (
                     <BotanicaInvite fields={previewFields} theme={botanicaThemeOf(model.swatch)} />
                   ) : template.style === "heavenly" ? (

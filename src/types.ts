@@ -110,7 +110,6 @@ export type TemplateStyle =
   | "baptism"
   | "vivah"
   | "beach"
-  | "beach2"
   | "home"
   | "shaadi"
   | "thiruvizha"
