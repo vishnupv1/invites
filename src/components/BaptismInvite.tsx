@@ -572,7 +572,7 @@ function Halo() {
 function Shot({ className, label, text, src, delay = "0s", duration = "12s" }: { className: string; label: string; text?: string; src?: string; delay?: string; duration?: string }) {
   return (
     <div className={`bp-shot ${className}`}>
-      {src ? <img src={src} alt="" style={{ animationDelay: delay, animationDuration: duration }} /> : <span style={{ animationDelay: delay, animationDuration: duration }}>{label}</span>}
+      {src ? <img loading="lazy" src={src} alt="" style={{ animationDelay: delay, animationDuration: duration }} /> : <span style={{ animationDelay: delay, animationDuration: duration }}>{label}</span>}
       {text ? <small className="bp-shot-note">{text}</small> : null}
     </div>
   );

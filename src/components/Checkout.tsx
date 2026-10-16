@@ -534,7 +534,7 @@ export function Checkout({ template, detail, onClose, onPurchased, onEntitled, o
         <aside className="ck-receipt">
           <div className="ck-card">
           <div className="ck-item">
-            <img src={`/covers/${template.id}.jpg`} alt="" />
+            <img src={`/covers/${template.id}.webp`} alt="" />
             <div>
               <b>{template.name}</b>
               <small>{detail || "Your invitation"}</small>

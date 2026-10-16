@@ -488,7 +488,7 @@ export function PeaceInvite({
                     const about = captions[index]?.text ?? "";
                     return (
                       <span key={`${caption}-${index}`} className="pc-shot" style={{ zIndex: count - pos, transform: `translate(${pos * (desk ? 14 : 8)}px, ${pos * (desk ? 10 : 6)}px) rotate(${rot}deg) scale(${1 - pos * 0.04})` }}>
-                        {frame.src ? <img src={frame.src} alt="" /> : <i style={{ background: frame.label }}>Photo</i>}
+                        {frame.src ? <img loading="lazy" src={frame.src} alt="" /> : <i style={{ background: frame.label }}>Photo</i>}
                         <b>{caption}</b>
                         {about ? <small>{about}</small> : null}
                       </span>

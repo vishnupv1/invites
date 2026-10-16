@@ -45,7 +45,7 @@ export function PlayingInvite({ template }: { template: Template }) {
           style={{ transform: `scale(${scale})` }}
         />
       ) : (
-        <img src={`/covers/${template.id}.jpg`} alt="" />
+        <img src={`/covers/${template.id}.webp`} alt="" />
       )}
     </div>
   );

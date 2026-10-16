@@ -645,7 +645,7 @@ export function CreateGuest() {
           <div className="cg-panel cg-step4">
             <div className="cg-proof">
               <div className="cg-proof-card">
-                <img src={`/covers/${template.id}.jpg`} alt="" />
+                <img src={`/covers/${template.id}.webp`} alt="" />
                 <div>
                   <strong>{shownNames}</strong>
                   <span>{shownWhen}</span>
@@ -747,7 +747,7 @@ export function CreateGuest() {
       {step === 2 || step === 3 ? (
         <div className="cg-bar">
           <div className="cg-bar-id">
-            {template ? <img src={`/covers/${template.id}.jpg`} alt="" /> : <i />}
+            {template ? <img src={`/covers/${template.id}.webp`} alt="" /> : <i />}
             <div>
               <strong>{step === 2 ? `${template?.name ?? "Template"} selected` : shownNames}</strong>
               <span>
@@ -785,7 +785,7 @@ export function CreateGuest() {
               <em>Your draft is safe</em>
               {template ? (
                 <div className="cg-auth-card">
-                  <img src={`/covers/${template.id}.jpg`} alt="" />
+                  <img src={`/covers/${template.id}.webp`} alt="" />
                   <div>
                     <strong>{previewNames}</strong>
                     <span>{previewWhen}</span>

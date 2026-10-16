@@ -304,7 +304,7 @@ export function RoseInvite({
       <section className="rg-sec" id={oliveId}>
         <div className="rg-duo">
           <div className="rg-olive">
-            <img src="/rose/olive.webp" alt="" />
+            <img loading="lazy" src="/rose/olive.webp" alt="" />
             <div className="in">
               <span className="rg-sc">{fields.detail || "We’re so happy to share this day with you"}</span>
               <p>{pack.ceremonyName || "Having you with us means the world. We can’t wait to celebrate with the people we love most."}</p>
@@ -318,10 +318,10 @@ export function RoseInvite({
           <div>
             <div className="rg-oval">
               <div className="ph">
-                <img src={photo} alt={fields.names || "The couple"} />
+                <img loading="lazy" src={photo} alt={fields.names || "The couple"} />
                 {revealed ? null : <ScratchGlass key={desk ? "desk" : "phone"} cover="/rose/glass.webp" gone={gone} onDone={reveal} />}
               </div>
-              <img className="fr" src="/rose/oval.webp" alt="" />
+              <img loading="lazy" className="fr" src="/rose/oval.webp" alt="" />
             </div>
             {revealed ? null : (
               <div className="rg-hint">
@@ -337,8 +337,8 @@ export function RoseInvite({
       </section>
 
       <section className="rg-sec">
-        <img className="rg-spray l" src="/rose/spray.webp" alt="" />
-        <img className="rg-spray r" src="/rose/spray.webp" alt="" />
+        <img loading="lazy" className="rg-spray l" src="/rose/spray.webp" alt="" />
+        <img loading="lazy" className="rg-spray r" src="/rose/spray.webp" alt="" />
         <span className="rg-k" style={{ position: "relative" }}>Welcome</span>
         <h2 style={{ position: "relative" }}>Our families welcome you</h2>
         {fields.message ? <p className="rg-lead" style={{ position: "relative" }}>{fields.message}</p> : null}
@@ -348,18 +348,18 @@ export function RoseInvite({
       <section className="rg-sec">
         <div className="rg-duo">
           <div className="rg-card">
-            <img className="b" src="/rose/card.webp" alt="" />
+            <img loading="lazy" className="b" src="/rose/card.webp" alt="" />
             <div className="in">
               <span className="rg-k">The venue</span>
               <span className="rg-sc">{fields.venue}</span>
               <span className="t">{[coverDate(fields.date), fields.time ? formatTime(fields.time) : ""].filter(Boolean).join(" · ")}</span>
               {fields.address ? <span className="a">{fields.address}</span> : null}
-              <img className="shot" src="/rose/venue.webp" alt={fields.venue || "The venue"} />
+              <img loading="lazy" className="shot" src="/rose/venue.webp" alt={fields.venue || "The venue"} />
               <button type="button" className="rg-btn" onClick={maps}>Open in maps</button>
             </div>
           </div>
           <div className="rg-dress">
-            <img src="/rose/dress.webp" alt="" />
+            <img loading="lazy" src="/rose/dress.webp" alt="" />
             <span className="rg-k">Dress code</span>
             <h2>{fields.dress || "Festive Formal"}</h2>
             {pack.venueNote ? <p className="rg-lead">{pack.venueNote}</p> : null}
@@ -372,10 +372,10 @@ export function RoseInvite({
           <span className="rg-k">The day</span>
           <h2>Programme</h2>
           <div className="rg-prog">
-            <img className="rb" src="/rose/ribbon.webp" alt="" />
+            <img loading="lazy" className="rb" src="/rose/ribbon.webp" alt="" />
             {programme.map((item, index) => (
               <div className="rg-pi" key={`${item.title}-${index}`}>
-                <img src={ICONS[index % ICONS.length]} alt="" />
+                <img loading="lazy" src={ICONS[index % ICONS.length]} alt="" />
                 <span className="n">{item.title}</span>
                 <span className="t">{item.time}</span>
               </div>
@@ -387,13 +387,13 @@ export function RoseInvite({
       <section className="rg-sec">
         <div className="rg-two">
           <div className="rg-note">
-            <img src="/rose/gift.webp" alt="" />
+            <img loading="lazy" src="/rose/gift.webp" alt="" />
             <span className="rg-k">Gifts</span>
             <h2>Your presence is our present</h2>
             {pack.gift ? <p className="rg-lead">{pack.gift}</p> : null}
           </div>
           <div className="rg-note stay">
-            <img src="/rose/hotel.webp" alt="" />
+            <img loading="lazy" src="/rose/hotel.webp" alt="" />
             <span className="rg-k">Where to stay</span>
             <h2>{pack.caption || "Hotel Gulab Bagh"}</h2>
             {pack.stay ? <p className="rg-lead">{pack.stay}</p> : null}
@@ -411,7 +411,7 @@ export function RoseInvite({
           {done ? (
             <div className="rg-done">
               <div className="rg-seal">
-                <img src="/rose/seal.webp" alt="" />
+                <img loading="lazy" src="/rose/seal.webp" alt="" />
                 <span className="mono">{couple.a}<i>&amp;</i>{couple.b}</span>
               </div>
               <span className="rg-sc">{attend === "yes" ? `Thank you, ${name.trim().split(" ")[0]}` : "We’ll miss you"}</span>

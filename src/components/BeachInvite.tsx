@@ -421,7 +421,7 @@ export function BeachInvite({
                     <article className="b2-card" style={{ animationDuration: `${3.4 + index * 0.5}s`, animationDelay: `${index * -1.2}s` }}>
                       <span className="b2-pin" aria-hidden="true" />
                       <div className="b2-shot" style={{ background: STORY_COLORS[index] ?? "#F6C08F" }}>
-                        {photos[index] ? <img src={photos[index]} alt="" /> : <span>{captions[index]?.title || "Photo"}</span>}
+                        {photos[index] ? <img loading="lazy" src={photos[index]} alt="" /> : <span>{captions[index]?.title || "Photo"}</span>}
                       </div>
                       <div className="b2-year">{item.year}</div>
                       <b>{item.title}</b>
@@ -440,7 +440,7 @@ export function BeachInvite({
                 <article key={item.key} className="b2-event" style={{ animationDelay: `${index * 0.2}s` }}>
                   <div className={`b2-icon ${item.key === "lantern" ? "lantern" : item.key === "fire" ? "fire" : ""}`}>
                     <span className="glow" aria-hidden="true" />
-                    <img src={item.key === "lantern" ? ART.lantern : item.key === "fire" ? ART.fire : ART.sunIcon} alt="" />
+                    <img loading="lazy" src={item.key === "lantern" ? ART.lantern : item.key === "fire" ? ART.fire : ART.sunIcon} alt="" />
                     {item.key === "fire" ? [0, 1, 2, 3].map((spark) => (
                       <span key={spark} className="b2-spark" style={{ left: `${46 + spark * 3}%`, ["--sx" as string]: spark % 2 ? "14px" : "-14px", animationDuration: `${1.4 + spark * 0.3}s`, animationDelay: `${spark * 0.35}s` }} />
                     )) : null}
@@ -464,7 +464,7 @@ export function BeachInvite({
                 {filmLoop.map((frame, index) => (
                   <div key={index} className="b2-frame" style={{ animationDuration: `${4 + (index % 3)}s`, animationDelay: `${index * -0.7}s` }}>
                     <div className="b2-shot" style={photos.length ? undefined : { background: frame }}>
-                      {photos.length ? <img src={frame} alt="" /> : <span>Photo {(index % 5) + 1}</span>}
+                      {photos.length ? <img loading="lazy" src={frame} alt="" /> : <span>Photo {(index % 5) + 1}</span>}
                     </div>
                   </div>
                 ))}
@@ -484,7 +484,7 @@ export function BeachInvite({
                   <path d="M402 292C280 322 158 232 224 92" stroke="#FFF8EE" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.7" />
                   <path className="dash" d="M402 292C280 322 158 232 224 92" stroke="#E8795A" strokeWidth="2.5" strokeLinecap="round" fill="none" />
                 </svg>
-                <span className="b2-plane" aria-hidden="true"><img src={ART.plane} alt="" /></span>
+                <span className="b2-plane" aria-hidden="true"><img loading="lazy" src={ART.plane} alt="" /></span>
                 <span className="b2-chip from">{from}</span>
                 <span className="b2-chip to">{place.split(",")[0]} · {km}</span>
               </div>
@@ -496,7 +496,7 @@ export function BeachInvite({
               <div className="b2-dress">
                 {DRESS.map(([src, label], index) => (
                   <div key={label} style={{ animationDelay: `${index * 0.3}s` }}>
-                    <img src={src} alt="" />
+                    <img loading="lazy" src={src} alt="" />
                     <span>{label}</span>
                   </div>
                 ))}
@@ -521,9 +521,9 @@ export function BeachInvite({
                     <svg viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M0 140C60 110 120 170 200 140S340 110 400 140V300H0z" fill="#6FB3B8" fillOpacity="0.35" /></svg>
                   </div>
                   {Array.from({ length: 12 }, (_, index) => (
-                    <img key={index} className="b2-shell" src={index % 2 ? ART.star : ART.conch} alt="" style={{ left: `${(index * 37) % 92}%`, width: 20 + (index % 3) * 8, animationDuration: `${2.4 + (index % 4) * 0.4}s`, animationDelay: `${(index % 6) * 0.15}s` }} />
+                    <img loading="lazy" key={index} className="b2-shell" src={index % 2 ? ART.star : ART.conch} alt="" style={{ left: `${(index * 37) % 92}%`, width: 20 + (index % 3) * 8, animationDuration: `${2.4 + (index % 4) * 0.4}s`, animationDelay: `${(index % 6) * 0.15}s` }} />
                   ))}
-                  <img src={ART.conch} alt="" />
+                  <img loading="lazy" src={ART.conch} alt="" />
                   <h3>{attend === "yes" ? "See you at the shore!" : "We’ll miss you"}</h3>
                   <p>
                     {attend === "yes"
@@ -573,7 +573,7 @@ export function BeachInvite({
               <div className="b2-wish-grid">
                 {shownWishes.map((item, index) => (
                   <article key={`${item.name}-${index}`} className="b2-wish" style={{ animationDuration: `${4 + (index % 3)}s`, animationDelay: `${index * -0.8}s` }}>
-                    <img src={ART.wish} alt="" style={{ transform: `rotate(${index % 2 ? 18 : -14}deg)` }} />
+                    <img loading="lazy" src={ART.wish} alt="" style={{ transform: `rotate(${index % 2 ? 18 : -14}deg)` }} />
                     <p>{item.text}</p>
                     <span>— {item.name}</span>
                   </article>

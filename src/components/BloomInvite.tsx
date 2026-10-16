@@ -246,14 +246,14 @@ export function BloomInvite({
         <div className="bl-story">
           <div className="bl-frame">
             <div className="bl-slot">
-              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : (
+              {storyPhoto ? <img loading="lazy" src={storyPhoto} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B9786E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
                   <span className="bl-small">PHOTO</span>
                 </>
               )}
             </div>
-            <img src="/bloom/wreath.webp" alt="" />
+            <img loading="lazy" src="/bloom/wreath.webp" alt="" />
           </div>
           <div className="bl-beats">
             {story.map((beat) => (
@@ -268,7 +268,7 @@ export function BloomInvite({
       </section>
 
       <section className="bl-sec alt">
-        <img className="bl-flower" src="/bloom/f6.webp" alt="" />
+        <img loading="lazy" className="bl-flower" src="/bloom/f6.webp" alt="" />
         <h2>Counting the days</h2>
         <div className="bl-count">
           {count.map(([value, label]) => (
@@ -281,7 +281,7 @@ export function BloomInvite({
       </section>
 
       <section className="bl-sec">
-        <img className="bl-mandap" src="/bloom/mandap.webp" alt="" />
+        <img loading="lazy" className="bl-mandap" src="/bloom/mandap.webp" alt="" />
         <span className="bl-kick">THE CELEBRATIONS</span>
         <h2>Schedule</h2>
         <div className="bl-tl">
@@ -289,7 +289,7 @@ export function BloomInvite({
           {programme.map((event, index) => (
             <article key={event.title + event.time}>
               <time>{event.time}</time>
-              <img src={icons[index % icons.length]} alt="" />
+              <img loading="lazy" src={icons[index % icons.length]} alt="" />
               <div>
                 <strong>{event.title}</strong>
                 <span>{event.kick} · {event.text}</span>
@@ -302,7 +302,7 @@ export function BloomInvite({
       <section className="bl-sec alt">
         <span className="bl-kick">THE WEDDING PARTY</span>
         <h2>Our bridesmaids</h2>
-        <img className="bl-maids" src="/bloom/maids.webp" alt="" />
+        <img loading="lazy" className="bl-maids" src="/bloom/maids.webp" alt="" />
         <span className="bl-lead">{party}</span>
       </section>
 
@@ -315,7 +315,7 @@ export function BloomInvite({
           </svg>
           {STOPS.map((stop) => (
             <div key={stop.name} className="bl-stop" style={{ left: `${stop.x}%`, top: `${stop.y}%` }}>
-              <img src={stop.name === fields.venue ? "/bloom/mandap.webp" : stop.icon} alt="" />
+              <img loading="lazy" src={stop.name === fields.venue ? "/bloom/mandap.webp" : stop.icon} alt="" />
               <strong>{stop.name === "The Rose Pavilion" ? fields.venue || stop.name : stop.name}</strong>
               <span>{stop.meta}</span>
             </div>
@@ -345,7 +345,7 @@ export function BloomInvite({
             const photo = photos[index + 1];
             return (
               <div key={index} className={index % 2 ? "card" : "arch"}>
-                {photo ? <img src={assetUrl(photo)} alt="" /> : <img className="mark" src={FLOWER[(index * 3 + 1) % FLOWER.length]} alt="" />}
+                {photo ? <img loading="lazy" src={assetUrl(photo)} alt="" /> : <img loading="lazy" className="mark" src={FLOWER[(index * 3 + 1) % FLOWER.length]} alt="" />}
               </div>
             );
           })}
@@ -388,7 +388,7 @@ export function BloomInvite({
               {Array.from({ length: 12 }, (_, index) => {
                 const angle = (index / 12) * Math.PI * 2;
                 return (
-                  <img
+                  <img loading="lazy"
                     key={index}
                     className="bl-burst"
                     src={index % 2 ? PETAL[index % PETAL.length] : FLOWER[index % FLOWER.length]}
@@ -402,7 +402,7 @@ export function BloomInvite({
                   />
                 );
               })}
-              <img src="/bloom/seal.webp" alt="" />
+              <img loading="lazy" src="/bloom/seal.webp" alt="" />
               <strong>{attend === "yes" ? `Thank you, ${name.trim().split(" ")[0]}` : "We’ll miss you"}</strong>
               <p className="bl-lead">
                 {attend === "yes"
@@ -461,7 +461,7 @@ export function BloomInvite({
       </section>
 
       <footer className="bl-foot">
-        <img className="spray" src="/bloom/spray-b.webp" alt="" />
+        <img loading="lazy" className="spray" src="/bloom/spray-b.webp" alt="" />
         <strong>{couple.first} &amp; {couple.second}</strong>
         <span className="bl-small">{shortDate(fields.date)} · {(fields.address || "Jaipur").toUpperCase()}</span>
         <button type="button" className="bl-link" onClick={() => setPhase("closed")}>↺ Open the letter again</button>

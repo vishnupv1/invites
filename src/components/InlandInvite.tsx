@@ -308,7 +308,7 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
                 <div className="il-shot" key={index} style={{ transform: `rotate(${ALBUM_TILT[index]}deg)` }}>
                   <div className="il-ph" style={{ background: INK[(index + 2) % INK.length] }}>
                     {photos.length ? (
-                      <img src={assetUrl(photos[index])} alt="" />
+                      <img loading="lazy" src={assetUrl(photos[index])} alt="" />
                     ) : (
                       <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d={ALBUM[index][1]} />

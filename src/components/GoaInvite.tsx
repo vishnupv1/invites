@@ -384,7 +384,7 @@ export function GoaInvite({
         </div>
         <div ref={travelRef} className={`art rv${seen ? " in" : ""}`}>
           <div className="pass" style={{ left: travelArt.pass[0], top: travelArt.pass[1], width: travelArt.pass[2] }}>
-            <img src="/goa/pass.webp" alt="Boarding pass" />
+            <img loading="lazy" src="/goa/pass.webp" alt="Boarding pass" />
             <span className="gg-ink big" style={{ left: "51.2%", top: "22.8%" }}>{toCode === "GOI" ? "GOA" : toCode}<br /><span style={{ fontSize: "0.3em", letterSpacing: "0.2em" }}>{fromCode} ✈ {toCode}</span></span>
             <span className="gg-ink mid" style={{ left: "58.2%", top: "49.4%" }}>{fields.names}</span>
             <span className="gg-ink mid" style={{ left: "60.2%", top: "55.9%" }}>{range}</span>
@@ -393,18 +393,18 @@ export function GoaInvite({
             <span className="gg-ink tiny" style={{ left: "58.2%", top: "86.1%" }}>ADMIT YOU<br />&amp; YOUR LOVED ONES</span>
           </div>
           <div className="gg-post" style={{ left: travelArt.card[0], top: travelArt.card[1], width: travelArt.card[2] }}>
-            <img className="ph" src={photo} alt="" />
-            <img className="fr" src="/goa/frame.webp" alt="" />
+            <img loading="lazy" className="ph" src={photo} alt="" />
+            <img loading="lazy" className="fr" src="/goa/frame.webp" alt="" />
           </div>
           <div className="hand" style={{ left: travelArt.hand[0], top: travelArt.hand[1], width: travelArt.hand[2] }}>
-            <img src="/goa/hand.webp" alt="" />
+            <img loading="lazy" src="/goa/hand.webp" alt="" />
           </div>
         </div>
       </section>
 
       <section className="sec invite">
         {lanterns.map(([left, width, sx, duration, delay]) => (
-          <img key={`${left}-${delay}`} className="lan" src="/goa/lantern.webp" alt="" style={{ left: `${left}%`, width, ["--sx" as string]: `${sx}px`, ["--ry" as string]: "-1400px", animationDuration: `${duration}s`, animationDelay: `${delay}s` }} />
+          <img loading="lazy" key={`${left}-${delay}`} className="lan" src="/goa/lantern.webp" alt="" style={{ left: `${left}%`, width, ["--sx" as string]: `${sx}px`, ["--ry" as string]: "-1400px", animationDuration: `${duration}s`, animationDelay: `${delay}s` }} />
         ))}
         <div className="card">
           <span className="k">{fields.hosts || "With the blessings of our families"}</span>
@@ -417,7 +417,7 @@ export function GoaInvite({
           <span className="dt">{range.toUpperCase()}</span>
           <span className="vn">{place.toUpperCase()}, {region.toUpperCase()}</span>
         </div>
-        <img className="picnic" src="/goa/picnic.webp" alt="" />
+        <img loading="lazy" className="picnic" src="/goa/picnic.webp" alt="" />
       </section>
 
       <section className="sec evHead">
@@ -434,7 +434,7 @@ export function GoaInvite({
               <div className="gg-petals" aria-hidden="true">
                 {PETALS.map((petal) => (
                   <span key={`${petal.x}-${petal.y}-${petal.s}`} className="gg-petal" style={{ ["--x" as string]: petal.x, ["--y" as string]: petal.y, ["--endx" as string]: petal.endx, ["--endy" as string]: petal.endy, ["--s" as string]: petal.s, ["--spin" as string]: petal.spin, ["--turn" as string]: petal.turn, ["--flip" as string]: String(petal.flip), ["--dur" as string]: petal.dur, ["--delay" as string]: petal.delay }}>
-                    <img src="/goa/petal.webp" alt="" />
+                    <img loading="lazy" src="/goa/petal.webp" alt="" />
                   </span>
                 ))}
               </div>
@@ -486,7 +486,7 @@ export function GoaInvite({
         <div className="form">
           {done ? (
             <div className="done">
-              <img src="/goa/crest.webp" alt="" style={{ width: 120 }} />
+              <img loading="lazy" src="/goa/crest.webp" alt="" style={{ width: 120 }} />
               <span className="sc" style={{ fontSize: 42 }}>{attend === "yes" ? `See you in ${region}, ${firstName}` : "We’ll miss you"}</span>
               <p className="lead" style={{ fontSize: 18 }}>{attend === "yes" ? `${guests} ${guests === 1 ? "seat is" : "seats are"} saved for you by the sea.` : "Thank you for letting us know — your blessings mean the world to us."}</p>
               <button type="button" className="link" onClick={() => setDone(false)}>CHANGE MY REPLY</button>
@@ -534,7 +534,7 @@ export function GoaInvite({
       </section>
 
       <footer className="foot">
-        <img src="/goa/crest.webp" alt="" style={{ width: 150 }} />
+        <img loading="lazy" src="/goa/crest.webp" alt="" style={{ width: 150 }} />
         <span className="sc" style={{ fontSize: 48 }}>{fields.names}</span>
         <span className="k" style={{ color: "#5E6B80" }}>{ribbon(fields.date)} · {region.toUpperCase()}</span>
         <button type="button" className="link" onClick={replay}>↺ OPEN THE GATES AGAIN</button>

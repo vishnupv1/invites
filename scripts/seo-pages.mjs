@@ -277,7 +277,7 @@ function gitDay(file) {
 }
 
 function templateLastmod(template) {
-  return gitDay(path.join(root, "public/covers", `${template.id}.jpg`));
+  return gitDay(path.join(root, "public/covers", `${template.id}.webp`));
 }
 
 function staticLastmod(pathname) {
@@ -746,10 +746,10 @@ const UNLISTED = new Set(["/design-check"]);
 
 function sitemapEntry(page) {
   const loc = `  <url><loc>${SITE}${page.path === "/" ? "/" : page.path}</loc>${page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : ""}`;
-  const cover = page.template ? path.join(root, "public/covers", `${page.template.id}.jpg`) : "";
+  const cover = page.template ? path.join(root, "public/covers", `${page.template.id}.webp`) : "";
   if (!page.template || !fs.existsSync(cover)) return `${loc}</url>`;
   const title = escapeText(`${page.template.name} invitation cover`);
-  return `${loc}<image:image><image:loc>${SITE}/covers/${page.template.id}.jpg</image:loc><image:title>${title}</image:title></image:image></url>`;
+  return `${loc}<image:image><image:loc>${SITE}/covers/${page.template.id}.webp</image:loc><image:title>${title}</image:title></image:image></url>`;
 }
 
 function writeSitemap(list) {

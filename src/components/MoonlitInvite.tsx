@@ -372,7 +372,7 @@ export function MoonlitInvite({
 
       <section className="mj-sec" id="mj-welcome">
         <div className="mj-arch">
-          <img src="/moonlit/arch.webp" alt="" />
+          <img loading="lazy" src="/moonlit/arch.webp" alt="" />
           <div className="mj-arch-in">
             <span className="mj-small">{(fields.hosts || "With the blessings of").toUpperCase()}</span>
             {parents.map((person, index) => (
@@ -393,14 +393,14 @@ export function MoonlitInvite({
         <div className="mj-story">
           <div className="mj-jh">
             <div className="mj-jh-slot">
-              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : (
+              {storyPhoto ? <img loading="lazy" src={storyPhoto} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E9BE6A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
                   <span className="mj-small">PHOTO</span>
                 </>
               )}
             </div>
-            <img src="/moonlit/frame.webp" alt="" />
+            <img loading="lazy" src="/moonlit/frame.webp" alt="" />
           </div>
           <div className="mj-beats">
             {story.map((beat) => (
@@ -420,7 +420,7 @@ export function MoonlitInvite({
         <div className="mj-events">
           {events.map((event) => (
             <div className="mj-ev" key={event.title + event.time}>
-              <img src={iconFor(event.title)} alt="" />
+              <img loading="lazy" src={iconFor(event.title)} alt="" />
               <span className="mj-small">{event.kick}</span>
               <span className="mj-ev-name mj-gold">{event.title}</span>
               <span className="mj-ev-time">{event.time}</span>
@@ -434,7 +434,7 @@ export function MoonlitInvite({
 
       <section className="mj-sec alt">
         <div className="mj-venue">
-          <img className="mj-venue-img" src="/moonlit/boat.webp" alt="" />
+          <img loading="lazy" className="mj-venue-img" src="/moonlit/boat.webp" alt="" />
           <div className="mj-venue-txt">
             <span className="mj-kick">THE VENUE</span>
             <h2 className="mj-h2 mj-gold">{fields.venue || "The Moonlit Ghats"}</h2>
@@ -451,7 +451,7 @@ export function MoonlitInvite({
       <section className="mj-sec">
         <span className="mj-kick">UNTIL THE MOON RISES ON US</span>
         <div className="mj-count">
-          <img src="/moonlit/moon.webp" alt="" />
+          <img loading="lazy" src="/moonlit/moon.webp" alt="" />
           <div className="mj-count-row">
             {count.map(([value, label]) => (
               <span key={label}><strong>{String(value).padStart(2, "0")}</strong><em>{label.toUpperCase()}</em></span>
@@ -466,7 +466,7 @@ export function MoonlitInvite({
         <div className="mj-gal">
           {gallery.map((photo, index) => (
             <div key={index} className={index % 2 ? "mj-slot" : "mj-slot arch"}>
-              {photo ? <img src={photo} alt="" /> : (
+              {photo ? <img loading="lazy" src={photo} alt="" /> : (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
               )}
             </div>
@@ -493,16 +493,16 @@ export function MoonlitInvite({
       </section>
 
       <section className="mj-sec alt" id="mj-rsvp">
-        <img className="mj-env" src="/moonlit/envelope.webp" alt="" />
+        <img loading="lazy" className="mj-env" src="/moonlit/envelope.webp" alt="" />
         <span className="mj-kick">{fields.rsvpBy ? `KINDLY REPLY BY ${replyDate(fields.rsvpBy)}` : "KINDLY REPLY"}</span>
         <h2 className="mj-h2 mj-gold">Will you join us?</h2>
         <div className="mj-form">
           {done ? (
             <div className="mj-done">
               {Array.from({ length: 5 }, (_, index) => (
-                <img key={index} className="mj-done-lantern" src="/moonlit/lantern.webp" alt="" style={{ ["--left" as string]: `${10 + index * 19}%`, ["--size" as string]: `${22 + (index % 3) * 8}px`, ["--dx" as string]: `${(index % 2 ? 1 : -1) * 14}px`, ["--dy" as string]: "-220px", ["--dur" as string]: `${4 + (index % 3)}s`, ["--delay" as string]: `${0.4 + index * 0.25}s` }} />
+                <img loading="lazy" key={index} className="mj-done-lantern" src="/moonlit/lantern.webp" alt="" style={{ ["--left" as string]: `${10 + index * 19}%`, ["--size" as string]: `${22 + (index % 3) * 8}px`, ["--dx" as string]: `${(index % 2 ? 1 : -1) * 14}px`, ["--dy" as string]: "-220px", ["--dur" as string]: `${4 + (index % 3)}s`, ["--delay" as string]: `${0.4 + index * 0.25}s` }} />
               ))}
-              <img className="mj-stamp" src="/moonlit/diya.webp" alt="" />
+              <img loading="lazy" className="mj-stamp" src="/moonlit/diya.webp" alt="" />
               <span className="mj-done-t mj-gold">{attend === "yes" ? `Thank you, ${first}` : "We’ll miss you"}</span>
               <span className="mj-lead">
                 {attend === "yes"
@@ -568,11 +568,11 @@ export function MoonlitInvite({
       </section>
 
       <footer className="mj-foot">
-        <img className="mj-foot-lot" src="/moonlit/lotus.webp" alt="" />
+        <img loading="lazy" className="mj-foot-lot" src="/moonlit/lotus.webp" alt="" />
         <div className="mj-foot-diyas">
-          <img src="/moonlit/diya.webp" alt="" />
-          <img src="/moonlit/diya.webp" alt="" />
-          <img src="/moonlit/diya.webp" alt="" />
+          <img loading="lazy" src="/moonlit/diya.webp" alt="" />
+          <img loading="lazy" src="/moonlit/diya.webp" alt="" />
+          <img loading="lazy" src="/moonlit/diya.webp" alt="" />
         </div>
         <span className="mj-foot-names mj-gold">{fields.names}</span>
         <span className="mj-small" style={{ position: "relative" }}>{shortDate(fields.date)} · {cityOf(fields.address, fields.venue).toUpperCase()}</span>

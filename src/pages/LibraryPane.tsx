@@ -96,7 +96,7 @@ export function LibraryPane({ view }: { view: View }) {
         {!ready ? <p className="rsvp-wait"><Spinner size="md" /> Loading your events…</p> : null}
         {published.map((invite) => (
           <article className="rsvp-lib-card" key={invite.id}>
-            <img src={invite.cover || `/covers/${invite.templateId}.jpg`} alt="" />
+            <img src={invite.cover || `/covers/${invite.templateId}.webp`} alt="" />
             <div>
               <span className="rsvp-pill yes">{invite.status === "live" ? "Live" : "Saved"}</span>
               <b>{invite.names || "Untitled event"}</b>
@@ -139,7 +139,7 @@ export function LibraryPane({ view }: { view: View }) {
       <div className="rsvp-lib is-tiles">
         {drafts.map((invite) => (
           <article className="rsvp-lib-tile" key={invite.id}>
-            <img src={invite.cover || `/covers/${invite.templateId}.jpg`} alt="" />
+            <img src={invite.cover || `/covers/${invite.templateId}.webp`} alt="" />
             <b>{invite.names || "Untitled draft"}</b>
             <small>{editedLabel(invite.createdAt)}</small>
             <div className="rsvp-lib-actions">
@@ -169,7 +169,7 @@ export function LibraryPane({ view }: { view: View }) {
           const event = template.events[0] ?? "marriage";
           return (
             <article className="rsvp-lib-tile" key={template.id}>
-              <img src={`/covers/${template.id}.jpg`} alt="" />
+              <img src={`/covers/${template.id}.webp`} alt="" />
               <FavoriteHeart liked name={template.name} onClick={() => toggle(template.id)} />
               <b>{template.name}</b>
               <small>{formatPrice(template)}</small>
@@ -197,7 +197,7 @@ export function LibraryPane({ view }: { view: View }) {
         const event = template.events[0] ?? "marriage";
         return (
           <article className="rsvp-lib-card" key={template.id}>
-            <img src={`/covers/${template.id}.jpg`} alt="" />
+            <img src={`/covers/${template.id}.webp`} alt="" />
             <div>
               <b>{template.name}</b>
               <small>{getEvent(event)?.label ?? "Invitation"} · {formatPrice(template)}</small>

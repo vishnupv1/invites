@@ -334,7 +334,7 @@ export function VillaInvite({
       </section>
 
       <section className="vs-sec" id="vs-welcome">
-        <img className="vs-branch" src="/villa/branch.webp" alt="" />
+        <img loading="lazy" className="vs-branch" src="/villa/branch.webp" alt="" />
         <span className="vs-kick">{(fields.hosts || "Together with their families").toUpperCase()}</span>
         <div className="vs-parents">
           {parents.map((person, index) => (
@@ -368,7 +368,7 @@ export function VillaInvite({
         <h2 className="vs-h2">{fields.venue}</h2>
         <span className="vs-addr">{fields.address.toUpperCase().replaceAll(",", " ·")}</span>
         {pack.venueNote ? <span className="vs-lead">{pack.venueNote}</span> : null}
-        <img className="vs-villa" src="/villa/villa.webp" alt="" />
+        <img loading="lazy" className="vs-villa" src="/villa/villa.webp" alt="" />
         <div className="vs-actions">
           <button type="button" className="vs-btn solid" onClick={directions}>Open in Google Maps</button>
           <a className="vs-btn line" href={calendar}>Add to calendar</a>
@@ -381,14 +381,14 @@ export function VillaInvite({
         <div className="vs-story">
           <div className="vs-frame">
             <div className="vs-slot">
-              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : (
+              {storyPhoto ? <img loading="lazy" src={storyPhoto} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#66703F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
                   <span className="vs-small">PHOTO</span>
                 </>
               )}
             </div>
-            <img src="/villa/oval.webp" alt="" />
+            <img loading="lazy" src="/villa/oval.webp" alt="" />
           </div>
           <div className="vs-beats">
             {story.map((beat) => (
@@ -418,8 +418,8 @@ export function VillaInvite({
       </section>
 
       <section className="vs-sec alt vs-feast">
-        <span className="vs-walk l"><img src="/villa/walk-l.webp" alt="" /></span>
-        <span className="vs-walk r"><img src="/villa/walk-r.webp" alt="" /></span>
+        <span className="vs-walk l"><img loading="lazy" src="/villa/walk-l.webp" alt="" /></span>
+        <span className="vs-walk r"><img loading="lazy" src="/villa/walk-r.webp" alt="" /></span>
         <span className="vs-kick">MENU</span>
         <h2 className="vs-h2">The Feast</h2>
         <div className="vs-menu">
@@ -430,7 +430,7 @@ export function VillaInvite({
             </div>
           ))}
         </div>
-        <img className="vs-feast-img" src="/villa/feast.webp" alt="" />
+        <img loading="lazy" className="vs-feast-img" src="/villa/feast.webp" alt="" />
       </section>
 
       <section className="vs-sec">
@@ -449,7 +449,7 @@ export function VillaInvite({
       </section>
 
       <section className="vs-sec alt">
-        <img className="vs-bouquet" src="/villa/bouquet.webp" alt="" />
+        <img loading="lazy" className="vs-bouquet" src="/villa/bouquet.webp" alt="" />
         <span className="vs-kick">WEDDING REGISTRY</span>
         <h2 className="vs-h2">Gifts</h2>
         <p className="vs-lead">{pack.gift || "Your presence is the greatest gift."}</p>
@@ -469,7 +469,7 @@ export function VillaInvite({
       </section>
 
       <section className="vs-sec">
-        <img className="vs-car" src="/villa/car.webp" alt="" />
+        <img loading="lazy" className="vs-car" src="/villa/car.webp" alt="" />
         <span className="vs-kick">GETTING AROUND</span>
         <h2 className="vs-h2">Transportation</h2>
         <p className="vs-lead">{pack.travelFrom}</p>
@@ -479,7 +479,7 @@ export function VillaInvite({
         <span className="vs-kick">WHERE TO STAY</span>
         <h2 className="vs-h2">Accommodation</h2>
         <div className="vs-stay-row">
-          <img className="vs-lemons" src="/villa/lemons.webp" alt="" />
+          <img loading="lazy" className="vs-lemons" src="/villa/lemons.webp" alt="" />
           <div className="vs-stays">
             {stays.map((stay) => (
               <div key={stay.name} className="vs-stay vs-card">
@@ -518,7 +518,7 @@ export function VillaInvite({
               {Array.from({ length: 12 }, (_, index) => (
                 <span key={index} className="vs-leaf" style={{ left: `${6 + (index * 37) % 86}%`, background: index % 3 ? "#7D8A4E" : "#A9B67A", ["--x" as string]: `${(index % 2 ? 1 : -1) * (16 + index * 4)}px`, ["--r" as string]: `${index * 75}deg`, animationDelay: `${(index % 5) * 0.12}s` }} aria-hidden="true" />
               ))}
-              <img src="/villa/bouquet.webp" alt="" />
+              <img loading="lazy" src="/villa/bouquet.webp" alt="" />
               <h3>{attend === "yes" ? `Grazie, ${first}!` : "We’ll miss you"}</h3>
               <p className="vs-lead">{attend === "yes" ? `Your reply is confirmed. ${guests} ${guests === 1 ? "seat is" : "seats are"} saved for you in Tuscany.` : "Thank you for letting us know — we’ll raise a glass to you."}</p>
               <button type="button" className="vs-link" onClick={() => setDone(false)}>Change my reply</button>
@@ -587,7 +587,7 @@ export function VillaInvite({
         <span className="vs-small">{footDate(fields.date, region)}</span>
         <button type="button" className="vs-link" onClick={replay}>↺ Open the invitation again</button>
         <Link className="vs-made" to={madeWithHref("villa")}>MADE WITH INVITESREADY</Link>
-        <img className="vs-foot-garden" src="/villa/garden.webp" alt="" />
+        <img loading="lazy" className="vs-foot-garden" src="/villa/garden.webp" alt="" />
       </footer>
 
       {toast ? (

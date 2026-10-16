@@ -103,18 +103,19 @@ function cityOf(address: string) {
   return bits[0] || "";
 }
 
-function Frame({ src, alt, mark }: { src?: string; alt?: string; mark?: string }) {
+function Frame({ src, alt, mark, lazy = false }: { src?: string; alt?: string; mark?: string; lazy?: boolean }) {
+  const loading = lazy ? "lazy" as const : undefined;
   return (
     <div className="ll-pol">
       {src ? (
-        <img className="ll-in" src={src} alt={alt || ""} />
+        <img className="ll-in" src={src} alt={alt || ""} loading={loading} />
       ) : (
         <div className="ll-mono">
-          <img src={ART.wreath} alt="" />
+          <img src={ART.wreath} alt="" loading={loading} />
           <span>{mark}</span>
         </div>
       )}
-      <img className="ll-fr" src={ART.frame} alt="" />
+      <img className="ll-fr" src={ART.frame} alt="" loading={loading} />
     </div>
   );
 }
@@ -384,13 +385,13 @@ export function LotusInvite({
       </section>
 
       <section className={`ll-std${seen ? " is-in" : ""}`} id="ll-std" ref={stdRef}>
-        <img className="ll-garland" src={ART.garland} alt="" />
-        <img className="ll-garland r ll-mirror" src={ART.garland} alt="" />
-        <img className="ll-garden ll-garden-m" src="/lotus/garden.webp" alt="" />
-        <img className="ll-garden ll-garden-d" src="/lotus/garden-d.webp" alt="" />
-        <img className="ll-dove" src={ART.dove} alt="" />
+        <img loading="lazy" className="ll-garland" src={ART.garland} alt="" />
+        <img loading="lazy" className="ll-garland r ll-mirror" src={ART.garland} alt="" />
+        <img loading="lazy" className="ll-garden ll-garden-m" src="/lotus/garden.webp" alt="" />
+        <img loading="lazy" className="ll-garden ll-garden-d" src="/lotus/garden-d.webp" alt="" />
+        <img loading="lazy" className="ll-dove" src={ART.dove} alt="" />
         {FALLS.map((petal, index) => (
-          <img
+          <img loading="lazy"
             key={`${petal.left}-${petal.delay}`}
             className={index >= 9 ? "ll-fall extra" : "ll-fall"}
             src={PETALS[index % 3]}
@@ -415,8 +416,8 @@ export function LotusInvite({
       </section>
 
       <section className="ll-sec" style={{ background: "#FBF3EC" }}>
-        <img className="ll-cor tl" src={ART.corner} alt="" />
-        <img className="ll-cor br" src={ART.corner} alt="" />
+        <img loading="lazy" className="ll-cor tl" src={ART.corner} alt="" />
+        <img loading="lazy" className="ll-cor br" src={ART.corner} alt="" />
         <span className="ll-k">The celebrations</span>
         <h2>Three days of joy</h2>
         <p className="ll-lead" style={{ position: "relative", zIndex: 2 }}>{fields.message}</p>
@@ -438,7 +439,7 @@ export function LotusInvite({
         <span className="ll-k">Little moments</span>
         <h2>Us, so far</h2>
         <div className="ll-fan">
-          {shots.map((src) => <Frame key={src} src={src} alt={`${first} and ${second}`} />)}
+          {shots.map((src) => <Frame key={src} src={src} alt={`${first} and ${second}`} lazy />)}
         </div>
       </section>
 
@@ -446,7 +447,7 @@ export function LotusInvite({
         <span className="ll-k">Counting down</span>
         <h2>Until our forever</h2>
         <div className="ll-clock">
-          <img src={ART.wreath} alt="" />
+          <img loading="lazy" src={ART.wreath} alt="" />
           <div className="ll-clock-face"><b>{countdown.days}</b><span>DAYS TO GO</span></div>
         </div>
         <div className="ll-row">
@@ -469,7 +470,7 @@ export function LotusInvite({
       </section>
 
       <section className="ll-sec" id="ll-rsvp" style={{ background: "#FBF3EC" }}>
-        <img className="ll-cor tl" src={ART.corner} alt="" />
+        <img loading="lazy" className="ll-cor tl" src={ART.corner} alt="" />
         <span className="ll-k">RSVP</span>
         <h2>Will you be there?</h2>
         {replyBy ? <span className="ll-k" style={{ color: "#8C6F6A" }}>Kindly let us know by {pretty(replyBy)}</span> : null}
@@ -477,7 +478,7 @@ export function LotusInvite({
           {done ? (
             <div className="ll-done">
               <div className="ll-mark" style={{ width: 120, height: 120 }}>
-                <img src={ART.wreath} alt="" />
+                <img loading="lazy" src={ART.wreath} alt="" />
                 <span style={{ fontSize: 30 }}>{first.charAt(0)} &amp; {second.charAt(0)}</span>
               </div>
               <span className="ll-script" style={{ fontSize: 42 }}>{attend === "yes" ? `See you there, ${name.trim().split(" ")[0] || "friend"}` : "We’ll miss you"}</span>
@@ -538,7 +539,7 @@ export function LotusInvite({
 
       <footer className="ll-foot">
         <div className="ll-mark">
-          <img src={ART.wreath} alt="" />
+          <img loading="lazy" src={ART.wreath} alt="" />
           <span>{first.charAt(0)} &amp; {second.charAt(0)}</span>
         </div>
         <span className="ll-script" style={{ fontSize: 48 }}>{first} &amp; {second}</span>

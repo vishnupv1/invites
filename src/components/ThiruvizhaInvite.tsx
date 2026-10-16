@@ -483,7 +483,7 @@ export function ThiruvizhaInvite({
             <div>
               {photos.map((src, index) => src ? (
                 <figure key={`${src}-${index}`} style={{ animationDelay: `${index * 0.15}s` }}>
-                  <img src={src} alt="" />
+                  <img loading="lazy" src={src} alt="" />
                   <figcaption>
                     <b>{captions[index]?.title || "Photograph"}</b>
                     {captions[index]?.text ? <small>{captions[index].text}</small> : null}

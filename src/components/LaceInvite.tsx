@@ -526,10 +526,10 @@ export function LaceInvite({
         </section>
 
         <section className="sec" id="lr-note">
-          <img className="div" src="/lace/divider.webp" alt="" />
+          <img loading="lazy" className="div" src="/lace/divider.webp" alt="" />
           <div className="lacecard">
-            <img className="c1" src="/lace/corner.webp" alt="" />
-            <img className="c2" src="/lace/corner.webp" alt="" />
+            <img loading="lazy" className="c1" src="/lace/corner.webp" alt="" />
+            <img loading="lazy" className="c2" src="/lace/corner.webp" alt="" />
             <span className="k">{copy.kick}</span>
             <h2>{copy.noteH}</h2>
             {fields.message ? <p className="lead">{fields.message}</p> : null}
@@ -543,8 +543,8 @@ export function LaceInvite({
           <div className="evGrid">
             {events.map((item) => (
               <div className="ev" key={`${item.day}-${item.name}`}>
-                <img className="c1" src="/lace/corner.webp" alt="" />
-                <img className="c2" src="/lace/corner.webp" alt="" />
+                <img loading="lazy" className="c1" src="/lace/corner.webp" alt="" />
+                <img loading="lazy" className="c2" src="/lace/corner.webp" alt="" />
                 <span className="d">{item.day}</span>
                 <span className="n">{item.name}</span>
                 <span className="w">{item.time}</span>
@@ -555,7 +555,7 @@ export function LaceInvite({
         </section>
 
         <section className="sec">
-          <img src="/lace/dove.webp" alt="" style={{ width: 54 }} />
+          <img loading="lazy" src="/lace/dove.webp" alt="" style={{ width: 54 }} />
           <h2>{copy.cdH}</h2>
           <div className="cdRow">
             {[copy.days, copy.hours, copy.mins, copy.secs].map((label, index) => (
@@ -596,7 +596,7 @@ export function LaceInvite({
             <span style={{ background: "#E8CFC4" }} />
             <span style={{ background: "#B9A58A" }} />
           </div>
-          <img className="div" src="/lace/divider.webp" alt="" style={{ marginTop: 20 }} />
+          <img loading="lazy" className="div" src="/lace/divider.webp" alt="" style={{ marginTop: 20 }} />
         </section>
 
         <section className="sec alt" id="lr-rsvp">
@@ -607,7 +607,7 @@ export function LaceInvite({
             {done ? (
               <div className="done">
                 <div className="sealMark">
-                  <img src="/lace/seal.webp" alt="" />
+                  <img loading="lazy" src="/lace/seal.webp" alt="" />
                   <span className="mono">{ini1}<i>&amp;</i>{ini2}</span>
                 </div>
                 <span className="script" style={{ fontSize: 40 }}>{attend === "yes" ? `${lang === "hi" ? "धन्यवाद, " : "Thank you, "}${first}` : (lang === "hi" ? "हमें आपकी कमी रहेगी" : "We’ll miss you")}</span>
@@ -667,7 +667,7 @@ export function LaceInvite({
         </section>
 
         <footer className="foot">
-          <img src="/lace/dove.webp" alt="" style={{ width: 60 }} />
+          <img loading="lazy" src="/lace/dove.webp" alt="" style={{ width: 60 }} />
           <span className="script" style={{ fontSize: 48 }}>{fields.names}</span>
           <span className="k">{dotted(fields.date)} · {fields.address || fields.venue}</span>
           <button type="button" className="link" onClick={replay}>↺ {copy.again}</button>

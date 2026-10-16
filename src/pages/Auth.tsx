@@ -253,14 +253,14 @@ export function Auth() {
             {extras.map((item, index) => (
               <div key={item.id} className={`si-phone si-phone-side is-${index}`}>
                 <PhoneFrame label={item.name}>
-                  <img src={`/covers/${item.id}.jpg`} alt="" />
+                  <img src={`/covers/${item.id}.webp`} alt="" />
                 </PhoneFrame>
               </div>
             ))}
             {wide && previewTemplate && previewFields ? <SignInPhone template={previewTemplate} fields={previewFields} /> : null}
           </div>
           <div className="si-chip">
-            <img src={`/covers/${previewTemplate?.id ?? "bloom"}.jpg`} alt="" />
+            <img src={`/covers/${previewTemplate?.id ?? "bloom"}.webp`} alt="" />
             <div>
               <b>{previewTemplate ? `${names} · ${previewTemplate.name}` : names}</b>
               {saved ? <small><CheckIcon /> Saved — nothing will be lost</small> : null}
@@ -270,7 +270,7 @@ export function Auth() {
 
         <main className="si-main">
           {publishing ? <div className="si-ticket">
-            <img src={`/covers/${previewTemplate?.id ?? "bloom"}.jpg`} alt="" />
+            <img src={`/covers/${previewTemplate?.id ?? "bloom"}.webp`} alt="" />
             <div>
               <b>{names}</b>
               {saved ? <small><CheckIcon /> Your invitation is saved</small> : null}

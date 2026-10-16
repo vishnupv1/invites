@@ -95,7 +95,7 @@ function Frame({ src, label, text, tint }: { src: string; label: string; text?: 
   return (
     <div className="sh-frame">
       <div className="sh-frame-in" style={{ background: tint }}>
-        {src ? <img src={src} alt="" /> : null}
+        {src ? <img loading="lazy" src={src} alt="" /> : null}
         <span>{label}{text ? <small>{text}</small> : null}</span>
       </div>
     </div>
@@ -335,7 +335,7 @@ export function ShaadiInvite({
                 return (
                   <article key={`${item.name}-${index}`} className="sh-event" style={{ ["--c1" as string]: look.c1, ["--c2" as string]: look.c2, ["--pill" as string]: look.ink, animationDelay: `0s, ${index * 0.15}s` }}>
                     <div className="sh-event-in">
-                      {photo ? <img className="sh-event-photo" src={photo} alt="" /> : null}
+                      {photo ? <img loading="lazy" className="sh-event-photo" src={photo} alt="" /> : null}
                       <div className="sh-icon"><EventMark kind={kind} /></div>
                       <h3 className="sh-foil">{item.name}</h3>
                       {item.hindi ? <p className="sh-hindi">{item.hindi}</p> : null}
@@ -397,7 +397,7 @@ export function ShaadiInvite({
 
           <section className="sh-section sh-venue">
             <div className="sh-palace">
-              {photos[SHAADI_STORY_COUNT + festivities.length] ? <img src={photos[SHAADI_STORY_COUNT + festivities.length]} alt="" /> : <Palace />}
+              {photos[SHAADI_STORY_COUNT + festivities.length] ? <img loading="lazy" src={photos[SHAADI_STORY_COUNT + festivities.length]} alt="" /> : <Palace />}
             </div>
             <div className="sh-venue-copy">
               <p className="sh-kicker">The venue</p>

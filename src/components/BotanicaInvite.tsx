@@ -390,7 +390,7 @@ export function BotanicaInvite({
 
           <section className="bf-section alt">
             <div className="bf-deco">
-              <img src={FRAMES.deco} alt="" />
+              <img loading="lazy" src={FRAMES.deco} alt="" />
               <div className="bf-deco-copy">
                 <span className="bf-script bf-cd-kick">Counting down to “I do”</span>
                 <div className="bf-cd">
@@ -412,8 +412,8 @@ export function BotanicaInvite({
                 {story.map((chapter, index) => (
                   <article className="bf-pol" key={`${chapter.title}-${index}`} style={{ animationDelay: `${index * 0.2}s` }}>
                     <div className="bf-pol-card" style={{ ["--r0" as string]: `${[-4, 3, -2][index % 3]}deg`, ["--r1" as string]: `${[2, -3, 3][index % 3]}deg`, animationDuration: `${4 + index}s` }}>
-                      <div className="bf-shot">{photoAt(index) ? <img src={photoAt(index)} alt={chapter.title} /> : null}</div>
-                      <img className="frame" src={FRAMES.polaroid} alt="" />
+                      <div className="bf-shot">{photoAt(index) ? <img loading="lazy" src={photoAt(index)} alt={chapter.title} /> : null}</div>
+                      <img loading="lazy" className="frame" src={FRAMES.polaroid} alt="" />
                       <span className="bf-script bf-cap">{chapter.title}</span>
                     </div>
                     <span className="bf-year">{chapter.year}</span>
@@ -431,7 +431,7 @@ export function BotanicaInvite({
               <div className="bf-row">
                 {events.map((item, index) => (
                   <article className="bf-oval" key={`${item.title}-${index}`} style={{ animationDelay: `${index * 0.2}s` }}>
-                    <img src={FRAMES.oval} alt="" />
+                    <img loading="lazy" src={FRAMES.oval} alt="" />
                     <div className="bf-oval-copy">
                       <EventIcon index={index} />
                       <span className="bf-kick">{item.kick}</span>
@@ -458,8 +458,8 @@ export function BotanicaInvite({
             <div className="bf-row">
               {["Bridal bouquet", "A toast", "Golden hour"].map((label, index) => (
                 <figure className="bf-bloom" key={label} style={{ animationDelay: `${index * 0.2}s` }}>
-                  <div className="bf-shot">{photoAt(index + 3) || photoAt(index) ? <img src={photoAt(index + 3) || photoAt(index)} alt={label} /> : null}</div>
-                  <img className="frame" src={FRAMES.wreath} alt="" />
+                  <div className="bf-shot">{photoAt(index + 3) || photoAt(index) ? <img loading="lazy" src={photoAt(index + 3) || photoAt(index)} alt={label} /> : null}</div>
+                  <img loading="lazy" className="frame" src={FRAMES.wreath} alt="" />
                 </figure>
               ))}
             </div>
@@ -467,7 +467,7 @@ export function BotanicaInvite({
 
           <section className="bf-section alt">
             <div className="bf-border">
-              <img src={FRAMES.border} alt="" />
+              <img loading="lazy" src={FRAMES.border} alt="" />
               <div className="bf-border-copy">
                 {done ? (
                   <div className="bf-done">
@@ -562,7 +562,7 @@ export function BotanicaInvite({
 
           <footer className="bf-foot">
             <div className="bf-laurel">
-              <img src={FRAMES.laurel} alt="" />
+              <img loading="lazy" src={FRAMES.laurel} alt="" />
               <span className="bf-script bf-mono">{names.mark}</span>
             </div>
             <span className="bf-love">With love, {fields.names || `${names.first} & ${names.second}`}</span>

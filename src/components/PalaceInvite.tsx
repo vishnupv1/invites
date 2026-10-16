@@ -305,7 +305,7 @@ export function PalaceInvite({
 
       <section className="pq-sec" id="pq-welcome">
         <div className="pq-crest">
-          <img src="/palace/crest.webp" alt="" />
+          <img loading="lazy" src="/palace/crest.webp" alt="" />
           <div className="pq-crest-in">
             <span className="pq-small">{(fields.hosts || "With the blessings of").toUpperCase()}</span>
             {parents.map((person, index) => (
@@ -326,9 +326,9 @@ export function PalaceInvite({
         <div className="pq-story">
           <div className="pq-arch">
             <div className="pq-arch-slot">
-              {storyPhoto ? <img src={storyPhoto} alt={fields.names || "The couple"} /> : <><Camera /><span className="pq-small">PHOTO</span></>}
+              {storyPhoto ? <img loading="lazy" src={storyPhoto} alt={fields.names || "The couple"} /> : <><Camera /><span className="pq-small">PHOTO</span></>}
             </div>
-            <img className="pq-arch-frame" src="/palace/arch.webp" alt="" />
+            <img loading="lazy" className="pq-arch-frame" src="/palace/arch.webp" alt="" />
           </div>
           <div className="pq-story-list">
             {story.map((beat) => (
@@ -348,7 +348,7 @@ export function PalaceInvite({
         <div className="pq-events">
           {events.map((event) => (
             <div className="pq-ev" key={event.title + event.time}>
-              <img src={iconFor(event.title)} alt="" />
+              <img loading="lazy" src={iconFor(event.title)} alt="" />
               {event.kick ? <span className="pq-small">{event.kick}</span> : null}
               <span className="pq-ev-name">{event.title}</span>
               {event.time ? <span className="pq-ev-time">{event.time}</span> : null}
@@ -362,7 +362,7 @@ export function PalaceInvite({
 
       <section className="pq-sec alt">
         <div className="pq-venue">
-          <img className="pq-venue-img" src="/palace/flowers.webp" alt="" />
+          <img loading="lazy" className="pq-venue-img" src="/palace/flowers.webp" alt="" />
           <div className="pq-venue-txt">
             <span className="pq-kick">THE VENUE</span>
             <h2 className="pq-h2">{fields.venue || "The venue"}</h2>
@@ -379,7 +379,7 @@ export function PalaceInvite({
       <section className="pq-sec">
         <span className="pq-kick">COUNTING DOWN TO FOREVER</span>
         <div className="pq-count">
-          <img src="/palace/plaque.webp" alt="" />
+          <img loading="lazy" src="/palace/plaque.webp" alt="" />
           <div className="pq-count-row">
             {count.map(([value, label]) => (
               <div key={label}>
@@ -400,7 +400,7 @@ export function PalaceInvite({
               key={index}
               className={index % 2 ? "pq-slot sq" : "pq-slot arch"}
             >
-              {photo ? <img src={photo} alt="" /> : (
+              {photo ? <img loading="lazy" src={photo} alt="" /> : (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
                   <path d="M12 5v14M5 12h14" />
                 </svg>
@@ -429,7 +429,7 @@ export function PalaceInvite({
       </section>
 
       <section className="pq-sec alt" id="pq-rsvp">
-        <img className="pq-env" src="/palace/icon-envelope.webp" alt="" />
+        <img loading="lazy" className="pq-env" src="/palace/icon-envelope.webp" alt="" />
         <span className="pq-kick">{fields.rsvpBy ? `KINDLY REPLY BY ${formatLongDate(fields.rsvpBy).toUpperCase()}` : "KINDLY REPLY"}</span>
         <h2 className="pq-h2">Will you join us?</h2>
         <div className="pq-form">
@@ -445,7 +445,7 @@ export function PalaceInvite({
                   ♥
                 </span>
               ))}
-              <img src="/palace/icon-envelope.webp" alt="" />
+              <img loading="lazy" src="/palace/icon-envelope.webp" alt="" />
               <span className="pq-h2">{attend === "yes" ? `Thank you, ${first}` : "We’ll miss you"}</span>
               <p className="pq-copy">
                 {attend === "yes"
@@ -518,10 +518,10 @@ export function PalaceInvite({
       </section>
 
       <footer className="pq-foot">
-        <img className="pq-foot-rose l" src="/palace/roses-l.webp" alt="" />
-        <img className="pq-foot-rose r" src="/palace/roses-r.webp" alt="" />
+        <img loading="lazy" className="pq-foot-rose l" src="/palace/roses-l.webp" alt="" />
+        <img loading="lazy" className="pq-foot-rose r" src="/palace/roses-r.webp" alt="" />
         <div className="pq-foot-plq">
-          <img src="/palace/plaque.webp" alt="" style={{ width: "100%" }} />
+          <img loading="lazy" src="/palace/plaque.webp" alt="" style={{ width: "100%" }} />
           <span className="pq-mono">{mark.a}{mark.b ? <i>&amp;</i> : null}{mark.b}</span>
         </div>
         <span className="pq-foot-names">{fields.names}</span>

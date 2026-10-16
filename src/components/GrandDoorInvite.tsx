@@ -453,7 +453,7 @@ export function GrandDoorInvite({
       </section>
 
       <section className="gd-venue" aria-label="Venue">
-        <img src={ART.venue} alt={fields.venue || "The venue"} />
+        <img loading="lazy" src={ART.venue} alt={fields.venue || "The venue"} />
         <div className="gd-venue-shade" />
         <div className="gd-venue-copy">
           <span className="gd-kick light">The venue</span>
@@ -479,10 +479,10 @@ export function GrandDoorInvite({
             <div className="gd-frame">
               {SLOTS.map(({ box, turn, arch }, index) => (
                 <span key={story[index]?.title || index} className={arch ? "slot-arch" : turn ? "slot-tilt" : "slot-flat"} style={slotStyle(box, turn)}>
-                  <img src={photos[index] || ART.story[index]} alt={story[index]?.title || ""} />
+                  <img loading="lazy" src={photos[index] || ART.story[index]} alt={story[index]?.title || ""} />
                 </span>
               ))}
-              <img className="ornament" src={ART.frame} alt="" />
+              <img loading="lazy" className="ornament" src={ART.frame} alt="" />
             </div>
             <div className="gd-time">
               {story.map((beat, index) => (
@@ -508,7 +508,7 @@ export function GrandDoorInvite({
           <h2 className="gd-h2 gold">The celebration</h2>
           <span className="gd-note">Tap a card to bring it forward</span>
           <div className="gd-cel">
-            <img className="gd-mandap" src={ART.mandap} alt="" />
+            <img loading="lazy" className="gd-mandap" src={ART.mandap} alt="" />
             {events.map((item, index) => {
               const place = order.indexOf(index);
               const shift = [0, -40, 40][place] ?? 0;
@@ -549,7 +549,7 @@ export function GrandDoorInvite({
       </section>
 
       <section id="rsvp" className="gd-rsvp" style={{ height: size.H }} aria-label="Reply">
-        <img className="gd-rsvp-bg" src={g.rsvp} alt="" />
+        <img loading="lazy" className="gd-rsvp-bg" src={g.rsvp} alt="" />
         <div className="gd-rsvp-shade" />
         <div className="gd-rsvp-card" style={g.card}>
           {step === "intro" ? (
@@ -630,10 +630,10 @@ export function GrandDoorInvite({
 
       <section className="gd-close">
         <div className="gd-close-scene">
-          <img className="gd-close-bg" src={g.world} alt="" />
-          <img className="gd-door left" src={ART.doorL} alt="" style={{ left: size.W >= 760 ? "calc(50% - 330px)" : "calc(50% - 205px)" }} />
-          <img className="gd-door right" src={ART.doorR} alt="" style={{ left: size.W >= 760 ? "calc(50% + 70px)" : "calc(50% + 20px)" }} />
-          <img className="gd-arch" src={ART.arch} alt="" />
+          <img loading="lazy" className="gd-close-bg" src={g.world} alt="" />
+          <img loading="lazy" className="gd-door left" src={ART.doorL} alt="" style={{ left: size.W >= 760 ? "calc(50% - 330px)" : "calc(50% - 205px)" }} />
+          <img loading="lazy" className="gd-door right" src={ART.doorR} alt="" style={{ left: size.W >= 760 ? "calc(50% + 70px)" : "calc(50% + 20px)" }} />
+          <img loading="lazy" className="gd-arch" src={ART.arch} alt="" />
         </div>
         <div className="gd-close-shade" />
         <div className="gd-close-copy">

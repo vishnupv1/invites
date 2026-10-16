@@ -340,7 +340,7 @@ export function AnnaInvite({
                 </div>
                 <div className="anna-venue">
                   <div className="anna-venue-shot">
-                    {venuePhoto ? <img src={venuePhoto} alt="" /> : null}
+                    {venuePhoto ? <img loading="lazy" src={venuePhoto} alt="" /> : null}
                     {captions[venueTab + 1]?.title || captions[venueTab + 1]?.text ? (
                       <figcaption>
                         {captions[venueTab + 1]?.title ? <strong>{captions[venueTab + 1].title}</strong> : null}

@@ -269,7 +269,7 @@ export function Baptism2Invite({
           </section>
 
           <section className="bap2-sec bap2-paper">
-            <img className="bap2-divider" src={ART.divider} alt="" />
+            <img loading="lazy" className="bap2-divider" src={ART.divider} alt="" />
             <span className="bap2-kicker">Counting the days</span>
             <div className="bap2-count" aria-label="Countdown">
               {count.map((item, index) => (
@@ -284,7 +284,7 @@ export function Baptism2Invite({
           <section className="bap2-verse">
             <div className="bap2-verse-frame">
               <div className="bap2-verse-card">
-                <img className="bap2-bible" src={ART.bible} alt="" />
+                <img loading="lazy" className="bap2-bible" src={ART.bible} alt="" />
                 <p>“{fields.message || "Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God."}”</p>
                 <em>MARK 10:14</em>
               </div>
@@ -293,7 +293,7 @@ export function Baptism2Invite({
 
           <section id="celebration" className="bap2-events">
             <h2 className="bap2-h2">The celebration</h2>
-            <img className="bap2-church" src={ART.church} alt="" />
+            <img loading="lazy" className="bap2-church" src={ART.church} alt="" />
             <div className="bap2-event-grid">
               <article className="bap2-water">
                 {BUBBLES.map((x, index) => (
@@ -302,7 +302,7 @@ export function Baptism2Invite({
                 <div className="bap2-icon">
                   <span className="bap2-ripple" />
                   <span className="bap2-ripple late" />
-                  <img src={ART.font} alt="" />
+                  <img loading="lazy" src={ART.font} alt="" />
                 </div>
                 <div className="bap2-k">The sacrament</div>
                 <div className="bap2-event-title">{ceremony}</div>
@@ -313,7 +313,7 @@ export function Baptism2Invite({
                 </div>
               </article>
               <article className="bap2-lunch">
-                <div className="bap2-icon"><img src={ART.cake} alt="" /></div>
+                <div className="bap2-icon"><img loading="lazy" src={ART.cake} alt="" /></div>
                 <div className="bap2-k">Followed by</div>
                 <div className="bap2-event-title">{reception}</div>
                 <div className="bap2-event-when"><strong>{fields.receptionTime ? `${formatTime(fields.receptionTime)} onwards` : "Afterwards"}</strong><br />{hall}</div>
@@ -325,7 +325,7 @@ export function Baptism2Invite({
           {godparents.length ? (
             <section id="godparents" className="bap2-people">
               <h2 className="bap2-h2">Godparents</h2>
-              <img className="bap2-divider sm" src={ART.divider} alt="" />
+              <img loading="lazy" className="bap2-divider sm" src={ART.divider} alt="" />
               <div className="bap2-people-grid">
                 {godparents.map((person, index) => (
                   <article key={person.name} className="bap2-person" style={{ animationDelay: `${0.2 + index * 0.25}s` }}>
@@ -344,7 +344,7 @@ export function Baptism2Invite({
               <div className="bap2-fact-grid">
                 {facts.map((fact, index) => (
                   <article key={fact.label} className="bap2-fact" style={{ animationDelay: `${0.2 + index * 0.12}s` }}>
-                    <img src={FACT_ART[index] ?? FACT_ART[0]} alt="" style={{ animationDelay: `${-index * 0.7}s` }} />
+                    <img loading="lazy" src={FACT_ART[index] ?? FACT_ART[0]} alt="" style={{ animationDelay: `${-index * 0.7}s` }} />
                     <span>{fact.label}</span>
                     <b>{fact.value}</b>
                   </article>
@@ -356,14 +356,14 @@ export function Baptism2Invite({
           <section className="bap2-gallery" aria-label="Photographs">
             {[0, 1, 2].map((index) => (
               <div key={index} className={index === 0 ? "bap2-shot big" : "bap2-shot"}>
-                {photos[index + 1] || (index === 0 && photos[0]) ? <img src={photos[index + 1] || photos[0]} alt="" style={{ animationDuration: `${12 - index * 2}s`, animationDelay: `${-index * 4}s` }} /> : captions[index]?.title || ["Family photo", "Tiny feet", "First smile"][index]}
+                {photos[index + 1] || (index === 0 && photos[0]) ? <img loading="lazy" src={photos[index + 1] || photos[0]} alt="" style={{ animationDuration: `${12 - index * 2}s`, animationDelay: `${-index * 4}s` }} /> : captions[index]?.title || ["Family photo", "Tiny feet", "First smile"][index]}
               </div>
             ))}
           </section>
 
           <section id="rsvp" className="bap2-rsvp">
             <div className="bap2-rsvp-intro">
-              <img src={ART.dove} alt="" />
+              <img loading="lazy" src={ART.dove} alt="" />
               <h2>Will you be there?</h2>
               {fields.rsvpBy ? <p>Please reply by {replyBy(fields.rsvpBy)}</p> : null}
             </div>
@@ -372,8 +372,8 @@ export function Baptism2Invite({
                 {CONFETTI.map((color, index) => (
                   <span key={index} className="bap2-confetti" style={{ left: `${(index * 37) % 100}%`, width: 6 + (index % 3) * 3, height: 10 + (index % 2) * 6, borderRadius: index % 4 === 0 ? "50%" : 2, background: color, animationDuration: `${2.2 + (index % 5) * 0.4}s`, animationDelay: `${(index % 7) * 0.12}s` }} />
                 ))}
-                <span className="bap2-fly" aria-hidden="true"><img src={ART.dove} alt="" /></span>
-                <img className="bap2-cross" src={ART.cross} alt="" />
+                <span className="bap2-fly" aria-hidden="true"><img loading="lazy" src={ART.dove} alt="" /></span>
+                <img loading="lazy" className="bap2-cross" src={ART.cross} alt="" />
                 <h3>{attending ? "Thank you!" : "You’ll be missed"}</h3>
                 <p>{attending ? `We can’t wait to celebrate with you, ${name.trim()}. ${guests} ${guests === 1 ? "seat is" : "seats are"} saved for you.` : `Thank you for letting us know, ${name.trim()}. Please keep ${child} in your prayers.`}</p>
                 <button type="button" className="bap2-change" onClick={() => setDone(false)}>Change my reply</button>
@@ -415,7 +415,7 @@ export function Baptism2Invite({
                 <div className="bap2-marq">
                   {loop.map((item, index) => (
                     <article key={`${item.name}-${index}`} className="bap2-wish">
-                      <img src={ART.dove} alt="" />
+                      <img loading="lazy" src={ART.dove} alt="" />
                       <p>{item.text}</p>
                       <span>— {item.name}</span>
                     </article>

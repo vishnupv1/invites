@@ -266,7 +266,7 @@ export function HansaInvite({
       </section>
 
       <section className="hs-sec" id="hansa-welcome">
-        <img className="hs-wreath" src={ART.wreath} alt="" />
+        <img loading="lazy" className="hs-wreath" src={ART.wreath} alt="" />
         <span className="hs-kick">{fields.hosts || "WITH THE BLESSINGS OF OUR FAMILIES"}</span>
         <div className="hs-parents">
           {parents[0] ? (
@@ -287,7 +287,7 @@ export function HansaInvite({
       </section>
 
       <section className="hs-sec alt">
-        <img className="hs-wreath sm" src={ART.wreath} alt="" />
+        <img loading="lazy" className="hs-wreath sm" src={ART.wreath} alt="" />
         <h2>Counting the moons</h2>
         <div className="hs-count">
           {count.map(([value, label]) => (
@@ -302,7 +302,7 @@ export function HansaInvite({
       <section className="hs-sec">
         <h2>When &amp; Where</h2>
         <span className="hs-blush">CEREMONY AT SUNSET · {clock(fields.time || "17:30")}</span>
-        <img className="hs-palace" src={ART.palace} alt="" />
+        <img loading="lazy" className="hs-palace" src={ART.palace} alt="" />
         <span className="hs-venue">{fields.venue}</span>
         <span className="hs-lead">{fields.address}{pack.venueNote ? ` · ${pack.venueNote}` : ""}</span>
         <div className="hs-actions">
@@ -317,15 +317,15 @@ export function HansaInvite({
         <div className="hs-story">
           <div className="hs-frame">
             <div className="hs-slot">
-              {photos[0] ? <img src={photos[0]} alt={fields.names || "The couple"} /> : (
+              {photos[0] ? <img loading="lazy" src={photos[0]} alt={fields.names || "The couple"} /> : (
                 <>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6F7390" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
                   <span className="hs-small">PHOTO</span>
                 </>
               )}
             </div>
-            <img className="hs-flower l" src={ART.petal} alt="" />
-            <img className="hs-flower r" src={ART.petal} alt="" />
+            <img loading="lazy" className="hs-flower l" src={ART.petal} alt="" />
+            <img loading="lazy" className="hs-flower r" src={ART.petal} alt="" />
           </div>
           <div className="hs-beats">
             {story.map((beat) => (
@@ -340,7 +340,7 @@ export function HansaInvite({
       </section>
 
       <section className="hs-sec">
-        <img className="hs-moon-sm" src={ART.moon} alt="" />
+        <img loading="lazy" className="hs-moon-sm" src={ART.moon} alt="" />
         <span className="hs-kick">THE CELEBRATIONS</span>
         <h2>Schedule</h2>
         <div className="hs-tl">
@@ -362,7 +362,7 @@ export function HansaInvite({
         <span className="hs-kick">WHAT TO WEAR</span>
         <h2>Dress Code</h2>
         <span className="hs-dress">Moonlight Formal</span>
-        <img className="hs-guests" src={ART.guests} alt="" />
+        <img loading="lazy" className="hs-guests" src={ART.guests} alt="" />
         {fields.dress ? <p className="hs-lead">{fields.dress}</p> : null}
       </section>
 
@@ -372,7 +372,7 @@ export function HansaInvite({
         <div className="hs-gal">
           {Array.from({ length: 6 }, (_, index) => (
             <div key={index}>
-              {photos[index] ? <img src={photos[index]} alt="" /> : (
+              {photos[index] ? <img loading="lazy" src={photos[index]} alt="" /> : (
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
               )}
             </div>
@@ -410,7 +410,7 @@ export function HansaInvite({
         <div className="hs-form">
           {done ? (
             <div className="hs-done">
-              <img src={ART.seal} alt="" />
+              <img loading="lazy" src={ART.seal} alt="" />
               <strong>{attend === "yes" ? `Thank you, ${name.trim().split(" ")[0]}` : "We’ll miss you"}</strong>
               <p className="hs-lead">{attend === "yes" ? `Your reply is sealed. ${guests} ${guests === 1 ? "seat is" : "seats are"} saved for you by the lake.` : "Thank you for letting us know — your blessings mean the world to us."}</p>
               <button type="button" className="hs-link" onClick={() => setDone(false)}>Change my reply</button>
@@ -464,12 +464,12 @@ export function HansaInvite({
       </section>
 
       <footer className="hs-foot">
-        <img className="swans" src={ART.swans} alt="" />
+        <img loading="lazy" className="swans" src={ART.swans} alt="" />
         <strong>{couple.first} &amp; {couple.second}</strong>
         <span className="hs-small">{fields.date.split("-").reverse().join(" · ")} · {fields.address.split(",")[0] || fields.venue}</span>
         <button type="button" className="hs-link" onClick={() => { setPhase("closed"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>↺ Open the invitation again</button>
         <a className="hs-made" href={madeWithHref("hansa")}>MADE WITH INVITESREADY</a>
-        <img className="lilies" src={ART.lilies} alt="" />
+        <img loading="lazy" className="lilies" src={ART.lilies} alt="" />
       </footer>
 
       {toast ? (

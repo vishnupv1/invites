@@ -362,7 +362,7 @@ export function GrandEnvelopeInvite({
           <div className="ge-frames">
             {[0, 1, 2].map((index) => (
               <span key={index} className="ge-frame">
-                {photos[index] ? <img src={photos[index]} alt="" /> : (
+                {photos[index] ? <img loading="lazy" src={photos[index]} alt="" /> : (
                   <>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8893F" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /></svg>
                     ADD PHOTO
@@ -384,7 +384,7 @@ export function GrandEnvelopeInvite({
         <div className="ge-sec-bg" style={{ backgroundImage: `url(${ceremonyArt})` }} />
         <div className="ge-sec-shade" />
         <Lam>
-          <div className="ge-photo"><img src={ceremonyArt} alt="Wedding mandap at sunset" /></div>
+          <div className="ge-photo"><img loading="lazy" src={ceremonyArt} alt="Wedding mandap at sunset" /></div>
           <span className="ge-kick">WEDDING CEREMONY</span>
           <span className="ge-script small">{ceremonyName}</span>
           <span className="ge-line">{longDate(fields.date)}</span>
@@ -399,7 +399,7 @@ export function GrandEnvelopeInvite({
           <div className="ge-sec-bg" style={{ backgroundImage: `url(${receptionArt})` }} />
           <div className="ge-sec-shade" />
           <Lam>
-            <div className="ge-photo"><img src={receptionArt} alt="Candlelit reception" /></div>
+            <div className="ge-photo"><img loading="lazy" src={receptionArt} alt="Candlelit reception" /></div>
             <span className="ge-kick">RECEPTION</span>
             <span className="ge-script small">{receptionName}</span>
             <span className="ge-line">{longDate(nextDay(fields.date))}</span>
@@ -414,7 +414,7 @@ export function GrandEnvelopeInvite({
         <div className="ge-sec-bg" style={{ backgroundImage: `url(${ART.venue})` }} />
         <div className="ge-sec-shade" />
         <Lam>
-          <div className="ge-photo"><img src={ART.venue} alt={fields.venue || "The venue"} /></div>
+          <div className="ge-photo"><img loading="lazy" src={ART.venue} alt={fields.venue || "The venue"} /></div>
           <span className="ge-kick">THE VENUE</span>
           <span className="ge-script small">{fields.venue || "The venue"}</span>
           {fields.address ? <span className="ge-line">{fields.address}</span> : null}
@@ -437,7 +437,7 @@ export function GrandEnvelopeInvite({
               </div>
             );
           })}
-          <img className="ge-fan-seal" src={ART.seal} alt="" />
+          <img loading="lazy" className="ge-fan-seal" src={ART.seal} alt="" />
         </div>
         <span className="ge-quote">{quote.map((line, index) => <span key={line}>{index ? <br /> : null}{line}</span>)}</span>
         <div className="ge-actions">
@@ -487,7 +487,7 @@ export function GrandEnvelopeInvite({
               ) : null}
               {step === "yes" ? (
                 <>
-                  <img className="ge-stamp" src={ART.seal} alt="" />
+                  <img loading="lazy" className="ge-stamp" src={ART.seal} alt="" />
                   <span className="ge-big">Thank you, {name.trim().split(" ")[0]}</span>
                   <span className="ge-line">We can’t wait to celebrate with you.</span>
                   <button type="button" className="ge-btn line" onClick={addCalendar}>+ Add to calendar</button>

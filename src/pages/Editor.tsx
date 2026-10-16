@@ -1010,7 +1010,7 @@ export function Editor({
               <button type="button" className="ed-proto-preview" onClick={() => setGuestPreview(true)}>Preview</button>
             </div>
             <div className="ed-proto-live">
-              <img src={`/covers/${template.id}.jpg`} alt="" />
+              <img src={`/covers/${template.id}.webp`} alt="" />
               <div>
                 <p>{template.name} · {link ? "live" : "draft"}</p>
                 <strong>{draft.names.trim() || template.name}</strong>
@@ -1738,7 +1738,7 @@ export function Editor({
           heading="Sign in to save your invitation"
           names={draft.names.trim() || template.name}
           templateName={template.name}
-          cover={`/covers/${template.id}.jpg`}
+          cover={`/covers/${template.id}.webp`}
           onClose={() => setAuthOpen(false)}
           onDone={onSignedIn}
         />

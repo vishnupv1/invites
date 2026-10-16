@@ -197,7 +197,7 @@ export function AureliaInvite({
           <div>
             {photos.slice(1).map((src, index) => src ? (
               <figure key={`${src}-${index}`}>
-                <img src={src} alt="" />
+                <img loading="lazy" src={src} alt="" />
                 <figcaption>
                   {captions[index + 1]?.title ? <strong>{captions[index + 1].title}</strong> : null}
                   {captions[index + 1]?.text ? <span>{captions[index + 1].text}</span> : null}

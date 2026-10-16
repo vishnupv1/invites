@@ -521,7 +521,7 @@ export function HeavenlyInvite({
   }
 
   function photoOrPlaceholder(src: string, label: string, tile = false) {
-    if (src) return <img className={tile ? "hv-fill hv-tile" : "hv-fill"} src={src} alt="" />;
+    if (src) return <img loading="lazy" className={tile ? "hv-fill hv-tile" : "hv-fill"} src={src} alt="" />;
     return <span className="hv-ph">{label}</span>;
   }
 
@@ -836,7 +836,7 @@ export function HeavenlyInvite({
             <section className="hv-sec">
               <div className="hv-venue">
                 <div className="hv-venue-img">
-                  <img className="hv-fill" src={ART.portal} alt={fields.venue || "The venue"} />
+                  <img loading="lazy" className="hv-fill" src={ART.portal} alt={fields.venue || "The venue"} />
                 </div>
                 <div className="hv-venue-copy">
                   <span className="hv-venue-kick">THE VENUE</span>
@@ -1007,7 +1007,7 @@ export function HeavenlyInvite({
           {viewerAt ? (
             <div className="hv-lb" role="dialog" aria-label="Photo viewer">
               <button type="button" className="hv-lb-close" aria-label="Close" onClick={() => setViewer(null)}>×</button>
-              <img src={viewerAt.src} alt="Gallery photo" />
+              <img loading="lazy" src={viewerAt.src} alt="Gallery photo" />
               <div className="hv-lb-row">
                 <button type="button" className="hv-lb-nav" aria-label="Previous photo" onClick={() => setViewer(((viewer ?? 0) + shown.length - 1) % shown.length)}>‹</button>
                 <span>

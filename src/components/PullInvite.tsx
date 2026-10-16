@@ -406,7 +406,7 @@ export function PullInvite({
               <div className="pl-story">
                 {story.map((beat, index) => (
                   <article className="pl-beat" key={`${beat.title}-${index}`} style={{ animationDelay: `${index * 0.2}s` }}>
-                    <div className="pl-arch"><img src={photoAt(photos, index)} alt="" /></div>
+                    <div className="pl-arch"><img loading="lazy" src={photoAt(photos, index)} alt="" /></div>
                     <span className="pl-year">{beat.year}</span>
                     <strong>{beat.title}</strong>
                     <span>{beat.text}</span>
@@ -422,7 +422,7 @@ export function PullInvite({
             <div className="pl-gal">
               {gallery.map((src, index) => (
                 <button key={src + index} type="button" className={!desk && (index === 0 || index === gallery.length - 1) ? "wide" : desk && index === 0 ? "tall" : desk && index === 4 ? "wide" : ""} aria-label={`Open photo ${index + 1}`} onClick={() => setViewer(index)}>
-                  <img src={assetUrl(src)} alt="" />
+                  <img loading="lazy" src={assetUrl(src)} alt="" />
                 </button>
               ))}
             </div>
@@ -445,7 +445,7 @@ export function PullInvite({
             <div className="pl-ig">
               {gallery.map((src, index) => (
                 <button key={`ig-${src}-${index}`} type="button" onClick={() => setViewer(index)}>
-                  <img src={assetUrl(src)} alt="" />
+                  <img loading="lazy" src={assetUrl(src)} alt="" />
                   <span className="pl-by">{handle || "guest"}</span>
                 </button>
               ))}
@@ -455,7 +455,7 @@ export function PullInvite({
 
           <section className="pl-sec">
             <div className="pl-venue">
-              <div className="pl-shot"><img src={photoAt(photos, 4)} alt="" /></div>
+              <div className="pl-shot"><img loading="lazy" src={photoAt(photos, 4)} alt="" /></div>
               <div className="pl-venue-copy">
                 <span className="pl-lead">THE VENUE</span>
                 <span className="pl-script">{fields.venue}</span>
@@ -677,7 +677,7 @@ export function PullInvite({
       {viewer !== null ? (
         <div className="pl-lb" role="dialog" aria-label="Photo">
           <button type="button" aria-label="Close" onClick={() => setViewer(null)}>×</button>
-          <img src={assetUrl(gallery[viewer] || gallery[0])} alt="" />
+          <img loading="lazy" src={assetUrl(gallery[viewer] || gallery[0])} alt="" />
         </div>
       ) : null}
       {toast ? <div className="pl-toast" role="status">{toast}</div> : null}
