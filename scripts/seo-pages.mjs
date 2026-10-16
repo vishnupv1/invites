@@ -445,10 +445,7 @@ function organization() {
     url: `${SITE}/`,
     email: "invitesreadyforyou@gmail.com",
     logo: `${SITE}/brand/logo-mark.png`,
-    sameAs: [
-      "https://www.instagram.com/TODO-invitesready",
-      "https://www.facebook.com/TODO-invitesready",
-    ],
+    sameAs: ["https://www.instagram.com/invitesready/"],
   };
 }
 
