@@ -71,7 +71,7 @@
   .b2-open { height: 100cqh; min-height: 0; max-height: 100cqh; }
 }
 html.ir-embed .b2:not(.is-page),
-html.ir-embed .b2-open { height: 100%; min-height: 0; max-height: 100%; }
+html.ir-embed .b2-open { height: 100svh; min-height: 100svh; max-height: 100svh; }
 
 .b2-scene { position: absolute; inset: 0; }
 .b2-sky, .b2-hero-bg, .b2-foot {
