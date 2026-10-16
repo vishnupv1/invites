@@ -16,8 +16,8 @@ type Phase = "closed" | "opening" | "world" | "invite";
 const ART = {
   doors: "/heavenly/doors.jpg",
   glow: "/heavenly/doors-glow.jpg",
-  world: "/heavenly/world.jpg",
-  worldWide: "/heavenly/world-wide.jpg",
+  world: "/heavenly/world.webp",
+  worldWide: "/heavenly/world-wide.webp",
   gate: "/heavenly/gate.jpg",
   portal: "/heavenly/portal.jpg",
 };

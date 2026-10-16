@@ -12,7 +12,7 @@ type Reply = { name: string; note: string; attending: boolean };
 type Wish = { name: string; note: string; attending?: boolean };
 type Row = { key: string; name: string; msg: string; when: string; attending: boolean; guests: number; fresh?: boolean };
 
-const SAMPLES = ["/heavenly/sample-1.jpg", "/heavenly/sample-2.jpg", "/heavenly/sample-3.jpg", "/heavenly/sample-4.jpg", "/heavenly/portal.jpg", "/heavenly/world.jpg"];
+const SAMPLES = ["/heavenly/sample-1.jpg", "/heavenly/sample-2.jpg", "/heavenly/sample-3.jpg", "/heavenly/sample-4.jpg", "/heavenly/portal.jpg", "/heavenly/world.webp"];
 const PETAL = ["#F3D9A0", "#E8C987", "#F7A8B8", "#FFF1CC"];
 const AVATARS = ["#A97B33", "#B8586A", "#6E8B74", "#8A6A9A"];
 const ICONS = [

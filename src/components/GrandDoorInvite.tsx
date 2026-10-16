@@ -11,18 +11,18 @@ type Step = "intro" | "form" | "yes" | "no" | "wish" | "wished";
 type Reply = { name: string; note: string; attending: boolean };
 
 const ART = {
-  closed: "/grandoor/closed.jpg",
-  closedWide: "/grandoor/closed-wide.jpg",
-  world: "/grandoor/world.jpg",
+  closed: "/grandoor/closed.webp",
+  closedWide: "/grandoor/closed-wide.webp",
+  world: "/grandoor/world.webp",
   worldWide: "/grandoor/world-wide.jpg",
-  venue: "/grandoor/venue.jpg",
-  rsvp: "/grandoor/rsvp.jpg",
-  rsvpWide: "/grandoor/rsvp-wide.jpg",
-  frame: "/grandoor/frame.png",
-  mandap: "/grandoor/mandap.png",
-  arch: "/grandoor/arch.png",
-  doorL: "/grandoor/door-l.png",
-  doorR: "/grandoor/door-r.png",
+  venue: "/grandoor/venue.webp",
+  rsvp: "/grandoor/rsvp.webp",
+  rsvpWide: "/grandoor/rsvp-wide.webp",
+  frame: "/grandoor/frame.webp",
+  mandap: "/grandoor/mandap.webp",
+  arch: "/grandoor/arch.webp",
+  doorL: "/grandoor/door-l.webp",
+  doorR: "/grandoor/door-r.webp",
   story: ["/grandoor/story-1.jpg", "/grandoor/story-2.jpg", "/grandoor/story-3.jpg"],
 };
 
