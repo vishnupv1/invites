@@ -5,7 +5,7 @@ const TOKEN = "invitesready.token.v1";
 const STALE_SESSION = "That session is no longer valid.";
 const listeners = new Set<() => void>();
 
-export type Host = { id: string; email: string; name: string };
+export type Host = { id: string; email: string; name: string; admin: boolean };
 
 export function onSessionChange(listener: () => void) {
   listeners.add(listener);
@@ -133,14 +133,14 @@ export function adminSummary() {
 }
 
 export function getHost() {
-  return request<Host>("/api/session");
+  return request<Host>("/api/session").then((host) => ({ ...host, admin: host.admin === true }));
 }
 
 export async function updateHostName(name: string) {
   const host = await request<Host>("/api/session", {
     method: "PATCH",
     body: JSON.stringify({ name }),
-  });
+  }).then((person) => ({ ...person, admin: person.admin === true }));
   notifySession();
   return host;
 }

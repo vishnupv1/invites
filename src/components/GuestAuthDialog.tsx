@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { logIn, signUp } from "../api";
+import { getHost, logIn, signUp } from "../api";
 import { trackLogin, trackSignUp } from "../lib/analytics";
 import { prepareGoogleSignIn, signInWithGoogle } from "../lib/google";
 import { GoogleButton } from "./GoogleButton";
@@ -58,6 +58,11 @@ export function GuestAuthDialog({ heading = "Sign in to save your invitation", n
         await logIn(email.trim(), password);
         trackLogin("email");
       }
+      const person = await getHost().catch(() => null);
+      if (person?.admin) {
+        window.location.assign("/admin");
+        return;
+      }
       onDone();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not sign you in.");
@@ -73,6 +78,11 @@ export function GuestAuthDialog({ heading = "Sign in to save your invitation", n
       const created = await signInWithGoogle();
       if (created) trackSignUp("google");
       else trackLogin("google");
+      const person = await getHost().catch(() => null);
+      if (person?.admin) {
+        window.location.assign("/admin");
+        return;
+      }
       onDone();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not sign in with Google.");

@@ -173,7 +173,7 @@ export function Admin() {
         <div className="adm-avatar" aria-hidden="true">{initials(data.admin.name)}</div>
       </header>
       <aside className="console-side">
-        <Link className="console-brand" to="/">
+        <Link className="console-brand" to="/admin">
           <Brand linked={false} />
           <span className="console-tag">Admin console</span>
         </Link>
@@ -276,11 +276,11 @@ export function Admin() {
             <div className="tpl-grid">
               {templates.map((template, index) => (
                 <article className="tpl-card" key={template.id}>
-                  <a href={`/template/${template.id}`} style={{ background: COLORS[index % COLORS.length] }}>
+                  <div className="tpl-face" style={{ background: COLORS[index % COLORS.length] }}>
                     <span>{EVENTS.find((event) => template.events.includes(event.id))?.label}</span>
                     <strong>{template.name}</strong>
-                  </a>
-                  <div>
+                  </div>
+                  <div className="tpl-meta">
                     <strong>{template.name}</strong>
                     Free · {uses.get(template.id) ?? 0} published
                     {/* {template.free ? "Free" : `$${template.price}`} · {uses.get(template.id) ?? 0} published */}

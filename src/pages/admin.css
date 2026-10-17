@@ -293,11 +293,11 @@
 .chip.on { background: #0e4d3c; color: #fffdf8; border-color: #0e4d3c; }
 .tpl-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .tpl-card { background: #fffdf8; border: 1px solid rgba(23, 32, 28, 0.12); border-radius: 18px; overflow: hidden; }
-.tpl-card a { display: block; padding: 28px 16px; color: #17201c; text-decoration: none; }
-.tpl-card a span { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
-.tpl-card a strong { display: block; font-family: Manrope, "Segoe UI", sans-serif; font-size: 22px; font-weight: 600; }
-.tpl-card div { padding: 14px 16px; font-size: 13px; color: #5e655f; }
-.tpl-card div strong { display: block; color: #17201c; font-size: 15px; }
+.tpl-card .tpl-face { display: block; padding: 28px 16px; color: #17201c; text-decoration: none; }
+.tpl-card .tpl-face span { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
+.tpl-card .tpl-face strong { display: block; font-family: Manrope, "Segoe UI", sans-serif; font-size: 22px; font-weight: 600; }
+.tpl-card .tpl-meta { padding: 14px 16px; font-size: 13px; color: #5e655f; }
+.tpl-card .tpl-meta strong { display: block; color: #17201c; font-size: 15px; }
 .muted { color: #5e655f; }
 .empty { text-align: center; color: #5e655f; padding: 28px 0; }
 .tools { display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap; }
@@ -412,9 +412,9 @@
   .head-row { display: none; }
   .tpl-grid { grid-template-columns: 1fr; }
   .tpl-card { display: flex; align-items: center; gap: 12px; padding: 12px; }
-  .tpl-card a { width: 76px; height: 100px; box-sizing: border-box; padding: 8px; border-radius: 12px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; }
-  .tpl-card a strong { font-size: 13px; }
-  .tpl-card div { padding: 0; }
+  .tpl-card .tpl-face { width: 76px; height: 100px; box-sizing: border-box; padding: 8px; border-radius: 12px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; }
+  .tpl-card .tpl-face strong { font-size: 13px; }
+  .tpl-card .tpl-meta { padding: 0; }
   .console-main > .panel { background: transparent; border: none; padding: 0; }
   .split .panel { background: #FFFFFF; border: 1px solid rgba(23, 32, 28, 0.12); padding: 16px; border-radius: 20px; }
   .user-row, .event-row, .pay-row {

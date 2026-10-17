@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { logIn, signUp } from "../api";
+import { getHost, logIn, signUp } from "../api";
 import { InviteView } from "../components/InviteView";
 import { GoogleButton } from "../components/GoogleButton";
 import { Spinner } from "../components/Loader";
@@ -27,6 +27,8 @@ type SavedDraft = {
   fields: InviteFields | null;
 };
 
+const HOST_RETURN = ["/create", "/studio", "/events", "/drafts", "/favorites", "/guests", "/wishes", "/purchases", "/settings", "/templates", "/preview"];
+
 function safeReturn(value: string | null) {
   if (!value || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/login")) return "";
   try {
@@ -36,6 +38,14 @@ function safeReturn(value: string | null) {
   } catch {
     return "";
   }
+}
+
+function accountReturn(value: string | null) {
+  const next = safeReturn(value);
+  if (!next) return "";
+  const path = next.split(/[?#]/)[0] || "";
+  if (HOST_RETURN.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) return next;
+  return "";
 }
 
 function publishDestination(next: string | null) {
@@ -180,9 +190,14 @@ export function Auth() {
     setDone(false);
   }
 
-  function continueOn() {
+  async function continueOn() {
+    const person = await getHost().catch(() => null);
+    if (person?.admin) {
+      window.location.assign("/admin");
+      return;
+    }
     const next = params.get("next");
-    window.location.assign(publishDestination(next) || safeReturn(next) || "/studio");
+    window.location.assign(publishDestination(next) || accountReturn(next) || "/studio");
   }
 
   async function onSubmit(event: FormEvent) {
@@ -200,7 +215,7 @@ export function Auth() {
       if (login) {
         await logIn(email.trim(), password);
         trackEvent("login", { method: "email" });
-        continueOn();
+        await continueOn();
         return;
       }
       await signUp(name.trim(), email.trim(), password);
@@ -219,7 +234,7 @@ export function Auth() {
     try {
       const created = await signInWithGoogle();
       trackEvent(created ? "sign_up" : "login", { method: "google" });
-      continueOn();
+      await continueOn();
     } catch (error) {
       setErrors({ form: error instanceof Error ? error.message : "Could not sign you in with Google." });
       setGoogleBusy(false);

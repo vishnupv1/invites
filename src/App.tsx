@@ -27,13 +27,26 @@ import { useSession } from "./session";
 
 const DesignCheck = lazy(() => import("./pages/DesignCheck"));
 
+function adminMayOpen(pathname: string) {
+  return pathname === "/admin" || pathname.startsWith("/i/") || pathname.startsWith("/embed/");
+}
+
 function RequireAccount({ children }: { children: ReactNode }) {
-  const { ready, signedIn } = useSession();
+  const { ready, signedIn, host } = useSession();
   const location = useLocation();
   if (!ready) return <div className="acct-wait" aria-busy="true" aria-label="Loading"><Spinner size="md" /></div>;
+  if (host?.admin) return <Navigate to="/admin" replace />;
   if (!signedIn) {
     return <Navigate to="/unauthorized" replace state={{ from: `${location.pathname}${location.search}` }} />;
   }
+  return children;
+}
+
+function SessionGate({ children }: { children: ReactNode }) {
+  const { ready, host } = useSession();
+  const { pathname } = useLocation();
+  if (!ready) return <div className="acct-wait" aria-busy="true" aria-label="Loading"><Spinner size="md" /></div>;
+  if (host?.admin && !adminMayOpen(pathname)) return <Navigate to="/admin" replace />;
   return children;
 }
 
@@ -72,6 +85,7 @@ export default function App() {
     <>
       <PageMeta />
       <ScrollToTop />
+      <SessionGate>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/how" element={<Home focus="how" />} />
@@ -128,6 +142,7 @@ export default function App() {
         <Route path="/i/:code" element={<InvitePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </SessionGate>
     </>
   );
 }

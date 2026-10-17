@@ -28,24 +28,29 @@ function signInHref(pathname: string, search: string, hash: string) {
 
 export function DesktopNav({ tone = "emerald", links = LINKS }: Props) {
   const { pathname, search, hash } = useLocation();
-  const { signedIn } = useSession();
+  const { signedIn, host } = useSession();
+  const admin = signedIn && host?.admin;
   return (
     <header className={`ir-nav${tone === "emerald" ? " is-emerald" : ""}`}>
-      <Logo tone={tone === "emerald" ? "cream" : "ink"} />
-      <nav className="ir-nav-links" aria-label="Primary">
-        {links.map((link) => (
-          <Link key={link.href} className={linkOn(link.href, pathname) ? "is-on" : ""} to={link.href}>
-            {link.label}
-          </Link>
-        ))}
-      </nav>
+      <Logo tone={tone === "emerald" ? "cream" : "ink"} to={admin ? "/admin" : "/"} />
+      {admin ? null : (
+        <nav className="ir-nav-links" aria-label="Primary">
+          {links.map((link) => (
+            <Link key={link.href} className={linkOn(link.href, pathname) ? "is-on" : ""} to={link.href}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      )}
       <div className="ir-nav-actions">
-        <Link className="ir-nav-signin" to={signedIn ? "/studio" : signInHref(pathname, search, hash)}>
-          {signedIn ? "Dashboard" : "Sign in"}
+        <Link className="ir-nav-signin" to={admin ? "/admin" : signedIn ? "/studio" : signInHref(pathname, search, hash)}>
+          {admin ? "Admin" : signedIn ? "Dashboard" : "Sign in"}
         </Link>
-        <Link className="ir-nav-try" to="/browse">
-          Try free
-        </Link>
+        {admin ? null : (
+          <Link className="ir-nav-try" to="/browse">
+            Try free
+          </Link>
+        )}
       </div>
     </header>
   );

@@ -310,6 +310,10 @@ export function CreateGuest() {
 
   async function refreshHost() {
     const person = await getHost();
+    if (person.admin) {
+      window.location.assign("/admin");
+      return;
+    }
     setHost({ name: person.name, email: person.email });
     const purchases = await listPurchases().catch(() => [] as string[]);
     setOwned(purchases);
