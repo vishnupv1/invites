@@ -1,56 +1,17 @@
 import { googleClientId, logInWithGoogle } from "../api";
 
-type CodeResponse = { code?: string; error?: string };
+const CALLBACK_PATH = "/auth/google/done.html";
 
-type CodeClient = {
-  requestCode: () => void;
-};
+type GoogleResult = { source?: string; code?: string; state?: string; error?: string };
 
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        oauth2: {
-          initCodeClient: (config: {
-            client_id: string;
-            scope: string;
-            ux_mode: "popup";
-            callback: (response: CodeResponse) => void;
-          }) => CodeClient;
-        };
-      };
-    };
-  }
-}
-
-let loading: Promise<void> | null = null;
-let cachedClientId = "";
 let preparing: Promise<string> | null = null;
+let cachedClientId = "";
 
-function loadGoogle() {
-  if (window.google?.accounts.oauth2) return Promise.resolve();
-  if (!loading) {
-    loading = new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = () => {
-        loading = null;
-        reject(new Error("Could not reach Google. Try again."));
-      };
-      document.head.appendChild(script);
-    });
-  }
-  return loading;
-}
-
-/** Load Google before the click so the popup can open in the same gesture. */
+/** Load the client id before the click so the popup can open in the same gesture. */
 export function prepareGoogleSignIn() {
   preparing ??= googleClientId()
-    .then(async (id) => {
+    .then((id) => {
       if (!id) throw new Error("Google sign-in is not set up yet.");
-      await loadGoogle();
       cachedClientId = id;
       return id;
     })
@@ -62,28 +23,62 @@ export function prepareGoogleSignIn() {
 }
 
 export function signInWithGoogle() {
-  const google = window.google;
-  if (!cachedClientId || !google?.accounts.oauth2) {
+  if (!cachedClientId) {
     return Promise.reject(new Error("Google sign-in is still loading. Try again."));
   }
-  const clientId = cachedClientId;
+  const redirectUri = `${window.location.origin}${CALLBACK_PATH}`;
+  const state = crypto.randomUUID();
+  const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+  url.searchParams.set("client_id", cachedClientId);
+  url.searchParams.set("redirect_uri", redirectUri);
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("scope", "openid email profile");
+  url.searchParams.set("state", state);
+  url.searchParams.set("prompt", "select_account");
+
+  const width = 480;
+  const height = 640;
+  const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2);
+  const top = window.screenY + Math.max(0, (window.outerHeight - height) / 2);
+  const popup = window.open(
+    url.toString(),
+    "invitesready-google",
+    `popup=yes,width=${width},height=${height},left=${Math.round(left)},top=${Math.round(top)}`,
+  );
+  if (!popup) return Promise.reject(new Error("Allow pop-ups for Google sign-in, then try again."));
+
   return new Promise<boolean>((resolve, reject) => {
-    const client = google.accounts.oauth2.initCodeClient({
-      client_id: clientId,
-      scope: "openid email profile",
-      ux_mode: "popup",
-      callback: (response) => {
-        if (response.code) {
-          logInWithGoogle(response.code).then(resolve, reject);
-          return;
-        }
-        if (response.error === "access_denied") {
-          reject(new Error("Google sign-in was cancelled."));
-          return;
-        }
-        reject(new Error("Google sign-in did not finish."));
-      },
-    });
-    client.requestCode();
+    let settled = false;
+    let closedTimer = 0;
+    let watch = 0;
+    const finish = (run: () => void) => {
+      if (settled) return;
+      settled = true;
+      window.removeEventListener("message", onMessage);
+      window.clearInterval(watch);
+      window.clearTimeout(closedTimer);
+      run();
+    };
+    const onMessage = (event: MessageEvent<GoogleResult>) => {
+      if (event.origin !== window.location.origin || event.source !== popup) return;
+      const data = event.data;
+      if (!data || data.source !== "invitesready-google" || data.state !== state) return;
+      if (data.code) {
+        finish(() => {
+          logInWithGoogle(data.code as string, redirectUri).then(resolve, reject);
+        });
+        return;
+      }
+      finish(() => {
+        reject(new Error(data.error === "access_denied" ? "Google sign-in was cancelled." : "Google sign-in did not finish."));
+      });
+    };
+    window.addEventListener("message", onMessage);
+    watch = window.setInterval(() => {
+      if (!popup.closed || closedTimer) return;
+      closedTimer = window.setTimeout(() => {
+        finish(() => reject(new Error("Google sign-in was cancelled.")));
+      }, 700);
+    }, 400);
   });
 }

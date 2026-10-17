@@ -70,10 +70,10 @@ export async function logIn(email: string, password: string) {
   storeToken(session.token);
 }
 
-export async function logInWithGoogle(code: string) {
+export async function logInWithGoogle(code: string, redirectUri: string) {
   const session = await request<{ token: string; created?: boolean }>("/api/auth/google", {
     method: "POST",
-    body: JSON.stringify({ code }),
+    body: JSON.stringify({ code, redirectUri }),
   });
   storeToken(session.token);
   return session.created === true;

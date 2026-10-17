@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Signing in</title>
+  </head>
+  <body>
+    <p>Signed in. You can close this window.</p>
+    <script>
+      (function () {
+        var params = new URLSearchParams(location.search);
+        var payload = {
+          source: "invitesready-google",
+          code: params.get("code") || "",
+          state: params.get("state") || "",
+          error: params.get("error") || "",
+        };
+        try {
+          if (window.opener && !window.opener.closed) {
+            window.opener.postMessage(payload, location.origin);
+            window.opener.focus();
+          }
+        } catch (error) {
+          /* The opener closes the loop. This page only hands the result back. */
+        }
+        window.close();
+      })();
+    </script>
+  </body>
+</html>
