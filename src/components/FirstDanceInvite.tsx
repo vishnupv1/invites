@@ -8,7 +8,7 @@ import "./firstdance.css";
 
 export type FirstDanceTheme = "ivory" | "rose" | "twilight";
 
-type Phase = "closed" | "opening" | "revealed" | "entered";
+type Phase = "closed" | "entered";
 type Reply = { name: string; note: string; attending: boolean };
 
 const ART = "/firstdance";
@@ -254,9 +254,12 @@ export function FirstDanceInvite({
 
   function openSeal() {
     if (phase !== "closed") return;
+    setPhase("entered");
+  }
+
+  function continueDown() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setPhase("opening");
-    window.setTimeout(() => setPhase("revealed"), reduce ? 0 : 1300);
+    document.getElementById("fd-welcome")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   }
 
   function notify(message: string) {
@@ -286,53 +289,42 @@ export function FirstDanceInvite({
   const loop = [...guestWishes, ...cards, ...guestWishes, ...cards];
   const photos = fields.photos.filter(Boolean);
 
-  const intro = (
-    <Stage lit={lit} theme={theme} showFilm={lit}>
-      {phase === "revealed" || phase === "opening" ? (
-        <div className="fd-copy">
-          <span className="fd-copy-glow" aria-hidden="true" />
-          <img className="fd-flourish" src={`${ART}/flourish.webp`} alt="" />
-          <span className="fd-kicker">Dear friend</span>
-          <span className="fd-invite">you are invited to the first dance of</span>
-          <span className="fd-names"><span>{couple.first}</span><span>&</span><span>{couple.second}</span></span>
-          <span className="fd-date">{stamp(fields.date)}</span>
-          <span className="fd-place">{[fields.venue, fields.address.split(",")[0]].filter(Boolean).join(", ")}</span>
-          {phase === "revealed" ? <button type="button" className="fd-open" onClick={() => setPhase("entered")}>Open the invitation</button> : null}
-        </div>
-      ) : null}
-      {phase !== "revealed" ? (
-        <div className="fd-seal">
-          <button type="button" className="fd-medal" onClick={openSeal} aria-label="Open the invitation">
-            <span className="fd-medal-glow" aria-hidden="true" />
-            <img src={`${ART}/seal.webp`} alt="" />
-            <span className="fd-monogram">{couple.first[0]}<i>&</i>{couple.second[0]}</span>
-          </button>
-          <span className="fd-hint">Tap the seal to begin</span>
-        </div>
-      ) : null}
-    </Stage>
-  );
-
-  if (phase !== "entered") {
-    return <article className={`fd${lit ? " is-lit" : ""}`} data-theme={theme}>{intro}</article>;
-  }
+  const opened = phase === "entered";
 
   return (
-    <article className={`fd fd-page is-lit`} data-theme={theme}>
-      <button type="button" className={`fd-music${music ? " is-on" : ""}`} aria-pressed={music} aria-label={music ? "Pause music" : "Play music"} onClick={() => { setMusic((on) => !on); notify(music ? "Music paused." : "Now playing: our first-dance song."); }}>
-        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="14" fill="#1E1410" /><circle cx="15" cy="15" r="10" fill="none" stroke="#4A3A30" strokeWidth="1" /><circle cx="15" cy="15" r="5" fill="#B8893B" /><circle cx="15" cy="15" r="1.5" fill="#FBF6EE" /></svg>
-      </button>
-      <Stage lit theme={theme} showFilm>
-        <div className="fd-copy">
-          <span className="fd-copy-glow" aria-hidden="true" />
-          <img className="fd-flourish" src={`${ART}/flourish.webp`} alt="" />
-          <span className="fd-kicker">{fields.hosts || "Together with their families"}</span>
-          <span className="fd-names"><span>{couple.first}</span><span>&</span><span>{couple.second}</span></span>
-          <span className="fd-invite">{fields.title || "invite you to celebrate their wedding"}</span>
-          <span className="fd-date">{weekdayStamp(fields.date)}</span>
-          <span className="fd-place">{fields.venue}</span>
-        </div>
+    <article className={`fd${lit ? " is-lit" : ""}${opened ? " fd-page" : ""}${quiet ? " is-quiet" : ""}`} data-theme={theme}>
+      {opened ? (
+        <button type="button" className={`fd-music${music ? " is-on" : ""}`} aria-pressed={music} aria-label={music ? "Pause music" : "Play music"} onClick={() => { setMusic((on) => !on); notify(music ? "Music paused." : "Now playing: our first-dance song."); }}>
+          <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="14" fill="#1E1410" /><circle cx="15" cy="15" r="10" fill="none" stroke="#4A3A30" strokeWidth="1" /><circle cx="15" cy="15" r="5" fill="#B8893B" /><circle cx="15" cy="15" r="1.5" fill="#FBF6EE" /></svg>
+        </button>
+      ) : null}
+      <Stage lit={lit} theme={theme} showFilm={lit}>
+        {opened ? (
+          <button type="button" className="fd-scroll" onClick={continueDown}>
+            Scroll
+            <span aria-hidden="true">↓</span>
+          </button>
+        ) : (
+          <div className="fd-seal">
+            <button type="button" className="fd-medal" onClick={openSeal} aria-label="Open the invitation">
+              <span className="fd-medal-glow" aria-hidden="true" />
+              <img src={`${ART}/seal.webp`} alt="" />
+              <span className="fd-monogram">{couple.first[0]}<i>&</i>{couple.second[0]}</span>
+            </button>
+            <span className="fd-hint">Tap the seal to begin</span>
+          </div>
+        )}
       </Stage>
+      {opened ? (
+      <>
+      <section className="fd-section fd-welcome" id="fd-welcome">
+        <img className="fd-flourish" src={`${ART}/flourish.webp`} alt="" />
+        <span className="fd-kicker">{fields.hosts || "Together with their families"}</span>
+        <span className="fd-names"><span>{couple.first}</span><span>&</span><span>{couple.second}</span></span>
+        <span className="fd-invite">{fields.title || "invite you to celebrate their wedding"}</span>
+        <span className="fd-date">{weekdayStamp(fields.date)}</span>
+        <span className="fd-place">{fields.venue}</span>
+      </section>
 
       <section className="fd-section fd-count">
         <img src={`${ART}/flourish.webp`} alt="" />
@@ -499,6 +491,8 @@ export function FirstDanceInvite({
         <a className="fd-made" href={madeWithHref("firstdance")}>Made with InvitesReady</a>
       </footer>
       {toast ? <div className="fd-toast" role="status"><span>{toast}</span><button type="button" onClick={() => setToast("")}>OK</button></div> : null}
+      </>
+      ) : null}
     </article>
   );
 }

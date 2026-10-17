@@ -27,7 +27,7 @@
 }
 .fd-page .fd-stage { height: 100dvh; min-height: 844px; }
 
-.fd-scene, .fd-glow, .fd-chandelier, .fd-couple, .fd-curtain, .fd-frame, .fd-petals, .fd-copy, .fd-seal {
+.fd-scene, .fd-glow, .fd-chandelier, .fd-couple, .fd-curtain, .fd-frame, .fd-petals, .fd-seal, .fd-scroll {
   position: absolute;
 }
 .fd-scene { inset: 0; background: url("/firstdance/scene-m.webp") center bottom / cover no-repeat; transition: filter 2.4s ease; }
@@ -73,23 +73,24 @@
 .fd-petals { z-index: 4; inset: 0; overflow: hidden; pointer-events: none; }
 .fd-petals img { position: absolute; top: 0; height: auto; filter: drop-shadow(0 3px 4px rgba(58, 42, 34, 0.15)); animation: fd-fall linear infinite; }
 
-.fd-copy {
-  z-index: 7; left: 0; right: 0; top: 18%; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding: 0 16px;
+.fd-scroll {
+  z-index: 8; left: 0; right: 0; bottom: 22px; width: max-content; margin: 0 auto;
+  display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px;
+  border: 0; border-radius: 999px; background: rgba(251, 246, 238, 0.92); color: var(--ink); cursor: pointer;
+  font-family: Cinzel, serif; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  box-shadow: 0 8px 18px rgba(58, 42, 34, 0.18);
+  animation: fd-up 0.8s ease both 3.8s, fd-bob 2.2s ease-in-out 4.6s infinite;
 }
-.fd-copy-glow { position: absolute; left: 8px; right: 8px; top: -30px; height: 300px; border-radius: 50%; background: radial-gradient(ellipse, rgba(251, 246, 238, 0.94) 0%, rgba(251, 246, 238, 0.78) 46%, rgba(251, 246, 238, 0) 74%); animation: fd-in 1s ease both 2.4s; }
-.fd-kicker { position: relative; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); animation: fd-up 0.8s ease both 2.6s; }
-.fd-invite { position: relative; font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 17px; color: #5a4636; animation: fd-up 0.8s ease both 2.9s; }
-.fd-names { position: relative; font-family: "Mrs Saint Delafield", cursive; font-weight: 400; font-size: 54px; line-height: 0.95; color: var(--ink); white-space: normal; animation: fd-wipe 1.6s ease-out both 3.3s; }
+.fd.is-quiet .fd-scroll { animation-delay: 0.2s, 1s; }
+.fd-welcome { scroll-margin-top: 12px; gap: 6px; }
+.fd-welcome .fd-flourish { display: block; width: min(220px, 70%); height: auto; }
+.fd-kicker { position: relative; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+.fd-invite { position: relative; font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 17px; color: #5a4636; }
+.fd-names { position: relative; font-family: "Mrs Saint Delafield", cursive; font-weight: 400; font-size: 54px; line-height: 0.95; color: var(--ink); white-space: normal; }
 .fd-names span { display: block; }
 .fd-names span:nth-child(2) { font-size: 0.72em; line-height: 0.55; }
-.fd-date { position: relative; margin-top: 4px; font-family: Cinzel, serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; animation: fd-up 0.8s ease both 4.8s; }
-.fd-place { position: relative; font-family: "Cormorant Garamond", serif; font-size: 16px; text-shadow: 0 1px 10px rgba(251, 246, 238, 0.95); animation: fd-up 0.8s ease both 5s; }
-.fd-open {
-  position: relative; margin-top: 12px; min-height: 48px; padding: 0 26px; display: flex; align-items: center; justify-content: center;
-  border: 0; border-radius: 999px; background: var(--ink); color: var(--ivory); font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
-  animation: fd-up 0.8s ease both 5.3s, fd-pulse 2.2s ease-out infinite 6.2s;
-}
-.fd-flourish { display: none; width: 220px; height: auto; }
+.fd-date { position: relative; margin-top: 4px; font-family: Cinzel, serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; }
+.fd-place { position: relative; font-family: "Cormorant Garamond", serif; font-size: 16px; }
 
 .fd-seal { z-index: 8; left: 0; right: 0; top: 33%; display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .fd-medal { position: relative; width: min(220px, 58%); padding: 0; border: 0; background: transparent; cursor: pointer; animation: fd-breathe 3.2s ease-in-out infinite; }
@@ -211,6 +212,7 @@ span.fd-arch { display: flex; align-items: center; justify-content: center; font
 @keyframes fd-medalout { 0% { transform: scale(1); opacity: 1; } 35% { transform: scale(1.12); } 100% { transform: scale(1.6); opacity: 0; } }
 @keyframes fd-fall { 0% { transform: translate(0, -60px) rotate(0deg); opacity: 0; } 8% { opacity: 1; } 100% { transform: translate(var(--dx), 110vh) rotate(var(--rot)); opacity: 0.9; } }
 @keyframes fd-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes fd-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 @keyframes fd-twinkle { 0%, 100% { opacity: 0.15; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1.1); } }
 @keyframes fd-tick { 0% { transform: scale(1.12); } 30% { transform: scale(1); } }
 @keyframes fd-spin { to { transform: rotate(360deg); } }
@@ -229,19 +231,7 @@ span.fd-arch { display: flex; align-items: center; justify-content: center; font
   .fd-seal { top: 28%; }
   .fd-medal { width: 300px; }
   .fd-monogram { font-size: 62px; }
-  .fd-copy {
-    left: 6%;
-    right: auto;
-    top: 24%;
-    width: min(460px, 34%);
-    gap: 6px;
-    padding: 36px 28px;
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(251, 246, 238, 0.92) 0%, rgba(251, 246, 238, 0.75) 55%, rgba(251, 246, 238, 0) 72%);
-  }
-  .fd-copy-glow { display: none; }
-  .fd-flourish { display: block; }
-  .fd-names { font-size: 92px; }
+  .fd-welcome .fd-names { font-size: 92px; }
   .fd-names span:nth-child(2) { font-size: 0.8em; }
   .fd-section h2 { font-size: 72px; }
   .fd-count-box { padding: 24px 0; }
