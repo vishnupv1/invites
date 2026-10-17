@@ -62,8 +62,8 @@ function targetOf(date: string, time: string) {
 }
 
 function photoAt(photos: string[] | undefined, index: number) {
-  const own = photos?.filter(Boolean) ?? [];
-  return assetUrl(own[index] || SAMPLES[index % SAMPLES.length]);
+  const own = photos?.[index];
+  return own ? assetUrl(own) : SAMPLES[index % SAMPLES.length];
 }
 
 function Pelmet({ mark, uid }: { mark: string; uid: string }) {
@@ -205,8 +205,8 @@ export function PullInvite({
   const pack = packOf("pull", fields.lines);
   const events = (pack.programme ?? []) as ProgrammeItem[];
   const story = (pack.story ?? []) as StoryBeat[];
-  const photos = (fields.photos ?? []).filter(Boolean);
-  const gallery = (photos.length ? photos : SAMPLES).slice(0, 6);
+  const photos = fields.photos ?? [];
+  const gallery = Array.from({ length: 6 }, (_, index) => photoAt(photos, index));
   const opened = phase === "open";
   const baseLen = Math.round(stageH * (desk ? 0.42 : 0.4));
   const ropeLeft = desk ? "86%" : "84%";
@@ -422,7 +422,7 @@ export function PullInvite({
             <div className="pl-gal">
               {gallery.map((src, index) => (
                 <button key={src + index} type="button" className={!desk && (index === 0 || index === gallery.length - 1) ? "wide" : desk && index === 0 ? "tall" : desk && index === 4 ? "wide" : ""} aria-label={`Open photo ${index + 1}`} onClick={() => setViewer(index)}>
-                  <img loading="lazy" src={assetUrl(src)} alt="" />
+                  <img loading="lazy" src={src} alt="" />
                 </button>
               ))}
             </div>
@@ -445,7 +445,7 @@ export function PullInvite({
             <div className="pl-ig">
               {gallery.map((src, index) => (
                 <button key={`ig-${src}-${index}`} type="button" onClick={() => setViewer(index)}>
-                  <img loading="lazy" src={assetUrl(src)} alt="" />
+                  <img loading="lazy" src={src} alt="" />
                   <span className="pl-by">{handle || "guest"}</span>
                 </button>
               ))}
@@ -677,7 +677,7 @@ export function PullInvite({
       {viewer !== null ? (
         <div className="pl-lb" role="dialog" aria-label="Photo">
           <button type="button" aria-label="Close" onClick={() => setViewer(null)}>×</button>
-          <img loading="lazy" src={assetUrl(gallery[viewer] || gallery[0])} alt="" />
+          <img loading="lazy" src={gallery[viewer] || gallery[0]} alt="" />
         </div>
       ) : null}
       {toast ? <div className="pl-toast" role="status">{toast}</div> : null}

@@ -122,8 +122,8 @@ export function BloomInvite({
     ...wishes.map((item) => ({ text: item.note, by: item.name })),
     ...(pack.wishes ?? []),
   ].slice(0, 3);
-  const photos = (fields.photos ?? []).filter(Boolean);
-  const storyPhoto = photos[0] ? assetUrl(photos[0]) : "";
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
+  const storyPhoto = photos[0] || "";
   const place = [fields.venue, fields.address].filter(Boolean).join(", ");
   const tag = pack.instagram || `#${couple.first}${couple.second}InBloom`;
   const party = pack.caption || "Riya · Sanya · Meher · Tara · Isha · Kavya";
@@ -345,7 +345,7 @@ export function BloomInvite({
             const photo = photos[index + 1];
             return (
               <div key={index} className={index % 2 ? "card" : "arch"}>
-                {photo ? <img loading="lazy" src={assetUrl(photo)} alt="" /> : <img loading="lazy" className="mark" src={FLOWER[(index * 3 + 1) % FLOWER.length]} alt="" />}
+                {photo ? <img loading="lazy" src={photo} alt="" /> : <img loading="lazy" className="mark" src={FLOWER[(index * 3 + 1) % FLOWER.length]} alt="" />}
               </div>
             );
           })}

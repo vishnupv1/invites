@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
@@ -195,7 +196,7 @@ export function LotusInvite({
   const first = couple[0] || "Aarohi";
   const second = couple[1] || "Vihaan";
   const mark = `${first.charAt(0)}&${second.charAt(0)}`;
-  const shots = [0, 1, 2].map((index) => fields.photos[index] || PHOTOS[index]);
+  const shots = [0, 1, 2].map((index) => (fields.photos[index] ? assetUrl(fields.photos[index]) : PHOTOS[index]));
   const place = [fields.venue, cityOf(fields.address)].filter(Boolean).join(" · ").toUpperCase();
   const left = Math.max(0, new Date(`${fields.date}T${fields.time || "18:00"}:00+05:30`).getTime() - now);
   const countdown = {

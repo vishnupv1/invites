@@ -145,7 +145,7 @@ export function GrandEnvelopeInvite({
   const pack = packOf("grandenvelope", fields.lines);
   const story = pack.story?.[0];
   const storyLines = (story?.text || "").split("\n").map((line) => line.trim()).filter(Boolean);
-  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : "")).filter(Boolean).slice(0, 3);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : "")).slice(0, 3);
   const wide = width >= 860;
   const hasReception = Boolean(fields.receptionVenue || fields.receptionTime);
   const ceremonyName = eventName(fields.lines, "ceremonyName", "The Wedding");

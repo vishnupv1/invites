@@ -227,7 +227,7 @@ export function BeachInvite({
   const stamp = stampOf(fields.date, place);
   const dateLine = dotted(fields.date, place);
   const tag = `#${first.replace(/\s/g, "")}And${second.replace(/\s/g, "")}`;
-  const photos = (fields.photos ?? []).map(assetUrl).filter(Boolean);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
   const captions = photoNotes(fields.notes, catalogMeta.beach.shots);
   const journey = packOf("beach", fields.lines);
   const story = (journey.story ?? []).filter((item) => item.title.trim() || item.text.trim());
@@ -266,7 +266,8 @@ export function BeachInvite({
   const liveWishes = [...added, ...wishes.map((item) => ({ name: item.name, text: wishFromReply(item.note, eventNames) }))].filter((item, index, all) => item.text && all.findIndex((other) => other.name === item.name && other.text === item.text) === index);
   const shownWishes = liveWishes.length ? liveWishes : SAMPLES;
   const picked = eventNames.filter((item) => !skipped.includes(item));
-  const film = photos.length ? Array.from({ length: 10 }, (_, index) => photos[index % photos.length]) : FILM_COLORS;
+  const filled = photos.filter(Boolean);
+  const film = filled.length ? Array.from({ length: 10 }, (_, index) => filled[index % filled.length]) : FILM_COLORS;
   const filmLoop = [...film, ...film];
 
   function openBottle() {
@@ -463,8 +464,8 @@ export function BeachInvite({
               <div className="b2-marq-row">
                 {filmLoop.map((frame, index) => (
                   <div key={index} className="b2-frame" style={{ animationDuration: `${4 + (index % 3)}s`, animationDelay: `${index * -0.7}s` }}>
-                    <div className="b2-shot" style={photos.length ? undefined : { background: frame }}>
-                      {photos.length ? <img loading="lazy" src={frame} alt="" /> : <span>Photo {(index % 5) + 1}</span>}
+                    <div className="b2-shot" style={filled.length ? undefined : { background: frame }}>
+                      {filled.length ? <img loading="lazy" src={frame} alt="" /> : <span>Photo {(index % 5) + 1}</span>}
                     </div>
                   </div>
                 ))}

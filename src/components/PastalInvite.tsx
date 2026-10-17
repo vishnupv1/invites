@@ -117,7 +117,7 @@ export function PastalInvite({
   const [toast, setToast] = useState("");
 
   const pack = packOf("pastal", fields.lines);
-  const photos = (fields.photos ?? []).filter(Boolean);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
   const events: ProgrammeItem[] = pack.programme?.length
     ? pack.programme
     : [{ kick: dottedDate(fields.date), title: "The wedding", time: formatTime(fields.time), text: fields.venue, note: fields.dress }];
@@ -341,7 +341,7 @@ export function PastalInvite({
               <article className="pt-chapter" key={beat.title + index}>
                 <div className="pt-frame-photo">
                   {photos[index] ? (
-                    <img loading="lazy" src={assetUrl(photos[index])} alt="" />
+                    <img loading="lazy" src={photos[index]} alt="" />
                   ) : (
                     <>
                       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

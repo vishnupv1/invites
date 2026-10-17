@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { assetUrl } from "../api";
 import { madeWithHref } from "../lib/share";
 import { packOf } from "../data/custom";
 import { useFonts } from "../lib/fonts";
@@ -146,7 +147,7 @@ export function HansaInvite({
     ...wishes.map((item) => ({ text: item.note, by: item.name })),
     ...(pack.wishes ?? []),
   ].slice(0, 6);
-  const photos = fields.photos.filter(Boolean);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
   const live = phase !== "closed";
   const left = Math.max(0, new Date(`${fields.date}T${fields.time || "17:30"}:00+05:30`).getTime() - now);
   const count = [

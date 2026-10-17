@@ -92,7 +92,7 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
   const end = formatTime(fields.receptionTime);
   const whenTime = start && end ? `${start} – ${end}` : start || "4:00 PM";
   const plan = ((pack.programme ?? []) as ProgrammeItem[]).slice(0, 5);
-  const photos = (fields.photos ?? []).filter(Boolean);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
   const live = Boolean(onReply);
   const rows = live
     ? [...(sent ? [sent] : []), ...(wishes ?? []).map((wish) => ({ name: wish.name, note: wish.note }))]
@@ -304,18 +304,18 @@ export function InlandInvite({ fields, quiet = false, wishes, onReply, demo = fa
           <section className="il-sec">
             <h2 className="il-h2">{child}’s little album</h2>
             <div className="il-gal">
-              {(photos.length ? photos : ALBUM.map(([cap]) => cap)).slice(0, 4).map((item, index) => (
-                <div className="il-shot" key={index} style={{ transform: `rotate(${ALBUM_TILT[index]}deg)` }}>
+              {ALBUM.slice(0, 4).map((item, index) => (
+                <div className="il-shot" key={item[0]} style={{ transform: `rotate(${ALBUM_TILT[index]}deg)` }}>
                   <div className="il-ph" style={{ background: INK[(index + 2) % INK.length] }}>
-                    {photos.length ? (
-                      <img loading="lazy" src={assetUrl(photos[index])} alt="" />
+                    {photos[index] ? (
+                      <img loading="lazy" src={photos[index]} alt="" />
                     ) : (
                       <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d={ALBUM[index][1]} />
+                        <path d={item[1]} />
                       </svg>
                     )}
                   </div>
-                  <span>{photos.length ? ALBUM[index]?.[0] || "Party photo" : item}</span>
+                  <span>{item[0]}</span>
                 </div>
               ))}
             </div>

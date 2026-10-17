@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
@@ -287,7 +288,7 @@ export function FirstDanceInvite({
   const cards = (pack.wishes ?? []).map((item) => ({ name: item.by, text: item.text }));
   const guestWishes = wishes.filter((item) => item.note?.trim()).map((item) => ({ name: item.name, text: item.note }));
   const loop = [...guestWishes, ...cards, ...guestWishes, ...cards];
-  const photos = fields.photos.filter(Boolean);
+  const photos = (fields.photos ?? []).map((photo) => (photo ? assetUrl(photo) : ""));
 
   const opened = phase === "entered";
 
