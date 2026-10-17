@@ -234,7 +234,7 @@ export function FirstDanceInvite({
   onReply?: (reply: Reply) => void | Promise<void>;
   theme?: FirstDanceTheme;
 }) {
-  useFonts("Pinyon Script", "Cormorant Garamond", "Cinzel", "Jost");
+  useFonts("Bodoni Moda", "Monsieur La Doulaise", "Cormorant Garamond", "Cinzel", "Jost");
   const pack = packOf("firstdance", fields.lines);
   const couple = coupleOf(fields.names);
   const [phase, setPhase] = useState<Phase>(quiet ? "entered" : "closed");
