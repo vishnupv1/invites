@@ -29,7 +29,7 @@ function eventMeta(invite: SavedInvite) {
 }
 
 export function LibraryPane({ view }: { view: View }) {
-  const { invites, ready, owned, forget } = useLibrary();
+  const { invites, ready, owned, purchasesReady, forget, loadInvites, loadPurchases } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>([]);
   const [catalogReady, setCatalogReady] = useState(false);
@@ -40,6 +40,11 @@ export function LibraryPane({ view }: { view: View }) {
   const published = invites.filter((invite) => invite.status !== "draft");
   const favoriteTemplates = favs.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
   const purchased = owned.map((id) => catalog.find((template) => template.id === id)).filter((template): template is Template => Boolean(template));
+
+  useEffect(() => {
+    if (view === "events" || view === "drafts") loadInvites();
+    if (view === "purchases") loadPurchases();
+  }, [view, loadInvites, loadPurchases]);
 
   useEffect(() => {
     if (view !== "favorites" && view !== "purchases") return;
@@ -181,7 +186,7 @@ export function LibraryPane({ view }: { view: View }) {
     );
   }
 
-  if (!catalogReady) return <p className="rsvp-wait"><Spinner size="md" /> Loading your purchases…</p>;
+  if (!catalogReady || !purchasesReady) return <p className="rsvp-wait"><Spinner size="md" /> Loading your purchases…</p>;
   if (!purchased.length) {
     return (
       <div className="rsvp-empty">

@@ -11,11 +11,17 @@ type SessionValue = {
 
 const SessionContext = createContext<SessionValue>({ ready: false, host: null, signedIn: false });
 
+function embedDocument() {
+  return window.location.pathname.startsWith("/embed/");
+}
+
 export function SessionProvider({ children }: { children: ReactNode }) {
+  const embed = embedDocument();
   const [host, setHost] = useState<Host | null>(null);
-  const [phase, setPhase] = useState<Phase>(() => (getToken() ? "checking" : "out"));
+  const [phase, setPhase] = useState<Phase>(() => (embed || !getToken() ? "out" : "checking"));
 
   useEffect(() => {
+    if (embed) return;
     let cancel = false;
 
     async function load() {
@@ -55,7 +61,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       stop();
       window.removeEventListener("storage", onStorage);
     };
-  }, []);
+  }, [embed]);
 
   return (
     <SessionContext.Provider value={{ ready: phase !== "checking", host, signedIn: phase !== "out" }}>

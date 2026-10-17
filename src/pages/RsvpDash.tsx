@@ -198,7 +198,8 @@ function Reply({ row, index }: { row: Greeting; index: number }) {
 
 export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
   const { host } = useSession();
-  const { invites, ready } = useLibrary();
+  const { invites, ready, loadInvites } = useLibrary();
+  const showsReplies = mode === "overview" || mode === "guests" || mode === "wishes";
   const [picked, setPicked] = useState("");
   const [rows, setRows] = useState<Greeting[]>([]);
   const [rowsReady, setRowsReady] = useState(false);
@@ -234,7 +235,11 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
   const latest = rows.slice(0, 4);
 
   useEffect(() => {
-    if (!selected?.code) return;
+    if (showsReplies || mode === "events" || mode === "drafts") loadInvites();
+  }, [showsReplies, mode, loadInvites]);
+
+  useEffect(() => {
+    if (!showsReplies || !selected?.code) return;
     let cancel = false;
     setRowsReady(false);
     listGreetings(selected.code)
@@ -257,7 +262,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
     return () => {
       cancel = true;
     };
-  }, [selected?.id, selected?.code, selected?.templateId]);
+  }, [showsReplies, selected?.id, selected?.code, selected?.templateId]);
 
   function exportReplies() {
     const lines = ["name,status,note,when", ...rows.map((row) => {
@@ -358,7 +363,7 @@ export function RsvpDash({ mode = "overview" }: { mode?: Pane }) {
             ) : null}
           </div>
         </div>
-        {!ready ? (
+        {showsReplies && !ready ? (
           <p className="rsvp-wait" aria-busy="true"><Spinner size="md" /> Loading your invitation…</p>
         ) : !selected && pane !== "settings" && pane !== "templates" && !libraryTitle ? (
           <div className="rsvp-empty">

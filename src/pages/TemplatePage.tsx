@@ -185,7 +185,10 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
   //     cancel = true;
   //   };
   // }, [id]);
-  const { owns, purchase, grant } = useLibrary();
+  const { owns, purchase, grant, loadPurchases } = useLibrary();
+  useEffect(() => {
+    loadPurchases();
+  }, [loadPurchases]);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [device, setDevice] = useState<"phone" | "desk">(() =>

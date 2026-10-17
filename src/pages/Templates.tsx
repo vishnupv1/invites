@@ -14,12 +14,16 @@ const OCCASION_LABEL: Partial<Record<EventId, string>> = {
 };
 
 export function AccountTemplates() {
-  const { owns } = useLibrary();
+  const { owns, loadPurchases } = useLibrary();
   const { favs, toggle } = useFavs();
   const [catalog, setCatalog] = useState<Template[]>(TEMPLATES);
   const [ready, setReady] = useState(false);
   const [occasion, setOccasion] = useState<EventId | "all">("all");
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    loadPurchases();
+  }, [loadPurchases]);
 
   useEffect(() => {
     listTemplates()

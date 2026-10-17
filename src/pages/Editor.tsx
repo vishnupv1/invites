@@ -256,11 +256,14 @@ export function Editor({
     return `${path}${path.includes("?") ? "&" : "?"}from=${encodeURIComponent(from)}`;
   }
   const eventQuery = eventIdProp || params.get("event") || undefined;
-  const { owns, purchase, grant, remember, invites, ready: libraryReady } = useLibrary();
+  const { owns, purchase, grant, remember, invites, ready: libraryReady, loadInvites } = useLibrary();
   useEffect(() => {
     if (embedded || !template) return;
     trackStartDesign(template);
   }, [embedded, template]);
+  useEffect(() => {
+    loadInvites();
+  }, [loadInvites]);
   const onInviteRef = useRef(onInvite);
   const onSummaryRef = useRef(onSummary);
   onInviteRef.current = onInvite;

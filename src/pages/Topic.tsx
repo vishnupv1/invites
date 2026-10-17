@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { PreviewModal } from "../components/PreviewModal";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -13,8 +13,11 @@ import type { EventId } from "../types";
 export function Topic() {
   const { pathname } = useLocation();
   const topic = topicByPath(pathname);
-  const { owns } = useLibrary();
+  const { owns, loadPurchases } = useLibrary();
   const [previewId, setPreviewId] = useState<string | null>(null);
+  useEffect(() => {
+    loadPurchases();
+  }, [loadPurchases]);
   if (!topic) return <Navigate to="/browse" replace />;
 
   const templates = topic.templates.map((id) => getTemplate(id)).filter((item) => item != null).sort(compareTemplatesNewestFirst);
