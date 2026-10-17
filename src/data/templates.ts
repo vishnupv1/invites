@@ -800,7 +800,7 @@ export const TEMPLATES: Template[] = [
     events: ["marriage"],
     tagline: "Wedding",
     description: "Tap the wax seal, the curtains open, and Kabir and Ananya’s first dance begins at a palace in Udaipur.",
-    asks: { photos: 5, audio: false, location: true },
+    asks: { photos: 8, audio: false, location: true },
     meta: META.firstdance,
     samples: {
       marriage: sample("marriage", {

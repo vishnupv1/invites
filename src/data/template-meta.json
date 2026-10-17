@@ -697,7 +697,10 @@
       { "label": "Haldi" },
       { "label": "Sangeet" },
       { "label": "Mehendi" },
-      { "label": "Us" }
+      { "label": "Us" },
+      { "label": "Story · A salsa class" },
+      { "label": "Story · Paris, in the rain" },
+      { "label": "Story · The proposal" }
     ],
     "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
     "components": [

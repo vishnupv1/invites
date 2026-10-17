@@ -22,6 +22,7 @@ const DRESS = [
 ] as const;
 const SWATCHES = ["#1E1410", "#FBF6EE", "#E9D8B8", "#E8C3BE", "#B8893B"];
 const GALLERY = ["Engagement", "Haldi", "Sangeet", "Mehendi", "Us"];
+const STORY_PHOTO = GALLERY.length;
 const STORY_TONES = ["#eadbc4", "#e8c3be", "#e9d8b8"];
 const GALLERY_TONES = ["#eadbc4", "#f1e2cf", "#e8c3be", "#e9d8b8", "#f3e6d6"];
 const PETALS = [
@@ -346,7 +347,7 @@ export function FirstDanceInvite({
         <div className="fd-story-row">
           {(pack.story ?? []).map((beat, index) => (
             <article className="fd-story" key={beat.title} style={{ animationDelay: `${0.2 + index * 0.2}s` }}>
-              {photos[index] ? <img className="fd-arch" src={photos[index]} alt="" /> : <span className="fd-arch" style={{ background: STORY_TONES[index % STORY_TONES.length] }}>Photo</span>}
+              {photos[STORY_PHOTO + index] ? <img className="fd-arch" src={photos[STORY_PHOTO + index]} alt="" /> : <span className="fd-arch" style={{ background: STORY_TONES[index % STORY_TONES.length] }}>Photo</span>}
               <b>{beat.year}</b>
               <strong>{beat.title}</strong>
               <p>{beat.text}</p>
