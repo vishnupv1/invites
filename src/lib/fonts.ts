@@ -20,6 +20,7 @@ const FAMILIES = {
   Karla: "Karla:wght@400;500;700",
   Lora: "Lora:ital,wght@0,500;0,600;1,500",
   "Monsieur La Doulaise": "Monsieur+La+Doulaise",
+  "Mrs Saint Delafield": "Mrs+Saint+Delafield",
   "Noto Sans Malayalam": "Noto+Sans+Malayalam:wght@400;600",
   "Noto Sans Tamil": "Noto+Sans+Tamil:wght@400;600;700",
   "Noto Serif Tamil": "Noto+Serif+Tamil:wght@600;700",
