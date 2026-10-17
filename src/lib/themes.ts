@@ -12,6 +12,7 @@ import type { MoonlitTheme } from "../components/MoonlitInvite";
 import type { VillaTheme } from "../components/VillaInvite";
 import type { PullTheme } from "../components/PullInvite";
 import type { VivahTheme } from "../components/VivahInvite";
+import type { WeddingRideTheme } from "../components/WeddingRideInvite";
 
 export function annaThemeOf(swatch: string): AnnaTheme {
   if (swatch === "emerald") return "sage";
@@ -90,4 +91,9 @@ export function baptism2ThemeOf(swatch: string): Baptism2Theme {
   if (swatch === "rose") return "blush";
   if (swatch === "emerald") return "sage";
   return "sky";
+}
+
+export function weddingRideThemeOf(swatch: string): WeddingRideTheme {
+  if (swatch === "rose" || swatch === "dusk") return swatch;
+  return "sunlit";
 }

@@ -682,6 +682,43 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "weddingride": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "reception": "Brunch & farewell",
+    "themes": [
+      { "id": "sunlit", "name": "Sunlit" },
+      { "id": "rose", "name": "Rose" },
+      { "id": "dusk", "name": "Dusk" }
+    ],
+    "defaultTheme": "sunlit",
+    "shots": [
+      { "label": "Walking through the garden" },
+      { "label": "Steps of the old palace" },
+      { "label": "Hands, henna and haldi" },
+      { "label": "Our pink ride" },
+      { "label": "First twirl" },
+      { "label": "Into the sunset, together" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "Cut the ribbon", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Blessing line", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Dear", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Samode Bagh", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "gallery", "label": "Moments", "configurable": true, "fields": ["photos"] },
+      { "id": "story", "label": "Moment captions", "configurable": true, "fields": ["lines"] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "firstdance": {
     "names": "couple",
     "ceremony": "The first dance",

@@ -30,9 +30,10 @@ import { GoaInvite } from "./GoaInvite";
 import { LotusInvite } from "./LotusInvite";
 import { RoseInvite } from "./RoseInvite";
 import { FirstDanceInvite, firstDanceThemeOf } from "./FirstDanceInvite";
+import { WeddingRideInvite } from "./WeddingRideInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
-import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf, weddingRideThemeOf } from "../lib/themes";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
 
@@ -420,6 +421,9 @@ export function InviteSite({
   }
   if (template.style === "firstdance") {
     return <FirstDanceInvite fields={fields} wishes={wishes} onReply={onReply} theme={firstDanceThemeOf(swatch)} />;
+  }
+  if (template.style === "weddingride") {
+    return <WeddingRideInvite fields={fields} wishes={wishes} onReply={onReply} theme={weddingRideThemeOf(swatch)} />;
   }
   let body: ReactNode;
   switch (template.style) {

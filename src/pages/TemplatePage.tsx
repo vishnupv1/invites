@@ -37,6 +37,7 @@ import { GoaInvite } from "../components/GoaInvite";
 import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
 import { FirstDanceInvite, firstDanceThemeOf } from "../components/FirstDanceInvite";
+import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -46,7 +47,7 @@ import { eventLabels, formatPrice, getTemplate, sampleFor, templatesFor } from "
 import phrases from "../data/template-phrases.json" with { type: "json" };
 import { primaryTopicForTemplate, templateSeo, topicsForTemplate } from "../data/topics";
 import { templateFacts } from "../lib/template-facts.mjs";
-import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf, weddingRideThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import type { EventId, InviteFields, Template } from "../types";
 import { formatShortDate } from "../lib/dates";
@@ -122,6 +123,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <RoseInvite fields={fields} />;
     case "firstdance":
       return <FirstDanceInvite fields={fields} theme={firstDanceThemeOf(swatch)} />;
+    case "weddingride":
+      return <WeddingRideInvite fields={fields} theme={weddingRideThemeOf(swatch)} />;
     case "home":
       return <HomeInvite fields={fields} theme={homeThemeOf(swatch)} demo />;
     case "shaadi":

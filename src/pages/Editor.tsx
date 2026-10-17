@@ -26,6 +26,7 @@ import { GoaInvite } from "../components/GoaInvite";
 import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
 import { FirstDanceInvite, firstDanceThemeOf } from "../components/FirstDanceInvite";
+import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -42,7 +43,7 @@ import { formatPrice, getTemplate, hasComponent, sampleFor, usesField } from "..
 import { readCoupleNames } from "../lib/couple-names";
 import { assetUrl, ensureSession, getInviteRecord, getToken, listPurchases, publishSaved, saveDraft, updateInvite, uploadMedia, type EditorState } from "../api";
 import { searchPlaces, type PlaceHit } from "../lib/media";
-import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
+import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf, weddingRideThemeOf } from "../lib/themes";
 import { useLibrary } from "../state";
 import { useSession } from "../session";
 import { hold, SmartButton, Spinner } from "../components/Loader";
@@ -1613,6 +1614,8 @@ export function Editor({
                     <RoseInvite fields={previewFields} />
                   ) : template.style === "firstdance" ? (
                     <FirstDanceInvite fields={previewFields} theme={firstDanceThemeOf(model.swatch)} />
+                  ) : template.style === "weddingride" ? (
+                    <WeddingRideInvite fields={previewFields} theme={weddingRideThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

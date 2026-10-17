@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  weddingride: "2026-10-18T00:52:00+05:30",
   firstdance: "2026-10-17T14:48:00+05:30",
   baptism2: "2026-10-16T15:29:00+05:30",
   rose: "2026-10-16T00:37:07+05:30",
@@ -788,6 +789,34 @@ export const TEMPLATES: Template[] = [
         dress: "Festive Formal",
         rsvpBy: "2027-04-01",
         lines: linesFor("rose"),
+      }),
+    },
+  },
+  {
+    id: "weddingride",
+    name: "Wedding Ride",
+    style: "weddingride",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A pink car arrives through the fog. Cut the ribbon, then walk through Aarav and Meher’s moments in Jaipur.",
+    asks: { photos: 6, audio: false, location: true },
+    meta: META.weddingride,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "with the blessings of our families",
+        names: "Aarav & Meher",
+        title: "we invite you to the wedding of",
+        detail: "the Sharma family",
+        date: "2027-02-06",
+        time: "19:00",
+        venue: "Samode Bagh",
+        address: "Jaipur",
+        message: "Scroll across and walk with us through the little moments that led to the big one.",
+        dress: "rani pink & gold",
+        rsvpBy: "2027-01-06",
+        lines: linesFor("weddingride"),
       }),
     },
   },

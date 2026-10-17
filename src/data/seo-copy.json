@@ -142,6 +142,12 @@
       "description": "Break the wax seal and a blossom wreath opens the letter. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
       "lead": "Blush paper, a wax seal and a wreath of spring blossoms. Made for a wedding in a Jaipur garden."
     },
+    "weddingride": {
+      "heading": "Wedding ride invitation",
+      "title": "Wedding Ride – Car & Ribbon Wedding Invitation | InvitesReady",
+      "description": "A pink car arrives through the fog, then you cut the ribbon. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
+      "lead": "A vintage car, palace fog and a ribbon you cut with scissors. Made for a wedding weekend in Jaipur."
+    },
     "firstdance": {
       "heading": "First dance wedding invitation",
       "title": "First Dance – Palace Wedding Invitation | InvitesReady",
@@ -244,6 +250,7 @@
       "description": "Animated digital wedding invitations, including free designs. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "weddingride",
         "firstdance",
         "lotus",
         "goa",
