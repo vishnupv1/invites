@@ -36,6 +36,7 @@ import { LaceInvite } from "../components/LaceInvite";
 import { GoaInvite } from "../components/GoaInvite";
 import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
+import { FirstDanceInvite, firstDanceThemeOf } from "../components/FirstDanceInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { VivahInvite } from "../components/VivahInvite";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -70,6 +71,7 @@ const TONES: Record<string, { cover: string; dot: string }> = {
   burgundy: { cover: "#4A0716", dot: "#F3DDA8" },
   post: { cover: "#CFE2F2", dot: "#C8342B" },
   wine: { cover: "#1A0C0A", dot: "#E8C987" },
+  twilight: { cover: "#2A221C", dot: "#E9D8B8" },
 };
 
 function GuestPreview({ template, fields, swatch, lang }: { template: Template; fields: InviteFields; swatch: string; lang: ThiruvizhaLang }) {
@@ -118,6 +120,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <LotusInvite fields={fields} />;
     case "rose":
       return <RoseInvite fields={fields} />;
+    case "firstdance":
+      return <FirstDanceInvite fields={fields} theme={firstDanceThemeOf(swatch)} />;
     case "home":
       return <HomeInvite fields={fields} theme={homeThemeOf(swatch)} demo />;
     case "shaadi":

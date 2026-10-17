@@ -682,6 +682,41 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "firstdance": {
+    "names": "couple",
+    "ceremony": "The first dance",
+    "reception": "Reception",
+    "themes": [
+      { "id": "ivory", "name": "Ivory & gold" },
+      { "id": "rose", "name": "Rose" },
+      { "id": "twilight", "name": "Twilight" }
+    ],
+    "defaultTheme": "ivory",
+    "shots": [
+      { "label": "Engagement" },
+      { "label": "Haldi" },
+      { "label": "Sangeet" },
+      { "label": "Mehendi" },
+      { "label": "Us" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The seal", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Welcome", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The Leela Palace", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "story", "label": "Our story", "configurable": true, "fields": ["lines"] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Moments", "configurable": true, "fields": ["photos"] },
+      { "id": "wishes", "label": "Wishes", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "hansa": {
     "names": "couple",
     "ceremony": "The wedding",

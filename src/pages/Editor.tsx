@@ -25,6 +25,7 @@ import { LaceInvite } from "../components/LaceInvite";
 import { GoaInvite } from "../components/GoaInvite";
 import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
+import { FirstDanceInvite, firstDanceThemeOf } from "../components/FirstDanceInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
@@ -96,6 +97,7 @@ const SWATCHES = [
   { id: "paper", name: "Blush paper", cover: "#F3E2D8", dot: "#6E4A42" },
   { id: "night", name: "Moonlit gold", cover: "#0B1226", dot: "#E9BE6A" },
   { id: "olive", name: "Tuscan olive", cover: "#F7F1E6", dot: "#66703F" },
+  { id: "twilight", name: "Twilight", cover: "#2A221C", dot: "#E9D8B8" },
 ];
 
 function ceremonyLabel(template: Template, draft: InviteFields) {
@@ -1606,6 +1608,8 @@ export function Editor({
                     <LotusInvite fields={previewFields} />
                   ) : template.style === "rose" ? (
                     <RoseInvite fields={previewFields} />
+                  ) : template.style === "firstdance" ? (
+                    <FirstDanceInvite fields={previewFields} theme={firstDanceThemeOf(model.swatch)} />
                   ) : template.style === "home" ? (
                     <HomeInvite fields={previewFields} theme={homeThemeOf(model.swatch)} />
                   ) : template.style === "shaadi" ? (

@@ -186,6 +186,12 @@
     ],
     "hook": "with a wax seal and a blossom wreath"
   },
+  "firstdance": {
+    "style": "Palace ballroom",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a seal that opens the curtains onto a first dance"
+  },
   "hansa": {
     "style": "Moonlight Lake",
     "occasion": "Wedding",

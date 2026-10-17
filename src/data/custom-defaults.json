@@ -323,6 +323,27 @@
     "airport": "22 – 24 May 2027",
     "stay": "A special rate for our guests, 22 – 24 May 2027. Double room ₹9,500 / night · Single ₹7,500 / night"
   },
+  "firstdance": {
+    "story": [
+      { "year": "2019", "title": "A salsa class", "text": "Two left feet, one shared laugh, and a partner swap that never happened." },
+      { "year": "2023", "title": "Paris, in the rain", "text": "An umbrella, a street musician and our very first slow dance." },
+      { "year": "2026", "title": "The proposal", "text": "Mid-twirl on the terrace in Udaipur. She said yes before the song ended." }
+    ],
+    "programme": [
+      { "kick": "Saturday, 13 February", "title": "Cocktail evening", "time": "6:00 PM", "text": "Lakeside Terrace", "note": "" },
+      { "kick": "Saturday, 13 February", "title": "The first dance & reception", "time": "7:30 PM", "text": "Durbar Hall", "note": "" },
+      { "kick": "Saturday, 13 February", "title": "Royal dinner", "time": "9:30 PM", "text": "Mewar Courtyard", "note": "" }
+    ],
+    "wishes": [
+      { "text": "May every song you dance to be a happy one.", "by": "Nani" },
+      { "text": "Front row for the first dance — we are bringing tissues!", "by": "Rhea & Dev" },
+      { "text": "Wishing you a lifetime of love, laughter and slow dances.", "by": "The Kapoor family" },
+      { "text": "Kabir, practise those steps. Ananya, we are proud of you!", "by": "Uncle Sameer" }
+    ],
+    "caption": "Tuxedos and bandhgalas for the gentlemen, lehengas and gowns in champagne, ivory and blush for the ladies. Comfortable shoes recommended — we will be dancing!",
+    "stay": "Rooms are held for our guests from 12 to 14 February. Mention “{{names}}” when you book; a shuttle will run from Udaipur airport all day on Saturday.",
+    "instagram": ""
+  },
   "hansa": {
     "people": [
       { "role": "Daughter of", "name": "Mrs. Sunita & Mr. Rajiv Sen" },

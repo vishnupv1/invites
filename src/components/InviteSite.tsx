@@ -29,6 +29,7 @@ import { LaceInvite } from "./LaceInvite";
 import { GoaInvite } from "./GoaInvite";
 import { LotusInvite } from "./LotusInvite";
 import { RoseInvite } from "./RoseInvite";
+import { FirstDanceInvite, firstDanceThemeOf } from "./FirstDanceInvite";
 import { PeaceInvite } from "./PeaceInvite";
 import { InstagramLink } from "./InstagramLink";
 import { annaThemeOf, baptism2ThemeOf, beachThemeOf, botanicaThemeOf, homeThemeOf, moonlitThemeOf, palaceThemeOf, pastalThemeOf, peaceThemeOf, pullThemeOf, shaadiThemeOf, thiruThemeOf, villaThemeOf, vivahThemeOf } from "../lib/themes";
@@ -416,6 +417,9 @@ export function InviteSite({
   }
   if (template.style === "rose") {
     return <RoseInvite fields={fields} onReply={onReply} />;
+  }
+  if (template.style === "firstdance") {
+    return <FirstDanceInvite fields={fields} wishes={wishes} onReply={onReply} theme={firstDanceThemeOf(swatch)} />;
   }
   let body: ReactNode;
   switch (template.style) {

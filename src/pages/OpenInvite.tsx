@@ -24,6 +24,7 @@ import { LaceInvite } from "../components/LaceInvite";
 import { GoaInvite } from "../components/GoaInvite";
 import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
+import { FirstDanceInvite } from "../components/FirstDanceInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { getTemplate, sampleFor } from "../data/templates";
 import { trackTemplatePreview } from "../lib/analytics";
@@ -68,6 +69,7 @@ export function OpenInvite() {
       {template.style === "goa" ? <GoaInvite fields={fields} /> : null}
       {template.style === "lotus" ? <LotusInvite fields={fields} /> : null}
       {template.style === "rose" ? <RoseInvite fields={fields} /> : null}
+      {template.style === "firstdance" ? <FirstDanceInvite fields={fields} /> : null}
     </div>
   );
 }

@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  firstdance: "2026-10-17T14:48:00+05:30",
   baptism2: "2026-10-16T15:29:00+05:30",
   rose: "2026-10-16T00:37:07+05:30",
   lotus: "2026-10-15T21:55:20+05:30",
@@ -787,6 +788,34 @@ export const TEMPLATES: Template[] = [
         dress: "Festive Formal",
         rsvpBy: "2027-04-01",
         lines: linesFor("rose"),
+      }),
+    },
+  },
+  {
+    id: "firstdance",
+    name: "First Dance",
+    style: "firstdance",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Tap the wax seal, the curtains open, and Kabir and Ananya’s first dance begins at a palace in Udaipur.",
+    asks: { photos: 5, audio: false, location: true },
+    meta: META.firstdance,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Kabir & Ananya",
+        title: "invite you to celebrate their wedding",
+        detail: "",
+        date: "2027-02-13",
+        time: "19:00",
+        venue: "The Leela Palace",
+        address: "Lake Pichola, Udaipur, Rajasthan 313001",
+        message: "Two left feet, one shared laugh, and a first dance we want you there for.",
+        dress: "Black tie & festive glam",
+        rsvpBy: "2027-01-15",
+        lines: linesFor("firstdance"),
       }),
     },
   },
