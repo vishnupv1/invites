@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
 import { listInvites, listPurchases, purchaseTemplate, type RazorpayPayment } from "./api";
 import { useSession } from "./session";
 import type { SavedInvite } from "./types";
@@ -21,34 +21,28 @@ const LibraryContext = createContext<Library | null>(null);
 
 export function LibraryProvider({ children }: { children: ReactNode }) {
   const { ready: sessionReady, signedIn, host } = useSession();
+  const hostKey = host?.id ?? "";
+  const identity = !sessionReady ? "checking" : signedIn ? `in:${hostKey}` : "out";
   const [owned, setOwned] = useState<string[]>([]);
   const [invites, setInvites] = useState<SavedInvite[]>([]);
-  const [ready, setReady] = useState(false);
-  const [purchasesReady, setPurchasesReady] = useState(false);
+  const [ready, setReady] = useState(identity === "out");
+  const [purchasesReady, setPurchasesReady] = useState(identity === "out");
+  const [epoch, setEpoch] = useState(identity);
   const generation = useRef(0);
   const invitesFlight = useRef<Promise<void> | null>(null);
   const purchasesFlight = useRef<Promise<void> | null>(null);
-  const hostKey = host?.id ?? "";
 
-  useEffect(() => {
+  if (epoch !== identity) {
+    setEpoch(identity);
     generation.current += 1;
     invitesFlight.current = null;
     purchasesFlight.current = null;
     setOwned([]);
     setInvites([]);
-    if (!sessionReady) {
-      setReady(false);
-      setPurchasesReady(false);
-      return;
-    }
-    if (!signedIn) {
-      setReady(true);
-      setPurchasesReady(true);
-      return;
-    }
-    setReady(false);
-    setPurchasesReady(false);
-  }, [sessionReady, signedIn, hostKey]);
+    const settled = identity === "out";
+    setReady(settled);
+    setPurchasesReady(settled);
+  }
 
   const loadInvites = useCallback(() => {
     if (!sessionReady) return;
@@ -64,7 +58,9 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => undefined)
       .finally(() => {
-        if (gen === generation.current) setReady(true);
+        if (gen !== generation.current) return;
+        invitesFlight.current = null;
+        setReady(true);
       });
     invitesFlight.current = flight;
   }, [sessionReady, signedIn, hostKey]);
@@ -83,7 +79,9 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => undefined)
       .finally(() => {
-        if (gen === generation.current) setPurchasesReady(true);
+        if (gen !== generation.current) return;
+        purchasesFlight.current = null;
+        setPurchasesReady(true);
       });
     purchasesFlight.current = flight;
   }, [sessionReady, signedIn, hostKey]);

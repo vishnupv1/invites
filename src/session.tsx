@@ -32,6 +32,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setPhase("out");
         return;
       }
+      setPhase((current) => (current === "in" ? "in" : "checking"));
       try {
         const person = await getHost();
         if (cancel || getToken() !== token) return;
