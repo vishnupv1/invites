@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  starryfairytale: "2026-10-18T22:11:00+05:30",
   weddingride: "2026-10-18T00:52:00+05:30",
   firstdance: "2026-10-17T14:48:00+05:30",
   baptism2: "2026-10-16T15:29:00+05:30",
@@ -789,6 +790,34 @@ export const TEMPLATES: Template[] = [
         dress: "Festive Formal",
         rsvpBy: "2027-04-01",
         lines: linesFor("rose"),
+      }),
+    },
+  },
+  {
+    id: "starryfairytale",
+    name: "Starry Fairytale",
+    style: "starryfairytale",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Scroll a starry night as the chapel rises and a ring descends. Nathan and Grace invite you to St. Mary's Basilica in Bengaluru.",
+    asks: { photos: 0, audio: false, location: true },
+    meta: META.starryfairytale,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Mr. & Mrs. Thomas George\nand\nMr. & Mrs. Joseph Mathew",
+        names: "Nathan & Grace",
+        title: "request the honour of your presence\nat the marriage of their children",
+        detail: "",
+        date: "2027-05-15",
+        time: "16:00",
+        venue: "St. Mary's Basilica",
+        address: "Bengaluru",
+        message: "It began in a little chapel, under a sky full of stars.",
+        dress: "",
+        rsvpBy: "2027-04-15",
+        lines: linesFor("starryfairytale"),
       }),
     },
   },

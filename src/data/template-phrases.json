@@ -186,6 +186,12 @@
     ],
     "hook": "with a wax seal and a blossom wreath"
   },
+  "starryfairytale": {
+    "style": "Starry night",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a chapel that rises through the stars, and a ring that answers yes"
+  },
   "weddingride": {
     "style": "Vintage car",
     "occasion": "Wedding",

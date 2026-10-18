@@ -15,6 +15,7 @@ const FAMILIES = {
   "Geist Mono": "Geist+Mono:wght@400;500",
   Gloock: "Gloock",
   "Great Vibes": "Great+Vibes",
+  "IM Fell English": "IM+Fell+English:ital@0;1",
   "Instrument Sans": "Instrument+Sans:wght@400;500;600;700",
   Jost: "Jost:wght@400;500;600",
   Karla: "Karla:wght@400;500;700",

@@ -142,6 +142,12 @@
       "description": "Break the wax seal and a blossom wreath opens the letter. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
       "lead": "Blush paper, a wax seal and a wreath of spring blossoms. Made for a wedding in a Jaipur garden."
     },
+    "starryfairytale": {
+      "heading": "Starry fairytale wedding invitation",
+      "title": "Starry Fairytale – Night Sky Wedding Invitation | InvitesReady",
+      "description": "Scroll a starry night as the chapel rises and a ring descends. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
+      "lead": "A moon, a floating chapel and a ring under the stars. Made for a wedding at St. Mary's Basilica in Bengaluru."
+    },
     "weddingride": {
       "heading": "Wedding ride invitation",
       "title": "Wedding Ride – Car & Ribbon Wedding Invitation | InvitesReady",
@@ -250,6 +256,7 @@
       "description": "Animated digital wedding invitations, including free designs. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "starryfairytale",
         "weddingride",
         "firstdance",
         "lotus",

@@ -323,6 +323,23 @@
     "airport": "22 – 24 May 2027",
     "stay": "A special rate for our guests, 22 – 24 May 2027. Double room ₹9,500 / night · Single ₹7,500 / night"
   },
+  "starryfairytale": {
+    "story": [
+      { "year": "", "title": "Our story", "text": "It began in a little chapel,\nunder a sky full of stars." },
+      { "year": "", "title": "The question", "text": "…he asked, and she said yes." }
+    ],
+    "programme": [
+      { "kick": "4:00 PM", "title": "Holy Matrimony", "time": "4:00 PM", "text": "St. Mary's Basilica, Bengaluru", "note": "Saturday, 15 May 2027" },
+      { "kick": "7:00 PM", "title": "Cocktail reception", "time": "7:00 PM", "text": "The Starlight Ballroom", "note": "Saturday, 15 May 2027" },
+      { "kick": "8:30 PM", "title": "Dinner & cake cutting", "time": "8:30 PM", "text": "The Starlight Ballroom", "note": "Saturday, 15 May 2027" }
+    ],
+    "wishes": [
+      { "text": "May your love shine brighter than every star tonight.", "by": "Grandma Rosy" },
+      { "text": "We will be front row with tissues and confetti!", "by": "Ashwin & Leah" },
+      { "text": "God bless your journey together, always.", "by": "The Mathew family" },
+      { "text": "Grace, you deserve a fairytale. Nathan, take care of her!", "by": "Aunty Beena" }
+    ]
+  },
   "weddingride": {
     "story": [
       { "year": "", "title": "Walking through the garden", "text": "" },
