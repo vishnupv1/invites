@@ -23,6 +23,7 @@ import { redirectTarget } from "./data/paths";
 import { Feedback } from "./pages/Feedback";
 import { Contact, Privacy, Refunds, Terms } from "./pages/Legal";
 import { NotFound, Unauthorized } from "./pages/Unauthorized";
+import { WelcomeSignIn } from "./components/WelcomeSignIn";
 import { useSession } from "./session";
 
 const DesignCheck = lazy(() => import("./pages/DesignCheck"));
@@ -86,6 +87,7 @@ export default function App() {
       <PageMeta />
       <ScrollToTop />
       <SessionGate>
+      <WelcomeSignIn />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/how" element={<Home focus="how" />} />
