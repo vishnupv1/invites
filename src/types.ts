@@ -131,6 +131,7 @@ export type TemplateStyle =
   | "lotus"
   | "rose"
   | "firstdance"
+  | "satinbow"
   | "weddingride"
   | "starryfairytale";
 

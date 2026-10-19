@@ -30,6 +30,7 @@ import { GoaInvite } from "./GoaInvite";
 import { LotusInvite } from "./LotusInvite";
 import { RoseInvite } from "./RoseInvite";
 import { FirstDanceInvite, firstDanceThemeOf } from "./FirstDanceInvite";
+import { SatinBowInvite } from "./SatinBowInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -422,6 +423,9 @@ export function InviteSite({
   }
   if (template.style === "firstdance") {
     return <FirstDanceInvite fields={fields} wishes={wishes} onReply={onReply} theme={firstDanceThemeOf(swatch)} />;
+  }
+  if (template.style === "satinbow") {
+    return <SatinBowInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "weddingride") {
     return <WeddingRideInvite fields={fields} wishes={wishes} onReply={onReply} theme={weddingRideThemeOf(swatch)} />;

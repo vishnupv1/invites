@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  satinbow: "2026-10-19T19:44:00+05:30",
   starryfairytale: "2026-10-18T22:11:00+05:30",
   weddingride: "2026-10-18T00:52:00+05:30",
   firstdance: "2026-10-17T14:48:00+05:30",
@@ -846,6 +847,34 @@ export const TEMPLATES: Template[] = [
         dress: "rani pink & gold",
         rsvpBy: "2027-01-06",
         lines: linesFor("weddingride"),
+      }),
+    },
+  },
+  {
+    id: "satinbow",
+    name: "Satin Bow",
+    style: "satinbow",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Untie the satin bow, the doors open, and Ishaan and Riya’s garden wedding at Rambagh Palace begins.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.satinbow,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Ishaan & Riya",
+        title: "request the pleasure of your company",
+        detail: "",
+        date: "2027-02-14",
+        time: "17:00",
+        venue: "Rambagh Palace Gardens",
+        address: "Jaipur",
+        message: "as they begin their forever",
+        dress: "Garden romance",
+        rsvpBy: "2027-01-14",
+        lines: linesFor("satinbow"),
       }),
     },
   },

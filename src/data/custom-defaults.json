@@ -362,6 +362,24 @@
       { "text": "Bhai, drive slow — the best part is the journey.", "by": "Ishaan" }
     ]
   },
+  "satinbow": {
+    "story": [
+      { "year": "2019", "title": "First hello", "text": "A shared table at a crowded café in Pune, and a conversation that lasted four hours." },
+      { "year": "2023", "title": "Two cities, one heart", "text": "Endless video calls, surprise visits and a lot of train tickets." },
+      { "year": "2026", "title": "The question", "text": "Under a gazebo full of roses, he asked — and she said yes before he finished." }
+    ],
+    "programme": [
+      { "kick": "Sunday, 14 Feb", "title": "The ceremony", "time": "5:00 PM", "text": "Rose Gazebo, Rambagh Palace Gardens", "note": "" },
+      { "kick": "Sunday, 14 Feb", "title": "Dinner & dancing", "time": "8:00 PM", "text": "The Moonlit Lawn, Rambagh Palace", "note": "" }
+    ],
+    "wishes": [
+      { "text": "May your love bloom brighter with every season.", "by": "Nani" },
+      { "text": "Cannot wait to dance with you two under the gazebo!", "by": "Aditi & Karan" },
+      { "text": "Wishing you a lifetime of soft mornings and big laughs.", "by": "The Sharma family" },
+      { "text": "Riya, you are going to look like a dream. Love you!", "by": "Meher" }
+    ],
+    "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
+  },
   "firstdance": {
     "story": [
       { "year": "2019", "title": "A salsa class", "text": "Two left feet, one shared laugh, and a partner swap that never happened." },

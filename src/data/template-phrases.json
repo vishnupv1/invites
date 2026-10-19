@@ -198,6 +198,12 @@
     "languages": ["English"],
     "hook": "with a car that arrives through the fog, and a ribbon you cut to open the invitation"
   },
+  "satinbow": {
+    "style": "Garden doors",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a satin bow you untie so the doors open"
+  },
   "firstdance": {
     "style": "Palace ballroom",
     "occasion": "Wedding",
