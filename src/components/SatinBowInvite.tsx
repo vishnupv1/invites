@@ -330,12 +330,14 @@ export function SatinBowInvite({
 
   const events = pack.programme ?? [];
   const chips = events.map((item) => item.title).filter(Boolean);
-  const chosen = chips.filter((label) => picked[label] !== false);
+  const chosen = chips.filter((label) => picked[label] !== false).map((label) => label.replace(/^the\s+/i, "").toLowerCase());
   const saved = attend === "yes"
-    ? `Thank you, ${name.trim()}. ${guests} ${guests === 1 ? "seat is" : "seats are"} saved${chosen.length ? ` for the ${chosen.join(" and ").toLowerCase()}` : ""}.`
+    ? `Thank you, ${name.trim()}. ${guests} ${guests === 1 ? "seat is" : "seats are"} saved${chosen.length ? ` for the ${chosen.join(" and ")}` : ""}.`
     : `Thank you for letting us know, ${name.trim()}. We will share the photos with you!`;
   const notes = photoNotes(fields.notes, SHOTS);
-  const photos = SHOTS.map((_, index) => (fields.photos?.[index] ? assetUrl(fields.photos[index]) : SAMPLE[index]));
+  const live = Boolean(onReply);
+  const photos = SHOTS.map((_, index) => (fields.photos?.[index] ? assetUrl(fields.photos[index]) : live ? "" : SAMPLE[index]));
+  const moments = SHOTS.map((shot, index) => ({ shot, index, src: photos[index] })).filter((item) => item.src);
   const cards = (pack.wishes ?? []).map((item) => ({ name: item.by, text: item.text }));
   const guestWishes = wishes.filter((item) => item.note?.trim()).map((item) => ({ name: item.name, text: item.note }));
   const mine = done && wish.trim() ? [{ name: name.trim(), text: wish.trim() }] : [];
@@ -455,25 +457,27 @@ export function SatinBowInvite({
             </div>
           </section>
 
-          <section className="sb-section sb-band">
-            <img className="sb-corner-float" src={`${ART}/corner.webp`} alt="" />
-            <span className="sb-kicker sb-rv">Our moments</span>
-            <h2 className="sb-h sb-rv">Through the looking glass</h2>
-            <div className="sb-moments">
-              {SHOTS.map((shot, index) => (
-                <figure className="sb-moment sb-rv" key={shot.label}>
-                  <div className="sb-oval">
-                    <ScratchPhoto src={photos[index]} active={!quiet && !revealed[index]} />
-                    <img className="sb-lift" src={`${ART}/frame.webp`} alt="" />
-                  </div>
-                  <figcaption>{notes[index]?.title || shot.label}</figcaption>
-                  {!quiet && !revealed[index] ? (
-                    <button type="button" className="sb-reveal-btn" onClick={() => setRevealed((current) => ({ ...current, [index]: true }))}>or tap to reveal</button>
-                  ) : null}
-                </figure>
-              ))}
-            </div>
-          </section>
+          {moments.length ? (
+            <section className="sb-section sb-band">
+              <img className="sb-corner-float" src={`${ART}/corner.webp`} alt="" />
+              <span className="sb-kicker sb-rv">Our moments</span>
+              <h2 className="sb-h sb-rv">Through the looking glass</h2>
+              <div className="sb-moments">
+                {moments.map(({ shot, index, src }) => (
+                  <figure className="sb-moment sb-rv" key={shot.label}>
+                    <div className="sb-oval">
+                      <ScratchPhoto src={src} active={!quiet && !revealed[index]} />
+                      <img className="sb-lift" src={`${ART}/frame.webp`} alt="" />
+                    </div>
+                    <figcaption>{notes[index]?.title || shot.label}</figcaption>
+                    {!quiet && !revealed[index] ? (
+                      <button type="button" className="sb-reveal-btn" onClick={() => setRevealed((current) => ({ ...current, [index]: true }))}>or tap to reveal</button>
+                    ) : null}
+                  </figure>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
           <section className="sb-section" id="venue">
             <span className="sb-kicker sb-rv">The celebration</span>

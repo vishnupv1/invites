@@ -569,6 +569,11 @@
   min-height: 0;
   max-height: 100cqh;
 }
+.ed-frame.ed-phone .sb:not(.is-page) .sb-stage {
+  height: 100cqh;
+  min-height: 0;
+  max-height: 100cqh;
+}
 .ed-frame.ed-phone .tv:not(.is-entered) .tv-hero {
   min-height: 0;
   height: 100%;

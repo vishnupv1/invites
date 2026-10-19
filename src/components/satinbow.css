@@ -7,6 +7,7 @@
   --line-2: #e2c7bc;
   --paper: url("/satinbow/paper.webp") 0 0 / 420px repeat, #fbf2ec;
   --band: url("/satinbow/paper.webp") 0 0 / 420px repeat, #f2dcd2;
+  container: satinbow / inline-size;
   position: relative;
   background: var(--paper);
   color: var(--ink);
@@ -166,7 +167,7 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
-.sb-door-d, .sb-door-back .d { display: none; }
+.sb img.sb-door-d, .sb .sb-door-back .d { display: none; }
 .sb-door-back .m { -webkit-mask-image: url("/satinbow/door-m.webp"); mask-image: url("/satinbow/door-m.webp"); }
 .sb-door.l .sb-door-back .face { transform: scaleX(-1); }
 
@@ -549,7 +550,7 @@
 }
 .sb-toast button { min-height: 38px; padding: 0 14px; border: none; border-radius: 10px; background: var(--blush); color: #fff; font-weight: 600; cursor: pointer; }
 
-@media (min-width: 960px) {
+@container satinbow (min-width: 860px) {
   .sb-kicker { font-size: 13px; }
   .sb-h { font-size: 76px; }
   .sb-stage { min-height: 900px; background: #ead6cc; }
@@ -576,8 +577,8 @@
   .sb-card-place { font-size: 19px; }
   .sb-door.l { left: 0; width: 51.07%; transform-origin: left center; }
   .sb-door.r { left: 48.93%; width: 51.07%; transform-origin: right center; }
-  .sb-door-m, .sb-door-back .m { display: none; }
-  .sb-door-d, .sb-door-back .d { display: block; }
+  .sb img.sb-door-m, .sb .sb-door-back .m { display: none; }
+  .sb img.sb-door-d, .sb .sb-door-back .d { display: block; }
   .sb-door-back .d { -webkit-mask-image: url("/satinbow/door-d.webp"); mask-image: url("/satinbow/door-d.webp"); }
   .sb-rib { top: 46.9%; height: 54px; }
   .sb-bow { top: 40.2%; width: 44%; }
