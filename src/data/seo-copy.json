@@ -154,12 +154,6 @@
       "description": "A pink car arrives through the fog, then you cut the ribbon. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
       "lead": "A vintage car, palace fog and a ribbon you cut with scissors. Made for a wedding weekend in Jaipur."
     },
-    "storybook": {
-      "heading": "Storybook wedding invitation",
-      "title": "Storybook – Pop-up book Wedding Invitation (₹499) | InvitesReady",
-      "description": "Wedding invitation with a storybook you open so the couple pops up from the page. RSVP on the page, share on WhatsApp. ₹499 one-time.",
-      "lead": "A leather storybook, a paper pop-up and a palace wedding. Made for a wedding at Umaid Bhawan Palace in Jodhpur."
-    },
     "satinbow": {
       "heading": "Satin bow wedding invitation",
       "title": "Satin Bow – Garden Wedding Invitation | InvitesReady",
@@ -268,7 +262,6 @@
       "description": "Animated digital wedding invitations, including free designs. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
-        "storybook",
         "satinbow",
         "starryfairytale",
         "weddingride",

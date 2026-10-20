@@ -38,7 +38,6 @@ import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
 import { FirstDanceInvite, firstDanceThemeOf } from "../components/FirstDanceInvite";
 import { SatinBowInvite } from "../components/SatinBowInvite";
-import { StorybookInvite } from "../components/StorybookInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -128,8 +127,6 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <FirstDanceInvite fields={fields} theme={firstDanceThemeOf(swatch)} />;
     case "satinbow":
       return <SatinBowInvite fields={fields} />;
-    case "storybook":
-      return <StorybookInvite fields={fields} />;
     case "starryfairytale":
       return <StarryFairytaleInvite fields={fields} />;
     case "weddingride":
