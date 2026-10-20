@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { Children, useEffect, useId, useRef, useState, type AnimationEvent, type PointerEvent, type ReactNode } from "react";
 import { assetUrl } from "../api";
 import { packOf, type FaqItem, type ProgrammeItem } from "../data/custom";
 import { photoNotes } from "../data/photos";
@@ -128,6 +128,106 @@ function Popup({ src, alt, label, wide = true }: { src: string; alt: string; lab
   );
 }
 
+function Deck({ children }: { children: ReactNode }) {
+  const sheets = Children.toArray(children).filter((node) => typeof node !== "string" || node.trim().length > 0);
+  const count = sheets.length;
+  const [sheet, setSheet] = useState(0);
+  const [flip, setFlip] = useState<{ from: number; dir: 1 | -1 } | null>(null);
+  const flipRef = useRef(flip);
+  const sheetRef = useRef(sheet);
+  const drag = useRef<{ x: number; y: number; id: number } | null>(null);
+  const flipTimer = useRef(0);
+  flipRef.current = flip;
+  sheetRef.current = sheet;
+
+  useEffect(() => () => window.clearTimeout(flipTimer.current), []);
+
+  function finishFlip() {
+    const current = flipRef.current;
+    if (!current) return;
+    window.clearTimeout(flipTimer.current);
+    const next = current.from + current.dir;
+    flipRef.current = null;
+    sheetRef.current = next;
+    setSheet(next);
+    setFlip(null);
+  }
+
+  function turn(dir: 1 | -1) {
+    if (flipRef.current) return;
+    const from = sheetRef.current;
+    const next = from + dir;
+    if (next < 0 || next >= count) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      sheetRef.current = next;
+      setSheet(next);
+      return;
+    }
+    const nextFlip = { from, dir };
+    flipRef.current = nextFlip;
+    setFlip(nextFlip);
+    window.clearTimeout(flipTimer.current);
+    flipTimer.current = window.setTimeout(finishFlip, 1250);
+  }
+
+  function onFlipEnd(event: AnimationEvent<HTMLDivElement>) {
+    if (event.target !== event.currentTarget) return;
+    if (event.animationName !== "sbk-away" && event.animationName !== "sbk-back") return;
+    finishFlip();
+  }
+
+  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
+    if ((event.target as HTMLElement).closest("button, a, input, textarea, label")) return;
+    drag.current = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  }
+
+  function onPointerUp(event: PointerEvent<HTMLDivElement>) {
+    const start = drag.current;
+    drag.current = null;
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+    turn(dx < 0 ? 1 : -1);
+  }
+
+  function roleFor(index: number) {
+    if (!flip) return index === sheet ? "is-rest" : "";
+    const next = flip.from + flip.dir;
+    if (flip.dir === 1) {
+      if (index === flip.from) return "is-away";
+      if (index === next) return "is-under";
+    } else {
+      if (index === next) return "is-back";
+      if (index === flip.from) return "is-under";
+    }
+    return "";
+  }
+
+  return (
+    <div className="sbk-deck" onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => { drag.current = null; }}>
+      {sheets.map((node, index) => {
+        const role = roleFor(index);
+        if (!role) return null;
+        const turning = role === "is-away" || role === "is-back";
+        return (
+          <div key={index} className={`sbk-sheet ${role}`} onAnimationEnd={turning ? onFlipEnd : undefined}>
+            <div className="sbk-front">{node}</div>
+            {turning ? <div className="sbk-backface" aria-hidden="true" /> : null}
+          </div>
+        );
+      })}
+      <div className="sbk-pager">
+        <button type="button" className="sbk-pager-prev" aria-label="Previous page" disabled={sheet === 0 || Boolean(flip)} onClick={() => turn(-1)}>←</button>
+        <span className="sbk-pager-count">{sheet + 1} / {count}</span>
+        <button type="button" className="sbk-turn" disabled={sheet >= count - 1 || Boolean(flip)} onClick={() => turn(1)}>
+          Turn the page <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function NoteIcon({ index }: { index: number }) {
   const common = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "#F6DF9C", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   if (index % 4 === 1) return <svg {...common}><path d="M2 16l20-6-3-3-6 2-6-5-2 1 4 6-5 2-2-2-1 1z" /></svg>;
@@ -162,37 +262,17 @@ export function StorybookInvite({
   const [wish, setWish] = useState("");
   const [done, setDone] = useState(false);
   const [toast, setToast] = useState("");
-  const pages = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => {
     timers.current.forEach((id) => window.clearTimeout(id));
   }, []);
 
-  useEffect(() => {
-    const root = pages.current;
-    if (!root || phase !== "page") return;
-    const chapters = [...root.querySelectorAll<HTMLElement>(".sbk-chapter")];
-    if (typeof IntersectionObserver === "undefined") {
-      chapters.forEach((node) => node.classList.add("is-in"));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-in");
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.18 });
-    chapters.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, [phase]);
-
   function openBook() {
     if (phase !== "closed") return;
     setPhase("open");
     timers.current.push(window.setTimeout(() => setPhase("up"), 1100));
-    timers.current.push(window.setTimeout(() => setPhase("done"), 2500));
+    timers.current.push(window.setTimeout(() => setPhase("done"), 3600));
   }
 
   function showPages() {
@@ -322,10 +402,10 @@ export function StorybookInvite({
           </div>
         </section>
       ) : (
-        <div className="sbk-pages" ref={pages}>
+        <Deck>
           <section className="sbk-hero">
             <img className="sbk-garland-page" src={`${ART}/garland.webp`} alt="" />
-            <article className="sbk-page sbk-chapter">
+            <article className="sbk-page sbk-chapter is-in">
               <Corners />
               <div className="sbk-spread">
                 <div className="sbk-col">
@@ -353,7 +433,7 @@ export function StorybookInvite({
 
           {story.length ? (
             <section className="sbk-block">
-              <article className="sbk-page sbk-chapter">
+              <article className="sbk-page sbk-chapter is-in">
                 <Corners />
                 <span className="sbk-kicker">Chapter I</span>
                 <h2 className="sbk-script">{story[0]?.title || "How it all began"}</h2>
@@ -371,7 +451,7 @@ export function StorybookInvite({
 
           {photos.length ? (
             <section className="sbk-block">
-              <article className="sbk-page sbk-chapter">
+              <article className="sbk-page sbk-chapter is-in">
                 <Corners />
                 <span className="sbk-kicker">Chapter II</span>
                 <h2 className="sbk-script">Pressed between pages</h2>
@@ -395,7 +475,7 @@ export function StorybookInvite({
             const chapter = ["III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][index] || String(index + 3);
             return (
               <section className="sbk-block" key={`${item.title}-${index}`}>
-                <article className="sbk-page sbk-chapter">
+                <article className="sbk-page sbk-chapter is-in">
                   <Corners />
                   <div className="sbk-spread">
                     <Popup src={`${ART}/${POPS[index % POPS.length]}.webp`} alt="" />
@@ -421,7 +501,7 @@ export function StorybookInvite({
 
           {notes.length ? (
             <section className="sbk-block">
-              <article className="sbk-page sbk-chapter">
+              <article className="sbk-page sbk-chapter is-in">
                 <Corners />
                 <span className="sbk-kicker">Chapter VII</span>
                 <h2 className="sbk-script">Little notes for our guests</h2>
@@ -442,7 +522,7 @@ export function StorybookInvite({
           ) : null}
 
           <section className="sbk-block" id="rsvp">
-            <article className="sbk-page sbk-chapter">
+            <article className="sbk-page sbk-chapter is-in">
               <Corners />
               <span className="sbk-kicker">Chapter VIII</span>
               <h2 className="sbk-script">Will you be in our story?</h2>
@@ -516,7 +596,7 @@ export function StorybookInvite({
           ) : null}
 
           <footer className="sbk-foot">
-            <article className="sbk-page sbk-chapter sbk-end">
+            <article className="sbk-page sbk-chapter is-in sbk-end">
               <Corners />
               <Popup src={`${ART}/popup-sunset.webp`} alt="Paper pop-up of the couple walking toward the sunset" />
               <span className="sbk-kicker">The last page</span>
@@ -529,7 +609,7 @@ export function StorybookInvite({
             </article>
             <img className="sbk-foliage" src={`${ART}/foliage.webp`} alt="" />
           </footer>
-        </div>
+        </Deck>
       )}
       {toast ? <p className="sbk-toast" role="status">{toast}</p> : null}
     </article>
