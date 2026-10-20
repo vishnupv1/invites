@@ -569,6 +569,7 @@
   min-height: 0;
   max-height: 100cqh;
 }
+.ed-frame.ed-phone .sbk:not(.is-page) .sbk-stage,
 .ed-frame.ed-phone .sb:not(.is-page) .sb-stage {
   height: 100cqh;
   min-height: 0;

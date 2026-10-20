@@ -743,6 +743,35 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "storybook": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "reception": "The reception",
+    "themes": [{ "id": "wine", "name": "Storybook wine" }],
+    "defaultTheme": "wine",
+    "shots": [
+      { "label": "The bookshop, 2020" },
+      { "label": "Our first trip" },
+      { "label": "She said yes!" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The book", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "This book is for", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Invitation", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Umaid Bhawan", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "story", "label": "How it began", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Pressed pages", "configurable": true, "fields": ["photos"] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "wishes", "label": "Notes in the margins", "configurable": true, "fields": ["lines"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "satinbow": {
     "names": "couple",
     "ceremony": "The ceremony",

@@ -198,6 +198,12 @@
     "languages": ["English"],
     "hook": "with a car that arrives through the fog, and a ribbon you cut to open the invitation"
   },
+  "storybook": {
+    "style": "Pop-up book",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a storybook you open so the couple pops up from the page"
+  },
   "satinbow": {
     "style": "Garden doors",
     "occasion": "Wedding",

@@ -26,6 +26,7 @@ import { LotusInvite } from "../components/LotusInvite";
 import { RoseInvite } from "../components/RoseInvite";
 import { FirstDanceInvite } from "../components/FirstDanceInvite";
 import { SatinBowInvite } from "../components/SatinBowInvite";
+import { StorybookInvite } from "../components/StorybookInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -74,6 +75,7 @@ export function OpenInvite() {
       {template.style === "rose" ? <RoseInvite fields={fields} /> : null}
       {template.style === "firstdance" ? <FirstDanceInvite fields={fields} /> : null}
       {template.style === "satinbow" ? <SatinBowInvite fields={fields} /> : null}
+      {template.style === "storybook" ? <StorybookInvite fields={fields} /> : null}
       {template.style === "weddingride" ? <WeddingRideInvite fields={fields} /> : null}
       {template.style === "starryfairytale" ? <StarryFairytaleInvite fields={fields} /> : null}
     </div>
