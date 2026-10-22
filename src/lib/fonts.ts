@@ -33,6 +33,7 @@ const FAMILIES = {
   "Pinyon Script": "Pinyon+Script",
   "Playfair Display": "Playfair+Display:ital,wght@0,500;0,600;0,700;1,500",
   "Rozha One": "Rozha+One",
+  Sacramento: "Sacramento",
   "Special Elite": "Special+Elite",
   "Tiro Devanagari Hindi": "Tiro+Devanagari+Hindi",
 } as const;

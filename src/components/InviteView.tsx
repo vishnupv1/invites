@@ -24,6 +24,7 @@ import { RoseInvite } from "./RoseInvite";
 import { FirstDanceInvite } from "./FirstDanceInvite";
 import { SatinBowInvite } from "./SatinBowInvite";
 import { TempleBellsInvite } from "./TempleBellsInvite";
+import { JournalInvite } from "./JournalInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -257,6 +258,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <SatinBowInvite fields={fields} quiet={!live} />;
     case "templebells":
       return <TempleBellsInvite fields={fields} quiet={!live} />;
+    case "journal":
+      return <JournalInvite fields={fields} quiet={!live} />;
     case "starryfairytale":
       return <StarryFairytaleInvite fields={fields} quiet={!live} />;
     case "weddingride":

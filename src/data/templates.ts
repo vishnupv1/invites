@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  journal: "2026-10-22T16:20:00+05:30",
   templebells: "2026-10-22T13:22:00+05:30",
   satinbow: "2026-10-19T19:44:00+05:30",
   starryfairytale: "2026-10-18T22:11:00+05:30",
@@ -848,6 +849,34 @@ export const TEMPLATES: Template[] = [
         dress: "rani pink & gold",
         rsvpBy: "2027-01-06",
         lines: linesFor("weddingride"),
+      }),
+    },
+  },
+  {
+    id: "journal",
+    name: "Watercolour Journal",
+    style: "journal",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "The page writes and paints itself, then opens Arvind and Nila’s journal for a wedding in Coimbatore.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.journal,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "son of Mrs. Kala & Mr. Ramesh Iyer\ndaughter of Mrs. Revathi & Mr. Suresh Kumar",
+        names: "Arvind & Nila",
+        title: "Together with their families",
+        detail: "Dear friend,",
+        date: "2027-03-07",
+        time: "09:00",
+        venue: "Sri Kamakshi Thirumana Mandapam",
+        address: "Coimbatore",
+        message: "We met over a cup of filter coffee that went cold because we could not stop talking. Seven years, two cities and countless letters later, we are writing the happiest page of our story — and we would love you there.",
+        dress: "Soft silks and pastels for the Muhurtham, your festive best for the Reception — and a little jasmine in your hair is always welcome.",
+        rsvpBy: "2027-02-07",
+        lines: linesFor("journal"),
       }),
     },
   },

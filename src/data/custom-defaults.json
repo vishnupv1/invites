@@ -362,6 +362,19 @@
       { "text": "Bhai, drive slow — the best part is the journey.", "by": "Ishaan" }
     ]
   },
+  "journal": {
+    "programme": [
+      { "kick": "The evening before", "title": "The Reception", "time": "seven in the evening onwards", "text": "The Palm Grove Lawns, Coimbatore", "note": "Saturday · 6 March" },
+      { "kick": "The wedding", "title": "The Muhurtham", "time": "9:00 – 10:30 in the morning", "text": "Sri Kamakshi Thirumana Mandapam, Coimbatore", "note": "Sunday · 7 March" }
+    ],
+    "wishes": [
+      { "text": "May your home always smell of jasmine and filter coffee.", "by": "Ammamma" },
+      { "text": "Front row seats for the thaali moment, please!", "by": "Karthik & Divya" },
+      { "text": "From one coffee to forever — what a beautiful story.", "by": "The Iyers" },
+      { "text": "Nila, you will be the prettiest bride. Love you!", "by": "Sowmya" }
+    ],
+    "caption": "Soft silks and pastels for the Muhurtham, your festive best for the Reception — and a little jasmine in your hair is always welcome."
+  },
   "templebells": {
     "programme": [
       { "kick": "The engagement", "title": "Nichayathartham", "time": "half past six in the evening", "text": "Sri Annapoorna Kalyana Mahal, Madurai", "note": "Tuesday · 9 February" },

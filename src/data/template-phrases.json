@@ -198,6 +198,12 @@
     "languages": ["English"],
     "hook": "with a car that arrives through the fog, and a ribbon you cut to open the invitation"
   },
+  "journal": {
+    "style": "Watercolour journal",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a page that writes and paints itself, then opens the journal"
+  },
   "templebells": {
     "style": "Temple bells",
     "occasion": "Wedding",
