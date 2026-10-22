@@ -6,6 +6,7 @@ import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields, TemplateShot } from "../types";
+import { InstagramLink } from "./InstagramLink";
 import "./journal.css";
 
 type Reply = { name: string; note: string; attending: boolean };
@@ -385,6 +386,7 @@ export function JournalInvite({
             <span className="love">with love, {fields.names}</span>
             <span className="stamp">{[stamp(fields.date), tagOf(fields.names)].filter(Boolean).join(" · ")}</span>
             <a href={madeWithHref("journal")}>Made with InvitesReady</a>
+            <InstagramLink />
             <img className="wj-border" src={`${ART}/border.webp`} alt="" />
           </footer>
         </div>

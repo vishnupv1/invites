@@ -715,8 +715,7 @@
 
 .wj-foot {
   position: relative;
-  min-height: 420px;
-  padding: 48px 24px 36px;
+  padding: 48px 24px 48px;
   overflow: hidden;
   text-align: center;
 }
@@ -729,13 +728,7 @@
 }
 
 .wj img.wj-border {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  z-index: 0;
-  width: min(760px, 190%);
-  margin-left: calc(min(760px, 190%) / -2);
-  pointer-events: none;
+  display: none;
 }
 
 .wj-foot .love {
@@ -915,7 +908,16 @@
   .wj-events { max-width: 1080px; padding: 20px 48px 80px; }
   .wj-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   .wj-wish { width: 300px; }
-  .wj img.wj-border { width: min(1400px, 120%); margin-left: calc(min(1400px, 120%) / -2); }
+  .wj img.wj-border {
+    display: block;
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    z-index: 0;
+    width: min(1400px, 120%);
+    margin-left: calc(min(1400px, 120%) / -2);
+    pointer-events: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
