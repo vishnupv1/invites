@@ -217,7 +217,7 @@ export function JournalInvite({
 
           <header className="wj-hero">
             <div>
-              <div className="wj-wreath">
+              <div className="wj-wreath wj-paint">
                 <img src={`${ART}/wreath.webp`} alt="" />
                 {initials(fields.names) ? <span>{initials(fields.names)}</span> : null}
               </div>
