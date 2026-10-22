@@ -6,6 +6,7 @@
   --cream: #fbf6ec;
   --ivory: #f6e3b0;
   --muted: #5e4632;
+  container: tb / inline-size;
   position: relative;
   color: var(--ink);
   font-family: "Cormorant Garamond", Georgia, serif;
@@ -29,7 +30,7 @@
   background: #dce6e4;
 }
 .tb-sky { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.tb-sky-d { display: none; }
+.tb img.tb-sky-d { display: none; }
 .tb-haze {
   position: absolute;
   inset: 0;
@@ -327,7 +328,8 @@
     url("/templebells/texture.webp") 0 0 / 300px repeat,
     #fbf6ec;
 }
-.tb-garland {
+.tb img.tb-garland { display: none; }
+.tb img.tb-arches {
   position: absolute;
   left: 50%;
   top: 0;
@@ -336,7 +338,7 @@
   height: auto;
   pointer-events: none;
 }
-.tb-arches, .tb-pillar { display: none; }
+.tb img.tb-pillar { display: none; }
 .tb-hang {
   position: absolute;
   transform-origin: 50% 0;
@@ -447,18 +449,34 @@
   line-height: 1.5;
   color: var(--muted);
 }
-.tb-frames { display: flex; gap: 10px; justify-content: center; align-items: flex-end; }
-.tb-frames figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.tb-frames {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 360px;
+}
+.tb-frames figure {
+  margin: 0;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
 .tb-arch {
   box-sizing: border-box;
-  width: 104px;
-  height: 150px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 104 / 150;
   padding: 6px;
   border-radius: 52px 52px 10px 10px;
   background: linear-gradient(160deg, #e8cb7a, #9a7524);
   box-shadow: 0 12px 22px rgba(60, 30, 10, 0.22);
 }
-.tb-frames figure:nth-child(2) .tb-arch { height: 166px; }
+.tb-frames figure:nth-child(2) .tb-arch { aspect-ratio: 104 / 166; }
 .tb-arch i {
   display: block;
   width: 100%;
@@ -803,9 +821,9 @@
   cursor: pointer;
 }
 
-@media (min-width: 900px) {
-  .tb-sky-m { display: none; }
-  .tb-sky-d { display: block; }
+@container tb (min-width: 900px) {
+  .tb img.tb-sky-m { display: none; }
+  .tb img.tb-sky-d { display: block; }
   .tb-leaf.l { transform: scale(2.2); }
   .tb-leaf.r { transform: scale(2.2); }
   .tb.is-push .tb-leaf.l,
@@ -823,17 +841,14 @@
   .tb-count div { padding: 18px 0 12px; }
   .tb-count b { font-size: 36px; }
   .tb-hero { padding: 180px 48px 90px; }
-  .tb-garland, .tb-hang, .tb-ringhit { display: none; }
-  .tb-arches {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: min(1100px, 92%);
+  .tb-hang,
+  .tb-ringhit { display: none; }
+  .tb img.tb-arches {
+    width: min(1240px, 92%);
+    margin-left: 0;
     transform: translateX(-50%);
-    pointer-events: none;
   }
-  .tb-pillar {
+  .tb img.tb-pillar {
     display: block;
     position: absolute;
     bottom: 0;
@@ -845,8 +860,8 @@
   .tb-pillar.l { left: 12px; }
   .tb-pillar.r { right: 12px; }
   .tb-events { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .tb-frames { gap: 22px; }
-  .tb-arch { width: 160px; height: 220px; }
+  .tb-frames { gap: 22px; max-width: none; }
+  .tb-arch { width: 160px; height: 220px; aspect-ratio: auto; }
   .tb-frames figure:nth-child(2) .tb-arch { height: 246px; }
   .tb-person { font-size: 64px; }
 }
