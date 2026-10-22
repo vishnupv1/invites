@@ -53,10 +53,6 @@ function coupleOf(names: string) {
   return { first: parts[0] || "Karthik", second: parts[1] || "Meenakshi" };
 }
 
-function initialOf(name: string) {
-  return (name.trim()[0] || "").toUpperCase();
-}
-
 function dayOf(date: string) {
   const day = new Date(`${date}T12:00:00`);
   return Number.isNaN(day.getTime()) ? null : day;
@@ -287,10 +283,6 @@ export function TempleBellsInvite({
           <div className="tb-gop">
             <img src={`${ART}/gopuram.webp`} alt="Temple gopuram" />
           </div>
-          <div className="tb-crest">
-            <img src={`${ART}/crest.webp`} alt="" />
-            <span className="tb-mark">{initialOf(couple.first)}<i>&amp;</i>{initialOf(couple.second)}</span>
-          </div>
           <img className="tb-jasmine" src={`${ART}/jasmine.webp`} alt="" />
           {showPetals ? <Petals far="110vh" /> : null}
           <img className="tb-leaf l" src={`${ART}/leaves-l.webp`} alt="" />
@@ -333,17 +325,15 @@ export function TempleBellsInvite({
             <img className="tb-leaf l" src={`${ART}/leaves-l.webp`} alt="" />
             <img className="tb-leaf r" src={`${ART}/leaves-r.webp`} alt="" />
             <img className="tb-garland" src={`${ART}/jasmine.webp`} alt="" />
-            <img className="tb-arches" src={`${ART}/arches.webp`} alt="" />
+            <div className="tb-archbar">
+              <img className="tb-arches" src={`${ART}/arches.webp`} alt="" />
+              <div className="tb-hang" style={{ left: "19%", top: "30%" }}><img src={`${ART}/bell.webp`} alt="" style={{ animation: ring ? "tb-ring 1.6s ease-out both" : undefined }} /></div>
+              <div className="tb-hang" style={{ left: "47%", top: "14%", animationDelay: "-0.8s" }}><img src={`${ART}/bell.webp`} alt="" /></div>
+              <div className="tb-hang" style={{ left: "74.5%", top: "32%", animationDelay: "-1.6s" }}><img src={`${ART}/bell.webp`} alt="" /></div>
+              <button type="button" className="tb-ringhit" aria-label="Ring the temple bells" onClick={() => setRing((value) => value + 1)} />
+            </div>
             <img className="tb-pillar l" src={`${ART}/pillar.webp`} alt="" />
             <img className="tb-pillar r" src={`${ART}/pillar.webp`} alt="" />
-            <div className="tb-hang" style={{ left: "16%", top: 91, width: 30 }}><img src={`${ART}/bell.webp`} alt="" style={{ animation: ring ? "tb-ring 1.6s ease-out both" : undefined }} /></div>
-            <div className="tb-hang" style={{ left: "47%", top: 101, width: 28, animationDelay: "-0.8s" }}><img src={`${ART}/bell.webp`} alt="" /></div>
-            <div className="tb-hang" style={{ left: "77%", top: 91, width: 30, animationDelay: "-1.6s" }}><img src={`${ART}/bell.webp`} alt="" /></div>
-            <button type="button" className="tb-ringhit" aria-label="Ring the temple bells" onClick={() => setRing((value) => value + 1)} />
-            <div className="tb-crest-page">
-              <img src={`${ART}/crest.webp`} alt="" />
-              <span className="tb-mark">{initialOf(couple.first)}<i>&amp;</i>{initialOf(couple.second)}</span>
-            </div>
             <span className="tb-kicker">Sri Ganeshaya Namah</span>
             <span className="tb-invite">{fields.title || "With the blessings of our elders, we joyfully invite you to the wedding of"}</span>
             <span className="tb-person">{couple.first}</span>
