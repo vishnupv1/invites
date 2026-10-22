@@ -31,6 +31,7 @@ import { LotusInvite } from "./LotusInvite";
 import { RoseInvite } from "./RoseInvite";
 import { FirstDanceInvite, firstDanceThemeOf } from "./FirstDanceInvite";
 import { SatinBowInvite } from "./SatinBowInvite";
+import { TempleBellsInvite } from "./TempleBellsInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -426,6 +427,9 @@ export function InviteSite({
   }
   if (template.style === "satinbow") {
     return <SatinBowInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "templebells") {
+    return <TempleBellsInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "weddingride") {
     return <WeddingRideInvite fields={fields} wishes={wishes} onReply={onReply} theme={weddingRideThemeOf(swatch)} />;

@@ -21,6 +21,7 @@ const FAMILIES = {
   Jost: "Jost:wght@400;500;600",
   Karla: "Karla:wght@400;500;700",
   Lora: "Lora:ital,wght@0,500;0,600;1,500",
+  "Marcellus SC": "Marcellus+SC",
   "Monsieur La Doulaise": "Monsieur+La+Doulaise",
   "Mrs Saint Delafield": "Mrs+Saint+Delafield",
   "Noto Sans Malayalam": "Noto+Sans+Malayalam:wght@400;600",
@@ -31,6 +32,7 @@ const FAMILIES = {
   Parisienne: "Parisienne",
   "Pinyon Script": "Pinyon+Script",
   "Playfair Display": "Playfair+Display:ital,wght@0,500;0,600;0,700;1,500",
+  "Rozha One": "Rozha+One",
   "Special Elite": "Special+Elite",
   "Tiro Devanagari Hindi": "Tiro+Devanagari+Hindi",
 } as const;

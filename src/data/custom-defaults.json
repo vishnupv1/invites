@@ -362,6 +362,20 @@
       { "text": "Bhai, drive slow — the best part is the journey.", "by": "Ishaan" }
     ]
   },
+  "templebells": {
+    "programme": [
+      { "kick": "The engagement", "title": "Nichayathartham", "time": "half past six in the evening", "text": "Sri Annapoorna Kalyana Mahal, Madurai", "note": "Tuesday · 9 February" },
+      { "kick": "The wedding", "title": "Muhurtham", "time": "7:30 – 9:00 in the morning", "text": "Main Mandapam, Sri Annapoorna Kalyana Mahal", "note": "Wednesday · 10 February" },
+      { "kick": "The celebration", "title": "Reception", "time": "seven in the evening onwards", "text": "The Lotus Lawn, Hotel Heritage Madurai", "note": "Wednesday · 10 February" }
+    ],
+    "wishes": [
+      { "text": "May you live together for a hundred years, like the temple that has stood for a thousand.", "by": "Paati" },
+      { "text": "Saving our seats right in front for the thaali moment!", "by": "Arun & Divya" },
+      { "text": "Wishing you a home full of music, filter coffee and laughter.", "by": "The Iyer family" },
+      { "text": "Meenakshi, you are going to look like a goddess. Love you!", "by": "Priya" }
+    ],
+    "caption": "Silks and veshtis for the Muhurtham, your festive best for the Reception — and jasmine in your hair is always welcome."
+  },
   "satinbow": {
     "story": [
       { "year": "2019", "title": "First hello", "text": "A shared table at a crowded café in Pune, and a conversation that lasted four hours." },

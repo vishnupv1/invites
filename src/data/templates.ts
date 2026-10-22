@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  templebells: "2026-10-22T13:22:00+05:30",
   satinbow: "2026-10-19T19:44:00+05:30",
   starryfairytale: "2026-10-18T22:11:00+05:30",
   weddingride: "2026-10-18T00:52:00+05:30",
@@ -847,6 +848,34 @@ export const TEMPLATES: Template[] = [
         dress: "rani pink & gold",
         rsvpBy: "2027-01-06",
         lines: linesFor("weddingride"),
+      }),
+    },
+  },
+  {
+    id: "templebells",
+    name: "Temple Bells",
+    style: "templebells",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Step through the leaves, the gopuram rises, and Karthik and Meenakshi’s wedding at Sri Annapoorna Kalyana Mahal begins.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.templebells,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Mr. R. Sundaram & Mrs. Lakshmi Sundaram\nMr. S. Venkatesh & Mrs. Gowri Venkatesh",
+        names: "Karthik & Meenakshi",
+        title: "With the blessings of our elders, we joyfully invite you to the wedding of",
+        detail: "",
+        date: "2027-02-10",
+        time: "07:30",
+        venue: "Sri Annapoorna Kalyana Mahal",
+        address: "Madurai",
+        message: "As the nadaswaram plays and the thaali is tied, two families become one. We would be honoured to have you with us.",
+        dress: "Temple traditional",
+        rsvpBy: "2027-01-10",
+        lines: linesFor("templebells"),
       }),
     },
   },

@@ -198,6 +198,12 @@
     "languages": ["English"],
     "hook": "with a car that arrives through the fog, and a ribbon you cut to open the invitation"
   },
+  "templebells": {
+    "style": "Temple bells",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with leaves you step through so the gopuram rises and the bells ring"
+  },
   "satinbow": {
     "style": "Garden doors",
     "occasion": "Wedding",
