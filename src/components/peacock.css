@@ -92,7 +92,7 @@
 
 .pk img.pk-clouds {
   position: absolute;
-  z-index: 5;
+  z-index: 1;
   top: -50px;
   left: 50%;
   width: 160%;
