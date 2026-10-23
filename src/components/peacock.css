@@ -954,8 +954,9 @@
   font-size: 18px;
 }
 
-.pk-wishes { padding: 12px 0 40px; overflow: hidden; }
+.pk-wishes { padding: 12px 0 40px; overflow: hidden; text-align: center; }
 
+.pk-wishes .pk-eyebrow,
 .pk-wishes h2 { text-align: center; }
 
 .pk-marq { overflow: hidden; }
