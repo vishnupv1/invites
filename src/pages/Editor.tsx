@@ -29,6 +29,7 @@ import { FirstDanceInvite, firstDanceThemeOf } from "../components/FirstDanceInv
 import { SatinBowInvite } from "../components/SatinBowInvite";
 import { TempleBellsInvite } from "../components/TempleBellsInvite";
 import { JournalInvite } from "../components/JournalInvite";
+import { PeacockInvite } from "../components/PeacockInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -1625,6 +1626,8 @@ export function Editor({
                     <TempleBellsInvite fields={previewFields} />
                   ) : template.style === "journal" ? (
                     <JournalInvite fields={previewFields} />
+                  ) : template.style === "peacock" ? (
+                    <PeacockInvite fields={previewFields} />
                   ) : template.style === "weddingride" ? (
                     <WeddingRideInvite fields={previewFields} theme={weddingRideThemeOf(model.swatch)} />
                   ) : template.style === "starryfairytale" ? (

@@ -362,6 +362,20 @@
       { "text": "Bhai, drive slow — the best part is the journey.", "by": "Ishaan" }
     ]
   },
+  "peacock": {
+    "programme": [
+      { "kick": "The henna", "title": "Mehendi", "time": "four in the afternoon", "text": "The Courtyard, Jag Niwas Gardens", "note": "Thursday · 18 February" },
+      { "kick": "The music night", "title": "Sangeet", "time": "half past seven in the evening", "text": "The Lake Terrace, Udaipur", "note": "Friday · 19 February" },
+      { "kick": "The pheras", "title": "The Wedding", "time": "pheras at seven in the evening", "text": "The Peacock Lawns, Jag Niwas Gardens", "note": "Saturday · 20 February" }
+    ],
+    "wishes": [
+      { "text": "May your life be as colourful as a peacock in the first rain.", "by": "Nani" },
+      { "text": "We are bringing our best dance moves to the sangeet!", "by": "Kabir & Zoya" },
+      { "text": "Two beautiful souls, one beautiful journey.", "by": "The Mehras" },
+      { "text": "Ishita, you are going to look like a dream. Love you!", "by": "Tanya" }
+    ],
+    "caption": "Teals, emeralds, sapphire blues and a flash of magenta — come dressed like the monsoon's favourite bird."
+  },
   "journal": {
     "programme": [
       { "kick": "The evening before", "title": "The Reception", "time": "seven in the evening onwards", "text": "The Palm Grove Lawns, Coimbatore", "note": "Saturday · 6 March" },

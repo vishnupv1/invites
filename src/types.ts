@@ -134,6 +134,7 @@ export type TemplateStyle =
   | "satinbow"
   | "templebells"
   | "journal"
+  | "peacock"
   | "weddingride"
   | "starryfairytale";
 

@@ -743,6 +743,36 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "peacock": {
+    "names": "couple",
+    "ceremony": "The wedding",
+    "reception": "Sangeet",
+    "themes": [{ "id": "teal", "name": "Monsoon teal" }],
+    "defaultTheme": "teal",
+    "shots": [
+      { "label": "first glance" },
+      { "label": "our first dance" },
+      { "label": "forever begins" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The rain", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Greeting", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "Our story", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Gardens", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "programme", "label": "The celebrations", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "wishes", "label": "Blessings", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
+  },
   "journal": {
     "names": "couple",
     "ceremony": "Muhurtham",

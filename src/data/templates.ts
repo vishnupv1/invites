@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  peacock: "2026-10-23T10:50:00+05:30",
   journal: "2026-10-22T16:20:00+05:30",
   templebells: "2026-10-22T13:22:00+05:30",
   satinbow: "2026-10-19T19:44:00+05:30",
@@ -849,6 +850,34 @@ export const TEMPLATES: Template[] = [
         dress: "rani pink & gold",
         rsvpBy: "2027-01-06",
         lines: linesFor("weddingride"),
+      }),
+    },
+  },
+  {
+    id: "peacock",
+    name: "Peacock Dance",
+    style: "peacock",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Rain gathers, the peacock’s tail fans open, and Aarav and Ishita’s monsoon wedding in Udaipur begins.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.peacock,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "son of Mrs. Neha & Mr. Vikram Malhotra\n& daughter of Mrs. Anjali & Mr. Rohit Mehra",
+        names: "Aarav & Ishita",
+        title: "Shubh Vivah",
+        detail: "Dear friend,",
+        date: "2027-02-20",
+        time: "19:00",
+        venue: "Jag Niwas Gardens",
+        address: "Udaipur",
+        message: "It began with a rainy evening in Udaipur and a borrowed umbrella. Like the peacock that dances when the monsoon arrives, our hearts knew the season had changed.",
+        dress: "Teals, emeralds, sapphire blues and a flash of magenta — come dressed like the monsoon's favourite bird.",
+        rsvpBy: "2027-01-20",
+        lines: linesFor("peacock"),
       }),
     },
   },

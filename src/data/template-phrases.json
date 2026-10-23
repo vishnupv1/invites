@@ -198,6 +198,12 @@
     "languages": ["English"],
     "hook": "with a car that arrives through the fog, and a ribbon you cut to open the invitation"
   },
+  "peacock": {
+    "style": "Peacock dance",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with monsoon rain, then a peacock whose tail fans open"
+  },
   "journal": {
     "style": "Watercolour journal",
     "occasion": "Wedding",

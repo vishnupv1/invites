@@ -33,6 +33,7 @@ import { FirstDanceInvite, firstDanceThemeOf } from "./FirstDanceInvite";
 import { SatinBowInvite } from "./SatinBowInvite";
 import { TempleBellsInvite } from "./TempleBellsInvite";
 import { JournalInvite } from "./JournalInvite";
+import { PeacockInvite } from "./PeacockInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -434,6 +435,9 @@ export function InviteSite({
   }
   if (template.style === "journal") {
     return <JournalInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "peacock") {
+    return <PeacockInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "weddingride") {
     return <WeddingRideInvite fields={fields} wishes={wishes} onReply={onReply} theme={weddingRideThemeOf(swatch)} />;
