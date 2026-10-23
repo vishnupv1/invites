@@ -109,12 +109,13 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+  container: pkstage / size;
 }
 
 .pk-flock {
   position: absolute;
   inset: 0;
-  transform-origin: 50% 78%;
+  transform-origin: 50% 64.3%;
 }
 
 .pk.is-dance .pk-flock,
@@ -123,7 +124,7 @@
 .pk-fan {
   position: absolute;
   left: 50%;
-  top: 78%;
+  top: 64.3%;
   width: 0;
   height: 0;
 }
@@ -133,9 +134,9 @@
   bottom: 0;
   left: 0;
   z-index: 1;
-  width: min(28cqi, 112px);
-  height: min(46cqi, 190px);
-  margin-left: calc(min(28cqi, 112px) / -2);
+  width: 28cqi;
+  height: 39.1cqh;
+  margin-left: -14cqi;
   transform-origin: 50% 100%;
   transform: rotate(var(--shut)) scale(0.55, 0.7);
   transition: transform 1.5s cubic-bezier(0.2, 0.9, 0.3, 1.12);
@@ -144,9 +145,9 @@
 
 .pk-feather.is-inner {
   z-index: 2;
-  width: min(21cqi, 84px);
-  height: min(34cqi, 140px);
-  margin-left: calc(min(21cqi, 84px) / -2);
+  width: 20.8cqi;
+  height: 28.9cqh;
+  margin-left: -10.4cqi;
 }
 
 .pk.is-open .pk-feather,
@@ -166,9 +167,9 @@
   position: absolute;
   z-index: 3;
   left: 50%;
-  top: 46%;
-  width: min(34cqi, 140px);
-  margin-left: calc(min(34cqi, 140px) / -2);
+  top: 49.8%;
+  width: 33.3cqi;
+  margin-left: -16.65cqi;
   filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.45));
 }
 
@@ -179,9 +180,9 @@
   position: absolute;
   z-index: 6;
   left: 50%;
-  top: 34%;
-  width: min(34cqi, 132px);
-  margin-left: calc(min(34cqi, 132px) / -2);
+  top: 27.5%;
+  width: 30.3cqi;
+  margin-left: -15.15cqi;
   opacity: 0;
 }
 
