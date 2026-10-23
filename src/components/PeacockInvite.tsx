@@ -124,6 +124,7 @@ export function PeacockInvite({
   const [dancing, setDancing] = useState(false);
   const [loose, setLoose] = useState<{ id: number; left: string; dx: string; rot: string }[]>([]);
   const [music, setMusic] = useState(false);
+  const danceTimer = useRef(0);
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(false);
   const [attend, setAttend] = useState<"yes" | "no">("yes");
@@ -139,6 +140,7 @@ export function PeacockInvite({
 
   useEffect(() => () => {
     timers.current.forEach((id) => window.clearTimeout(id));
+    window.clearTimeout(danceTimer.current);
   }, []);
 
   function begin() {
@@ -227,7 +229,7 @@ export function PeacockInvite({
           </div>
           <div className="pk-medal">
             <img src={`${ART}/medallion.webp`} alt="" />
-            {marks.length ? <span><i /><b>{marks[0]}<small>&</small>{marks[1]}</b></span> : null}
+            {marks.length ? <span><b>{marks[0]}<small>&</small>{marks[1]}</b></span> : null}
           </div>
         </div>
         <div className="pk-intro">
@@ -283,14 +285,14 @@ export function PeacockInvite({
               <span className="pk-eyebrow">Our story</span>
               <h2>A love that dances</h2>
               {fields.message ? <p>{fields.message}</p> : null}
-            </div>
-            <div className="pk-frames">
-              {SHOTS.map((shot, index) => photos[index] ? (
-                <figure className={`rv pk-shot pk-shot-${index + 1}`} key={shot.label}>
-                  <div className="shot" role="img" aria-label={notes[index]?.title || shot.label} style={{ backgroundImage: `url(${photos[index]})` }} />
-                  <figcaption>{notes[index]?.title || shot.label}</figcaption>
-                </figure>
-              ) : null)}
+              <div className="pk-frames">
+                {SHOTS.map((shot, index) => photos[index] ? (
+                  <figure className={`pk-shot pk-shot-${index + 1}`} key={shot.label}>
+                    <div className="shot" role="img" aria-label={notes[index]?.title || shot.label} style={{ backgroundImage: `url(${photos[index]})` }} />
+                    <figcaption>{notes[index]?.title || shot.label}</figcaption>
+                  </figure>
+                ) : null)}
+              </div>
             </div>
           </section>
 
@@ -344,22 +346,24 @@ export function PeacockInvite({
                 setHop((value) => value + 1);
                 const next = Array.from({ length: 3 }, (_, index) => ({
                   id: Date.now() + index,
-                  left: `${28 + Math.round(Math.random() * 44)}%`,
-                  dx: `${Math.round(Math.random() * 90 - 45)}px`,
-                  rot: `${Math.round(Math.random() * 220 - 110)}deg`,
+                  left: `${22 + Math.round(Math.random() * 56)}%`,
+                  dx: `${(index - 1) * 50}px`,
+                  rot: `${index * 60 - 30}deg`,
                 }));
                 setLoose((current) => [...current, ...next].slice(-15));
+                window.clearTimeout(danceTimer.current);
+                danceTimer.current = window.setTimeout(() => setDancing(false), 4200);
               }}
             >
-              <span className={`pk-mini${dancing ? " is-on" : ""}`} key={hop}>
+              <span className={`pk-mini${dancing ? " is-on" : ""}`}>
                 <span className="pk-mini-fan" aria-hidden="true">
                   {DANCE.map((feather, index) => (
-                    <span key={`${feather.inner}-${index}`} className={`pk-plume${feather.inner ? " is-inner" : ""}`} style={{ ["--fan" as string]: `${feather.fan}deg`, ["--shut" as string]: `${feather.shut}deg` }}>
-                      <img src={`${ART}/feather.webp`} alt="" />
+                    <span key={`${feather.inner}-${index}`} className={`pk-plume${feather.inner ? " is-inner" : ""}`} style={{ ["--fan" as string]: `${feather.fan}deg`, ["--shut" as string]: `${feather.shut}deg`, ["--lag" as string]: feather.lag }}>
+                      <img src={`${ART}/feather.webp`} alt="" style={{ animationDelay: feather.delay }} />
                     </span>
                   ))}
                 </span>
-                <img className="pk-mini-bird" src={`${ART}/peacock.webp`} alt="Peacock" />
+                <img className="pk-mini-bird" key={hop} src={`${ART}/peacock.webp`} alt="Peacock" />
               </span>
               {loose.map((feather) => (
                 <img key={feather.id} className="pk-fly" src={`${ART}/feather.webp`} alt="" style={{ left: feather.left, ["--dx" as string]: feather.dx, ["--rot" as string]: feather.rot }} />
