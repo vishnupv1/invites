@@ -93,15 +93,14 @@
 .pk-clouds {
   position: absolute;
   z-index: 5;
-  top: -28px;
+  top: -50px;
   left: 50%;
-  width: min(920px, 170%);
-  margin-left: calc(min(920px, 170%) / -2);
-  opacity: 0.9;
+  width: 195%;
+  height: auto;
+  margin-left: -97.5%;
+  opacity: 0.95;
   pointer-events: none;
   animation: pk-drift 14s ease-in-out infinite;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 58%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 58%, transparent 100%);
 }
 
 .pk.is-done .pk-clouds { opacity: 0.55; }
@@ -999,6 +998,7 @@
 @container pk (min-width: 900px) {
   .pk img.pk-paper { display: none; }
   .pk img.pk-paper-d { display: block; }
+  .pk-clouds { top: -90px; width: 125%; margin-left: -62.5%; }
 
   .pk-stage { container: pkfan / size; }
   .pk-fan { top: 64.7%; }
