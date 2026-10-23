@@ -300,15 +300,21 @@
 
 .pk-enter,
 .pk-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   min-height: 48px;
-  padding: 0 22px;
+  padding: 0 22px 0 calc(22px + 0.14em);
   border: 1px solid #c9a24a;
   border-radius: 999px;
   background: rgba(10, 52, 64, 0.88);
   color: var(--gold);
   font-family: "Marcellus SC", serif;
   font-size: 14px;
+  line-height: 1;
   letter-spacing: 0.14em;
+  text-align: center;
 }
 
 .pk-enter {
@@ -338,7 +344,7 @@
   white-space: nowrap;
 }
 
-.pk.is-closed .pk-hint { display: block; animation: pk-hint-in 0.8s ease both; }
+.pk.is-closed .pk-hint { display: flex; animation: pk-hint-in 0.8s ease both; }
 
 .pk-hit {
   position: absolute;
