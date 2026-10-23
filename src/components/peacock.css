@@ -776,20 +776,47 @@
   .pk img.pk-paper { display: none; }
   .pk img.pk-paper-d { display: block; }
 
-  .pk-open {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
+  .pk-stage { container: pkfan / size; }
+  .pk-fan { top: 64.7%; }
+  .pk-flock { transform-origin: 50% 64.7%; }
+
+  .pk-feather {
+    width: 11cqw;
+    height: 53.3cqh;
+    margin-left: -5.5cqw;
   }
 
-  .pk-stage { position: relative; min-height: 100%; }
-  .pk-fan { top: 72%; }
-  .pk-flock { transform-origin: 50% 72%; }
-  .pk-bird { width: min(240px, 22cqi); top: 58%; }
-  .pk-intro { top: 16%; left: 52%; right: auto; width: min(420px, 40cqi); align-items: flex-start; text-align: left; }
-  .pk-invite { top: 42%; bottom: auto; left: 52%; right: auto; width: min(420px, 40cqi); align-items: flex-start; text-align: left; }
-  .pk-names { font-size: 72px; }
-  .pk-line { font-size: 42px; }
+  .pk-feather.is-inner {
+    width: 8.2cqw;
+    height: 39.4cqh;
+    margin-left: -4.1cqw;
+  }
+
+  .pk-bird {
+    width: 10.4cqw;
+    top: 48.9%;
+    margin-left: -5.2cqw;
+  }
+
+  .pk-medal {
+    width: 10.4cqw;
+    top: 26%;
+    margin-left: -5.2cqw;
+  }
+
+  .pk-intro,
+  .pk-invite {
+    left: 0;
+    right: 0;
+    width: auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pk-intro { top: 10%; }
+  .pk-invite { top: auto; bottom: 8%; }
+  .pk-names { font-size: 60px; }
+  .pk-line { font-size: 40px; }
 
   .pk-hero,
   .pk-story,
