@@ -135,6 +135,7 @@ export type TemplateStyle =
   | "templebells"
   | "journal"
   | "peacock"
+  | "backwater"
   | "weddingride"
   | "starryfairytale";
 

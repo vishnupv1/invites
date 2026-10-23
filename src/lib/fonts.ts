@@ -8,7 +8,7 @@ const FAMILIES = {
   Caveat: "Caveat:wght@500;600;700",
   Cinzel: "Cinzel:wght@500;600;700",
   "Cinzel Decorative": "Cinzel+Decorative:wght@400;700",
-  "Cormorant Garamond": "Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500",
+  "Cormorant Garamond": "Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600",
   "DM Sans": "DM+Sans:wght@400;500;700",
   "EB Garamond": "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500",
   Fredoka: "Fredoka:wght@400;500;600;700",

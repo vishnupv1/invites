@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  backwater: "2026-10-23T15:56:00+05:30",
   peacock: "2026-10-23T10:50:00+05:30",
   journal: "2026-10-22T16:20:00+05:30",
   templebells: "2026-10-22T13:22:00+05:30",
@@ -850,6 +851,34 @@ export const TEMPLATES: Template[] = [
         dress: "rani pink & gold",
         rsvpBy: "2027-01-06",
         lines: linesFor("weddingride"),
+      }),
+    },
+  },
+  {
+    id: "backwater",
+    name: "Backwater Story",
+    style: "backwater",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Swipe through a backwater wedding story, from the cover to the lanterns over Punnamada Lake.",
+    asks: { photos: 6, audio: true, location: true },
+    meta: META.backwater,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "son of Mrs. Lakshmi & Mr. Rajesh Menon\ndaughter of Mrs. Priya & Mr. Suresh Nair",
+        names: "Vihaan & Ananya",
+        title: "Together with their families",
+        detail: "Meera aunty",
+        date: "2026-12-15",
+        time: "16:00",
+        venue: "Lakeview Resort",
+        address: "Punnamada Lake, Alleppey, Kerala",
+        message: "Our story began with one borrowed book and grew into a lifetime of laughter, long drives and little adventures.\nAs we begin this new chapter by the backwaters, nothing would make us happier than having you beside us.\nCome celebrate love, laughter & forever with us.",
+        dress: "",
+        rsvpBy: "2026-11-15",
+        lines: linesFor("backwater"),
       }),
     },
   },

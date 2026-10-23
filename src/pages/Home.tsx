@@ -21,7 +21,7 @@ import { saveCoupleNames } from "../lib/couple-names";
 import type { Template } from "../types";
 import "./shell-home.css";
 
-const FEATURED = ["peacock", "journal", "templebells", "satinbow", "starryfairytale", "weddingride", "firstdance", "lotus", "goa"];
+const FEATURED = ["backwater", "peacock", "journal", "templebells", "satinbow", "starryfairytale", "weddingride", "firstdance", "lotus", "goa"];
 
 const STEPS = facts.steps;
 const FAQS = facts.faqs;

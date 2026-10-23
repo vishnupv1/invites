@@ -743,6 +743,36 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "backwater": {
+    "names": "couple",
+    "ceremony": "Wedding",
+    "reception": "Reception",
+    "themes": [{ "id": "blush", "name": "Backwater blush" }],
+    "defaultTheme": "blush",
+    "shots": [
+      { "label": "first glance" },
+      { "label": "coffee dates" },
+      { "label": "Munnar mornings" },
+      { "label": "the proposal" },
+      { "label": "family blessings" },
+      { "label": "forever begins" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The cover", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Guest name", "configurable": true, "fields": ["detail"] },
+      { "id": "message", "label": "A note from us", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "programme", "label": "Wedding events", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Our memories", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
+  },
   "peacock": {
     "names": "couple",
     "ceremony": "The wedding",

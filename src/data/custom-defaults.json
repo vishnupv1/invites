@@ -362,6 +362,29 @@
       { "text": "Bhai, drive slow — the best part is the journey.", "by": "Ishaan" }
     ]
   },
+  "backwater": {
+    "story": [
+      { "year": "2019 · Fort Kochi", "title": "We Met", "text": "A rainy evening, one borrowed book and a conversation that never really ended." },
+      { "year": "2021 · Munnar", "title": "We Explored", "text": "Misty tea hills, long drives and a hundred little adventures together." },
+      { "year": "2025 · Alleppey", "title": "We Chose Forever", "text": "By the backwaters at sunset, he knelt down — and she said yes." }
+    ],
+    "programme": [
+      { "kick": "Mon · 14 Dec", "title": "Haldi", "time": "10:00 AM", "text": "Poolside Lawn", "note": "Sunshine yellows" },
+      { "kick": "Mon · 14 Dec", "title": "Mehendi", "time": "4:00 PM", "text": "Garden Pavilion", "note": "Pinks & greens" },
+      { "kick": "Tue · 15 Dec", "title": "Wedding", "time": "4:00 PM", "text": "Lakeside Mandap", "note": "Kasavu & silks" },
+      { "kick": "Tue · 15 Dec", "title": "Reception", "time": "7:30 PM", "text": "Palm Grove Lawn", "note": "Evening festive" }
+    ],
+    "facts": [
+      { "label": "Cochin Airport", "value": "85 km · 2 hrs" },
+      { "label": "Alleppey town", "value": "15 min drive" },
+      { "label": "Resort jetty", "value": "free boat pick-up" }
+    ],
+    "rooms": [
+      { "label": "Stay", "name": "Stay by the lake", "text": "Cottages at Lakeview Resort are held for our guests from 13 to 16 December. Just mention our names when you call.", "note": "tel:+914770000000" },
+      { "label": "Cruise", "name": "A houseboat morning", "text": "Join us for a slow cruise through the backwaters on 16 December at 9 AM, with breakfast on board.", "note": "" }
+    ],
+    "venuePhone": "+914770000000"
+  },
   "peacock": {
     "programme": [
       { "kick": "The henna", "title": "Mehendi", "time": "four in the afternoon", "text": "The Courtyard, Jag Niwas Gardens", "note": "Thursday · 18 February" },

@@ -154,6 +154,12 @@
       "description": "A pink car arrives through the fog, then you cut the ribbon. Animated opening, RSVP on the page, share on WhatsApp. ₹499 one-time.",
       "lead": "A vintage car, palace fog and a ribbon you cut with scissors. Made for a wedding weekend in Jaipur."
     },
+    "backwater": {
+      "heading": "Backwater story wedding invitation",
+      "title": "Backwater Story – Kerala Wedding Invitation | InvitesReady",
+      "description": "Swipe from the cover through a nine-page wedding story. Animated pages, RSVP on the page, share on WhatsApp. ₹499 one-time.",
+      "lead": "A backwater cover, a houseboat morning and lanterns over the lake. Made for a wedding at Lakeview Resort in Alleppey."
+    },
     "peacock": {
       "heading": "Peacock dance wedding invitation",
       "title": "Peacock Dance – Monsoon Wedding Invitation | InvitesReady",
@@ -280,6 +286,7 @@
       "description": "Animated digital wedding invitations, including free designs. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "backwater",
         "peacock",
         "journal",
         "templebells",
