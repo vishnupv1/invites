@@ -307,6 +307,8 @@ export function Editor({
   const [placeQuery, setPlaceQuery] = useState("");
   const [places, setPlaces] = useState<PlaceHit[]>([]);
   const [searching, setSearching] = useState(false);
+  const [uploading, setUploading] = useState<number | null>(null);
+  const [audioBusy, setAudioBusy] = useState(false);
   const [inviteLang, setInviteLang] = useState<ThiruvizhaLang>("both");
   const [scale, setScale] = useState(1);
   const [innerHeight, setInnerHeight] = useState(1600);
@@ -724,7 +726,8 @@ export function Editor({
   }
 
   async function setPhoto(index: number, file: File) {
-    if (!modelRef.current || !template) return;
+    if (!modelRef.current || !template || uploading != null) return;
+    setUploading(index);
     try {
       await ensureHost();
       const url = await uploadMedia(file);
@@ -738,6 +741,8 @@ export function Editor({
       setError("");
     } catch (reason) {
       notify(reason instanceof Error ? reason.message : "Could not add that photo.", "bad");
+    } finally {
+      setUploading(null);
     }
   }
 
@@ -759,6 +764,8 @@ export function Editor({
   }
 
   async function addAudio(file: File) {
+    if (audioBusy) return;
+    setAudioBusy(true);
     try {
       await ensureHost();
       const audio = await uploadMedia(file);
@@ -767,6 +774,8 @@ export function Editor({
       setError("");
     } catch (reason) {
       notify(reason instanceof Error ? reason.message : "Could not add that audio.", "bad");
+    } finally {
+      setAudioBusy(false);
     }
   }
 
@@ -1364,9 +1373,14 @@ export function Editor({
                   {photoShots.map((shot, index) => {
                     const photo = draft.photos[index];
                     const caption = captions[index] ?? { title: shot.label, text: "" };
+                    const busy = uploading === index;
                     return (
-                      <div className="ed-shot" key={`${shot.label}-${index}`}>
-                        {photo ? <img src={assetUrl(photo)} alt="" /> : <span className="ed-shot-empty" aria-hidden="true" />}
+                      <div className={busy ? "ed-shot is-busy" : "ed-shot"} key={`${shot.label}-${index}`}>
+                        {busy ? (
+                          <span className="ed-shot-empty ed-shot-busy" role="status" aria-label={`Uploading ${shot.label}`}>
+                            <Spinner />
+                          </span>
+                        ) : photo ? <img src={assetUrl(photo)} alt="" /> : <span className="ed-shot-empty" aria-hidden="true" />}
                         <div className="ed-shot-copy">
                           <label>
                             <span>Title</span>
@@ -1380,12 +1394,13 @@ export function Editor({
                             <button
                               type="button"
                               aria-label={`${photo ? "Replace" : "Upload"} ${shot.label}`}
+                              disabled={uploading != null}
                               onClick={() => {
                                 photoSlot.current = index;
                                 photoRef.current?.click();
                               }}
                             >
-                              {photo ? "Replace" : "Upload"}
+                              {busy ? "Uploading…" : photo ? "Replace" : "Upload"}
                             </button>
                             {photo ? (
                               <button type="button" aria-label={`Remove ${shot.label}`} onClick={() => clearPhoto(index)}>
@@ -1499,8 +1514,8 @@ export function Editor({
                   <b>Your song</b>
                   <small>{draft.audio ? "Uploaded file" : "MP3 or a link"}</small>
                 </div>
-                <button type="button" className={draft.audio ? "ed-use on" : "ed-use"} onClick={() => audioPickRef.current?.click()}>
-                  {draft.audio ? "Selected" : "Use"}
+                <button type="button" className={draft.audio ? "ed-use on" : "ed-use"} disabled={audioBusy} onClick={() => audioPickRef.current?.click()}>
+                  {audioBusy ? "Uploading…" : draft.audio ? "Selected" : "Use"}
                 </button>
               </div>
               <input

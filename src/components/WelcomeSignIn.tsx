@@ -147,7 +147,7 @@ export function WelcomeSignIn() {
   if (!open) return null;
 
   return (
-    <div className="wa">
+    <div className="wa-sheet">
       <button type="button" className="wa-shade" aria-label="Close sign in" onClick={close} />
       <div className="wa-card" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <button type="button" className="wa-close" aria-label="Close" onClick={close}>

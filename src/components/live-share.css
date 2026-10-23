@@ -173,8 +173,8 @@
 
 .lv-go.gold { background: #e9a23b; color: #0a3a2d; }
 .lv-go.gold b { background: #0e4d3c; color: #e9a23b; }
-.lv-go.wa { background: #1faf5a; color: #fff; }
-.lv-go.wa b { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.lv-go.is-wa { background: #1faf5a; color: #fff; }
+.lv-go.is-wa b { background: rgba(255, 255, 255, 0.2); color: #fff; }
 .lv-go.line { background: transparent; color: #f4eee3; border: 1.5px solid rgba(244, 238, 227, 0.25); }
 .lv-go.line b { background: rgba(244, 238, 227, 0.12); color: #f4eee3; }
 
@@ -311,7 +311,7 @@
   background: #ebe3d4;
 }
 
-.lv-apps i.wa { background: #d5f5c6; }
+.lv-apps i.is-wa { background: #d5f5c6; }
 .lv-apps i.gp { background: #f6d29a; }
 .lv-apps i.st { background: #f5d5cc; }
 

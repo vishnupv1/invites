@@ -402,6 +402,14 @@
 }
 .ed-shot img { object-fit: cover; display: block; }
 .ed-shot-empty { background: #FFFFFF; border: 1px dashed #D7E6DC; }
+.ed-shot-busy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F4F8F5;
+}
+.ed-shot.is-busy { pointer-events: none; }
+.ed-shot-actions button:disabled { opacity: 0.55; cursor: default; }
 .ed-shot b { display: block; font-size: 14px; }
 .ed-shot-actions { display: flex; gap: 8px; margin-top: 4px; }
 .ed-shot-actions button {

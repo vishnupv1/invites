@@ -91,14 +91,14 @@ export function LiveShare({ names, priceLabel, link, when, onClose }: Props) {
               <textarea value={message} aria-label="Message" onChange={(event) => setMessage(event.target.value)} />
             </label>
             <div className="lv-apps">
-              <button type="button" onClick={openWhatsApp}><i className="wa"><img src="/whatsapp.png" alt="" width={20} height={20} /></i>WhatsApp</button>
+              <button type="button" onClick={openWhatsApp}><i className="is-wa"><img src="/whatsapp.png" alt="" width={20} height={20} /></i>WhatsApp</button>
               <button type="button" onClick={openWhatsApp}><i className="gp"><PeopleIcon /></i>Groups</button>
               <button type="button" onClick={openWhatsApp}><i className="st"><StoryIcon /></i>Story</button>
               <button type="button" onClick={() => { void copy(message.includes(link) ? message : `${message}\n${link}`); }}><i><CopyIcon /></i>Copy</button>
             </div>
           </div>
           <footer className="lv-foot">
-            <button type="button" className="lv-go wa" onClick={openWhatsApp}>
+            <button type="button" className="lv-go is-wa" onClick={openWhatsApp}>
               <span>Send on WhatsApp</span><b><ArrowIcon /></b>
             </button>
             <Link to="/guests" className="lv-done" onClick={onClose}>Done — see RSVPs</Link>

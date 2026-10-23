@@ -1,4 +1,4 @@
-.wa {
+.wa-sheet {
   position: fixed;
   inset: 0;
   z-index: 120;
@@ -70,7 +70,7 @@
 }
 
 @media (min-width: 720px) {
-  .wa {
+  .wa-sheet {
     place-items: center;
     padding: 24px;
   }
