@@ -99,14 +99,14 @@
   max-width: none;
   height: auto;
   margin-left: -110%;
-  opacity: 0.95;
+  opacity: 1;
   pointer-events: none;
   animation: pk-drift 14s ease-in-out infinite;
 }
 
 .pk img.pk-clouds-more { margin-left: -50%; }
 
-.pk.is-done .pk-clouds { opacity: 0.55; }
+.pk.is-done img.pk-clouds { opacity: 1; }
 
 .pk-stage {
   position: absolute;
@@ -1110,7 +1110,7 @@
 @container pk (min-width: 900px) {
   .pk img.pk-paper { display: none; }
   .pk img.pk-paper-d { display: block; }
-  .pk img.pk-clouds { top: -90px; width: 130%; margin-left: -95%; }
+  .pk img.pk-clouds { top: -40px; width: 140%; margin-left: -105%; }
   .pk img.pk-clouds-more { margin-left: -35%; }
 
   .pk-stage { container: pkfan / size; }
