@@ -435,7 +435,7 @@ export function PeacockInvite({
               <div className="pk-marq">
                 <div className="pk-track">
                   {loop.map((item, index) => (
-                    <article className="pk-wish" key={`${item.name}-${index}`}>
+                    <article className={`pk-wish${index >= cards.length ? " is-copy" : ""}`} key={`${item.name}-${index}`}>
                       <img className="charm" src={CHARMS[index % CHARMS.length]} alt="" />
                       <p>{item.text}</p>
                       {item.name ? <span>— {item.name}</span> : null}

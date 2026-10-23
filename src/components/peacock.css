@@ -1002,14 +1002,20 @@
 
   .pk-hero,
   .pk-story,
-  .pk-dress,
-  .pk-rsvp { max-width: 1080px; padding: 72px 48px; }
+  .pk-dress { max-width: none; width: 100%; margin: 0; padding: 72px 8vw; }
   .pk-hero {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 28px;
+    grid-template-columns: minmax(280px, 420px) minmax(280px, 520px);
+    justify-content: center;
+    gap: 64px;
     align-items: center;
     text-align: left;
+    background: #0a3440 url("/peacock/paper-d.webp") center / cover no-repeat;
+  }
+  .pk-rsvp {
+    max-width: 720px;
+    margin: 56px auto;
+    padding: 48px 56px 40px;
   }
   .pk-count { margin-left: 0; }
   .pk-events { max-width: 1080px; padding: 12px 48px 72px; }
@@ -1034,6 +1040,19 @@
   .pk-frames { gap: 20px; }
   .pk-frames figure,
   .pk-frames figure:nth-child(2) { width: 180px; }
+
+  .pk-wishes { overflow: visible; padding: 48px 0 64px; }
+  .pk-wishes .pk-eyebrow,
+  .pk-wishes h2 { text-align: center; }
+  .pk-marq { overflow: visible; }
+  .pk-track {
+    width: min(1100px, calc(100% - 48px));
+    margin: 28px auto 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: none;
+  }
+  .pk-wish.is-copy { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
