@@ -69,11 +69,6 @@ function pairOf(names: string) {
   return { first: parts.slice(0, -1).join(" & "), second: parts[parts.length - 1] };
 }
 
-function monogram(names: string) {
-  const parts = names.split("&").map((part) => part.trim()[0]).filter(Boolean);
-  return parts.length >= 2 ? parts : [];
-}
-
 function ticketDate(note: string) {
   const [week = "", rest = ""] = note.split("·").map((part) => part.trim());
   const [day = "", ...month] = rest.split(/\s+/);
@@ -212,7 +207,6 @@ export function PeacockInvite({
   const loop = [...cards, ...cards];
   const greeting = fields.detail.trim() || "Dear friend,";
   const couple = pairOf(fields.names);
-  const marks = monogram(fields.names);
   const dress = fields.dress.trim() || pack.caption || "";
   const replyBy = peacockDate(fields.rsvpBy);
 
@@ -239,10 +233,6 @@ export function PeacockInvite({
               ))}
             </div>
             <img className="pk-bird" src={`${ART}/peacock.webp`} alt="" />
-          </div>
-          <div className="pk-medal">
-            <img src={`${ART}/medallion.webp`} alt="" />
-            {marks.length ? <span><b>{marks[0]}<small>&</small>{marks[1]}</b></span> : null}
           </div>
         </div>
         <div className="pk-intro">
