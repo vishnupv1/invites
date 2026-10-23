@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
-import { calendarUrl, formatTime } from "../lib/dates";
+import { calendarUrl } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
 import { InstagramLink } from "./InstagramLink";
@@ -37,6 +37,18 @@ const DROPS = Array.from({ length: 18 }, (_, index) => ({
   duration: `${0.86 + (index % 5) * 0.11}s`,
   height: 16 + (index % 4) * 12,
 }));
+
+function GoldRule({ wide = false }: { wide?: boolean }) {
+  return (
+    <svg className="pk-rule" width={wide ? 220 : 170} height="14" viewBox="0 0 200 14" aria-hidden="true">
+      <path d="M4 7 H78 M122 7 H196" stroke="#C9A24A" strokeWidth="1.2" />
+      <ellipse cx="100" cy="7" rx="14" ry="6" fill="none" stroke="#C9A24A" strokeWidth="1.4" />
+      <circle cx="100" cy="7" r="3" fill="#C9A24A" />
+    </svg>
+  );
+}
+
+const SWATCHES = ["#0F4C5C", "#1E6B45", "#1D3F9A", "#C9A24A", "#B0306A"];
 
 function peacockDate(iso: string) {
   if (!iso) return "";
@@ -252,31 +264,35 @@ export function PeacockInvite({
             <button type="button" className="pk-hint" style={{ position: "absolute", top: 16, right: 16, bottom: "auto", left: "auto", transform: "none", display: "block" }} aria-pressed={music} onClick={toggleMusic}>{music ? "Pause" : "Music"}</button>
           ) : null}
           <header className="pk-hero">
+            <img className="pk-hero-clouds" src={`${ART}/clouds.webp`} alt="" />
+            <span className="pk-side pk-side-a" aria-hidden="true"><img src={`${ART}/feather.webp`} alt="" /></span>
+            <span className="pk-side pk-side-b" aria-hidden="true"><img src={`${ART}/feather.webp`} alt="" /></span>
+            <span className="pk-side pk-side-c" aria-hidden="true"><img src={`${ART}/feather.webp`} alt="" /></span>
+            <span className="pk-side pk-side-d" aria-hidden="true"><img src={`${ART}/feather.webp`} alt="" /></span>
             <div className="pk-crest">
+              <div className="pk-panel" />
               <img className="pk-arch" src={`${ART}/arch.webp`} alt="" />
               <div className="pk-crest-copy">
                 {fields.title ? <span className="pk-eyebrow">{fields.title}</span> : null}
                 <strong>{couple.first}</strong>
                 {couple.second ? <em>&</em> : null}
                 {couple.second ? <strong>{couple.second}</strong> : null}
+                <GoldRule />
                 {fields.date ? <span className="when">{peacockDate(fields.date)}</span> : null}
               </div>
             </div>
-            <div>
-              <h1 className="pk-sr">{fields.names}</h1>
-              <p className="pk-meta">
-                {parents.map((line) => <span key={line}>{line}<br /></span>)}
-                {fields.time ? <>{formatTime(fields.time)}<br /></> : null}
-                {[fields.venue, fields.address].filter(Boolean).join(" · ")}
-              </p>
-              {countdown ? (
-                <div className="pk-count" aria-label="Countdown">
-                  {countdown.map(([value, label]) => (
-                    <div key={label}><strong>{value}</strong><span>{label}</span></div>
-                  ))}
-                </div>
-              ) : null}
-            </div>
+            <h1 className="pk-sr">{fields.names}</h1>
+            <p className="pk-meta">
+              {parents.map((line) => <span key={line}>{line}<br /></span>)}
+            </p>
+            <p className="pk-place">{[fields.venue, fields.address].filter(Boolean).join(" · ")}</p>
+            {countdown ? (
+              <div className="pk-count" aria-label="Countdown">
+                {countdown.map(([value, label]) => (
+                  <div key={label}><strong>{value}</strong><span>{label}</span></div>
+                ))}
+              </div>
+            ) : null}
           </header>
 
           <section className="pk-story">
@@ -376,7 +392,11 @@ export function PeacockInvite({
             <section className="pk-dress">
               <span className="pk-eyebrow">Dress code</span>
               <h2>Wear the peacock</h2>
+              <GoldRule wide />
               <p>{dress}</p>
+              <div className="pk-swatches" aria-hidden="true">
+                {SWATCHES.map((color) => <span key={color} style={{ background: color }} />)}
+              </div>
             </section>
           ) : null}
 
