@@ -288,7 +288,7 @@ export function BlockbusterInvite({
           <div className="bb-marquee">
             <span className="brand">INVITESREADY</span>
             <span className="presents">PRESENTS</span>
-            <span className="only">for one night only…</span>
+            <span className="only">for ever</span>
             <h2 className="title">A Love<br />Story</h2>
             <span className="bb-soon"><s /><b>COMING SOON</b><s /></span>
             <span className="seat">RESERVED FOR {guest.toUpperCase()}</span>
