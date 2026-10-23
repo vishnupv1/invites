@@ -228,6 +228,7 @@ export function PeacockInvite({
           ))}
         </div>
         <img className="pk-clouds" src={`${ART}/clouds.webp`} alt="" />
+        <img className="pk-clouds pk-clouds-more" src={`${ART}/clouds.webp`} alt="" />
         <div className="pk-stage">
           <div className="pk-flock">
             <div className="pk-fan" aria-hidden="true">
