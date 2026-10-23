@@ -5,6 +5,7 @@ import { photoNotes } from "../data/photos";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
+import { InstagramLink } from "./InstagramLink";
 import type { InviteFields, TemplateShot } from "../types";
 import "./peacock.css";
 
@@ -17,7 +18,7 @@ const SHOTS: TemplateShot[] = [
   { label: "our first dance" },
   { label: "forever begins" },
 ];
-const SAMPLE = [`${ART}/photo-1.webp`, `${ART}/photo-2.webp`, `${ART}/photo-3.webp`];
+const SAMPLE = [`${ART}/photo-2.webp`, `${ART}/photo-3.webp`, `${ART}/photo-1.webp`];
 function ring(count: number, spread: number, inner: boolean) {
   return Array.from({ length: count }, (_, index) => {
     const t = count === 1 ? 0 : index / (count - 1);
@@ -226,7 +227,7 @@ export function PeacockInvite({
           </div>
           <div className="pk-medal">
             <img src={`${ART}/medallion.webp`} alt="" />
-            {marks.length ? <span><i />{marks[0]}<small>&</small>{marks[1]}</span> : null}
+            {marks.length ? <span><i /><b>{marks[0]}<small>&</small>{marks[1]}</b></span> : null}
           </div>
         </div>
         <div className="pk-intro">
@@ -277,13 +278,15 @@ export function PeacockInvite({
           </header>
 
           <section className="pk-story">
-            <span className="pk-eyebrow">Our story</span>
-            <h2>A love that dances</h2>
             <img className="pk-story-art" src={`${ART}/couple.webp`} alt="" />
-            {fields.message ? <p>{fields.message}</p> : null}
+            <div className="pk-story-copy">
+              <span className="pk-eyebrow">Our story</span>
+              <h2>A love that dances</h2>
+              {fields.message ? <p>{fields.message}</p> : null}
+            </div>
             <div className="pk-frames">
               {SHOTS.map((shot, index) => photos[index] ? (
-                <figure className="rv" key={shot.label}>
+                <figure className={`rv pk-shot pk-shot-${index + 1}`} key={shot.label}>
                   <div className="shot" role="img" aria-label={notes[index]?.title || shot.label} style={{ backgroundImage: `url(${photos[index]})` }} />
                   <figcaption>{notes[index]?.title || shot.label}</figcaption>
                 </figure>
@@ -453,6 +456,7 @@ export function PeacockInvite({
             <span className="rule" aria-hidden="true" />
             <span className="stamp">{[stamp(fields.date), tagOf(fields.names)].filter(Boolean).join(" · ")}</span>
             <a href={madeWithHref("peacock")}>Made with InvitesReady</a>
+            <InstagramLink />
           </footer>
         </div>
       ) : null}
