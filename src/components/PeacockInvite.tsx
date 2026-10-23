@@ -28,6 +28,8 @@ function ring(count: number, spread: number, inner: boolean) {
 }
 
 const FEATHERS = [...ring(19, 84, false), ...ring(17, 80, true)];
+const DANCE = [...ring(11, 78, false), ...ring(9, 70, true)];
+const CHARMS = [`${ART}/charm-1.webp`, `${ART}/charm-2.webp`, `${ART}/charm-3.webp`, `${ART}/charm-4.webp`];
 const DROPS = Array.from({ length: 18 }, (_, index) => ({
   left: `${(index * 37) % 100}%`,
   delay: `${-(index * 0.14)}s`,
@@ -57,6 +59,12 @@ function pairOf(names: string) {
 function monogram(names: string) {
   const parts = names.split("&").map((part) => part.trim()[0]).filter(Boolean);
   return parts.length >= 2 ? parts : [];
+}
+
+function ticketDate(note: string) {
+  const [week = "", rest = ""] = note.split("·").map((part) => part.trim());
+  const [day = "", ...month] = rest.split(/\s+/);
+  return { week, day, month: month.join(" ") };
 }
 
 function tagOf(names: string) {
@@ -100,7 +108,7 @@ export function PeacockInvite({
   wishes?: { name: string; note: string }[];
   onReply?: (reply: Reply) => void | Promise<void>;
 }) {
-  useFonts("Cormorant Garamond", "Playfair Display", "Marcellus SC");
+  useFonts("Cormorant Garamond", "Playfair Display", "Marcellus SC", "Cinzel");
   const pack = packOf("peacock", fields.lines);
   const parents = fields.hosts.split(/\n+/).map((line) => line.trim()).filter(Boolean);
   const notes = photoNotes(fields.notes, SHOTS);
@@ -112,6 +120,8 @@ export function PeacockInvite({
   const [page, setPage] = useState(quiet);
   const [shakes, setShakes] = useState(0);
   const [hop, setHop] = useState(0);
+  const [dancing, setDancing] = useState(false);
+  const [loose, setLoose] = useState<{ id: number; left: string; dx: string; rot: string }[]>([]);
   const [music, setMusic] = useState(false);
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(false);
@@ -216,7 +226,7 @@ export function PeacockInvite({
           </div>
           <div className="pk-medal">
             <img src={`${ART}/medallion.webp`} alt="" />
-            {marks.length ? <span>{marks[0]}<small>&</small>{marks[1]}</span> : null}
+            {marks.length ? <span><i />{marks[0]}<small>&</small>{marks[1]}</span> : null}
           </div>
         </div>
         <div className="pk-intro">
@@ -286,19 +296,35 @@ export function PeacockInvite({
               <span className="pk-eyebrow">The celebrations</span>
               <h2>Three days of colour</h2>
               <div className="pk-cards">
-                {events.map((item) => (
-                  <article className="pk-card rv" key={item.title}>
-                    {item.note ? <p className="day">{item.note}</p> : null}
-                    {item.kick ? <p>{item.kick}</p> : null}
-                    <h3>{item.title}</h3>
-                    {item.time ? <p>{item.time}</p> : null}
-                    {item.text ? <p>{item.text}</p> : null}
-                    <div className="acts">
-                      <button type="button" onClick={() => openMap(item.text)}>Directions</button>
-                      <button type="button" onClick={() => openCalendar(item.title, item.text)}>Calendar</button>
-                    </div>
-                  </article>
-                ))}
+                {events.map((item) => {
+                  const when = ticketDate(item.note || "");
+                  return (
+                    <article className="pk-card rv" key={item.title}>
+                      <div className="pk-ticket-wrap">
+                      <img className="pk-ticket pk-ticket-m" src={`${ART}/ticket-m.webp`} alt="" />
+                      <img className="pk-ticket pk-ticket-d" src={`${ART}/ticket-d.webp`} alt="" />
+                      <div className="pk-ticket-face">
+                        <div className="pk-stub">
+                          <img src={`${ART}/feather.webp`} alt="" />
+                          {when.week ? <span>{when.week}</span> : null}
+                          {when.day ? <strong>{when.day}</strong> : null}
+                          {when.month ? <span>{when.month}</span> : null}
+                        </div>
+                        <div className="pk-ticket-copy">
+                          {item.kick ? <p className="kick">{item.kick}</p> : null}
+                          <h3>{item.title}</h3>
+                          {item.time ? <p>{item.time}</p> : null}
+                          {item.text ? <p className="where">{item.text}</p> : null}
+                        </div>
+                      </div>
+                      </div>
+                      <div className="acts">
+                        <button type="button" onClick={() => openMap(item.text)}>Directions</button>
+                        <button type="button" onClick={() => openCalendar(item.title, item.text)}>Calendar</button>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             </section>
           ) : null}
@@ -306,8 +332,35 @@ export function PeacockInvite({
           <section className="pk-dance">
             <span className="pk-eyebrow">A little monsoon magic</span>
             <h2>Make the peacock dance</h2>
-            <button type="button" className={`pk-dancer${hop ? " is-hop" : ""}`} key={hop} onClick={() => { setShakes((value) => value + 1); setHop((value) => value + 1); }}>
-              <img src={`${ART}/peacock.webp`} alt="Peacock" />
+            <button
+              type="button"
+              className="pk-dancer"
+              onClick={() => {
+                setDancing(true);
+                setShakes((value) => value + 1);
+                setHop((value) => value + 1);
+                const next = Array.from({ length: 3 }, (_, index) => ({
+                  id: Date.now() + index,
+                  left: `${28 + Math.round(Math.random() * 44)}%`,
+                  dx: `${Math.round(Math.random() * 90 - 45)}px`,
+                  rot: `${Math.round(Math.random() * 220 - 110)}deg`,
+                }));
+                setLoose((current) => [...current, ...next].slice(-15));
+              }}
+            >
+              <span className={`pk-mini${dancing ? " is-on" : ""}`} key={hop}>
+                <span className="pk-mini-fan" aria-hidden="true">
+                  {DANCE.map((feather, index) => (
+                    <span key={`${feather.inner}-${index}`} className={`pk-plume${feather.inner ? " is-inner" : ""}`} style={{ ["--fan" as string]: `${feather.fan}deg`, ["--shut" as string]: `${feather.shut}deg` }}>
+                      <img src={`${ART}/feather.webp`} alt="" />
+                    </span>
+                  ))}
+                </span>
+                <img className="pk-mini-bird" src={`${ART}/peacock.webp`} alt="Peacock" />
+              </span>
+              {loose.map((feather) => (
+                <img key={feather.id} className="pk-fly" src={`${ART}/feather.webp`} alt="" style={{ left: feather.left, ["--dx" as string]: feather.dx, ["--rot" as string]: feather.rot }} />
+              ))}
             </button>
             <p className="pk-note">{shakes ? `${shakes * 3} feathers set free for good luck` : "Tap the peacock to see him dance"}</p>
           </section>
@@ -383,8 +436,9 @@ export function PeacockInvite({
                 <div className="pk-track">
                   {loop.map((item, index) => (
                     <article className="pk-wish" key={`${item.name}-${index}`}>
+                      <img className="charm" src={CHARMS[index % CHARMS.length]} alt="" />
                       <p>{item.text}</p>
-                      {item.name ? <span>{item.name}</span> : null}
+                      {item.name ? <span>— {item.name}</span> : null}
                     </article>
                   ))}
                 </div>
@@ -394,7 +448,9 @@ export function PeacockInvite({
 
           <footer className="pk-foot">
             <img className="branch" src={`${ART}/branch.webp`} alt="" />
-            <span className="love">With love, {fields.names}</span>
+            <span className="love">With love & gratitude</span>
+            <span className="who">{fields.names}</span>
+            <span className="rule" aria-hidden="true" />
             <span className="stamp">{[stamp(fields.date), tagOf(fields.names)].filter(Boolean).join(" · ")}</span>
             <a href={madeWithHref("peacock")}>Made with InvitesReady</a>
           </footer>
