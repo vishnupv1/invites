@@ -35,6 +35,7 @@ import { TempleBellsInvite } from "./TempleBellsInvite";
 import { JournalInvite } from "./JournalInvite";
 import { PeacockInvite } from "./PeacockInvite";
 import { BackwaterInvite } from "./BackwaterInvite";
+import { BlockbusterInvite } from "./BlockbusterInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -439,6 +440,9 @@ export function InviteSite({
   }
   if (template.style === "peacock") {
     return <PeacockInvite fields={fields} wishes={wishes} onReply={onReply} />;
+  }
+  if (template.style === "blockbuster") {
+    return <BlockbusterInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "backwater") {
     return <BackwaterInvite fields={fields} wishes={wishes} onReply={onReply} />;

@@ -31,6 +31,7 @@ import { TempleBellsInvite } from "../components/TempleBellsInvite";
 import { JournalInvite } from "../components/JournalInvite";
 import { PeacockInvite } from "../components/PeacockInvite";
 import { BackwaterInvite } from "../components/BackwaterInvite";
+import { BlockbusterInvite } from "../components/BlockbusterInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -1629,6 +1630,8 @@ export function Editor({
                     <JournalInvite fields={previewFields} />
                   ) : template.style === "peacock" ? (
                     <PeacockInvite fields={previewFields} />
+                  ) : template.style === "blockbuster" ? (
+                    <BlockbusterInvite fields={previewFields} />
                   ) : template.style === "backwater" ? (
                     <BackwaterInvite fields={previewFields} />
                   ) : template.style === "weddingride" ? (

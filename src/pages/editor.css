@@ -569,6 +569,7 @@
   min-height: 0;
   max-height: 100cqh;
 }
+.ed-frame.ed-phone .bb,
 .ed-frame.ed-phone .bw,
 .ed-frame.ed-phone .pk:not(.is-page),
 .ed-frame.ed-phone .wj:not(.is-page),

@@ -743,6 +743,35 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "blockbuster": {
+    "names": "couple",
+    "ceremony": "Wedding",
+    "reception": "Reception",
+    "themes": [{ "id": "crimson", "name": "Cinema crimson" }],
+    "defaultTheme": "crimson",
+    "shots": [
+      { "label": "first look" },
+      { "label": "coffee dates" },
+      { "label": "the road trip" },
+      { "label": "the proposal" },
+      { "label": "family blessings" },
+      { "label": "forever begins" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The curtains", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "detail", "label": "Guest name", "configurable": true, "fields": ["detail"] },
+      { "id": "when", "label": "Wedding", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "programme", "label": "Blockbuster events", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Our moments", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
+  },
   "backwater": {
     "names": "couple",
     "ceremony": "Wedding",

@@ -30,6 +30,7 @@ import { TempleBellsInvite } from "../components/TempleBellsInvite";
 import { JournalInvite } from "../components/JournalInvite";
 import { PeacockInvite } from "../components/PeacockInvite";
 import { BackwaterInvite } from "../components/BackwaterInvite";
+import { BlockbusterInvite } from "../components/BlockbusterInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -81,6 +82,7 @@ export function OpenInvite() {
       {template.style === "templebells" ? <TempleBellsInvite fields={fields} /> : null}
       {template.style === "journal" ? <JournalInvite fields={fields} /> : null}
       {template.style === "peacock" ? <PeacockInvite fields={fields} /> : null}
+      {template.style === "blockbuster" ? <BlockbusterInvite fields={fields} /> : null}
       {template.style === "backwater" ? <BackwaterInvite fields={fields} /> : null}
       {template.style === "weddingride" ? <WeddingRideInvite fields={fields} /> : null}
       {template.style === "starryfairytale" ? <StarryFairytaleInvite fields={fields} /> : null}

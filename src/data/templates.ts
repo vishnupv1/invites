@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  blockbuster: "2026-10-23T17:15:00+05:30",
   backwater: "2026-10-23T15:56:00+05:30",
   peacock: "2026-10-23T10:50:00+05:30",
   journal: "2026-10-22T16:20:00+05:30",
@@ -851,6 +852,34 @@ export const TEMPLATES: Template[] = [
         dress: "rani pink & gold",
         rsvpBy: "2027-01-06",
         lines: linesFor("weddingride"),
+      }),
+    },
+  },
+  {
+    id: "blockbuster",
+    name: "Blockbuster",
+    style: "blockbuster",
+    price: 499,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Curtains part, a projector flickers on, and nine reels tell a Jaipur wedding story.",
+    asks: { photos: 6, audio: true, location: true },
+    meta: META.blockbuster,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "son of Mrs. Kavita & Mr. Rakesh Sharma\ndaughter of Mrs. Meena & Mr. Arjun Rathore",
+        names: "Vishnu & Ananya",
+        title: "You're invited to the wedding of",
+        detail: "Meera aunty",
+        date: "2026-12-15",
+        time: "16:00",
+        venue: "The Royal Palace",
+        address: "Jaipur, Rajasthan",
+        message: "",
+        dress: "",
+        rsvpBy: "2026-11-30",
+        lines: linesFor("blockbuster"),
       }),
     },
   },

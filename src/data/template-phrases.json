@@ -198,6 +198,12 @@
     "languages": ["English"],
     "hook": "with a car that arrives through the fog, and a ribbon you cut to open the invitation"
   },
+  "blockbuster": {
+    "style": "Cinema reels",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with curtains, a projector, and a coming-soon card, then nine reels"
+  },
   "backwater": {
     "style": "Backwater story",
     "occasion": "Wedding",
