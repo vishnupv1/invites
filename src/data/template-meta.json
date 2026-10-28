@@ -772,6 +772,33 @@
       { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
     ]
   },
+  "village": {
+    "names": "couple",
+    "ceremony": "Wedding",
+    "reception": "Reception",
+    "themes": [{ "id": "grove", "name": "Village grove" }],
+    "defaultTheme": "grove",
+    "shots": [
+      { "label": "first glance" },
+      { "label": "by the palms" },
+      { "label": "on the water" },
+      { "label": "the village" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The backwater", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "A note from us", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Venue", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "programme", "label": "Wedding events", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Our memories", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] },
+      { "id": "music", "label": "Music", "configurable": true, "fields": ["audio"] }
+    ]
+  },
   "backwater": {
     "names": "couple",
     "ceremony": "Wedding",

@@ -40,6 +40,7 @@
 
 .ir-detail-frame > .bb,
 .ir-detail-frame > .bw,
+.ir-detail-frame > .vl,
 .ir-detail-frame > .pk:not(.is-page),
 .ir-detail-frame > .wj:not(.is-page) {
   height: 100%;
