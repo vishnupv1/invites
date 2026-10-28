@@ -204,12 +204,6 @@
     "languages": ["English"],
     "hook": "with curtains, a projector, and a coming-soon card, then nine reels"
   },
-  "village": {
-    "style": "Storybook",
-    "occasion": "Wedding",
-    "languages": ["English"],
-    "hook": "with a Kerala backwater you tap open, then nine storybook pages"
-  },
   "backwater": {
     "style": "Backwater story",
     "occasion": "Wedding",

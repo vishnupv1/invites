@@ -27,7 +27,6 @@ import { TempleBellsInvite } from "./TempleBellsInvite";
 import { JournalInvite } from "./JournalInvite";
 import { PeacockInvite } from "./PeacockInvite";
 import { BackwaterInvite } from "./BackwaterInvite";
-import { VillageInvite } from "./VillageInvite";
 import { BlockbusterInvite } from "./BlockbusterInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
@@ -270,8 +269,6 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <BlockbusterInvite fields={fields} quiet={!live} />;
     case "backwater":
       return <BackwaterInvite fields={fields} quiet={!live} />;
-    case "village":
-      return <VillageInvite fields={fields} quiet={!live} />;
     case "starryfairytale":
       return <StarryFairytaleInvite fields={fields} quiet={!live} />;
     case "weddingride":

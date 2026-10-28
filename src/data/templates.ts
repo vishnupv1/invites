@@ -8,7 +8,6 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
-  village: "2026-10-28T18:50:00+05:30",
   blockbuster: "2026-10-23T17:15:00+05:30",
   backwater: "2026-10-23T15:56:00+05:30",
   peacock: "2026-10-23T10:50:00+05:30",
@@ -881,34 +880,6 @@ export const TEMPLATES: Template[] = [
         dress: "",
         rsvpBy: "2026-11-30",
         lines: linesFor("blockbuster"),
-      }),
-    },
-  },
-  {
-    id: "village",
-    name: "Kerala Village",
-    style: "village",
-    price: 499,
-    free: false,
-    events: ["marriage"],
-    tagline: "Wedding",
-    description: "A storybook Kerala wedding. Tap the backwater, then the names, the temple, and a reply.",
-    asks: { photos: 4, audio: true, location: true },
-    meta: META.village,
-    samples: {
-      marriage: sample("marriage", {
-        hosts: "Together with our families",
-        names: "Vinay & Ananya",
-        title: "We joyfully invite you to our wedding",
-        detail: "",
-        date: "2026-12-15",
-        time: "10:00",
-        venue: "Sree Krishna Temple",
-        address: "Guruvayur, Kerala",
-        message: "Your love, blessings and presence mean everything to us.\nWe can't wait to celebrate this special chapter with you and create beautiful memories together.",
-        dress: "",
-        rsvpBy: "2026-11-30",
-        lines: linesFor("village"),
       }),
     },
   },

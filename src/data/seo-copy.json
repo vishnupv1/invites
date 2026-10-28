@@ -160,12 +160,6 @@
       "description": "Curtains open on a projector, then nine reels of the wedding. Animated invitation, RSVP on the page, share on WhatsApp. ₹499 one-time.",
       "lead": "A cinema opening, a film-poster page and a ticket for the wedding. Made for a wedding at The Royal Palace in Jaipur."
     },
-    "village": {
-      "heading": "Kerala village wedding invitation",
-      "title": "Kerala Village – Storybook Wedding Invitation | InvitesReady",
-      "description": "Tap a Kerala backwater, then swipe through a storybook wedding. Animated pages, RSVP on the page, share on WhatsApp. ₹499 one-time.",
-      "lead": "A houseboat at sunset, a temple across the water, and a note from the couple. Made for a wedding at Sree Krishna Temple in Guruvayur."
-    },
     "backwater": {
       "heading": "Backwater story wedding invitation",
       "title": "Backwater Story – Kerala Wedding Invitation | InvitesReady",
@@ -298,7 +292,6 @@
       "description": "Animated digital wedding invitations, including free designs. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
-        "village",
         "blockbuster",
         "backwater",
         "peacock",

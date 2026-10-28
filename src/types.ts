@@ -137,7 +137,6 @@ export type TemplateStyle =
   | "peacock"
   | "blockbuster"
   | "backwater"
-  | "village"
   | "weddingride"
   | "starryfairytale";
 

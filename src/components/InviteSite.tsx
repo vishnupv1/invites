@@ -35,7 +35,6 @@ import { TempleBellsInvite } from "./TempleBellsInvite";
 import { JournalInvite } from "./JournalInvite";
 import { PeacockInvite } from "./PeacockInvite";
 import { BackwaterInvite } from "./BackwaterInvite";
-import { VillageInvite } from "./VillageInvite";
 import { BlockbusterInvite } from "./BlockbusterInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
@@ -447,9 +446,6 @@ export function InviteSite({
   }
   if (template.style === "backwater") {
     return <BackwaterInvite fields={fields} wishes={wishes} onReply={onReply} />;
-  }
-  if (template.style === "village") {
-    return <VillageInvite fields={fields} wishes={wishes} onReply={onReply} />;
   }
   if (template.style === "weddingride") {
     return <WeddingRideInvite fields={fields} wishes={wishes} onReply={onReply} theme={weddingRideThemeOf(swatch)} />;

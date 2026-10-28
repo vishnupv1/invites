@@ -385,30 +385,6 @@
     ],
     "venuePhone": "+919800000000"
   },
-  "village": {
-    "story": [
-      { "year": "", "title": "We Met", "text": "A chance meeting turned into a beautiful friendship." },
-      { "year": "", "title": "We Grew", "text": "New places, new dreams and a stronger bond." },
-      { "year": "", "title": "Now Forever", "text": "And here we are, ready for our next big adventure." }
-    ],
-    "programme": [
-      { "kick": "13 Dec 2026", "title": "Nishchayam", "time": "09:30 AM", "text": "Bride's House, Thrissur", "note": "" },
-      { "kick": "14 Dec 2026", "title": "Haldi", "time": "10:00 AM", "text": "Backyard Lawn", "note": "" },
-      { "kick": "15 Dec 2026", "title": "Wedding", "time": "10:00 AM", "text": "Sree Krishna Temple, Guruvayur", "note": "" },
-      { "kick": "15 Dec 2026", "title": "Reception", "time": "07:00 PM", "text": "Le Meridien, Kochi", "note": "" }
-    ],
-    "facts": [
-      { "label": "By car", "value": "About 2 hrs from Kochi" },
-      { "label": "By train", "value": "Guruvayur Railway Station" },
-      { "label": "Airport", "value": "Calicut (CCJ), 100 km" }
-    ],
-    "rooms": [
-      { "label": "Stay", "name": "Recommended hotels", "text": "A few quiet hotels sit a short walk from the temple. Mention our names for the guest rate.", "note": "" },
-      { "label": "Travel", "name": "Local transport", "text": "Autos and taxis wait at the railway station. We will share a driver number closer to the day.", "note": "" },
-      { "label": "Explore", "name": "Places to explore", "text": "Beaches, backwaters and temples are all within a morning's drive.", "note": "" },
-      { "label": "Kerala", "name": "Kerala experience", "text": "A houseboat hour, a banana-leaf meal, and the slow green of the village.", "note": "" }
-    ]
-  },
   "backwater": {
     "story": [
       { "year": "2019 · Fort Kochi", "title": "We Met", "text": "A rainy evening, one borrowed book and a conversation that never really ended." },
