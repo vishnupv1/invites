@@ -438,10 +438,10 @@ export function CreateGuest() {
 
   async function publish() {
     if (!template) return;
-    // if (!ownsTemplate) {
-    //   setCheckout(true);
-    //   return;
-    // }
+    if (!ownsTemplate) {
+      setCheckout(true);
+      return;
+    }
     await publishNow();
   }
 
@@ -560,7 +560,7 @@ export function CreateGuest() {
                   ← {event.label} · change
                 </button>
                 <h1>Pick a template you love</h1>
-                <p className="cg-muted">Every template is free to customise and free to publish.</p>
+                <p className="cg-muted">Every template is free to customise. Publishing is ₹199, paid once.</p>
                 {/* <p className="cg-muted">Every template is free to customise. Premium ones are paid only when you publish.</p> */}
               </div>
               {/* <div className="cg-pills" role="group" aria-label="Price">
@@ -680,24 +680,20 @@ export function CreateGuest() {
                     </div>
                   </label>
                   <p className="cg-muted">Publish when the preview looks right. The link stays the same if you edit later.</p>
-                  <div className="cg-plan">
-                    {/* <div className={template.free ? "cg-plan" : "cg-plan premium"}> */}
+                  <div className={template.free ? "cg-plan" : "cg-plan premium"}>
                     <header>
                       <strong>
-                        {template.name} · Free
-                        {/* {template.name} · {template.free || ownsTemplate ? (template.free ? "Free" : "Owned") : "Premium"} */}
+                        {template.name} · {template.free || ownsTemplate ? (template.free ? "Free" : "Owned") : "Premium"}
                       </strong>
-                      <b>Free</b>
-                      {/* <b>{ownsTemplate && !template.free ? "Owned" : formatPrice(template)}</b> */}
+                      <b>{ownsTemplate && !template.free ? "Owned" : formatPrice(template)}</b>
                     </header>
-                    <p>Free for this event, with a small Made with InvitesReady credit on the page.</p>
-                    {/* <p>
+                    <p>
                       {template.free
                         ? "Free for this event, with a small Made with InvitesReady credit on the page."
                         : ownsTemplate
                           ? "This design is already yours. Publishing does not charge you again."
                           : `One-time ${formatPrice(template)} for this design. You pay once at checkout, then you can publish.`}
-                    </p> */}
+                    </p>
                   </div>
                   <SmartButton
                     className="cg-publish"

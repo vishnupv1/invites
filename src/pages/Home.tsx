@@ -220,16 +220,12 @@ export function Home({ focus }: { focus?: string }) {
                   <span>to make yours</span>
                 </p>
                 <p>
-                  <b className="ir-display ir-hero-price">Free</b>
-                  {/* <b className="ir-display ir-hero-price">{from > 0 ? `From ${rupee(from)}` : "Free"}</b> */}
+                  <b className="ir-display ir-hero-price">₹199</b>
                   <span>to publish</span>
-                  {/* <span>{from > 0 ? "one-time, pay at publish" : "to try a design"}</span> */}
                 </p>
                 <p className="ir-hero-stat-wide">
-                  <b className="ir-display">Free</b>
-                  {/* <b className="ir-display">Pay later</b> */}
-                  <span>every design, for now</span>
-                  {/* <span>design before you sign in</span> */}
+                  <b className="ir-display">₹199</b>
+                  <span>every design, paid once</span>
                 </p>
               </div>
             </div>
@@ -239,7 +235,7 @@ export function Home({ focus }: { focus?: string }) {
               <button className="ir-namecard-go" type="submit" aria-label="Try it with your names">
                 <ArrowIcon />
               </button>
-              <p className="ir-namecard-chips">Free to try · No sign-up · Free to publish</p>
+              <p className="ir-namecard-chips">Free to try · No sign-up · ₹199 to publish</p>
               {/* <p className="ir-namecard-chips">Free to try · No sign-up · Pay at publish</p> */}
             </form>
           </div>
@@ -289,10 +285,8 @@ export function Home({ focus }: { focus?: string }) {
 
         <section id="pricing" className="ir-priceband">
           <p className="ir-overline">Pricing</p>
-          <h2 className="ir-display">Free</h2>
-          {/* <h2 className="ir-display">{from > 0 ? `From ${rupee(from)}` : "Free to try"}</h2> */}
-          <p>Every design is free to publish for now.</p>
-          {/* <p>One-time, when you publish. Designing and previewing stay free.</p> */}
+          <h2 className="ir-display">₹199</h2>
+          <p>Every design is ₹199, paid once. Designing and previewing stay free.</p>
           <PrimaryButton href="/browse">Browse templates</PrimaryButton>
         </section>
 

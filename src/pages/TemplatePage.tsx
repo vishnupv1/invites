@@ -272,9 +272,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
     ...(topic ? [{ label: topic.label, to: topic.path }] : [{ label: "Templates", to: "/browse" }]),
     { label: template.name },
   ];
-  // const amount = livePrice ?? template.price;
-  // const priceLabel = amount === 0 ? "Free" : `₹${amount.toLocaleString("en-IN")}`;
-  const priceLabel = "Free";
+  const priceLabel = formatPrice(template);
   /*
   {owned ? null : (
     <>
@@ -344,8 +342,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
           </div>
           <p className="ir-detail-price">
             <b className="ir-display">{priceLabel}</b>
-            <span>to publish</span>
-            {/* <span>{amount === 0 ? "to publish" : "one-time"}</span> */}
+            <span>{template.free ? "to publish" : "one-time"}</span>
           </p>
         </div>
         <ul className="ir-detail-inc">

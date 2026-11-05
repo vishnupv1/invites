@@ -547,8 +547,7 @@ export function Editor({
   if (!template) return embedded ? null : <Navigate to="/" replace />;
   if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
 
-  // const needsPay = !owns(template.id, template.free);
-  const needsPay = false;
+  const needsPay = !owns(template.id, template.free);
   const draft = model.draft;
   const event = getEvent(draft.event);
   const couple = template.meta.names === "couple";
@@ -609,7 +608,7 @@ export function Editor({
       void showLive();
       return;
     }
-    // setPayOpen(true);
+    setPayOpen(true);
   }
 
   beginPublishRef.current = () => {
@@ -883,25 +882,19 @@ export function Editor({
   }
 
   async function ownsNow(fresh = false) {
-    // Prices are paused. Publishing does not check a purchase.
-    void fresh;
-    void owns;
-    void libraryReady;
-    void listPurchases;
-    return true;
-    // if (!template) return false;
-    // if (template.free) return true;
-    // if (!fresh && libraryReady && owns(template.id, false)) return true;
-    // try {
-    //   const purchased = await listPurchases();
-    //   if (purchased.includes(template.id)) {
-    //     grant(template.id);
-    //     return true;
-    //   }
-    // } catch {
-    //   return libraryReady && owns(template.id, false);
-    // }
-    // return false;
+    if (!template) return false;
+    if (template.free) return true;
+    if (!fresh && libraryReady && owns(template.id, false)) return true;
+    try {
+      const purchased = await listPurchases();
+      if (purchased.includes(template.id)) {
+        grant(template.id);
+        return true;
+      }
+    } catch {
+      return libraryReady && owns(template.id, false);
+    }
+    return false;
   }
 
   function askToSignIn(intent: "save" | "publish") {
@@ -915,7 +908,7 @@ export function Editor({
     void persistRef.current();
     if (authIntent === "publish") {
       if (await ownsNow(true)) void showLive();
-      // else setPayOpen(true);
+      else setPayOpen(true);
     }
   }
 
@@ -1788,8 +1781,7 @@ export function Editor({
       {liveOpen && link ? (
         <LiveShare
           names={draft.names.trim() || template.name}
-          // priceLabel={template.free ? "Free" : formatPrice(template)}
-          priceLabel="Free"
+          priceLabel={template.free ? "Free" : formatPrice(template)}
           link={link}
           when={draft.date ? formatShortDate(draft.date) : ""}
           onClose={() => setLiveOpen(false)}
