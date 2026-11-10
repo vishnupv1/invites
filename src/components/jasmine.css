@@ -66,16 +66,6 @@
   transform-origin: right center;
 }
 
-.jm-veil {
-  position: absolute;
-  z-index: 2;
-  left: 16%;
-  right: 16%;
-  top: 16%;
-  bottom: 12%;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(28, 14, 8, 0.82) 18%, rgba(28, 14, 8, 0.88) 76%, transparent 100%);
-}
 .jm.is-parting .jm-curtain.is-l,
 .jm.is-in .jm-curtain.is-l {
   transform: translateX(-108%) rotate(-7deg);
@@ -456,32 +446,3 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
-.jm-nav {
-  position: absolute;
-  z-index: 6;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-}
-
-.jm-nav button {
-  width: 8px;
-  height: 8px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: #c7ab7c;
-  color: transparent;
-  cursor: pointer;
-}
-
-.jm.is-in .jm-nav button.is-on,
-.jm-nav button.is-on {
-  width: 24px;
-  background: var(--olive);
-}
-
-.jm:not(.is-in) .jm-nav button.is-on { background: #f8e4bd; }

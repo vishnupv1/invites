@@ -10,7 +10,6 @@ type Reply = { name: string; note: string; attending: boolean };
 type Screen = "opening" | "invite" | "events" | "rsvp";
 
 const ART = "/jasmine";
-const SCREENS: Screen[] = ["opening", "invite", "events", "rsvp"];
 
 function coupleOf(names: string) {
   const parts = names.split(/\s+&\s+/).map((part) => part.trim()).filter(Boolean);
@@ -110,7 +109,6 @@ export function JasmineInvite({ fields, quiet = false, onReply }: {
         <section className="jm-open" aria-label="Opening invitation">
           <div className="jm-curtain is-l" />
           <div className="jm-curtain is-r" />
-          <div className="jm-veil" />
           <img className="jm-lamp is-l" src={`${ART}/lamp.webp`} alt="" />
           <img className="jm-lamp is-r" src={`${ART}/lamp.webp`} alt="" />
           <div className="jm-petals" aria-hidden="true">
@@ -215,12 +213,6 @@ export function JasmineInvite({ fields, quiet = false, onReply }: {
           </div>
         </section>
       ) : null}
-
-      <nav className="jm-nav" aria-label="Invitation pages">
-        {SCREENS.map((item, index) => (
-          <button key={item} type="button" className={screen === item ? "is-on" : ""} aria-label={item} onClick={() => go(item)}>{index + 1}</button>
-        ))}
-      </nav>
     </div>
   );
 }
