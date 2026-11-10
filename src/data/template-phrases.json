@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "jasmine": {
+    "style": "Jasmine curtain",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with jasmine curtains that part onto the wedding"
+  },
   "firstdance": {
     "style": "Palace ballroom",
     "occasion": "Wedding",

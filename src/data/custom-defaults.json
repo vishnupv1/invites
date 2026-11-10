@@ -467,6 +467,12 @@
     ],
     "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
   },
+  "jasmine": {
+    "programme": [
+      { "kick": "Saturday, 14 December", "title": "Wedding ceremony", "time": "5:30 PM", "text": "The Grand Grove, Kochi", "note": "Saturday, 14 December 2026" },
+      { "kick": "Saturday, 14 December", "title": "Wedding reception", "time": "7:00 PM", "text": "The Grand Grove, Kochi", "note": "Saturday, 14 December 2026" }
+    ]
+  },
   "firstdance": {
     "story": [
       { "year": "2019", "title": "A salsa class", "text": "Two left feet, one shared laugh, and a partner swap that never happened." },

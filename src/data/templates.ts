@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  jasmine: "2026-11-10T15:40:00+05:30",
   blockbuster: "2026-10-23T17:15:00+05:30",
   backwater: "2026-10-23T15:56:00+05:30",
   peacock: "2026-10-23T10:50:00+05:30",
@@ -76,6 +77,37 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "jasmine",
+    name: "Jasmine",
+    style: "jasmine",
+    price: 0,
+    free: true,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Jasmine curtains part onto a Kerala wedding. Guests tap to open, then see the day, the venue, and reply on the page.",
+    asks: { photos: 0, audio: false, location: true },
+    meta: META.jasmine,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Athira & Rahul",
+        title: "To celebrate our wedding",
+        detail: "",
+        date: "2026-12-14",
+        time: "17:30",
+        venue: "The Grand Grove",
+        address: "Kochi, Kerala",
+        message: "Your presence would make the evening complete.",
+        dress: "Festive traditional",
+        rsvpBy: "2026-12-01",
+        receptionTime: "19:00",
+        receptionVenue: "The Grand Grove",
+        receptionAddress: "Kochi, Kerala",
+        lines: linesFor("jasmine"),
+      }),
+    },
+  },
   {
     id: "lotus",
     name: "Lotus Lens",

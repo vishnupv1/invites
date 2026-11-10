@@ -138,7 +138,8 @@ export type TemplateStyle =
   | "blockbuster"
   | "backwater"
   | "weddingride"
-  | "starryfairytale";
+  | "starryfairytale"
+  | "jasmine";
 
 export type Template = {
   id: string;
