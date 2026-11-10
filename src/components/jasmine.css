@@ -3,11 +3,12 @@
   --olive: #59651e;
   --gold: #c28a3b;
   --cream: #fff6e8;
+  --sheet: 430px;
   position: relative;
   height: 100dvh;
   min-height: 100%;
   overflow: hidden;
-  background: #24150d;
+  background: #efe2cf;
   color: var(--brown);
   font-family: "DM Sans", sans-serif;
 }
@@ -24,10 +25,19 @@
   font-family: "DM Sans", sans-serif;
 }
 
-.jm-open {
+.jm-open,
+.jm-paper {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100%, var(--sheet));
+  transform: translateX(-50%);
+}
+
+.jm-open {
   z-index: 2;
+  background: #24150d;
 }
 
 .jm-curtain {
@@ -194,8 +204,6 @@
 .jm-next span { margin-left: 12px; }
 
 .jm-paper {
-  position: absolute;
-  inset: 0;
   overflow: auto;
   background: radial-gradient(ellipse at 50% 28%, #fffdf6 0%, #fff2de 72%, #efd3ae 130%);
   text-align: center;
