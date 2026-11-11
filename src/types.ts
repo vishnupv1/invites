@@ -142,7 +142,8 @@ export type TemplateStyle =
   | "jasmine"
   | "celestial"
   | "raas"
-  | "marble";
+  | "marble"
+  | "siyaram";
 
 export type Template = {
   id: string;

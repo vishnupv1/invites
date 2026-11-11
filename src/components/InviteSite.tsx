@@ -40,6 +40,7 @@ import { JasmineInvite } from "./JasmineInvite";
 import { CelestialInvite } from "./CelestialInvite";
 import { RaasInvite } from "./RaasInvite";
 import { MarbleInvite } from "./MarbleInvite";
+import { SiyaramInvite } from "./SiyaramInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -456,6 +457,9 @@ export function InviteSite({
   }
   if (template.style === "celestial") {
     return <CelestialInvite fields={fields} onReply={onReply} />;
+  }
+  if (template.style === "siyaram") {
+    return <SiyaramInvite fields={fields} onReply={onReply} />;
   }
   if (template.style === "marble") {
     return <MarbleInvite fields={fields} onReply={onReply} />;

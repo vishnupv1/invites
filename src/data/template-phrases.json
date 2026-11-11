@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "siyaram": {
+    "style": "Sacred lotus",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a lotus that opens onto the sacred vivah"
+  },
   "marble": {
     "style": "Marble lotus",
     "occasion": "Wedding",

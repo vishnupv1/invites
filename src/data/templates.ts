@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  siyaram: "2026-11-11T12:24:00+05:30",
   marble: "2026-11-11T11:20:00+05:30",
   raas: "2026-11-11T10:16:00+05:30",
   celestial: "2026-11-10T18:05:00+05:30",
@@ -80,6 +81,37 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "siyaram",
+    name: "Siya Ram",
+    style: "siyaram",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A lotus opens onto the sacred vivah of Siya and Ram. Guests see the celebrations, the venue, and reply on the page.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.siyaram,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with our families",
+        names: "Aarav & Meera",
+        title: "Invite you to celebrate their sacred union",
+        detail: "",
+        date: "2027-12-12",
+        time: "18:00",
+        venue: "The Palace Courtyard",
+        address: "Janakpur",
+        message: "With hearts full of gratitude and blessings from our families, we begin a new journey of love, faith, and togetherness.",
+        dress: "Traditional festive",
+        rsvpBy: "2027-11-20",
+        receptionTime: "20:30",
+        receptionVenue: "The Palace Courtyard",
+        receptionAddress: "Janakpur",
+        lines: linesFor("siyaram"),
+      }),
+    },
+  },
   {
     id: "marble",
     name: "Marble Promise",

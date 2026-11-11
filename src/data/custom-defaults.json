@@ -467,6 +467,13 @@
     ],
     "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
   },
+  "siyaram": {
+    "programme": [
+      { "kick": "Friday, 10 December", "title": "Haldi", "time": "10:00 AM", "text": "The Palace Courtyard, Janakpur", "note": "Sunshine yellow" },
+      { "kick": "Saturday, 11 December", "title": "Mehendi & Sangeet", "time": "6:00 PM", "text": "The Palace Courtyard, Janakpur", "note": "Festive colour" },
+      { "kick": "Sunday, 12 December", "title": "The Sacred Vivah", "time": "6:00 PM", "text": "The Palace Courtyard, Janakpur", "note": "Traditional festive" }
+    ]
+  },
   "marble": {
     "programme": [
       { "kick": "Friday, 10 December", "title": "Mehendi", "time": "4:00 PM", "text": "The Garden Pavilion", "note": "An afternoon of colour and celebration" },
