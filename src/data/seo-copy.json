@@ -148,12 +148,6 @@
       "description": "Scroll a starry night as the chapel rises and a ring descends. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
       "lead": "A moon, a floating chapel and a ring under the stars. Made for a wedding at St. Mary's Basilica in Bengaluru."
     },
-    "siyaram": {
-      "heading": "Siya Ram wedding invitation",
-      "title": "Siya Ram – Sacred Vivah Wedding Invitation | InvitesReady",
-      "description": "A lotus opens onto the sacred vivah of Siya and Ram. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
-      "lead": "A divine lotus, a golden bow, and a blessing portrait. Made for a wedding at The Palace Courtyard in Janakpur."
-    },
     "marble": {
       "heading": "Marble Promise wedding invitation",
       "title": "Marble Promise – Taj Mahal Wedding Invitation | InvitesReady",
@@ -322,7 +316,6 @@
       "description": "Animated digital wedding invitations. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp. ₹199, paid once.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
-        "siyaram",
         "marble",
         "raas",
         "celestial",

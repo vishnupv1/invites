@@ -32,7 +32,6 @@ import { JasmineInvite } from "./JasmineInvite";
 import { CelestialInvite } from "./CelestialInvite";
 import { RaasInvite } from "./RaasInvite";
 import { MarbleInvite } from "./MarbleInvite";
-import { SiyaramInvite } from "./SiyaramInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -282,8 +281,6 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <JasmineInvite fields={fields} quiet={!live} />;
     case "celestial":
       return <CelestialInvite fields={fields} quiet={!live} />;
-    case "siyaram":
-      return <SiyaramInvite fields={fields} quiet={!live} />;
     case "marble":
       return <MarbleInvite fields={fields} quiet={!live} />;
     case "raas":
