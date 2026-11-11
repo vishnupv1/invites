@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "raas": {
+    "style": "Painted Raas",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a peacock feather that paints open the wedding"
+  },
   "celestial": {
     "style": "Night sky",
     "occasion": "Wedding",

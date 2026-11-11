@@ -38,6 +38,7 @@
   overflow: hidden;
 }
 
+.ir-detail-frame > .er,
 .ir-detail-frame > .cv,
 .ir-detail-frame > .jm,
 .ir-detail-frame > .bw,

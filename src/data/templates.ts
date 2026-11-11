@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  raas: "2026-11-11T10:16:00+05:30",
   celestial: "2026-11-10T18:05:00+05:30",
   jasmine: "2026-11-10T15:40:00+05:30",
   blockbuster: "2026-10-23T17:15:00+05:30",
@@ -78,6 +79,37 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "raas",
+    name: "Eternal Raas",
+    style: "raas",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A peacock feather opens a painted Radha-Krishna wedding. Guests see the celebrations, the venue, and reply on the page.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.raas,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "With the blessings of our families",
+        names: "Aarav & Meera",
+        title: "A love painted in eternity",
+        detail: "",
+        date: "2027-12-12",
+        time: "18:30",
+        venue: "Falaknuma Palace",
+        address: "Hyderabad, Telangana",
+        message: "With the blessings of our families and the grace of Radha and Krishna, we invite you to celebrate the beginning of our forever.",
+        dress: "Traditional festive",
+        rsvpBy: "2027-11-20",
+        receptionTime: "20:30",
+        receptionVenue: "Falaknuma Palace",
+        receptionAddress: "Hyderabad, Telangana",
+        lines: linesFor("raas"),
+      }),
+    },
+  },
   {
     id: "celestial",
     name: "Celestial Vows",
