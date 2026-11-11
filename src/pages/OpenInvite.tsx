@@ -34,6 +34,7 @@ import { BlockbusterInvite } from "../components/BlockbusterInvite";
 import { JasmineInvite } from "../components/JasmineInvite";
 import { CelestialInvite } from "../components/CelestialInvite";
 import { RaasInvite } from "../components/RaasInvite";
+import { MarbleInvite } from "../components/MarbleInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -90,6 +91,7 @@ export function OpenInvite() {
       {template.style === "weddingride" ? <WeddingRideInvite fields={fields} /> : null}
       {template.style === "jasmine" ? <JasmineInvite fields={fields} /> : null}
       {template.style === "celestial" ? <CelestialInvite fields={fields} /> : null}
+      {template.style === "marble" ? <MarbleInvite fields={fields} /> : null}
       {template.style === "raas" ? <RaasInvite fields={fields} /> : null}
       {template.style === "starryfairytale" ? <StarryFairytaleInvite fields={fields} /> : null}
     </div>

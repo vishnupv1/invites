@@ -467,6 +467,13 @@
     ],
     "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
   },
+  "marble": {
+    "programme": [
+      { "kick": "Friday, 10 December", "title": "Mehendi", "time": "4:00 PM", "text": "The Garden Pavilion", "note": "An afternoon of colour and celebration" },
+      { "kick": "Saturday, 11 December", "title": "Sangeet", "time": "7:00 PM", "text": "The Royal Courtyard", "note": "Music, laughter and memories" },
+      { "kick": "Sunday, 12 December", "title": "Wedding ceremony", "time": "6:00 PM", "text": "The Royal Gardens", "note": "The beginning of forever" }
+    ]
+  },
   "raas": {
     "programme": [
       { "kick": "Friday, 10 December", "title": "Haldi", "time": "11:00 AM", "text": "Falaknuma Palace, Hyderabad", "note": "Sunshine yellow" },

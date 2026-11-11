@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "marble": {
+    "style": "Marble lotus",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a marble lotus that opens onto the wedding"
+  },
   "raas": {
     "style": "Painted Raas",
     "occasion": "Wedding",
