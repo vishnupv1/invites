@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  celestial: "2026-11-10T18:05:00+05:30",
   jasmine: "2026-11-10T15:40:00+05:30",
   blockbuster: "2026-10-23T17:15:00+05:30",
   backwater: "2026-10-23T15:56:00+05:30",
@@ -77,6 +78,37 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "celestial",
+    name: "Celestial Vows",
+    style: "celestial",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A night sky opens on a north star, then the names, the celebrations, and a reply under the moon.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.celestial,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Mira & Arjun",
+        title: "Our forever begins here",
+        detail: "",
+        date: "2026-12-12",
+        time: "17:00",
+        venue: "The Observatory Terrace",
+        address: "Udaipur, Rajasthan",
+        message: "Across all the skies and all the seasons, we found our way to each other.",
+        dress: "Formal attire",
+        rsvpBy: "2026-11-28",
+        receptionTime: "19:30",
+        receptionVenue: "The Observatory Terrace",
+        receptionAddress: "Udaipur, Rajasthan",
+        lines: linesFor("celestial"),
+      }),
+    },
+  },
   {
     id: "jasmine",
     name: "Jasmine",

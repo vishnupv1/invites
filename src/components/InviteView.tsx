@@ -29,6 +29,7 @@ import { PeacockInvite } from "./PeacockInvite";
 import { BackwaterInvite } from "./BackwaterInvite";
 import { BlockbusterInvite } from "./BlockbusterInvite";
 import { JasmineInvite } from "./JasmineInvite";
+import { CelestialInvite } from "./CelestialInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -276,6 +277,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <WeddingRideInvite fields={fields} quiet={!live} />;
     case "jasmine":
       return <JasmineInvite fields={fields} quiet={!live} />;
+    case "celestial":
+      return <CelestialInvite fields={fields} quiet={!live} />;
     case "home":
       return <HomeInvite fields={fields} quiet={quiet} demo={demo} />;
     case "shaadi":

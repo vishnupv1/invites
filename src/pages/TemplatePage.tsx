@@ -44,6 +44,7 @@ import { PeacockInvite } from "../components/PeacockInvite";
 import { BackwaterInvite } from "../components/BackwaterInvite";
 import { BlockbusterInvite } from "../components/BlockbusterInvite";
 import { JasmineInvite } from "../components/JasmineInvite";
+import { CelestialInvite } from "../components/CelestialInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -147,6 +148,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <StarryFairytaleInvite fields={fields} />;
     case "jasmine":
       return <JasmineInvite fields={fields} />;
+    case "celestial":
+      return <CelestialInvite fields={fields} />;
     case "weddingride":
       return <WeddingRideInvite fields={fields} theme={weddingRideThemeOf(swatch)} />;
     case "home":

@@ -467,6 +467,13 @@
     ],
     "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
   },
+  "celestial": {
+    "programme": [
+      { "kick": "Friday, 11 December", "title": "Welcome evening", "time": "7:00 PM", "text": "The Observatory Terrace, Udaipur", "note": "Festive elegance" },
+      { "kick": "Saturday, 12 December", "title": "Wedding ceremony", "time": "5:00 PM", "text": "The Observatory Terrace, Udaipur", "note": "Formal attire" },
+      { "kick": "Saturday, 12 December", "title": "Reception", "time": "7:30 PM", "text": "The Observatory Terrace, Udaipur", "note": "Evening elegance" }
+    ]
+  },
   "jasmine": {
     "programme": [
       { "kick": "Saturday, 14 December", "title": "Wedding ceremony", "time": "5:30 PM", "text": "The Grand Grove, Kochi", "note": "Saturday, 14 December 2026" },

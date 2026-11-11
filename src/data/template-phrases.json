@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "celestial": {
+    "style": "Night sky",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a north star that opens onto the wedding"
+  },
   "jasmine": {
     "style": "Jasmine curtain",
     "occasion": "Wedding",
