@@ -227,11 +227,12 @@
 .mp-names { margin: 16px 0 8px; font: 500 clamp(2.1rem, 7vw, 3.4rem)/1 "Cormorant Garamond", Georgia, serif; }
 .mp-corner {
   position: absolute;
-  width: min(190px, 42%);
-  right: -18px;
-  bottom: -18px;
-  opacity: 0.8;
+  width: min(200px, 46%);
+  right: -4px;
+  bottom: -6px;
+  opacity: 0.9;
   pointer-events: none;
+  transform: rotate(180deg);
 }
 .mp-story { background: var(--ivory); }
 .mp-portrait {
@@ -480,7 +481,7 @@
   .mp-hero-title h1 { font-size: 2.45rem; }
   .mp-hero-title .mp-kicker { font-size: 0.52rem; }
   .mp-section { padding: 40px 16px; }
-  .mp-corner { width: 108px; }
+  .mp-corner { width: 128px; right: -2px; bottom: -4px; }
 }
 
 @container (min-width: 760px) {
