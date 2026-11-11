@@ -280,7 +280,7 @@ export function Editor({
   const onSummaryRef = useRef(onSummary);
   onInviteRef.current = onInvite;
   onSummaryRef.current = onSummary;
-  const { signedIn } = useSession();
+  const { signedIn, host } = useSession();
   const [model, setModel] = useState<Model | null>(() => {
     if (!template || inviteQuery) return null;
     const local = readLocal(template.id);
@@ -550,7 +550,8 @@ export function Editor({
   if (!template) return embedded ? null : <Navigate to="/" replace />;
   if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
 
-  const needsPay = !owns(template.id, template.free);
+  const adminTest = host?.admin === true;
+  const needsPay = !adminTest && !owns(template.id, template.free);
   const draft = model.draft;
   const event = getEvent(draft.event);
   const couple = template.meta.names === "couple";
@@ -886,6 +887,7 @@ export function Editor({
 
   async function ownsNow(fresh = false) {
     if (!template) return false;
+    if (host?.admin) return true;
     if (template.free) return true;
     if (!fresh && libraryReady && owns(template.id, false)) return true;
     try {
@@ -1677,7 +1679,7 @@ export function Editor({
                   <div className="ed-gp-sheet">
                     <button type="button" onClick={() => setGuestPreview(false)}>Edit</button>
                     <button type="button" className="ed-gp-go" onClick={beginPublish}>
-                      <span>{link ? "Share invitation" : `Publish · ${formatPrice(template)}`}</span>
+                      <span>{link ? "Share invitation" : needsPay ? `Publish · ${formatPrice(template)}` : "Publish"}</span>
                       <b aria-hidden="true"><ArrowIcon /></b>
                     </button>
                     <p>Edits stay free</p>
@@ -1711,7 +1713,7 @@ export function Editor({
             <h2>Happy with <i>how it opens?</i></h2>
             <p>Edits stay free forever — guests always see the latest version.</p>
             <button type="button" className="ed-gp-go" onClick={beginPublish}>
-              <span>{link ? "Share invitation" : `Publish · ${formatPrice(template)}`}</span>
+              <span>{link ? "Share invitation" : needsPay ? `Publish · ${formatPrice(template)}` : "Publish"}</span>
               <b aria-hidden="true"><ArrowIcon /></b>
             </button>
             <button type="button" className="ed-gp-keep" onClick={() => setGuestPreview(false)}>

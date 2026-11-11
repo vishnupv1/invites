@@ -284,6 +284,7 @@ export function Admin() {
                     <strong>{template.name}</strong>
                     Free · {uses.get(template.id) ?? 0} published
                     {/* {template.free ? "Free" : `$${template.price}`} · {uses.get(template.id) ?? 0} published */}
+                    <Link className="tpl-test" to={`/create/${template.id}?fresh=1`}>Test without paying</Link>
                   </div>
                 </article>
               ))}

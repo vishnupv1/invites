@@ -29,7 +29,16 @@ import { useSession } from "./session";
 const DesignCheck = lazy(() => import("./pages/DesignCheck"));
 
 function adminMayOpen(pathname: string) {
-  return pathname === "/admin" || pathname.startsWith("/i/") || pathname.startsWith("/embed/");
+  return (
+    pathname === "/admin" ||
+    pathname === "/create" ||
+    pathname.startsWith("/create/") ||
+    pathname.startsWith("/template/") ||
+    pathname.startsWith("/browse") ||
+    pathname.startsWith("/open/") ||
+    pathname.startsWith("/i/") ||
+    pathname.startsWith("/embed/")
+  );
 }
 
 function RequireAccount({ children }: { children: ReactNode }) {

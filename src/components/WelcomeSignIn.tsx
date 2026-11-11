@@ -35,6 +35,7 @@ function skipWelcome(pathname: string) {
     pathname.startsWith("/i/") ||
     pathname.startsWith("/embed/") ||
     pathname.startsWith("/admin") ||
+    pathname.startsWith("/create") ||
     pathname.startsWith("/design-check")
   );
 }
@@ -99,7 +100,7 @@ export function WelcomeSignIn() {
   async function finish() {
     const person = await getHost().catch(() => null);
     markWelcomeSeen();
-    if (person?.admin) {
+    if (person?.admin && !window.location.pathname.startsWith("/create")) {
       window.location.assign("/admin");
       return;
     }

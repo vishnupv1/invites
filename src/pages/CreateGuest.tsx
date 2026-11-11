@@ -17,6 +17,7 @@ import { trackFirstEdit, trackLogin, trackPublish, trackSaveDraft, trackShareWha
 import { guestInviteUrl, whatsAppShareHref } from "../lib/share";
 import { formatLongDate, formatShortDate, formatTime } from "../lib/dates";
 import { useLibrary } from "../state";
+import { useSession } from "../session";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import type { EventId, InviteFields } from "../types";
 import "./create-guest.css";
@@ -88,6 +89,8 @@ export function CreateGuest() {
     : requested?.events[0];
   const saved = useMemo(loadDraft, []);
   const library = useLibrary();
+  const { host: sessionHost } = useSession();
+  const adminTest = sessionHost?.admin === true;
   const [events, setEvents] = useState(EVENTS);
   const [templates, setTemplates] = useState(TEMPLATES);
   const [step, setStep] = useState<1 | 2 | 3 | 4>(requested ? 3 : saved.step === 1 || saved.step === 2 || saved.step === 3 ? saved.step : 1);
@@ -283,7 +286,7 @@ export function CreateGuest() {
   const shownWhen = editorSummary.date
     ? `${formatLongDate(editorSummary.date)}${editorSummary.time ? ` · ${formatTime(editorSummary.time)}` : ""}`
     : previewWhen;
-  const ownsTemplate = Boolean(template && (template.free || owned.includes(template.id) || library.owns(template.id, template.free)));
+  const ownsTemplate = Boolean(template && (adminTest || template.free || owned.includes(template.id) || library.owns(template.id, template.free)));
   const link = liveCode ? guestInviteUrl(liveCode, template?.id) : "";
 
   function pickEvent(id: EventId) {
@@ -310,10 +313,6 @@ export function CreateGuest() {
 
   async function refreshHost() {
     const person = await getHost();
-    if (person.admin) {
-      window.location.assign("/admin");
-      return;
-    }
     setHost({ name: person.name, email: person.email });
     const purchases = await listPurchases().catch(() => [] as string[]);
     setOwned(purchases);
@@ -683,12 +682,14 @@ export function CreateGuest() {
                   <div className={template.free ? "cg-plan" : "cg-plan premium"}>
                     <header>
                       <strong>
-                        {template.name} · {template.free || ownsTemplate ? (template.free ? "Free" : "Owned") : "Premium"}
+                        {template.name} · {adminTest ? "Admin test" : template.free || ownsTemplate ? (template.free ? "Free" : "Owned") : "Premium"}
                       </strong>
-                      <b>{ownsTemplate && !template.free ? "Owned" : formatPrice(template)}</b>
+                      <b>{adminTest ? "No charge" : ownsTemplate && !template.free ? "Owned" : formatPrice(template)}</b>
                     </header>
                     <p>
-                      {template.free
+                      {adminTest
+                        ? "This account can publish without paying, so you can test the invitation."
+                        : template.free
                         ? "Free for this event, with a small Made with InvitesReady credit on the page."
                         : ownsTemplate
                           ? "This design is already yours. Publishing does not charge you again."

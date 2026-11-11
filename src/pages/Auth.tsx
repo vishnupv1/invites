@@ -192,11 +192,11 @@ export function Auth() {
 
   async function continueOn() {
     const person = await getHost().catch(() => null);
-    if (person?.admin) {
+    const next = params.get("next");
+    if (person?.admin && !accountReturn(next) && !publishDestination(next)) {
       window.location.assign("/admin");
       return;
     }
-    const next = params.get("next");
     window.location.assign(publishDestination(next) || accountReturn(next) || "/studio");
   }
 
