@@ -168,7 +168,7 @@
   pointer-events: none;
   transform: translate(-50%, 16px);
   background: linear-gradient(to top, #f6efe4 0%, #f6efe4 68%, transparent);
-  transition: opacity 1s ease, transform 1s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .mp-hero-title h1,
 .mp-hero-title .mp-kicker,
@@ -188,18 +188,6 @@
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-}
-.mp-skip {
-  position: absolute;
-  z-index: 20;
-  top: 18px;
-  right: 18px;
-  border: 1px solid #b99a6d;
-  background: #fff8ebd9;
-  border-radius: 20px;
-  padding: 8px 12px;
-  color: #695334;
-  font-size: 0.75rem;
 }
 .mp-hero.is-awakening .mp-lotus-open,
 .mp-hero.is-reveal .mp-lotus-open,

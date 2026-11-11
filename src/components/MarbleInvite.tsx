@@ -129,11 +129,11 @@ export function MarbleInvite({ fields, quiet = false, onReply }: {
     }
     setPhase("awakening");
     timers.current = [
-      window.setTimeout(() => setPhase("reveal"), 1800),
+      window.setTimeout(() => setPhase("reveal"), 900),
       window.setTimeout(() => {
         timers.current = [];
         setPhase("open");
-      }, 5800),
+      }, 1600),
     ];
   }
 
@@ -218,9 +218,6 @@ export function MarbleInvite({ fields, quiet = false, onReply }: {
             <p className="mp-hero-date">{stamp}</p>
             <button className="mp-text" type="button" disabled={phase !== "open"} onClick={enterInvite}>Explore our invitation ↓</button>
           </div>
-          {phase === "awakening" || phase === "reveal" ? (
-            <button className="mp-skip" type="button" onClick={finish}>Skip animation</button>
-          ) : null}
         </section>
 
         <section className="mp-section mp-intro" id="mp-welcome" ref={introRef} tabIndex={-1}>
