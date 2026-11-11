@@ -187,8 +187,10 @@ export function MarbleInvite({ fields, quiet = false, onReply }: {
       <div className="mp-scroll" ref={scrollRef}>
         <section className={`mp-hero is-${phase}`} aria-labelledby="mp-title">
           <div className="mp-grain" />
-          <p className="mp-kicker mp-hero-brand">The Marble Promise</p>
-          <p className="mp-sub">A love written in marble</p>
+          <div className="mp-hero-mark">
+            <p className="mp-kicker">The Marble Promise</p>
+            <p className="mp-sub">A love written in marble</p>
+          </div>
           <button
             ref={lotusRef}
             className="mp-lotus"
