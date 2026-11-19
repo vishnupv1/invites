@@ -41,6 +41,7 @@ import { CelestialInvite } from "./CelestialInvite";
 import { RaasInvite } from "./RaasInvite";
 import { MarbleInvite } from "./MarbleInvite";
 import { ForeverInvite } from "./ForeverInvite";
+import { EstateInvite } from "./EstateInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -463,6 +464,9 @@ export function InviteSite({
   }
   if (template.style === "forever") {
     return <ForeverInvite fields={fields} onReply={onReply} />;
+  }
+  if (template.style === "estate") {
+    return <EstateInvite fields={fields} onReply={onReply} />;
   }
   if (template.style === "raas") {
     return <RaasInvite fields={fields} onReply={onReply} />;

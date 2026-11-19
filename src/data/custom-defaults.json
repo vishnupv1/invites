@@ -467,6 +467,13 @@
     ],
     "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
   },
+  "estate": {
+    "programme": [
+      { "kick": "Tuesday, 27 July", "title": "Welcome drinks", "time": "16:00", "text": "Terrace · Garden attire", "note": "" },
+      { "kick": "Tuesday, 27 July", "title": "The ceremony", "time": "17:00", "text": "Estate garden", "note": "" },
+      { "kick": "Tuesday, 27 July", "title": "Dinner & dancing", "time": "19:00", "text": "Villa courtyard", "note": "" }
+    ]
+  },
   "forever": {
     "programme": [
       { "kick": "Friday, 10 December", "title": "Haldi", "time": "10:00 AM", "text": "The Lavender Garden, Udaipur", "note": "Sunshine yellow" },

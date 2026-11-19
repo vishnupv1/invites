@@ -37,6 +37,7 @@ import { CelestialInvite } from "../components/CelestialInvite";
 import { RaasInvite } from "../components/RaasInvite";
 import { MarbleInvite } from "../components/MarbleInvite";
 import { ForeverInvite } from "../components/ForeverInvite";
+import { EstateInvite } from "../components/EstateInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -1657,6 +1658,8 @@ export function Editor({
                     <MarbleInvite fields={previewFields} />
                   ) : template.style === "forever" ? (
                     <ForeverInvite fields={previewFields} />
+                  ) : template.style === "estate" ? (
+                    <EstateInvite fields={previewFields} />
                   ) : template.style === "raas" ? (
                     <RaasInvite fields={previewFields} />
                   ) : template.style === "weddingride" ? (

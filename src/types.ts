@@ -143,7 +143,8 @@ export type TemplateStyle =
   | "celestial"
   | "raas"
   | "marble"
-  | "forever";
+  | "forever"
+  | "estate";
 
 export type Template = {
   id: string;

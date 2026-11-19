@@ -48,6 +48,7 @@ import { CelestialInvite } from "../components/CelestialInvite";
 import { RaasInvite } from "../components/RaasInvite";
 import { MarbleInvite } from "../components/MarbleInvite";
 import { ForeverInvite } from "../components/ForeverInvite";
+import { EstateInvite } from "../components/EstateInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -157,6 +158,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <MarbleInvite fields={fields} />;
     case "forever":
       return <ForeverInvite fields={fields} />;
+    case "estate":
+      return <EstateInvite fields={fields} />;
     case "raas":
       return <RaasInvite fields={fields} />;
     case "weddingride":

@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  estate: "2026-11-19T22:48:00+05:30",
   forever: "2026-11-19T16:21:00+05:30",
   marble: "2026-11-11T11:20:00+05:30",
   raas: "2026-11-11T10:16:00+05:30",
@@ -81,6 +82,37 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "estate",
+    name: "The Painted Estate",
+    style: "estate",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Untie a silk ribbon and two painted flaps open onto a Mediterranean estate wedding. Guests see the day, the garden, and reply on the page.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.estate,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Sophia & Alexander",
+        title: "Invite you to celebrate their wedding",
+        detail: "",
+        date: "2027-07-27",
+        time: "16:00",
+        venue: "Villa del Mare",
+        address: "Amalfi Coast, Italy",
+        message: "Somewhere between the quiet mornings and the unexpected adventures, we found our favourite place: beside each other. Now we would love to share the beginning of our next chapter with you.",
+        dress: "Garden attire",
+        rsvpBy: "2027-06-27",
+        receptionTime: "19:00",
+        receptionVenue: "Villa del Mare",
+        receptionAddress: "Amalfi Coast, Italy",
+        lines: linesFor("estate"),
+      }),
+    },
+  },
   {
     id: "forever",
     name: "Garden of Forever",

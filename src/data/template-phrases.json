@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "estate": {
+    "style": "Painted estate",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a silk ribbon you untie so the painted flaps open"
+  },
   "forever": {
     "style": "Watercolour garden",
     "occasion": "Wedding",
