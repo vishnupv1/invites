@@ -40,10 +40,10 @@ const FLOWERS: Record<string, string> = {
 
 /** Seats across the whole bowl, both sides first, so the basket fills evenly. */
 const BOWL = [
-  [30, 10], [70, 12], [50, 16], [38, 8], [62, 14],
-  [34, 22], [66, 20], [46, 24], [56, 18], [42, 14],
-  [58, 8], [48, 6], [36, 18], [64, 24], [52, 22],
-  [40, 12], [60, 16], [32, 16], [68, 8], [44, 20],
+  [24, 8], [76, 10], [50, 16], [36, 4], [64, 6],
+  [30, 18], [70, 16], [44, 12], [58, 14], [50, 2],
+  [28, 14], [72, 4], [40, 6], [60, 18], [50, 10],
+  [34, 16], [66, 12], [46, 2], [54, 8], [38, 10],
 ];
 
 function stem(index: number, src: string) {
@@ -158,7 +158,7 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
           setBouquet((current) => [...current, stem(current.length, src)]);
           continue;
         }
-        const x = 34 + Math.random() * 32;
+        const x = 38 + Math.random() * 24;
         const id = token * 100000 + step * 1000 + Math.floor(Math.random() * 999);
         setFalls((current) => [...current, { id, src, x }]);
         await new Promise((resolve) => window.setTimeout(resolve, 1350));
@@ -289,7 +289,7 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
               </div>
               {couple.right ? (
                 <div className="gf-wreath">
-                  <img src={`${ART}/frame-rose.webp`} alt="" />
+                  <img src={`${ART}/frame-lavender.webp`} alt="" />
                   <strong>{couple.right}</strong>
                 </div>
               ) : null}
@@ -328,7 +328,10 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
             {photos.length ? (
               <div className="gf-viewer">
                 <button type="button" aria-label="Previous image" onClick={() => setPhoto((photo + photos.length - 1) % photos.length)}>‹</button>
-                <img className="gf-shot" src={photos[photo]} alt="" />
+                <div className="gf-wreath is-photo">
+                  <img className="gf-shot" src={photos[photo]} alt="" />
+                  <img className="gf-frame" src={`${ART}/frame-jasmine.webp`} alt="" />
+                </div>
                 <button type="button" aria-label="Next image" onClick={() => setPhoto((photo + 1) % photos.length)}>›</button>
               </div>
             ) : (
