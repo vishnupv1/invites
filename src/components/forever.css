@@ -249,8 +249,11 @@
   max-width: none;
   border-radius: 50%;
   object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
   transform: translate(-50%, -50%);
 }
+.gf-wreath.is-photo .gf-shot.is-on { opacity: 1; }
 .gf-clock { display: flex; justify-content: center; gap: 14px; margin: 14px 0 6px; }
 .gf-clock strong { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.8rem; font-style: italic; font-weight: 500; }
 .gf-clock span { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }

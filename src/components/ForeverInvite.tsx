@@ -124,6 +124,15 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
     return () => window.clearInterval(id);
   }, [quiet]);
 
+  const gallery = photos.join("\n");
+  useEffect(() => {
+    gallery.split("\n").filter(Boolean).forEach((src) => {
+      const image = new Image();
+      image.src = src;
+      image.decode?.().catch(() => undefined);
+    });
+  }, [gallery]);
+
   useEffect(() => {
     const root = scrollRef.current;
     if (!root) return;
@@ -329,7 +338,9 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
               <div className="gf-viewer">
                 <button type="button" aria-label="Previous image" onClick={() => setPhoto((photo + photos.length - 1) % photos.length)}>‹</button>
                 <div className="gf-wreath is-photo">
-                  <img className="gf-shot" src={photos[photo]} alt="" />
+                  {photos.map((src, index) => (
+                    <img key={`${src}-${index}`} className={index === photo ? "gf-shot is-on" : "gf-shot"} src={src} alt="" decoding="sync" />
+                  ))}
                   <img className="gf-frame" src={`${ART}/frame-jasmine.webp`} alt="" />
                 </div>
                 <button type="button" aria-label="Next image" onClick={() => setPhoto((photo + 1) % photos.length)}>›</button>
