@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "forever": {
+    "style": "Watercolour garden",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a flower pot that grows the wedding tree"
+  },
   "marble": {
     "style": "Marble lotus",
     "occasion": "Wedding",

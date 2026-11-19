@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  forever: "2026-11-19T16:21:00+05:30",
   marble: "2026-11-11T11:20:00+05:30",
   raas: "2026-11-11T10:16:00+05:30",
   celestial: "2026-11-10T18:05:00+05:30",
@@ -80,6 +81,37 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "forever",
+    name: "Garden of Forever",
+    style: "forever",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "A flower pot grows a tree onto a watercolour garden wedding. Guests see the celebrations, the venue, and reply on the page.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.forever,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with our families",
+        names: "Aarav & Meera",
+        title: "Every love begins with a seed",
+        detail: "",
+        date: "2027-12-12",
+        time: "10:00",
+        venue: "The Lavender Garden",
+        address: "Udaipur, Rajasthan",
+        message: "Together with our families, we invite you to celebrate our wedding.",
+        dress: "Garden festive",
+        rsvpBy: "2027-11-20",
+        receptionTime: "19:00",
+        receptionVenue: "The Lavender Garden",
+        receptionAddress: "Udaipur, Rajasthan",
+        lines: linesFor("forever"),
+      }),
+    },
+  },
   {
     id: "marble",
     name: "Marble Promise",
