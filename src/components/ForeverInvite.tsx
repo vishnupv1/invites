@@ -12,46 +12,13 @@ const ART = "/forever";
 type Reply = { name: string; note: string; attending: boolean };
 type Phase = "closed" | "open";
 
-/** Leaves and blossoms seated on the branches of the tree artwork. */
-const CANOPY: { left: number; top: number; bloom: boolean; delay: number; rot: number; sprig?: boolean }[] = [
-  { left: 9.6, top: 35.6, bloom: false, delay: 1.3, rot: -11 },
-  { left: 2.2, top: 48.9, bloom: true, delay: 1.56, rot: -33 },
-  { left: 17.8, top: 18.0, bloom: false, delay: 0.93, rot: 6, sprig: true },
-  { left: 13.5, top: 34.8, bloom: true, delay: 1.28, rot: 36 },
-  { left: 13.7, top: 46.3, bloom: false, delay: 1.52, rot: -32 },
-  { left: 17.5, top: 61.2, bloom: true, delay: 1.8, rot: -6 },
-  { left: 28.5, top: 14.1, bloom: false, delay: 0.85, rot: -17 },
-  { left: 21.5, top: 23.2, bloom: true, delay: 1.04, rot: 19 },
-  { left: 20.0, top: 38.1, bloom: false, delay: 1.35, rot: -30, sprig: true },
-  { left: 22.1, top: 53.6, bloom: true, delay: 1.68, rot: 28 },
-  { left: 39.4, top: 9.8, bloom: false, delay: 0.76, rot: -26 },
-  { left: 36.8, top: 18.1, bloom: true, delay: 0.93, rot: 1 },
-  { left: 36.7, top: 35.8, bloom: false, delay: 1.3, rot: -16 },
-  { left: 36.5, top: 53.3, bloom: true, delay: 1.67, rot: -24 },
-  { left: 41.5, top: 12.4, bloom: false, delay: 0.81, rot: 30, sprig: true },
-  { left: 40.9, top: 26.2, bloom: true, delay: 1.1, rot: -33 },
-  { left: 40.8, top: 40.1, bloom: false, delay: 1.39, rot: 16, sprig: true },
-  { left: 45.5, top: 51.9, bloom: true, delay: 1.64, rot: -10 },
-  { left: 44.1, top: 63.8, bloom: false, delay: 1.89, rot: -16 },
-  { left: 51.5, top: 9.5, bloom: true, delay: 0.75, rot: -12 },
-  { left: 56.5, top: 26.2, bloom: false, delay: 1.1, rot: -5 },
-  { left: 50.5, top: 34.3, bloom: true, delay: 1.27, rot: 12 },
-  { left: 55.6, top: 52.6, bloom: false, delay: 1.65, rot: -29 },
-  { left: 50.4, top: 62.0, bloom: true, delay: 1.85, rot: -2 },
-  { left: 68.0, top: 9.4, bloom: false, delay: 0.75, rot: -31, sprig: true },
-  { left: 66.9, top: 19.4, bloom: true, delay: 0.96, rot: -23 },
-  { left: 67.3, top: 36.1, bloom: false, delay: 1.31, rot: -7 },
-  { left: 63.3, top: 51.4, bloom: true, delay: 1.63, rot: -15 },
-  { left: 77.8, top: 14.2, bloom: false, delay: 0.85, rot: -8 },
-  { left: 78.0, top: 17.8, bloom: true, delay: 0.92, rot: 38 },
-  { left: 75.2, top: 42.0, bloom: false, delay: 1.43, rot: -8, sprig: true },
-  { left: 74.8, top: 46.8, bloom: true, delay: 1.53, rot: -14 },
-  { left: 74.7, top: 57.2, bloom: false, delay: 1.75, rot: -30 },
-  { left: 89.6, top: 19.6, bloom: true, delay: 0.96, rot: -28 },
-  { left: 86.6, top: 35.1, bloom: false, delay: 1.29, rot: -26, sprig: true },
-  { left: 86.0, top: 47.3, bloom: true, delay: 1.54, rot: -33 },
-  { left: 90.0, top: 36.1, bloom: false, delay: 1.31, rot: 21 },
-  { left: 90.3, top: 52.3, bloom: true, delay: 1.65, rot: -34 },
+/** Lavender blossoms seated on the tips of the opening stem. */
+const BLOOMS = [
+  { left: 53, top: 5, size: 20, delay: 3.15, rot: -8 },
+  { left: 8, top: 29, size: 15, delay: 2.45, rot: -16 },
+  { left: 94, top: 32, size: 15, delay: 2.55, rot: 12 },
+  { left: 14, top: 20, size: 13, delay: 2.75, rot: 10 },
+  { left: 90, top: 44, size: 13, delay: 2.1, rot: 18 },
 ];
 
 function GardenBg({ name }: { name: string }) {
@@ -280,14 +247,14 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
           </div>
           <div className="gf-stage">
             <div className="gf-grow">
-            <img className="gf-tree" src={`${ART}/tree.webp`} alt="" />
-            {CANOPY.map((sprig) => (
+            <img className="gf-tree" src={`${ART}/stem.webp`} alt="" />
+            {BLOOMS.map((bloom) => (
               <img
-                className={`gf-sprout${sprig.bloom ? " is-bloom" : sprig.sprig ? " is-sprig" : ""}`}
-                key={`${sprig.left}-${sprig.top}`}
-                src={`${ART}/${sprig.bloom ? "sprig-bloom.webp" : sprig.sprig ? "sprig-branch.webp" : "sprig-leaf.webp"}`}
+                key={`${bloom.left}-${bloom.top}`}
+                className="gf-crown"
+                src={`${ART}/sprig-lavender.webp`}
                 alt=""
-                style={{ left: `${sprig.left}%`, top: `${sprig.top}%`, ["--rot" as string]: `${sprig.rot}deg`, transitionDelay: `${(0.35 + (1 - sprig.top / 100) * 2.2).toFixed(2)}s` }}
+                style={{ left: `${bloom.left}%`, top: `${bloom.top}%`, width: `${bloom.size}%`, transitionDelay: `${bloom.delay}s`, ["--rot" as string]: `${bloom.rot}deg` }}
               />
             ))}
             </div>
