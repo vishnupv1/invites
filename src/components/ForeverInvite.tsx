@@ -281,7 +281,7 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
           <div className="gf-stage">
             <div className="gf-grow">
             <img className="gf-tree" src={`${ART}/tree.webp`} alt="" />
-            {CANOPY.map((sprig, index) => (
+            {CANOPY.map((sprig) => (
               <img
                 className={`gf-sprout${sprig.bloom ? " is-bloom" : sprig.sprig ? " is-sprig" : ""}`}
                 key={`${sprig.left}-${sprig.top}`}
