@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./forever.css";
 
@@ -447,6 +448,7 @@ export function ForeverInvite({ fields, quiet = false, onReply }: {
             <p className="gf-names">{names}</p>
             <button className="gf-btn" type="button" onClick={replay}>Grow our garden again</button>
             <a className="gf-made" href={madeWithHref("forever")}>Made with InvitesReady</a>
+            <InstagramLink />
           </div>
         </section>
       </div>

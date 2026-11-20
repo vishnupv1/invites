@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./celestial.css";
 
@@ -362,6 +363,7 @@ export function CelestialInvite({ fields, quiet = false, onReply }: {
             <p className="cv-lead">Thank you for being part of our universe.</p>
             <button className="cv-btn" type="button" onClick={replay}>Replay our story ↻</button>
             <a className="cv-made" href={madeWithHref("celestial")}>Made with InvitesReady</a>
+            <InstagramLink />
           </div>
         </footer>
       </div>

@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState, type FormEvent, type RefObject } fr
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields } from "../types";
 import "./starryfairytale.css";
@@ -469,6 +470,7 @@ export function StarryFairytaleInvite({
         <span className="sf-script sf-gold">{names}</span>
         <span className="sf-stamp">{dotStamp(fields.date)} · {tagOf(names)}</span>
         <a className="sf-made" href={madeWithHref("starryfairytale")}>Made with InvitesReady</a>
+        <InstagramLink />
       </footer>
 
       {toast ? (

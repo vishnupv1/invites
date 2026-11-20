@@ -3,6 +3,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields } from "../types";
 import "./rose.css";
@@ -472,6 +473,7 @@ export function RoseInvite({
         <span className="rg-k" style={{ color: "#D9C29A" }}>{stamp(fields.date)} · {cityOf(fields.address, fields.venue)}</span>
         <button type="button" className="rg-link" onClick={() => { setPhase("closed"); setGone(false); setRevealed(false); }}>↺ Open the doors again</button>
         <a className="rg-link" href={madeWithHref("rose")}>Made with InvitesReady</a>
+        <InstagramLink />
       </footer>
 
       {toast ? (

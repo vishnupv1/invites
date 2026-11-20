@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { packOf } from "../data/custom";
 import { formatLongDate, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields } from "../types";
 import "./jasmine.css";
@@ -210,6 +211,7 @@ export function JasmineInvite({ fields, quiet = false, onReply }: {
             )}
             <p className="jm-love">With love, {couple.first} & {couple.second}</p>
             <a className="jm-made" href={madeWithHref("jasmine")}>Made with InvitesReady</a>
+            <InstagramLink />
           </div>
         </section>
       ) : null}

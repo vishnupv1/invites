@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./blockbuster.css";
 
@@ -616,6 +617,7 @@ export function BlockbusterInvite({
                       <div className="ink"><strong>THE END</strong><span>…or just the beginning <i>♥</i></span></div>
                     </div>
                     <a className="bb-made" href={madeWithHref("blockbuster")}>Made with InvitesReady</a>
+                    <InstagramLink />
                   </div>
                 </div>
               </div>

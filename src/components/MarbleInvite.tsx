@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./marble.css";
 
@@ -404,6 +405,7 @@ export function MarbleInvite({ fields, quiet = false, onReply }: {
           <p>With love, gratitude, and a lifetime of memories ahead.</p>
           <button className="mp-btn" type="button" onClick={replay}>Replay the marble lotus ↺</button>
           <a className="mp-made" href={madeWithHref("marble")}>Made with InvitesReady</a>
+          <InstagramLink />
         </footer>
       </div>
 

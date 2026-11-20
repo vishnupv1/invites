@@ -3,6 +3,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields } from "../types";
 import "./firstdance.css";
@@ -491,6 +492,7 @@ export function FirstDanceInvite({
         <span className="fd-names">{fields.names}</span>
         <span>{stamp(fields.date)} · {tagOf(fields.names)}</span>
         <a className="fd-made" href={madeWithHref("firstdance")}>Made with InvitesReady</a>
+        <InstagramLink />
       </footer>
       {toast ? <div className="fd-toast" role="status"><span>{toast}</span><button type="button" onClick={() => setToast("")}>OK</button></div> : null}
       </>

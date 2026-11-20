@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "re
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./bali.css";
 
@@ -429,6 +430,7 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
                   <button className="br-tool" type="button" aria-pressed={still} onClick={() => setStill((value) => !value)}>Reduce motion</button>
                 </div>
                 <a className="br-made" href={madeWithHref("bali")}>Made with InvitesReady</a>
+                <InstagramLink className="br-made" />
               </footer>
             </section>
           </>

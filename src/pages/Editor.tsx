@@ -1776,7 +1776,7 @@ export function Editor({
                     <InviteView template={template} fields={previewFields} />
                   )}
                 </div>
-                {previewFields.audio && !hasComponent(template, "music") ? <SongControl src={previewFields.audio} /> : null}
+                {previewFields.audio ? <SongControl src={previewFields.audio} /> : null}
               </div>
               {guestPreview ? (
                 <div className="ed-gp">

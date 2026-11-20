@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./estate.css";
 
@@ -371,6 +372,7 @@ export function EstateInvite({ fields, quiet = false, onReply }: {
               <button type="button" onClick={replay}>Replay invitation</button>
               <p className="pe-note">The Painted Estate</p>
               <a className="pe-made" href={madeWithHref("estate")}>Made with InvitesReady</a>
+              <InstagramLink />
             </footer>
           </main>
         ) : null}

@@ -4,6 +4,7 @@ import { packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import { formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields, TemplateShot } from "../types";
 import "./templebells.css";
@@ -515,6 +516,7 @@ export function TempleBellsInvite({
             <Rule width={180} />
             <span className="stamp">{[stamp(fields.date), tagOf(fields.names)].filter(Boolean).join(" · ")}</span>
             <a href={madeWithHref("templebells")}>Made with InvitesReady</a>
+            <InstagramLink />
             <div className="lotus" aria-hidden="true">
               <img src={`${ART}/lotus.webp`} alt="" />
               <span className="glow" />

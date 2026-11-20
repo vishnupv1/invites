@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./backwater.css";
 
@@ -664,6 +665,7 @@ export function BackwaterInvite({
                   <span className="bw-script bw-write names" style={{ ["--d" as string]: "1.7s" }}>{fields.names}</span>
                   {tagOf(fields.names) ? <span className="bw-a bw-tag" style={{ ["--d" as string]: "2.2s" }}>{tagOf(fields.names)}</span> : null}
                   <a className="bw-a bw-made" style={{ ["--d" as string]: "2.4s" }} href={madeWithHref("backwater")}>Made with InvitesReady</a>
+                  <InstagramLink />
                 </div>
               </div>
             </section>

@@ -3,6 +3,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields } from "../types";
 import "./weddingride.css";
@@ -394,6 +395,7 @@ export function WeddingRideInvite({
           <p className="wr-sub">for being part of our journey</p>
           <span className="wr-when">{shortStamp(fields.date)} · {tagOf(fields.names)}</span>
           <a className="wr-made" href={madeWithHref("weddingride")}>Made with InvitesReady</a>
+          <InstagramLink />
           <div className="wr-drive" aria-hidden="true"><img src={`${ART}/car.webp`} alt="" /></div>
         </footer>
       </div>

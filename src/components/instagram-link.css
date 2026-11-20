@@ -12,17 +12,3 @@
 .ir-ig:hover {
   text-decoration: underline;
 }
-
-.guest-ig {
-  display: flex;
-  justify-content: center;
-  padding: 22px 16px calc(22px + env(safe-area-inset-bottom));
-}
-
-.guest-ig .ir-ig {
-  font-family: Outfit, "Segoe UI", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: #7a655c;
-}

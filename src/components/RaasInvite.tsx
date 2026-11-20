@@ -4,6 +4,7 @@ import { assetUrl } from "../api";
 import { packOf } from "../data/custom";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import "./raas.css";
 
@@ -379,6 +380,7 @@ export function RaasInvite({ fields, quiet = false, onReply }: {
           <p>With love, gratitude, and the blessings of our families.</p>
           <button className="er-btn is-light" type="button" onClick={replay}>Replay our story ↺</button>
           <a className="er-made" href={madeWithHref("raas")}>Made with InvitesReady</a>
+          <InstagramLink />
         </footer>
       </div>
 

@@ -4,6 +4,7 @@ import { packOf } from "../data/custom";
 import { photoNotes } from "../data/photos";
 import { calendarUrl, formatLongDate, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
+import { InstagramLink } from "./InstagramLink";
 import { madeWithHref } from "../lib/share";
 import type { InviteFields, TemplateShot } from "../types";
 import "./satinbow.css";
@@ -600,6 +601,7 @@ export function SatinBowInvite({
             <span className="sb-script sb-h">{fields.names || `${couple.first} & ${couple.second}`}</span>
             <span className="sb-serif">{stamp(fields.date)} · {tagOf(fields.names)}</span>
             <a className="sb-made" href={madeWithHref("satinbow")}>Made with InvitesReady</a>
+            <InstagramLink />
             <img className="sb-couple" src={`${ART}/couple.webp`} alt="Illustration of the couple walking away hand in hand" />
           </footer>
         </>
