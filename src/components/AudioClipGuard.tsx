@@ -30,26 +30,32 @@ export function AudioClipGuard({ src }: { src: string }) {
       }
     }
 
+    function replay(node: HTMLAudioElement, start: number) {
+      node.currentTime = start;
+      if (node.paused) void node.play().catch(() => {});
+    }
+
     function onTime(event: Event) {
       const found = fromEvent(event);
       if (!found) return;
       const { node, clip } = found;
-      if (node.currentTime >= clip.end - 0.12) {
-        if (node.loop) node.currentTime = clip.start;
-        else {
-          node.pause();
-          node.dispatchEvent(new Event("ended"));
-        }
-      } else if (node.currentTime < clip.start - 0.35) {
-        node.currentTime = clip.start;
-      }
+      if (node.currentTime >= clip.end - 0.12) replay(node, clip.start);
+      else if (node.currentTime < clip.start - 0.35) node.currentTime = clip.start;
+    }
+
+    function onEnded(event: Event) {
+      const found = fromEvent(event);
+      if (!found) return;
+      replay(found.node, found.clip.start);
     }
 
     document.addEventListener("play", onPlay, true);
     document.addEventListener("timeupdate", onTime, true);
+    document.addEventListener("ended", onEnded, true);
     return () => {
       document.removeEventListener("play", onPlay, true);
       document.removeEventListener("timeupdate", onTime, true);
+      document.removeEventListener("ended", onEnded, true);
     };
   }, [src]);
 
