@@ -15,7 +15,7 @@ import facts from "../data/site-facts.json" with { type: "json" };
 import pageCopy from "../data/page-copy.json" with { type: "json" };
 import { publishedTopics } from "../data/topics";
 import { SiteFooter } from "../components/SiteFooter";
-import { TEMPLATES, compareTemplatesNewestFirst, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
+import { TEMPLATES, compareTemplatesNewestFirst, formatPrice, getTemplate, sampleFor, withCatalogMeta } from "../data/templates";
 import { trackNamesEntered } from "../lib/analytics";
 import { saveCoupleNames } from "../lib/couple-names";
 import type { Template } from "../types";
@@ -260,8 +260,7 @@ export function Home({ focus }: { focus?: string }) {
                 <span className="ir-home-card-name">{template.name}</span>
                 <span className="ir-home-card-meta">
                   {descriptor(template)}
-                  <b>Free</b>
-                  {/* <b>{template.price > 0 ? rupee(template.price) : "Free"}</b> */}
+                  <b>{formatPrice(template)}</b>
                 </span>
               </Link>
             ))}

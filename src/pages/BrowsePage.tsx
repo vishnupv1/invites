@@ -7,7 +7,7 @@ import { PlayingInvite } from "../components/shell/PlayingInvite";
 import { IrApp } from "../components/shell/IrApp";
 import { TopBar } from "../components/shell/TopBar";
 import { EVENTS } from "../data/events";
-import { TEMPLATES, withCatalogMeta } from "../data/templates";
+import { TEMPLATES, formatPrice, withCatalogMeta } from "../data/templates";
 import { trackTemplatePreview } from "../lib/analytics";
 import type { EventId, Template } from "../types";
 import "./shell-browse.css";
@@ -148,8 +148,7 @@ export function BrowsePage({ backHref = "/" }: { backHref?: string }) {
               </span>
               <span className="ir-browse-name">
                 <span>{template.name}</span>
-                <b>Free</b>
-                {/* <b>{template.price > 0 ? rupee(template.price) : "Free"}</b> */}
+                <b>{formatPrice(template)}</b>
               </span>
               <span className="ir-browse-desc">{descriptor(template)}</span>
             </Link>
