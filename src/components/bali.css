@@ -40,8 +40,7 @@
   cursor: pointer;
 }
 .br :focus-visible { outline: 3px solid #087d91; outline-offset: 3px; }
-.br-scroll { height: 100%; overflow: auto; }
-.br:not(.is-ready) .br-scroll { overflow: hidden; }
+.br-scroll { position: relative; height: 100%; overflow: hidden; }
 
 .br-road {
   display: block;
@@ -240,22 +239,6 @@
 .br-foot { margin-top: 50px; }
 .br-made { display: inline-block; margin-top: 18px; font-size: 13px; letter-spacing: 0.04em; }
 
-.br.is-fading .br-scroll { overflow: hidden; }
-.br.is-fading .br-road {
-  animation: br-leave 1s ease forwards;
-  pointer-events: none;
-}
-.br.is-fading .br-beach {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-  animation: br-enter 1s ease forwards;
-}
-@keyframes br-leave { from { opacity: 1; } to { opacity: 0; } }
-@keyframes br-enter { from { opacity: 0; } to { opacity: 1; } }
 @keyframes br-wind { to { rotate: 4deg; } }
 @keyframes br-appear { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
 @keyframes br-ride {
@@ -330,6 +313,56 @@
 .br.is-still .br-scene .br-coco.is-1 { transform: rotate(8deg); }
 .br.is-quiet .br-scene .br-coco.is-2,
 .br.is-still .br-scene .br-coco.is-2 { transform: rotate(-8deg); }
+
+.br .br-road,
+.br .br-scene,
+.br .br-details {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.85s ease, visibility 0.85s ease;
+}
+.br .br-road.is-on,
+.br .br-scene.is-on,
+.br .br-details.is-on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+.br .br-scene {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.br .br-scene .br-art {
+  width: 100%;
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.br .br-aside { flex: none; }
+.br .br-details { overflow: auto; }
+
+@container (min-width: 760px) {
+  .br .br-scene {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    overflow: hidden;
+  }
+  .br .br-scene .br-art {
+    width: auto;
+    height: 100%;
+    min-height: 0;
+  }
+  .br .br-details {
+    max-width: 850px;
+    margin: auto;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .br *, .br *::before, .br *::after {
