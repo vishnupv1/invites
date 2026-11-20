@@ -92,7 +92,7 @@ export const TEMPLATES: Template[] = [
     events: ["engagement"],
     tagline: "Engagement",
     description: "Two fans open onto a coast road, and a scooter carries the couple toward their engagement in Bali. Guests see the day and reply on the page.",
-    asks: { photos: 3, audio: false, location: true },
+    asks: { photos: 6, audio: false, location: true },
     meta: META.bali,
     samples: {
       engagement: sample("engagement", {

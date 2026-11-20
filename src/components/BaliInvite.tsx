@@ -72,7 +72,10 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
   const when = momentOf(fields);
   const place = [fields.venue, fields.address].filter(Boolean).join(", ") || "Uluwatu, Bali";
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`;
-  const photos = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : "")).filter(Boolean);
+  const photos = Array.from({ length: 6 }, (_, index) => {
+    const item = fields.photos?.[index];
+    return item ? assetUrl(item) : "";
+  });
   const story = fields.message || "Now we want to celebrate our next chapter with you.";
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -93,6 +96,8 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const going = phase !== "closed";
   const ready = phase === "open";
@@ -104,13 +109,29 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   useEffect(() => {
+    if (!menu) return;
+    const close = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setMenu(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenu(false);
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menu]);
+
+  useEffect(() => {
     if (!ready || quiet) return;
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(id);
   }, [ready, quiet]);
 
   function goTo(next: number) {
-    const max = readyRef.current ? 4 : 0;
+    const max = readyRef.current ? 5 : 0;
     const target = Math.max(0, Math.min(max, next));
     if (target === pageRef.current || lock.current) return;
     lock.current = true;
@@ -244,6 +265,7 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
       return;
     }
     setBusy(false);
+    setMenu(false);
     setSent(true);
   }
 
@@ -333,29 +355,34 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
                 <h2>{place}</h2>
                 <p>{longDate(when)}</p>
                 <p>{shortTime(when)}</p>
-                <a className="br-link" href={maps} target="_blank" rel="noopener">Open in maps</a>
-                <button type="button" onClick={() => when && downloadCalendar(when, names, place)}>Add to calendar</button>
+                <div className="br-tools">
+                  <a className="br-link br-tool" href={maps} target="_blank" rel="noopener">Open in maps</a>
+                  <button className="br-tool" type="button" onClick={() => when && downloadCalendar(when, names, place)}>Add to calendar</button>
+                </div>
                 <button type="button" onClick={() => goTo(4)}>Continue</button>
               </aside>
             </section>
 
-            <section className={`br-details${page === 4 ? " is-on" : ""}`}>
+            <section className={`br-gallery${page === 4 ? " is-on" : ""}`} data-scene="gallery">
+              <small>Our photographs</small>
+              <h2>Us, so far</h2>
+              <div className="br-grid">
+                {photos.map((src, index) => src
+                  ? <img key={index} src={src} alt="" />
+                  : <span key={index} />)}
+              </div>
+              <button type="button" onClick={() => goTo(5)}>Continue</button>
+            </section>
+
+            <section className={`br-details${page === 5 ? " is-on" : ""}`}>
               <small>Counting down</small>
               <h2>Until we celebrate</h2>
               <p className="br-count" aria-live="off">{clock}</p>
-              {photos.length ? (
-                <div>
-                  <h2>Us, so far</h2>
-                  <div className="br-photos">
-                    {photos.map((src) => <img key={src} src={src} alt="" />)}
-                  </div>
-                </div>
-              ) : null}
               <h2>RSVP</h2>
               {sent ? (
                 <>
                   <p className="br-status" role="status">Thank you. Your reply was sent.</p>
-                  <button type="button" onClick={() => { setSent(false); setError(""); }}>Edit response</button>
+                  <button className="br-tool" type="button" onClick={() => { setSent(false); setError(""); }}>Edit response</button>
                 </>
               ) : (
                 <form className="br-form" onSubmit={submit}>
@@ -363,14 +390,24 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
                     Your name
                     <input name="name" required maxLength={100} value={name} onChange={(event) => setName(event.target.value)} />
                   </label>
-                  <label>
-                    Will you join us?
-                    <select name="reply" required value={attend} onChange={(event) => setAttend(event.target.value as "" | "yes" | "no")}>
-                      <option value="">Select</option>
-                      <option value="yes">Accept</option>
-                      <option value="no">Decline</option>
-                    </select>
-                  </label>
+                  <div className={`br-menu${menu ? " is-open" : ""}`} ref={menuRef}>
+                    <span id="br-reply">Will you join us?</span>
+                    <button type="button" aria-labelledby="br-reply" aria-haspopup="listbox" aria-expanded={menu} onClick={() => setMenu((open) => !open)}>
+                      {attend === "yes" ? "Accept" : attend === "no" ? "Decline" : "Select"}
+                      <i aria-hidden="true" />
+                    </button>
+                    {menu ? (
+                      <ul role="listbox" aria-labelledby="br-reply">
+                        {([["yes", "Accept"], ["no", "Decline"]] as const).map(([value, label]) => (
+                          <li key={value}>
+                            <button type="button" role="option" aria-selected={attend === value} onClick={() => { setAttend(value); setMenu(false); }}>
+                              {label}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
                   {yes ? (
                     <label>
                       Guests
@@ -382,13 +419,15 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
                     <textarea name="message" value={note} onChange={(event) => setNote(event.target.value)} />
                   </label>
                   {error ? <p className="br-status" role="status">{error}</p> : null}
-                  <button type="submit" disabled={busy}>{busy ? "Sending…" : "Send RSVP"}</button>
+                  <button className="br-tool" type="submit" disabled={busy}>{busy ? "Sending…" : "Send RSVP"}</button>
                 </form>
               )}
               <footer className="br-foot">
                 <h2>{names}</h2>
-                <button type="button" onClick={replay}>Replay invitation</button>
-                <button type="button" aria-pressed={still} onClick={() => setStill((value) => !value)}>Reduce motion</button>
+                <div className="br-tools">
+                  <button className="br-tool" type="button" onClick={replay}>Replay invitation</button>
+                  <button className="br-tool" type="button" aria-pressed={still} onClick={() => setStill((value) => !value)}>Reduce motion</button>
+                </div>
                 <a className="br-made" href={madeWithHref("bali")}>Made with InvitesReady</a>
               </footer>
             </section>
