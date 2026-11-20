@@ -6,15 +6,15 @@
   gap: 12px;
   flex-wrap: wrap;
   padding: 28px 16px calc(28px + env(safe-area-inset-bottom));
-  background: #f4eee3;
-  color: #17201c;
-  border-top: 1px solid rgba(23, 32, 28, 0.12);
-  font-family: Manrope, "Segoe UI", sans-serif;
+  background: #f6efe6;
+  color: #2c1b22;
+  border-top: 1px solid rgba(44, 27, 34, 0.12);
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 .guest-cta p {
   margin: 0;
   font-size: 15px;
-  color: #5e655f;
+  color: #7a655c;
 }
 .guest-cta a {
   min-height: 44px;
@@ -22,14 +22,14 @@
   align-items: center;
   padding: 0 18px;
   border-radius: 18px;
-  background: #0e4d3c;
-  color: #fffdf8;
+  background: #7a2e3b;
+  color: #fffaf4;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
 }
 .guest-cta a:hover {
-  background: #0a3a2d;
+  background: #541f29;
 }
 .guest-page {
   min-height: 100%;

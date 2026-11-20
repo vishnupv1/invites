@@ -38,6 +38,7 @@ import { RaasInvite } from "../components/RaasInvite";
 import { MarbleInvite } from "../components/MarbleInvite";
 import { ForeverInvite } from "../components/ForeverInvite";
 import { EstateInvite } from "../components/EstateInvite";
+import { BaliInvite } from "../components/BaliInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -939,7 +940,7 @@ export function Editor({
         <div className="ed-brand">
           {embedded ? null : (
           <Link className="ed-back" to={backTo} aria-label="Back to templates">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2c1b22" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M11 18l-6-6 6-6" />
             </svg>
           </Link>
@@ -1078,7 +1079,7 @@ export function Editor({
                 setTab(item.id);
               }}
             >
-              <Icon d={item.icon} stroke={sheet && tab === item.id ? "#1C3A2A" : "#5E7368"} />
+              <Icon d={item.icon} stroke={sheet && tab === item.id ? "#2c1b22" : "#7a655c"} />
               <span>{item.id}</span>
             </button>
           ))}
@@ -1220,7 +1221,7 @@ export function Editor({
                             notify(`${template.meta.reception} removed. Use undo to bring it back.`, "warn");
                           }}
                         >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C45B63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a33b45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
                           </svg>
                         </button>
@@ -1258,7 +1259,7 @@ export function Editor({
                       <div className="ed-fn-head">
                         <input className="ed-input" aria-label="Festivity name" value={item.name} onChange={(change) => patchFestivity(index, { name: change.target.value })} />
                         <button type="button" className="ed-remove" aria-label={`Remove ${item.name || "celebration"}`} onClick={() => removeFestivity(index)}>
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C45B63" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a33b45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
                           </svg>
                         </button>
@@ -1352,7 +1353,7 @@ export function Editor({
               </div>
               {template.meta.themes.length ? (
                 <div className="ed-field">
-                  <span className="ed-label">Colour theme · <span style={{ fontWeight: 500, color: "#716A6D" }}>{themeName}</span></span>
+                  <span className="ed-label">Colour theme · <span style={{ fontWeight: 500, color: "#7a655c" }}>{themeName}</span></span>
                   <div className="ed-swatches">
                     {template.meta.themes.map((theme) => {
                       const tone = SWATCHES.find((item) => item.id === theme.id);
@@ -1495,7 +1496,7 @@ export function Editor({
               </div>
               <div className={draft.audio ? "ed-row ed-track" : "ed-row ed-track on"}>
                 <button type="button" className="ed-play" aria-label="No music" disabled>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#CDC6C9" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#b3a297" aria-hidden="true"><path d="M8 5l11 7-11 7z" /></svg>
                 </button>
                 <div className="grow">
                   <b>{template.id === "thiruvizha" && !draft.audio ? "Nadaswaram" : "No music"}</b>
@@ -1660,6 +1661,8 @@ export function Editor({
                     <ForeverInvite fields={previewFields} />
                   ) : template.style === "estate" ? (
                     <EstateInvite fields={previewFields} />
+                  ) : template.style === "bali" ? (
+                    <BaliInvite fields={previewFields} />
                   ) : template.style === "raas" ? (
                     <RaasInvite fields={previewFields} />
                   ) : template.style === "weddingride" ? (
@@ -1698,7 +1701,7 @@ export function Editor({
             </div>
           </div>
           <div className="ed-caption">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#716A6D" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7a655c" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="9" />
               <path d="M12 8v5M12 16h.01" />
             </svg>
@@ -1742,7 +1745,7 @@ export function Editor({
                 <p className="ed-lead">{link ? "Share it with your guests now." : needsPay ? "Your draft is saved in My drafts. Watch it as a guest, then pay once to publish." : "Publish when the preview looks right."}</p>
               </div>
               <button type="button" className="ed-x" aria-label="Close" onClick={() => { setPublishOpen(false); setPubPhase("idle"); }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2c1b22" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </button>
@@ -1765,11 +1768,11 @@ export function Editor({
                     WhatsApp
                   </button>
                   <button type="button" onClick={() => void copyLink()}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 9h12v12H9zM5 15V5a2 2 0 0 1 2-2h10" /></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2c1b22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 9h12v12H9zM5 15V5a2 2 0 0 1 2-2h10" /></svg>
                     Copy link
                   </button>
                   <button type="button" onClick={() => setShowQr(true)}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM17 17h4v4h-4" /></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2c1b22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM17 17h4v4h-4" /></svg>
                     QR code
                   </button>
                 </div>

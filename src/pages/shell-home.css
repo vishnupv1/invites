@@ -1,50 +1,78 @@
 .ir-hero {
   background:
-    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(233, 162, 59, 0.18), transparent 60%),
-    var(--emerald);
-  color: var(--card);
-  border-radius: 0 0 34px 34px;
-  padding-bottom: 22px;
+    radial-gradient(ellipse 55% 42% at 50% 62%, rgba(198, 161, 90, 0.16), transparent 70%),
+    var(--paper);
+  color: var(--ink);
+  padding-bottom: 36px;
+  text-align: left;
 }
 
 .ir-hero-kicker {
-  color: var(--marigold-light);
+  color: var(--emerald);
 }
 
 .ir-hero-main {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  padding: 8px 20px 8px;
+  align-items: stretch;
+  gap: 0;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 22px 22px 0;
 }
 
 .ir-hero h1 {
-  margin: 10px 0 0;
-  max-width: 18ch;
-  font-size: 36px;
-  color: var(--card);
+  margin: 12px 0 0;
+  font-size: clamp(38px, 12vw, 46px);
+  font-weight: 500;
+  font-style: normal;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.ir-hero h1 span {
+  display: block;
 }
 
 .ir-hero-sub {
-  max-width: 36rem;
-  margin: 14px 0 0;
-  color: rgba(255, 253, 248, 0.82);
-  font-size: 15px;
+  max-width: 34ch;
+  margin: 16px 0 0;
+  color: var(--soft);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .ir-hero-stage {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 16px;
-  align-items: end;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+  padding: 12px 0 18px;
+}
+
+.ir-hero-stage::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  width: min(220px, 62%);
+  height: 36px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(84, 31, 41, 0.2), transparent 72%);
+  pointer-events: none;
 }
 
 .ir-hero-phone {
+  position: relative;
+  z-index: 1;
+  width: min(250px, 70%);
   min-width: 0;
 }
 
 .ir-hero-phone .ir-phone {
   width: 100%;
+  box-shadow: 0 28px 50px rgba(84, 31, 41, 0.16);
 }
 
 .ir-hero-phone .ir-preview,
@@ -70,49 +98,19 @@
   aspect-ratio: 390 / 844;
 }
 
-.ir-hero-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-bottom: 8px;
-}
-
-.ir-hero-stats p {
-  margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 253, 248, 0.18);
-}
-
-.ir-hero-stats b {
-  display: block;
-  font-size: 32px;
-  color: var(--card);
-}
-
-.ir-hero-price {
-  color: var(--marigold);
-}
-
-.ir-hero-stats span {
-  display: block;
-  margin-top: 2px;
-  color: rgba(255, 253, 248, 0.72);
-  font-size: 13px;
-}
-
-.ir-hero-stat-wide {
-  display: none;
-}
-
 .ir-namecard {
   position: relative;
   z-index: 2;
-  margin-top: -18px;
+  width: 100%;
+  max-width: 460px;
+  margin: 8px auto 0;
   padding: 16px 16px 14px;
   border-radius: 22px;
+  border: 1px solid var(--line);
   background: var(--card);
   color: var(--ink);
-  box-shadow: 0 16px 40px rgba(10, 40, 32, 0.18);
+  box-shadow: 0 10px 30px rgba(44, 27, 34, 0.05);
+  text-align: left;
 }
 
 .ir-namecard .ir-overline {
@@ -126,10 +124,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border: 0;
-  border-radius: 16px;
+  border-radius: 50%;
   background: var(--marigold);
   color: var(--emerald);
   cursor: pointer;
@@ -157,9 +155,11 @@
 
 .ir-marquee {
   overflow: hidden;
-  padding: 18px 0;
-  color: var(--soft);
-  font-weight: 800;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: var(--faint);
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-size: 12px;
@@ -180,12 +180,57 @@
 
 .ir-home-sec {
   scroll-margin-top: 84px;
-  padding: 12px 20px 28px;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 52px 22px 8px;
+}
+
+.ir-sec-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.ir-sec-head .ir-overline {
+  color: var(--emerald);
 }
 
 .ir-home-sec h2 {
-  margin: 0 0 16px;
-  font-size: 24px;
+  margin: 4px 0 0;
+  font-size: 36px;
+  font-weight: 500;
+  font-style: normal;
+  text-align: left;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.ir-sec-lead {
+  max-width: 38rem;
+  margin: 8px 0 22px;
+  color: var(--soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.ir-sec-link {
+  flex: 0 0 auto;
+  padding-bottom: 4px;
+  color: var(--emerald);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ir-swipe-note {
+  margin: -8px 0 12px;
+  color: var(--soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .ir-home-grid {
@@ -201,23 +246,29 @@
   min-width: 0;
   color: inherit;
   text-decoration: none;
+  transition: transform 0.35s ease;
 }
 
 .ir-home-card:nth-child(even) {
-  margin-top: 22px;
+  margin-top: 0;
 }
 
 .ir-home-shot {
   position: relative;
   display: block;
-  aspect-ratio: 390 / 844;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--paper-2);
+  box-shadow: 0 10px 24px rgba(44, 27, 34, 0.08);
 }
 
 .ir-home-card-name {
-  font-weight: 800;
+  font-family: var(--ir-display);
+  font-weight: 500;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1.1;
 }
 
 .ir-home-card-meta {
@@ -244,38 +295,40 @@
 .ir-steps {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
-  border-left: 1.5px dotted rgba(23, 32, 28, 0.28);
-  margin-left: 16px;
+  border: 0;
 }
 
 .ir-steps li {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 12px;
-  padding: 0 0 22px 18px;
+  display: block;
+  padding: 20px 0 6px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
 }
 
 .ir-steps span {
-  margin-left: -33px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--emerald);
-  color: var(--card);
-  font-size: 11px;
-  font-weight: 800;
+  display: block;
+  width: auto;
+  height: auto;
+  margin: 0 0 6px;
+  border-radius: 0;
+  background: none;
+  color: var(--emerald);
+  font-family: var(--ir-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .ir-steps h3 {
   margin: 2px 0 4px;
-  font-size: 16px;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 .ir-steps p,
@@ -288,26 +341,85 @@
 }
 
 .ir-priceband {
-  margin: 8px 20px 28px;
-  padding: 22px;
-  border-radius: 22px;
-  background: var(--emerald);
+  display: block;
+  width: 100%;
+  margin: 48px 0 12px;
+  padding: 56px 22px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--emerald-dark);
   color: var(--card);
+  text-align: left;
+}
+
+.ir-priceband-inner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.ir-priceband .ir-btn {
+  width: auto;
+  min-width: 240px;
+  margin-top: 8px;
 }
 
 .ir-priceband .ir-overline {
-  color: var(--marigold-light);
+  color: var(--marigold);
 }
 
 .ir-priceband h2 {
   margin: 8px 0;
-  font-size: 40px;
-  color: var(--marigold);
+  font-size: 56px;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  color: var(--card);
 }
 
+.ir-priceband h2::after { display: none; }
+
 .ir-priceband p {
-  color: rgba(255, 253, 248, 0.8);
-  margin-bottom: 16px;
+  max-width: 36rem;
+  color: rgba(255, 250, 244, 0.78);
+  margin-bottom: 18px;
+}
+
+.ir-points,
+.ir-topics {
+  display: grid;
+  gap: 0;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ir-points li,
+.ir-topics li {
+  padding: 16px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.ir-topics a {
+  display: inline-block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-family: var(--ir-display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.ir-topics p {
+  margin: 0;
+  color: var(--soft);
+  font-size: 14px;
 }
 
 .ir-plain {
@@ -318,16 +430,31 @@
   list-style: none;
 }
 
+.ir-plain li {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.ir-plain a {
+  color: var(--emerald);
+  font-weight: 700;
+  text-decoration: none;
+}
+
 .ir-faqs details {
   border-top: 1px solid var(--line);
   padding: 12px 0;
 }
 
 .ir-faqs summary {
-  min-height: 44px;
+  min-height: 48px;
   display: flex;
   align-items: center;
-  font-weight: 800;
+  font-family: var(--ir-display);
+  font-size: 22px;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -371,73 +498,89 @@
   align-items: center;
 }
 
+@media (max-width: 899px) {
+  .ir-home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 12px;
+  }
+
+  .ir-swipe-note { display: none; }
+
+  .ir-home-card-meta span { display: none; }
+}
+
 @media (min-width: 900px) {
   .ir-hero {
-    border-radius: 0 0 44px 44px;
-    padding-bottom: 48px;
+    padding-bottom: 28px;
   }
 
   .ir-hero-main {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
     column-gap: 48px;
-    row-gap: 28px;
-    padding: 18px 56px 10px;
-    align-items: end;
+    row-gap: 0;
+    align-items: center;
+    padding: 48px 40px 12px;
   }
 
   .ir-hero-copy { grid-column: 1; grid-row: 1; }
-  .ir-namecard { grid-column: 1; grid-row: 2; margin-top: 0; }
-  .ir-hero-stage { display: contents; }
+  .ir-namecard {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 32px 0 0;
+  }
+  .ir-hero-stage {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    margin-top: 0;
+    padding: 12px 0 24px;
+  }
 
   .ir-hero-phone {
-    grid-column: 2;
-    grid-row: 1 / span 3;
-    justify-self: end;
-    align-self: end;
-    width: min(280px, 54%);
-    margin-right: min(200px, 38%);
-    z-index: 1;
+    width: min(300px, 100%);
   }
 
-  .ir-hero-phone-back {
-    grid-column: 2;
-    grid-row: 1 / span 3;
-    justify-self: end;
-    align-self: end;
-    width: min(236px, 46%);
-    margin-right: 0;
-    margin-bottom: 0;
-    z-index: 0;
-  }
+  .ir-hero-phone-back { display: none; }
 
   .ir-hero h1 {
-    max-width: 18ch;
-    font-size: 56px;
+    margin: 14px 0 0;
+    font-size: 64px;
   }
 
   .ir-hero-sub { font-size: 18px; }
 
-  .ir-hero-phone-back { display: block; }
-
-  .ir-hero-stats {
-    grid-column: 1;
-    grid-row: 3;
-    flex-direction: row;
-    gap: 28px;
-  }
-
-  .ir-hero-stat-wide { display: block; }
-
-  .ir-hero-stats b { font-size: 40px; }
-
   .ir-home-sec,
   .ir-home-foot {
-    padding-left: 56px;
-    padding-right: 56px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .ir-home-sec h2 { font-size: 48px; }
+
+  .ir-points,
+  .ir-topics {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 40px;
+  }
+
+  .ir-points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 28px;
+    margin-top: 20px;
+  }
+
+  .ir-points li {
+    border-top: 0;
+    padding: 0 8px 0 22px;
+    border-left: 1px solid var(--line);
+  }
+
+  .ir-points li:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
 
   .ir-home-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -445,6 +588,14 @@
   }
 
   .ir-home-card:nth-child(even) { margin-top: 0; }
+
+  .ir-swipe-note { display: none; }
+
+  .ir-home-card:hover { transform: translateY(-8px); }
+
+  .ir-home-card:hover .ir-home-shot {
+    box-shadow: 0 22px 40px rgba(84, 31, 41, 0.16);
+  }
 
   .ir-steps {
     flex-direction: row;
@@ -455,13 +606,13 @@
 
   .ir-steps li {
     flex: 1;
-    display: block;
-    padding: 0;
   }
 
-  .ir-steps span { margin: 0 0 12px; }
+  .ir-steps span { margin: 0 0 8px; font-size: 32px; }
 
-  .ir-priceband { margin-left: 56px; margin-right: 56px; }
+  .ir-priceband { margin-top: 72px; padding: 72px 40px; }
+
+  .ir-priceband h2 { font-size: 72px; }
 
   .ir-home-sticky { display: none; }
 
@@ -474,9 +625,19 @@
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .ir-hero-phone { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ir-marquee > div { animation: none; }
-  .ir-namecard-go:active { transform: none; }
+  .ir-namecard-go:active,
+  .ir-home-card:hover { transform: none; }
+}
+
+@keyframes ir-float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
 }
 
 @keyframes ir-marquee {

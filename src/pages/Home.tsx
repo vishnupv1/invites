@@ -21,7 +21,7 @@ import { saveCoupleNames } from "../lib/couple-names";
 import type { Template } from "../types";
 import "./shell-home.css";
 
-const FEATURED = ["estate", "forever", "marble", "raas", "celestial", "jasmine", "blockbuster", "backwater", "peacock", "journal", "templebells", "satinbow", "starryfairytale", "weddingride", "firstdance", "lotus"];
+const FEATURED = ["bali", "estate", "forever", "marble", "raas", "celestial", "jasmine", "blockbuster", "backwater", "peacock", "journal", "templebells", "satinbow", "starryfairytale", "weddingride", "firstdance", "lotus"];
 
 const STEPS = facts.steps;
 const FAQS = facts.faqs;
@@ -198,36 +198,24 @@ export function Home({ focus }: { focus?: string }) {
   return (
     <IrApp>
       <div className="ir-home">
-        <DesktopNav tone="emerald" />
-        <header className="ir-hero is-emerald">
+        <DesktopNav tone="paper" />
+        <header className="ir-hero">
           <div className="ir-hero-main">
             <div className="ir-hero-copy">
               <p className="ir-overline ir-hero-kicker">Wedding invitations · India</p>
               <h1 className="ir-display">
-                Animated digital invitations for <span className="ir-em">weddings</span> and every celebration
+                <span>Invitations</span>
+                <span>they open like</span>
+                <span className="ir-em">a real card</span>
               </h1>
               <p className="ir-hero-sub">
-                An invitation guests open like a real card — envelope, seal and all. Shared on WhatsApp, with RSVPs for every function.
+                Envelope, seal, and an RSVP for every function. Made in minutes, then shared on WhatsApp.
               </p>
             </div>
 
             <div className="ir-hero-stage">
               {lead ? <HeroPhone template={lead} /> : null}
               {second ? <HeroPhone template={second} className="ir-hero-phone-back" /> : null}
-              <div className="ir-hero-stats">
-                <p>
-                  <b className="ir-display">5 min</b>
-                  <span>to make yours</span>
-                </p>
-                <p>
-                  <b className="ir-display ir-hero-price">₹199</b>
-                  <span>to publish</span>
-                </p>
-                <p className="ir-hero-stat-wide">
-                  <b className="ir-display">₹199</b>
-                  <span>every design, paid once</span>
-                </p>
-              </div>
             </div>
 
             <form className="ir-namecard" ref={nameCard} onSubmit={onNames}>
@@ -235,8 +223,7 @@ export function Home({ focus }: { focus?: string }) {
               <button className="ir-namecard-go" type="submit" aria-label="Try it with your names">
                 <ArrowIcon />
               </button>
-              <p className="ir-namecard-chips">Free to try · No sign-up · ₹199 to publish</p>
-              {/* <p className="ir-namecard-chips">Free to try · No sign-up · Pay at publish</p> */}
+              <p className="ir-namecard-chips">5 minutes to make · Free to try · ₹199 to publish</p>
             </form>
           </div>
         </header>
@@ -249,8 +236,15 @@ export function Home({ focus }: { focus?: string }) {
           </div>
         </div>
 
-        <section id="templates" className="ir-home-sec">
-          <h2 className="ir-display">Explore templates</h2>
+        <section id="templates" className="ir-home-sec ir-reveal">
+          <div className="ir-sec-head">
+            <div>
+              <p className="ir-overline">Designs</p>
+              <h2 className="ir-display">The collection</h2>
+            </div>
+            <Link className="ir-sec-link" to="/browse">See all</Link>
+          </div>
+          <p className="ir-sec-lead">Weddings, engagements, and the celebrations around them. Open any design before you start.</p>
           <div className="ir-home-grid">
             {featured.map((template) => (
               <Link key={template.id} className="ir-home-card" to={`/template/${template.id}`}>
@@ -259,7 +253,7 @@ export function Home({ focus }: { focus?: string }) {
                 </span>
                 <span className="ir-home-card-name">{template.name}</span>
                 <span className="ir-home-card-meta">
-                  {descriptor(template)}
+                  <span>{descriptor(template)}</span>
                   <b>{formatPrice(template)}</b>
                 </span>
               </Link>
@@ -267,8 +261,13 @@ export function Home({ focus }: { focus?: string }) {
           </div>
         </section>
 
-        <section id="how" className="ir-home-sec">
-          <h2 className="ir-display">How it works</h2>
+        <section id="how" className="ir-home-sec ir-reveal">
+          <div className="ir-sec-head">
+            <div>
+              <p className="ir-overline">How it works</p>
+              <h2 className="ir-display">Three steps, then a link</h2>
+            </div>
+          </div>
           <ol className="ir-steps">
             {STEPS.map((step) => (
               <li key={step.n}>
@@ -282,24 +281,36 @@ export function Home({ focus }: { focus?: string }) {
           </ol>
         </section>
 
-        <section id="pricing" className="ir-priceband">
-          <p className="ir-overline">Pricing</p>
-          <h2 className="ir-display">₹199</h2>
-          <p>Every design is ₹199, paid once. Designing and previewing stay free.</p>
-          <PrimaryButton href="/browse">Browse templates</PrimaryButton>
+        <section id="pricing" className="ir-priceband ir-reveal">
+          <div className="ir-priceband-inner">
+            <p className="ir-overline">Pricing</p>
+            <h2 className="ir-display">₹199, paid once</h2>
+            <p>Every design. Previewing stays free, and guests are never charged.</p>
+            <PrimaryButton variant="marigold" href="/browse">Browse templates</PrimaryButton>
+          </div>
         </section>
 
-        <section id="features" className="ir-home-sec">
-          <h2 className="ir-display">What guests get</h2>
-          <ul className="ir-plain">
+        <section id="features" className="ir-home-sec ir-reveal">
+          <div className="ir-sec-head">
+            <div>
+              <p className="ir-overline">For guests</p>
+              <h2 className="ir-display">Nothing to install</h2>
+            </div>
+          </div>
+          <ul className="ir-points">
             <li>They open one link. No app and no account.</li>
             <li>Each function can have its own time, place and dress.</li>
             <li>Replies come back on the same invitation.</li>
           </ul>
         </section>
 
-        <section id="faq" className="ir-home-sec">
-          <h2 className="ir-display">Questions</h2>
+        <section id="faq" className="ir-home-sec ir-reveal">
+          <div className="ir-sec-head">
+            <div>
+              <p className="ir-overline">Questions</p>
+              <h2 className="ir-display">Before you send it</h2>
+            </div>
+          </div>
           <div className="ir-faqs">
             {FAQS.map((item) => (
               <details key={item.q}>
@@ -310,15 +321,18 @@ export function Home({ focus }: { focus?: string }) {
           </div>
         </section>
 
-        <section id="occasions" className="ir-home-sec">
-          <h2 className="ir-display">Celebrations</h2>
-          <ul className="ir-plain">
+        <section id="occasions" className="ir-home-sec ir-reveal">
+          <div className="ir-sec-head">
+            <div>
+              <p className="ir-overline">Occasions</p>
+              <h2 className="ir-display">More than the wedding day</h2>
+            </div>
+          </div>
+          <ul className="ir-topics">
             {publishedTopics().map((topic) => (
               <li key={topic.id}>
                 <Link to={topic.path}>{topic.label}</Link>
-                {" — "}
-                {topic.description}
-                {` · ${topic.templates.length} ${topic.templates.length === 1 ? "template" : "templates"}`}
+                <p>{topic.description}</p>
               </li>
             ))}
           </ul>
@@ -328,7 +342,7 @@ export function Home({ focus }: { focus?: string }) {
 
         {showSticky ? (
           <div className="ir-home-sticky">
-            <StickyFooterCTA href="/browse" label="Browse templates" note="Free to publish" />
+            <StickyFooterCTA href="/browse" label="Browse templates" note="₹199, paid once" />
             {/* <StickyFooterCTA href="/browse" label="Browse templates" note="Free until you publish" /> */}
           </div>
         ) : null}

@@ -39,7 +39,7 @@ const NOTICE_ROWS = [
 ] as const;
 
 const TONES = [
-  { background: "#E6EFE9", color: "#0E4D3C" },
+  { background: "#E6EFE9", color: "#7a2e3b" },
   { background: "#FBEBD1", color: "#9A6418" },
   { background: "#F5DDD6", color: "#C8442A" },
 ];

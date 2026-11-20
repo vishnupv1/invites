@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  bali: "2026-11-20T14:31:00+05:30",
   estate: "2026-11-19T22:48:00+05:30",
   forever: "2026-11-19T16:21:00+05:30",
   marble: "2026-11-11T11:20:00+05:30",
@@ -82,6 +83,34 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "bali",
+    name: "Bali Romance",
+    style: "bali",
+    price: 199,
+    free: false,
+    events: ["engagement"],
+    tagline: "Engagement",
+    description: "Two fans open onto a coast road, and a scooter carries the couple toward their engagement in Bali. Guests see the day and reply on the page.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.bali,
+    samples: {
+      engagement: sample("engagement", {
+        hosts: "We are getting engaged",
+        names: "Kelly & Daniel",
+        title: "Save the Date",
+        detail: "",
+        date: "2027-04-18",
+        time: "17:00",
+        venue: "Uluwatu",
+        address: "Bali",
+        message: "Now we want to celebrate our next chapter with you.",
+        dress: "Tropical linen",
+        rsvpBy: "2027-03-18",
+        lines: linesFor("bali"),
+      }),
+    },
+  },
   {
     id: "estate",
     name: "The Painted Estate",

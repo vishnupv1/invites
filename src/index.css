@@ -1,57 +1,57 @@
-.acct-wait { min-height: 100vh; background: #f4eee3; display: grid; place-items: center; }
+.acct-wait { min-height: 100vh; background: #f6efe6; display: grid; place-items: center; }
 
 .ir-app h1,
 .ir-app h2,
 .ir-app h3 {
-  font-family: Fraunces, "Iowan Old Style", Palatino, serif;
-  font-weight: 560;
-  letter-spacing: -0.03em;
-  color: #17201c;
+  font-family: "Cormorant Garamond", Palatino, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #2c1b22;
 }
 
 .ir-app .solid {
-  background: #0e4d3c;
-  color: #fffdf8;
-  border-color: #0e4d3c;
-  border-radius: 18px;
+  background: #7a2e3b;
+  color: #fffaf4;
+  border-color: #7a2e3b;
+  border-radius: 999px;
 }
 
 .ir-app .ghost {
-  border-radius: 18px;
-  border-color: #0e4d3c;
-  color: #0e4d3c;
+  border-radius: 999px;
+  border-color: #7a2e3b;
+  color: #7a2e3b;
 }
 
 .ir-app .topic-lead,
-.ir-app .eyebrow { color: #5e655f; }
+.ir-app .eyebrow { color: #7a655c; }
 
 .ir-app .shop-card,
 .ir-app .steps article {
-  background: #fffdf8;
-  border-color: rgba(23, 32, 28, 0.12);
+  background: #fffaf4;
+  border-color: rgba(44, 27, 34, 0.12);
 }
 
 :root {
-  color: #1C3A2A;
-  background: #F4F8F5;
-  font-family: Geist, "Segoe UI", sans-serif;
+  color: #2c1b22;
+  background: #f6efe6;
+  font-family: Outfit, "Segoe UI", sans-serif;
   color-scheme: light;
   font-weight: 400;
   line-height: 1.5;
-  --ink: #1C3A2A;
-  --muted: #5E7368;
-  --paper: #FFFFFF;
-  --line: #D7E6DC;
+  --ink: #2c1b22;
+  --muted: #7a655c;
+  --paper: #f6efe6;
+  --line: #eadfce;
   --moss: #2e8b57;
   --magenta: #C5E0D2;
   --rose: #C5E0D2;
   --coral: #8FB9A0;
-  --berry: #1C3A2A;
+  --berry: #2c1b22;
   --plum: var(--magenta);
   --plum-dark: var(--berry);
   --gold: var(--rose);
   --error: #8F2D2D;
-  --link: #1C3A2A;
+  --link: #2c1b22;
 }
 
 * { box-sizing: border-box; }
@@ -108,7 +108,7 @@ h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; 
   cursor: pointer;
   background: transparent;
 }
-.solid { background: var(--plum); color: #1C3A2A; border-color: var(--plum); }
+.solid { background: var(--plum); color: #2c1b22; border-color: var(--plum); }
 .tone { text-align: center; }
 .tone-banquet { background: #172033; color: #f4efe4; border: 1px solid #c6a15a; }
 .tone-lantern { background: #123c3a; color: #f6e7c1; }
@@ -131,7 +131,7 @@ h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; 
   padding: 8px 12px;
   cursor: pointer;
 }
-.chip.on { background: var(--plum); color: #1C3A2A; border-color: var(--plum); }
+.chip.on { background: var(--plum); color: #2c1b22; border-color: var(--plum); }
 .detail-line { letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.78rem; margin: 0; }
 .hero-card { text-decoration: none; display: block; }
 
@@ -190,7 +190,7 @@ h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; 
   overflow: hidden;
   border: 0;
   padding: 0;
-  background: #F4F8F5;
+  background: #f6efe6;
   cursor: pointer;
 }
 .mini-preview img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
@@ -198,14 +198,14 @@ h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; 
   width: min(520px, 100%);
   max-height: min(92vh, 920px);
   overflow: auto;
-  background: #F4F8F5;
+  background: #f6efe6;
   border-radius: 18px;
   padding: 16px;
 }
 .preview-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 12px 0; }
 .preview-bar .eyebrow { margin: 0; }
 .preview-stage { display: flex; justify-content: center; }
-.site-preview { position: fixed; inset: 0; z-index: 30; overflow: auto; background: #F4F8F5; }
+.site-preview { position: fixed; inset: 0; z-index: 30; overflow: auto; background: #f6efe6; }
 .site-preview .site-hero { min-height: calc(100vh - 64px); }
 .preview-toolbar {
   position: sticky;
@@ -222,7 +222,7 @@ h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; 
 }
 .preview-toolbar .solid,
 .site-preview a.solid {
-  color: #1C3A2A;
+  color: #2c1b22;
 }
 @media (max-width: 720px) {
   .preview-toolbar {
@@ -243,7 +243,7 @@ h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.05; margin: 0 0 16px; 
 .shop-copy p, .shop-copy h3 { margin: 0; }
 .shop-copy small { color: var(--muted); }
 .pill { border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; font-size: 0.82rem; }
-.pill.free { background: #12261c; color: #3f5a45; }
+.pill.free { background: #541f29; color: #f3e4c4; }
 
 .detail, .editor { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: start; }
 .detail-preview, .preview { display: flex; justify-content: center; }
@@ -261,7 +261,7 @@ input, textarea {
   padding: 10px 12px;
   color: var(--ink);
 }
-input::placeholder, textarea::placeholder { color: #5E7368; }
+input::placeholder, textarea::placeholder { color: #7a655c; }
 .form-error { color: #8a333b; }
 .extra-ask { border: 1px solid var(--line); border-radius: 14px; margin: 12px 0; padding: 12px; }
 .extra-ask legend { padding: 0 6px; }
@@ -276,7 +276,7 @@ input::placeholder, textarea::placeholder { color: #5E7368; }
 .modal-back {
   position: fixed;
   inset: 0;
-  background: rgba(90, 150, 120, 0.45);
+  background: rgba(122, 46, 59, 0.45);
   display: grid;
   place-items: center;
   padding: 20px;
@@ -287,10 +287,10 @@ input::placeholder, textarea::placeholder { color: #5E7368; }
 .coupon-row { display: flex; gap: 8px; align-items: center; }
 .coupon-row input { flex: 1; }
 .coupon-row button { white-space: nowrap; }
-.coupon-ok { margin: 0; color: #3f5a45; font-weight: 700; }
+.coupon-ok { margin: 0; color: #7a2e3b; font-weight: 700; }
 .checkout-note { margin: 16px 0 0; color: var(--muted); font-size: 0.88rem; }
 
-.public { min-height: 100vh; display: grid; justify-items: center; align-content: center; gap: 18px; padding: 32px 16px 48px; background: #f4eee3; color: #17201c; font-family: Manrope, "Segoe UI", sans-serif; }
+.public { min-height: 100vh; display: grid; justify-items: center; align-content: center; gap: 18px; padding: 32px 16px 48px; background: #f6efe6; color: #2c1b22; font-family: Outfit, "Segoe UI", sans-serif; }
 .rsvp { width: min(440px, 100%); padding: 18px; }
 .made { font-size: 0.9rem; }
 .studio .plain { list-style: none; padding: 0; }
@@ -318,7 +318,7 @@ input::placeholder, textarea::placeholder { color: #5E7368; }
   text-align: center;
 }
 .garden .script { font-family: "Pinyon Script", cursive; font-size: 3.4rem; font-weight: 400; margin: 8px 0; letter-spacing: 0; }
-.garden .sprig { position: absolute; width: 90px; color: #6f8b74; }
+.garden .sprig { position: absolute; width: 90px; color: #7a2e3b; }
 .garden .left { top: 8px; left: 8px; }
 .garden .right { top: 8px; right: 8px; }
 

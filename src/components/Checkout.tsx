@@ -73,7 +73,7 @@ function openRazorpay(
       name: "InvitesReady",
       description: `Unlock ${templateName}`,
       prefill: { name: name.trim(), email: email.trim(), contact: phone.replace(/\D/g, "") },
-      theme: { color: "#1C3A2A" },
+      theme: { color: "#2c1b22" },
       handler: (paid) => {
         if (!claimCallback(gate)) return;
         resolve(paid);

@@ -42,7 +42,7 @@ const SUBS: Record<Section, string> = {
   More: "Purchases and this console.",
 };
 
-const COLORS = ["#1C3A2A", "#6F9A82", "#2E8B57", "#C8392B", "#1C3A2A", "#1C3A2A"];
+const COLORS = ["#2c1b22", "#6F9A82", "#2E8B57", "#C8392B", "#2c1b22", "#2c1b22"];
 
 function initials(name: string) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
@@ -180,7 +180,7 @@ export function Admin() {
         <nav aria-label="Admin">
           {SECTIONS.map((label) => (
             <button key={label} type="button" className={section === label ? "console-nav on" : "console-nav"} aria-current={section === label ? "page" : undefined} onClick={() => setSection(label)}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={section === label ? "#1C3A2A" : "#A8C4B4"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={section === label ? "#2c1b22" : "#A8C4B4"} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d={ICONS[label]} />
               </svg>
               <span>{label}</span>
@@ -188,7 +188,7 @@ export function Admin() {
           ))}
         </nav>
         <div className="console-account">
-          <div className="avatar" style={{ background: "#1C3A2A", color: "#fff" }}>{initials(data.admin.name)}</div>
+          <div className="avatar" style={{ background: "#2c1b22", color: "#fff" }}>{initials(data.admin.name)}</div>
           <div style={{ flexGrow: 1 }}>
             <strong>{data.admin.name}</strong>
             <small>Admin</small>
@@ -269,7 +269,7 @@ export function Admin() {
                 ))}
               </div>
               <div className="search">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#716A6D" strokeWidth="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7a655c" strokeWidth="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
                 <input type="search" placeholder="Search templates" value={tplQuery} onChange={(input) => setTplQuery(input.target.value)} />
               </div>
             </div>

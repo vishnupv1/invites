@@ -144,7 +144,8 @@ export type TemplateStyle =
   | "raas"
   | "marble"
   | "forever"
-  | "estate";
+  | "estate"
+  | "bali";
 
 export type Template = {
   id: string;

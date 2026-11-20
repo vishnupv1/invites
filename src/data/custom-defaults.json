@@ -467,6 +467,11 @@
     ],
     "caption": "Soft pastels and flowing fabrics — think blush, sage, champagne and mauve. Comfortable shoes for the garden lawn."
   },
+  "bali": {
+    "programme": [
+      { "kick": "Sunday, 18 April", "title": "The celebration", "time": "17:00", "text": "Uluwatu, Bali", "note": "" }
+    ]
+  },
   "estate": {
     "programme": [
       { "kick": "Tuesday, 27 July", "title": "Welcome drinks", "time": "16:00", "text": "Terrace · Garden attire", "note": "" },

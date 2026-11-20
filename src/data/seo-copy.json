@@ -148,6 +148,12 @@
       "description": "Scroll a starry night as the chapel rises and a ring descends. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
       "lead": "A moon, a floating chapel and a ring under the stars. Made for a wedding at St. Mary's Basilica in Bengaluru."
     },
+    "bali": {
+      "heading": "Bali Romance engagement invitation",
+      "title": "Bali Romance – Tropical Engagement Invitation | InvitesReady",
+      "description": "Two fans open onto a coast road as a scooter carries the couple to their engagement. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
+      "lead": "Woven fans, a watercolour coast road, and a celebration above the sea. Made for an engagement in Uluwatu, Bali."
+    },
     "estate": {
       "heading": "The Painted Estate wedding invitation",
       "title": "The Painted Estate – Mediterranean Wedding Invitation | InvitesReady",
@@ -568,11 +574,10 @@
       "label": "Engagement",
       "heading": "Engagement invitations",
       "title": "Engagement Invitation – Digital Card | InvitesReady",
-      "description": "Draft page for a digital engagement invitation. No engagement-only template yet. Not indexed.",
-      "lead": "There is no engagement-only template yet. The cards below are wedding designs you can retitle. This page is a draft and is not indexed.",
+      "description": "A tropical engagement invitation. Fans open onto a coast road, guests see the day, and RSVP on the page. ₹199, paid once.",
+      "lead": "Bali Romance is an engagement invitation: two fans open, a scooter follows the coast, and guests reply on the page.",
       "templates": [
-        "aurelia",
-        "anna"
+        "bali"
       ],
       "related": [
         "/wedding"

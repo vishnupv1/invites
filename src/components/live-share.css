@@ -5,12 +5,12 @@
   z-index: 240;
   display: grid;
   place-items: center;
-  font-family: "Manrope", system-ui, sans-serif;
-  color: #17201c;
+  font-family: "Outfit", system-ui, sans-serif;
+  color: #2c1b22;
 }
 
-.lv-live { background: #0e4d3c; }
-.lv-share { background: #f4eee3; }
+.lv-live { background: #7a2e3b; }
+.lv-share { background: #f6efe6; }
 
 .lv-sheet {
   width: min(100%, 420px);
@@ -22,7 +22,7 @@
   overflow: hidden;
 }
 
-.lv-sheet.won { color: #f4eee3; background: #0e4d3c; }
+.lv-sheet.won { color: #f6efe6; background: #7a2e3b; }
 
 .lv-body {
   flex: 1;
@@ -36,8 +36,8 @@
   height: 86px;
   margin: 28px auto 0;
   border-radius: 50%;
-  background: #e9a23b;
-  color: #0a3a2d;
+  background: #c6a15a;
+  color: #541f29;
   display: grid;
   place-items: center;
   box-shadow: 0 0 0 10px rgba(233, 162, 59, 0.18), 0 0 0 22px rgba(233, 162, 59, 0.08);
@@ -46,7 +46,7 @@
 .lv-seal svg { width: 36px; height: 36px; }
 
 .lv-sheet.won h2 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "Cormorant Garamond", Palatino, serif;
   font-weight: 400;
   font-size: 46px;
   line-height: 0.98;
@@ -55,13 +55,13 @@
   margin: 16px 0 10px;
 }
 
-.lv-sheet.won h2 i { font-style: italic; color: #e9a23b; }
+.lv-sheet.won h2 i { font-style: italic; color: #c6a15a; }
 
 .lv-sheet.won p {
   text-align: center;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(244, 238, 227, 0.75);
+  color: rgba(246, 239, 230, 0.75);
   margin: 0 0 20px;
 }
 
@@ -106,8 +106,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(244, 238, 227, 0.1);
-  border: 1px solid rgba(244, 238, 227, 0.2);
+  background: rgba(246, 239, 230, 0.1);
+  border: 1px solid rgba(246, 239, 230, 0.2);
   border-radius: 18px;
   padding: 6px 6px 6px 16px;
   font-size: 13.5px;
@@ -127,8 +127,8 @@
   padding: 0 15px;
   border: none;
   border-radius: 13px;
-  background: #e9a23b;
-  color: #0a3a2d;
+  background: #c6a15a;
+  color: #541f29;
   font-weight: 800;
   font-size: 13px;
   cursor: pointer;
@@ -152,8 +152,8 @@
   padding: 0 8px 0 22px;
   border: none;
   border-radius: 18px;
-  background: #0e4d3c;
-  color: #f4eee3;
+  background: #7a2e3b;
+  color: #f6efe6;
   font-weight: 800;
   font-size: 15.5px;
   text-decoration: none;
@@ -164,19 +164,19 @@
   width: 42px;
   height: 42px;
   border-radius: 13px;
-  background: #e9a23b;
-  color: #0a3a2d;
+  background: #c6a15a;
+  color: #541f29;
   display: grid;
   place-items: center;
   font-size: 18px;
 }
 
-.lv-go.gold { background: #e9a23b; color: #0a3a2d; }
-.lv-go.gold b { background: #0e4d3c; color: #e9a23b; }
+.lv-go.gold { background: #c6a15a; color: #541f29; }
+.lv-go.gold b { background: #7a2e3b; color: #c6a15a; }
 .lv-go.is-wa { background: #1faf5a; color: #fff; }
 .lv-go.is-wa b { background: rgba(255, 255, 255, 0.2); color: #fff; }
-.lv-go.line { background: transparent; color: #f4eee3; border: 1.5px solid rgba(244, 238, 227, 0.25); }
-.lv-go.line b { background: rgba(244, 238, 227, 0.12); color: #f4eee3; }
+.lv-go.line { background: transparent; color: #f6efe6; border: 1.5px solid rgba(246, 239, 230, 0.25); }
+.lv-go.line b { background: rgba(246, 239, 230, 0.12); color: #f6efe6; }
 
 .lv-petal {
   position: absolute;
@@ -202,21 +202,21 @@
 
 .lv-bar h1 {
   margin: 0;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "Cormorant Garamond", Palatino, serif;
   font-weight: 500;
   font-size: 24px;
   letter-spacing: -0.02em;
 }
 
-.lv-bar small { display: block; margin-top: 3px; font-size: 11.5px; color: #5e655f; font-weight: 600; }
+.lv-bar small { display: block; margin-top: 3px; font-size: 11.5px; color: #7a655c; font-weight: 600; }
 
 .lv-back {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1.5px solid rgba(23, 32, 28, 0.12);
+  border: 1.5px solid rgba(44, 27, 34, 0.12);
   background: transparent;
-  color: #17201c;
+  color: #2c1b22;
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -227,7 +227,7 @@
   border-radius: 24px;
   padding: 16px 12px;
   background: #e8dfcf;
-  background-image: radial-gradient(rgba(23, 32, 28, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(44, 27, 34, 0.05) 1px, transparent 1px);
   background-size: 14px 14px;
 }
 
@@ -243,7 +243,7 @@
 .lv-card { background: #f2f7ee; border-radius: 11px; overflow: hidden; }
 .lv-card .lv-mini { width: 100%; }
 .lv-card p { margin: 0; padding: 8px 10px 2px; font-weight: 800; font-size: 13px; }
-.lv-card small { display: block; padding: 0 10px 8px; color: #5e655f; font-size: 11.5px; }
+.lv-card small { display: block; padding: 0 10px 8px; color: #7a655c; font-size: 11.5px; }
 .lv-bub-text { padding: 8px 6px 4px; line-height: 1.4; white-space: pre-wrap; }
 
 .lv-msg {
@@ -253,7 +253,7 @@
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #5e655f;
+  color: #7a655c;
 }
 
 .ed-root .lv-msg textarea,
@@ -269,10 +269,10 @@
   letter-spacing: 0;
   text-transform: none;
   font-weight: 600;
-  color: #17201c;
+  color: #2c1b22;
   border: 0 !important;
   border-radius: 0 !important;
-  border-bottom: 2px solid #17201c !important;
+  border-bottom: 2px solid #2c1b22 !important;
   background: transparent !important;
   box-shadow: none !important;
   outline: none !important;
@@ -294,7 +294,7 @@
   padding: 12px 4px;
   border-radius: 18px;
   border: none;
-  background: #fffdf8;
+  background: #fffaf4;
   font-size: 11.5px;
   font-weight: 700;
   cursor: pointer;
@@ -308,18 +308,18 @@
   display: grid;
   place-items: center;
   font-size: 18px;
-  background: #ebe3d4;
+  background: #eadfce;
 }
 
 .lv-apps i.is-wa { background: #d5f5c6; }
-.lv-apps i.gp { background: #f6d29a; }
+.lv-apps i.gp { background: #f3e4c4; }
 .lv-apps i.st { background: #f5d5cc; }
 
 .lv-done {
   align-self: center;
   font-weight: 800;
   font-size: 13px;
-  color: #0e4d3c;
+  color: #7a2e3b;
   text-underline-offset: 4px;
 }
 
@@ -328,8 +328,8 @@
   left: 50%;
   bottom: 120px;
   transform: translateX(-50%);
-  background: #17201c;
-  color: #f4eee3;
+  background: #2c1b22;
+  color: #f6efe6;
   border-radius: 14px;
   padding: 11px 16px;
   font-size: 13px;

@@ -1,22 +1,22 @@
 /* Shell tokens. They live on .ir-app so :root and invitation templates stay as they are. */
 
 .ir-app {
-  --paper: #f4eee3;
-  --paper-2: #ebe3d4;
-  --card: #fffdf8;
-  --ink: #17201c;
-  --soft: #5e655f;
-  --faint: #9aa096;
-  --line: rgba(23, 32, 28, 0.12);
-  --emerald: #0e4d3c;
-  --emerald-dark: #0a3a2d;
-  --marigold: #e9a23b;
-  --marigold-light: #f6d29a;
-  --vermilion: #c8442a;
+  --paper: #f6efe6;
+  --paper-2: #eadfce;
+  --card: #fffaf4;
+  --ink: #2c1b22;
+  --soft: #7a655c;
+  --faint: #b3a297;
+  --line: rgba(44, 27, 34, 0.12);
+  --emerald: #7a2e3b;
+  --emerald-dark: #541f29;
+  --marigold: #c6a15a;
+  --marigold-light: #f3e4c4;
+  --vermilion: #a33b45;
   --success: #1c8a4e;
   --whatsapp: #1faf5a;
-  --ir-sans: Manrope, "Segoe UI", sans-serif;
-  --ir-display: Fraunces, "Iowan Old Style", Palatino, serif;
+  --ir-sans: Outfit, "Segoe UI", sans-serif;
+  --ir-display: "Cormorant Garamond", Palatino, "Times New Roman", serif;
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--paper);
@@ -29,18 +29,16 @@
 
 .ir-app .ir-display {
   font-family: var(--ir-display);
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 72, "wght" 560;
-  font-weight: 560;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.08;
   color: inherit;
 }
 
 .ir-app .ir-em {
   font-family: var(--ir-display);
   font-style: italic;
-  font-weight: 560;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 72, "wght" 560;
+  font-weight: 500;
   color: var(--emerald);
 }
 
@@ -61,7 +59,16 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ir-app .ir-rise {
-    animation: ir-rise 0.36s ease both;
+    animation: ir-rise 0.7s cubic-bezier(.2, .7, .2, 1) both;
+  }
+
+  .ir-app .ir-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  .ir-app .ir-reveal.is-in {
+    animation: ir-rise 0.8s cubic-bezier(.2, .7, .2, 1) both;
   }
 }
 

@@ -920,6 +920,30 @@
       { "id": "rsvp", "label": "Kindly reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
+  "bali": {
+    "names": "couple",
+    "ceremony": "The celebration",
+    "reception": "The celebration",
+    "themes": [{ "id": "bali", "name": "Bali Romance" }],
+    "defaultTheme": "bali",
+    "shots": [
+      { "label": "The two of us" },
+      { "label": "A quiet hour" },
+      { "label": "With everyone" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The fans", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Announcement", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Save the date", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Our story", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "The day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The place", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "estate": {
     "names": "couple",
     "ceremony": "The ceremony",

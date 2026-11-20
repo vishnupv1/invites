@@ -12,10 +12,10 @@
   min-height: 46px;
   box-sizing: border-box;
   padding: 10px 14px;
-  border: 1.5px solid #D7E6DC;
+  border: 1.5px solid #eadfce;
   border-radius: 12px;
-  background: #FFFFFF;
-  color: #1C3A2A;
+  background: #fffaf4;
+  color: #2c1b22;
   font-size: 15px;
   text-align: left;
   cursor: pointer;
@@ -26,16 +26,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.when-ph { color: #5E7368; }
+.when-ph { color: #7a655c; }
 .when-btn[aria-expanded="true"] {
-  border-color: #1C3A2A;
-  box-shadow: 0 0 0 3px rgba(90, 150, 120, 0.12);
+  border-color: #2c1b22;
+  box-shadow: 0 0 0 3px rgba(122, 46, 59, 0.12);
 }
 .when-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #5E7368;
+  color: #7a655c;
 }
 .when-pop {
   position: fixed;
@@ -45,10 +45,10 @@
   overflow: auto;
   box-sizing: border-box;
   padding: 12px;
-  border: 1.5px solid #D7E6DC;
+  border: 1.5px solid #eadfce;
   border-radius: 18px;
-  background: #FFFFFF;
-  box-shadow: 0 16px 40px rgba(90, 150, 120, 0.16);
+  background: #fffaf4;
+  box-shadow: 0 16px 40px rgba(122, 46, 59, 0.16);
 }
 .when-head {
   display: flex;
@@ -58,11 +58,11 @@
   margin-bottom: 8px;
 }
 .when-month {
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Outfit, "Segoe UI", sans-serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #1C3A2A;
+  color: #2c1b22;
 }
 .when-nav {
   display: grid;
@@ -70,13 +70,13 @@
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1.5px solid #D7E6DC;
+  border: 1.5px solid #eadfce;
   border-radius: 10px;
-  background: #FFFFFF;
-  color: #1C3A2A;
+  background: #fffaf4;
+  color: #2c1b22;
   cursor: pointer;
 }
-.when-nav:hover { background: #FFFFFF; }
+.when-nav:hover { background: #fffaf4; }
 .when-week,
 .when-days {
   display: grid;
@@ -90,40 +90,40 @@
   text-align: center;
   font-size: 11px;
   font-weight: 700;
-  color: #5E7368;
+  color: #7a655c;
 }
 .when-day {
   aspect-ratio: 1;
   border: none;
   border-radius: 10px;
   background: transparent;
-  color: #1C3A2A;
+  color: #2c1b22;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
-.when-day:hover { background: #FFFFFF; }
-.when-day.is-today { box-shadow: inset 0 0 0 1.5px #1C3A2A; }
+.when-day:hover { background: #fffaf4; }
+.when-day.is-today { box-shadow: inset 0 0 0 1.5px #2c1b22; }
 .when-day.is-on,
 .when-day.is-on:hover {
-  background: #C5E0D2;
-  color: #1C3A2A;
+  background: #f3e4c4;
+  color: #2c1b22;
   box-shadow: none;
 }
 .when-read {
   margin: 0 0 10px;
   text-align: center;
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Outfit, "Segoe UI", sans-serif;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: #1C3A2A;
+  color: #2c1b22;
 }
 .when-read.is-empty {
-  font-family: Geist, "Segoe UI", sans-serif;
+  font-family: Outfit, "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #5E7368;
+  color: #7a655c;
 }
 .when-period {
   display: grid;
@@ -131,22 +131,22 @@
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
-  background: #E3F0E8;
+  background: #f3e4c4;
 }
 .when-period button {
   min-height: 36px;
   border: none;
   border-radius: 9px;
   background: transparent;
-  color: #5E7368;
+  color: #7a655c;
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
 }
 .when-period button[aria-pressed="true"] {
-  background: #FFFFFF;
-  color: #1C3A2A;
-  box-shadow: 0 1px 4px rgba(90, 150, 120, 0.08);
+  background: #fffaf4;
+  color: #2c1b22;
+  box-shadow: 0 1px 4px rgba(122, 46, 59, 0.08);
 }
 .when-cap {
   margin: 12px 0 6px;
@@ -154,7 +154,7 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #5E7368;
+  color: #7a655c;
 }
 .when-hours {
   display: grid;
@@ -165,17 +165,17 @@
   min-height: 36px;
   border: none;
   border-radius: 10px;
-  background: #F4F8F5;
-  color: #1C3A2A;
+  background: #f6efe6;
+  color: #2c1b22;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
-.when-choice:hover { background: #FFFFFF; }
+.when-choice:hover { background: #fffaf4; }
 .when-choice[aria-pressed="true"],
 .when-choice[aria-pressed="true"]:hover {
-  background: #C5E0D2;
-  color: #1C3A2A;
+  background: #f3e4c4;
+  color: #2c1b22;
 }
 .when-done {
   width: 100%;
@@ -183,8 +183,8 @@
   margin-top: 12px;
   border: none;
   border-radius: 999px;
-  background: #C5E0D2;
-  color: #1C3A2A;
+  background: #f3e4c4;
+  color: #2c1b22;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
@@ -195,6 +195,6 @@
 .when-choice:focus-visible,
 .when-period button:focus-visible,
 .when-done:focus-visible {
-  outline: 2px solid #1C3A2A;
+  outline: 2px solid #2c1b22;
   outline-offset: 2px;
 }

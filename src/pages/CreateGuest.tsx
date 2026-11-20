@@ -798,7 +798,7 @@ export function CreateGuest() {
             </div>
             <form className="cg-auth" onSubmit={onAuth}>
               <button type="button" className="cg-close" aria-label="Close" onClick={() => setAuthOpen(false)}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.2" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2c1b22" strokeWidth="2.2" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </button>

@@ -1,20 +1,21 @@
 .ir-app .ir-btn {
+  transition: background 0.25s ease, transform 0.25s ease;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   box-sizing: border-box;
   width: 100%;
-  height: 58px;
-  min-height: 58px;
-  padding: 8px 8px 8px 22px;
+  height: 52px;
+  min-height: 52px;
+  padding: 6px 6px 6px 22px;
   border: 0;
-  border-radius: 18px;
+  border-radius: 999px;
   background: var(--emerald);
   color: var(--card);
-  font-family: var(--ir-sans);
-  font-size: 16px;
-  font-weight: 700;
+  font-family: var(--ir-display);
+  font-size: 18px;
+  font-weight: 500;
   letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
@@ -28,10 +29,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 50%;
   background: var(--marigold);
   color: var(--emerald-dark);
 }
@@ -80,7 +81,7 @@
 }
 
 .ir-app .ir-btn-outline:hover {
-  background: rgba(14, 77, 60, 0.06);
+  background: rgba(122, 46, 59, 0.06);
 }
 
 .ir-app .ir-btn:active {
@@ -143,9 +144,8 @@
   padding: 8px 0 10px;
   color: var(--ink);
   font-family: var(--ir-display);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 500;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 36, "wght" 500;
 }
 
 .ir-app .ir-field input::placeholder {
@@ -181,7 +181,7 @@
 .ir-app .ir-seg button[aria-checked="true"] {
   background: var(--card);
   color: var(--ink);
-  box-shadow: 0 6px 16px rgba(23, 32, 28, 0.08);
+  box-shadow: 0 6px 16px rgba(44, 27, 34, 0.08);
 }
 
 .ir-app .ir-toggle {
@@ -551,7 +551,7 @@
   align-items: stretch;
   gap: 8px;
   padding: 28px 20px calc(12px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(180deg, rgba(244, 238, 227, 0) 0%, var(--paper) 34%);
+  background: linear-gradient(180deg, rgba(246, 239, 230, 0) 0%, var(--paper) 34%);
 }
 
 .ir-app .ir-sticky-note {

@@ -234,6 +234,12 @@
     "languages": ["English"],
     "hook": "with a satin bow you untie so the doors open"
   },
+  "bali": {
+    "style": "Bali romance",
+    "occasion": "Engagement",
+    "languages": ["English"],
+    "hook": "with two fans that open onto a scooter ride along the coast"
+  },
   "estate": {
     "style": "Painted estate",
     "occasion": "Wedding",

@@ -6,9 +6,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f4eee3;
-  color: #17201c;
-  font-family: Manrope, "Segoe UI", sans-serif;
+  background: #f6efe6;
+  color: #2c1b22;
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 
 .legal-bar,
@@ -21,15 +21,15 @@
 }
 
 .legal-bar {
-  background: #fffdf8;
-  border-bottom: 1px solid rgba(23, 32, 28, 0.12);
+  background: #fffaf4;
+  border-bottom: 1px solid rgba(44, 27, 34, 0.12);
 }
 
 .legal-bar > a {
-  font-family: Fraunces, "Iowan Old Style", Palatino, serif;
+  font-family: "Cormorant Garamond", Palatino, "Times New Roman", serif;
   font-size: 22px;
   font-weight: 560;
-  color: #17201c;
+  color: #2c1b22;
 }
 
 .legal-bar nav,
@@ -41,7 +41,7 @@
   font-weight: 700;
 }
 
-.legal a { color: #0e4d3c; }
+.legal a { color: #7a2e3b; }
 .legal-actions { display: flex; align-items: center; gap: 18px; margin-top: 8px; }
 .legal a.legal-go {
   min-height: 52px;
@@ -49,12 +49,12 @@
   align-items: center;
   padding: 0 22px;
   border-radius: 18px;
-  background: #0e4d3c;
-  color: #fffdf8;
+  background: #7a2e3b;
+  color: #fffaf4;
   font-weight: 800;
   text-decoration: none;
 }
-.legal a.legal-go:hover { color: #fffdf8; background: #0a3a2d; }
+.legal a.legal-go:hover { color: #fffaf4; background: #541f29; }
 
 .legal main {
   width: min(760px, calc(100% - 40px));
@@ -64,23 +64,23 @@
 
 .legal h1 {
   margin: 0 0 12px;
-  font-family: Fraunces, "Iowan Old Style", Palatino, serif;
+  font-family: "Cormorant Garamond", Palatino, "Times New Roman", serif;
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 560;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  color: #17201c;
+  color: #2c1b22;
 }
 
-.legal-lede { margin: 0 0 28px; color: #5e655f; font-size: 17px; line-height: 1.5; }
+.legal-lede { margin: 0 0 28px; color: #7a655c; font-size: 17px; line-height: 1.5; }
 
 .legal h2 {
   margin: 28px 0 8px;
-  font-family: Fraunces, "Iowan Old Style", Palatino, serif;
+  font-family: "Cormorant Garamond", Palatino, "Times New Roman", serif;
   font-size: 22px;
   font-weight: 560;
   letter-spacing: -0.02em;
-  color: #17201c;
+  color: #2c1b22;
 }
 
 .legal p,
@@ -92,14 +92,14 @@
 .legal footer {
   margin-top: auto;
   flex-wrap: wrap;
-  background: #f4eee3;
-  border-top: 1px solid rgba(23, 32, 28, 0.12);
-  color: #5e655f;
+  background: #f6efe6;
+  border-top: 1px solid rgba(44, 27, 34, 0.12);
+  color: #7a655c;
 }
 
 .legal footer nav { width: 100%; }
 
-.legal footer a { color: #5e655f; }
+.legal footer a { color: #7a655c; }
 .legal footer small { font-size: 13px; }
 
 @media (max-width: 720px) {

@@ -1,8 +1,8 @@
 .si {
   min-height: 100vh;
-  background: #f4eee3;
-  color: #17201c;
-  font-family: Manrope, "Segoe UI", sans-serif;
+  background: #f6efe6;
+  color: #2c1b22;
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 
 .si-bar {
@@ -24,9 +24,9 @@
   place-items: center;
   width: 42px;
   height: 42px;
-  border: 1.5px solid rgba(23, 32, 28, 0.16);
+  border: 1.5px solid rgba(44, 27, 34, 0.16);
   border-radius: 50%;
-  color: #17201c;
+  color: #2c1b22;
   text-decoration: none;
 }
 
@@ -48,9 +48,9 @@
   gap: 12px;
   margin-bottom: 22px;
   padding: 12px;
-  border: 1px solid rgba(23, 32, 28, 0.12);
+  border: 1px solid rgba(44, 27, 34, 0.12);
   border-radius: 20px;
-  background: #fffdf8;
+  background: #fffaf4;
 }
 
 .si-ticket img,
@@ -60,7 +60,7 @@
   flex: none;
   border-radius: 10px;
   object-fit: cover;
-  background: #cdcfcf;
+  background: #eadfce;
 }
 
 .si-ticket b,
@@ -81,7 +81,7 @@
 }
 
 .si-ticket small {
-  color: #0e4d3c;
+  color: #7a2e3b;
 }
 
 .si-ticket small svg,
@@ -94,7 +94,7 @@
 .si-wait h1,
 .si-done h1 {
   margin: 0 0 12px;
-  font-family: Fraunces, Georgia, serif;
+  font-family: "Cormorant Garamond", Palatino, serif;
   font-weight: 500;
   font-size: 46px;
   line-height: 0.95;
@@ -103,7 +103,7 @@
 
 .si-main h1 i {
   font-style: italic;
-  color: #0e4d3c;
+  color: #7a2e3b;
 }
 
 .si-main p,
@@ -113,7 +113,7 @@
   max-width: 420px;
   font-size: 15px;
   line-height: 1.5;
-  color: #5c675f;
+  color: #7a655c;
 }
 
 .si-swap {
@@ -122,7 +122,7 @@
   padding: 0;
   border: 0;
   background: none;
-  color: #0e4d3c;
+  color: #7a2e3b;
   font-size: 13.5px;
   font-weight: 800;
   cursor: pointer;
@@ -139,7 +139,7 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #5c675f;
+  color: #7a655c;
 }
 
 .si-line input {
@@ -147,19 +147,19 @@
   margin: 0;
   padding: 4px 0 8px !important;
   border: 0 !important;
-  border-bottom: 2px solid #17201c !important;
+  border-bottom: 2px solid #2c1b22 !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   outline: none;
-  font-family: Fraunces, Georgia, serif !important;
+  font-family: "Cormorant Garamond", Palatino, serif !important;
   font-size: 28px !important;
   font-weight: 500;
-  color: #17201c;
+  color: #2c1b22;
 }
 
 .si-line input:focus {
-  border-bottom-color: #0e4d3c !important;
+  border-bottom-color: #7a2e3b !important;
 }
 
 .si-line small,
@@ -167,14 +167,14 @@
   margin: 6px 0 0;
   font-size: 13px;
   font-weight: 700;
-  color: #9b2c2c;
+  color: #a33b45;
 }
 
 .si-line em {
   min-height: 0;
   font-style: normal;
   font-size: 12px;
-  color: #5c675f;
+  color: #7a655c;
 }
 
 .si-line em:empty {
@@ -191,8 +191,8 @@
   padding: 0 8px 0 22px;
   border: 0;
   border-radius: 18px;
-  background: #0e4d3c;
-  color: #f4eee3;
+  background: #7a2e3b;
+  color: #f6efe6;
   font-size: 16px;
   font-weight: 800;
   cursor: pointer;
@@ -215,8 +215,8 @@
   width: 42px;
   height: 42px;
   border-radius: 13px;
-  background: #e9a23b;
-  color: #0e4d3c;
+  background: #c6a15a;
+  color: #7a2e3b;
 }
 
 .si-or {
@@ -227,7 +227,7 @@
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.16em;
-  color: #8a918c;
+  color: #b3a297;
 }
 
 .si-or::before,
@@ -235,7 +235,7 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: rgba(23, 32, 28, 0.14);
+  background: rgba(44, 27, 34, 0.14);
 }
 
 .si-google {
@@ -245,10 +245,10 @@
   gap: 10px;
   width: 100%;
   min-height: 56px;
-  border: 1.5px solid rgba(23, 32, 28, 0.14);
+  border: 1.5px solid rgba(44, 27, 34, 0.14);
   border-radius: 18px;
-  background: #fffdf8;
-  color: #17201c;
+  background: #fffaf4;
+  color: #2c1b22;
   font-size: 15px;
   font-weight: 800;
   cursor: pointer;
@@ -266,7 +266,7 @@
 }
 
 .si-legal a {
-  color: #0e4d3c;
+  color: #7a2e3b;
   font-weight: 800;
 }
 
@@ -297,7 +297,7 @@
     grid-column: 1 / -1;
     height: 78px;
     padding: 0 28px;
-    border-bottom: 1px solid rgba(23, 32, 28, 0.12);
+    border-bottom: 1px solid rgba(44, 27, 34, 0.12);
   }
 
   .si-bar span {
@@ -310,7 +310,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #0e4d3c;
+    background: #7a2e3b;
     padding: 24px 20px 120px;
   }
 
@@ -418,10 +418,10 @@
     width: min(360px, calc(100% - 48px));
     box-sizing: border-box;
     padding: 12px;
-    border: 1px solid rgba(244, 238, 227, 0.22);
+    border: 1px solid rgba(246, 239, 230, 0.22);
     border-radius: 18px;
-    background: rgba(244, 238, 227, 0.12);
-    color: #f4eee3;
+    background: rgba(246, 239, 230, 0.12);
+    color: #f6efe6;
     transform: translateX(-50%);
   }
 
@@ -432,7 +432,7 @@
   }
 
   .si-chip small {
-    color: #e9a23b;
+    color: #c6a15a;
   }
 
   .si-main {

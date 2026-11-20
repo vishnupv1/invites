@@ -49,6 +49,7 @@ import { RaasInvite } from "../components/RaasInvite";
 import { MarbleInvite } from "../components/MarbleInvite";
 import { ForeverInvite } from "../components/ForeverInvite";
 import { EstateInvite } from "../components/EstateInvite";
+import { BaliInvite } from "../components/BaliInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -160,6 +161,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <ForeverInvite fields={fields} />;
     case "estate":
       return <EstateInvite fields={fields} />;
+    case "bali":
+      return <BaliInvite fields={fields} />;
     case "raas":
       return <RaasInvite fields={fields} />;
     case "weddingride":
@@ -472,7 +475,7 @@ export function TemplatePage({ library = false }: { library?: boolean }) {
               <ul className="buy-list">
                 {template.meta.components.map((item) => (
                   <li key={item.id}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C3A2A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2c1b22" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M5 12l4 4L19 7" />
                     </svg>
                     {item.label}

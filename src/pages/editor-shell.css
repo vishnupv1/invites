@@ -1,13 +1,13 @@
 .ed-shell {
-  background: #F4EEE3;
-  color: #17201C;
-  font-family: Manrope, "Segoe UI", sans-serif;
+  background: #f6efe6;
+  color: #2c1b22;
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 
 .ed-shell button,
 .ed-shell input,
 .ed-shell textarea {
-  font-family: Manrope, "Segoe UI", sans-serif;
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 
 .ed-shell .ed-top,
@@ -29,12 +29,12 @@
   flex-direction: column;
   min-height: 0;
   flex: 1;
-  background: #F4EEE3;
+  background: #f6efe6;
 }
 
 .ed-shell .ed-proto-mobile {
-  background: #0E4D3C;
-  color: #F4EEE3;
+  background: #7a2e3b;
+  color: #f6efe6;
   padding: 8px 20px 0;
 }
 
@@ -48,19 +48,19 @@
 .ed-shell .ed-proto-bar h1 {
   margin: 0;
   flex: 1;
-  font-family: Fraunces, Georgia, serif;
+  font-family: "Cormorant Garamond", Palatino, serif;
   font-weight: 500;
   font-size: 24px;
   letter-spacing: -0.02em;
-  color: #F4EEE3;
+  color: #f6efe6;
 }
 
 .ed-shell .ed-proto-back {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1.5px solid rgba(244, 238, 227, 0.3);
-  color: #F4EEE3;
+  border: 1.5px solid rgba(246, 239, 230, 0.3);
+  color: #f6efe6;
   display: grid;
   place-items: center;
   text-decoration: none;
@@ -70,7 +70,7 @@
 .ed-shell .ed-proto-preview {
   border: 0;
   background: transparent;
-  color: #F6D29A;
+  color: #f3e4c4;
   font-weight: 800;
   font-size: 13px;
   text-decoration: underline;
@@ -90,7 +90,7 @@
   height: 112px;
   object-fit: cover;
   border-radius: 12px;
-  background: #0A3A2D;
+  background: #541f29;
 }
 
 .ed-shell .ed-proto-live p,
@@ -101,7 +101,7 @@
 
 .ed-shell .ed-proto-live p {
   margin: 0 0 2px;
-  color: #E9A23B;
+  color: #c6a15a;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -113,7 +113,7 @@
   font-weight: 400;
   font-size: 32px;
   line-height: 1.05;
-  color: #F6D29A;
+  color: #f3e4c4;
 }
 
 .ed-shell .ed-proto-live span {
@@ -121,7 +121,7 @@
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.18em;
-  color: rgba(244, 238, 227, 0.7);
+  color: rgba(246, 239, 230, 0.7);
 }
 
 .ed-shell .ed-proto-main {
@@ -135,7 +135,7 @@
   display: flex;
   gap: 8px;
   padding: 14px 16px 16px;
-  background: #0E4D3C;
+  background: #7a2e3b;
   border-radius: 0 0 28px 28px;
   overflow: hidden;
 }
@@ -145,9 +145,9 @@
   min-width: 0;
   padding: 7px 0 0;
   border: 0;
-  border-top: 3px solid rgba(244, 238, 227, 0.2);
+  border-top: 3px solid rgba(246, 239, 230, 0.2);
   background: transparent;
-  color: rgba(244, 238, 227, 0.45);
+  color: rgba(246, 239, 230, 0.45);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -157,12 +157,12 @@
 }
 
 .ed-shell .ed-proto-steps button.is-on {
-  color: #F4EEE3;
-  border-top-color: #E9A23B;
+  color: #f6efe6;
+  border-top-color: #c6a15a;
 }
 
 .ed-shell .ed-proto-steps button.is-done {
-  color: rgba(244, 238, 227, 0.8);
+  color: rgba(246, 239, 230, 0.8);
   border-top-color: rgba(233, 162, 59, 0.55);
 }
 
@@ -189,7 +189,7 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #5E655F;
+  color: #7a655c;
 }
 
 .ed-shell .ed-panel .ed-grid-2,
@@ -205,7 +205,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 4px;
-  background: #EBE3D4;
+  background: #eadfce;
   border-radius: 14px;
   padding: 4px;
 }
@@ -216,16 +216,16 @@
   width: 100%;
   min-height: 46px;
   border: 0 !important;
-  border-bottom: 1.5px solid rgba(23, 32, 28, 0.25) !important;
+  border-bottom: 1.5px solid rgba(44, 27, 34, 0.25) !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
-  font-family: Fraunces, Georgia, serif !important;
+  font-family: "Cormorant Garamond", Palatino, serif !important;
   font-size: 20px !important;
   font-weight: 500;
-  color: #17201C;
+  color: #2c1b22;
 }
 
 .ed-shell .ed-panel .when-icon {
@@ -239,7 +239,7 @@
   flex: none;
   margin: 0;
   padding: 0 !important;
-  accent-color: #0E4D3C;
+  accent-color: #7a2e3b;
   border: 0 !important;
   border-radius: 6px !important;
 }
@@ -257,7 +257,7 @@
 .ed-shell .ed-panel input:focus,
 .ed-shell .ed-panel textarea:focus,
 .ed-shell .ed-panel .when-btn[aria-expanded="true"] {
-  border-bottom-color: #0E4D3C !important;
+  border-bottom-color: #7a2e3b !important;
   border-bottom-width: 2px !important;
   box-shadow: none !important;
 }
@@ -267,20 +267,20 @@
   border: 0;
   border-radius: 11px;
   background: transparent;
-  color: #5E655F;
+  color: #7a655c;
   font-weight: 700;
 }
 
 .ed-shell .ed-chip[aria-pressed="true"] {
-  background: #FFFDF8;
-  color: #17201C;
-  box-shadow: 0 2px 6px rgba(23, 32, 28, 0.08);
+  background: #fffaf4;
+  color: #2c1b22;
+  box-shadow: 0 2px 6px rgba(44, 27, 34, 0.08);
 }
 
 .ed-shell .ed-proto-foot {
   flex-shrink: 0;
   padding: 12px 20px 22px;
-  background: #F4EEE3;
+  background: #f6efe6;
 }
 
 .ed-shell .ed-proto-next {
@@ -292,8 +292,8 @@
   padding: 0 8px 0 22px;
   border: 0;
   border-radius: 18px;
-  background: #0E4D3C;
-  color: #F4EEE3;
+  background: #7a2e3b;
+  color: #f6efe6;
   font-weight: 800;
   font-size: 15.5px;
   cursor: pointer;
@@ -303,8 +303,8 @@
   width: 42px;
   height: 42px;
   border-radius: 13px;
-  background: #E9A23B;
-  color: #0A3A2D;
+  background: #c6a15a;
+  color: #541f29;
   display: grid;
   place-items: center;
 }
@@ -312,7 +312,7 @@
 .ed-shell .ed-proto-foot p {
   margin: 8px 0 0;
   text-align: center;
-  color: #5E655F;
+  color: #7a655c;
   font-size: 11.5px;
   font-weight: 600;
 }
@@ -328,7 +328,7 @@
 }
 
 .ed-shell.is-guest-preview {
-  background: #241f1c;
+  background: #2c1b22;
 }
 
 .ed-shell.is-guest-preview .ed-expand {
@@ -347,7 +347,7 @@
   display: flex;
   width: 100%;
   margin: 0;
-  background: #EBE3D4;
+  background: #eadfce;
   border: 0;
   border-radius: 14px;
 }
@@ -357,8 +357,8 @@
 }
 
 .ed-dialog .ed-device button[aria-pressed="true"] {
-  background: #FFFDF8;
-  color: #17201C;
+  background: #fffaf4;
+  color: #2c1b22;
 }
 
 .ed-gp {
@@ -421,7 +421,7 @@
   gap: 8px;
   padding: 14px;
   border-radius: 26px;
-  background: #F4EEE3;
+  background: #f6efe6;
   pointer-events: auto;
 }
 
@@ -430,9 +430,9 @@
   min-height: 58px;
   padding: 0 16px;
   border-radius: 18px;
-  border: 1.5px solid rgba(23, 32, 28, 0.12);
+  border: 1.5px solid rgba(44, 27, 34, 0.12);
   background: transparent;
-  color: #17201C;
+  color: #2c1b22;
   font-weight: 800;
   font-size: 14px;
   cursor: pointer;
@@ -448,8 +448,8 @@
   padding: 0 8px 0 18px;
   border: 0;
   border-radius: 18px;
-  background: #E9A23B;
-  color: #0A3A2D;
+  background: #c6a15a;
+  color: #541f29;
   font-weight: 800;
   font-size: 15.5px;
   cursor: pointer;
@@ -466,15 +466,15 @@
 }
 
 .ed-gp-go b {
-  background: #0E4D3C;
-  color: #E9A23B;
+  background: #7a2e3b;
+  color: #c6a15a;
 }
 
 .ed-gp-sheet p {
   width: 100%;
   margin: 0;
   text-align: center;
-  color: #5E655F;
+  color: #7a655c;
   font-size: 11.5px;
   font-weight: 600;
 }
@@ -539,7 +539,7 @@
     gap: 10px;
     border: 0;
     background: transparent;
-    color: #F4EEE3;
+    color: #f6efe6;
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
@@ -570,14 +570,14 @@
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: rgba(244, 238, 227, 0.8);
+    color: rgba(246, 239, 230, 0.8);
     font-weight: 700;
     cursor: pointer;
   }
 
   .ed-gp-devices button[aria-pressed="true"] {
-    background: #FFFDF8;
-    color: #17201C;
+    background: #fffaf4;
+    color: #2c1b22;
   }
 
   .ed-gp-side {
@@ -589,13 +589,13 @@
     width: 320px;
     padding: 28px 24px;
     border-radius: 28px;
-    background: #F4EEE3;
-    color: #17201C;
+    background: #f6efe6;
+    color: #2c1b22;
   }
 
   .ed-gp-side > p:first-child {
     margin: 0 0 8px;
-    color: #E9A23B;
+    color: #c6a15a;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.16em;
@@ -604,22 +604,22 @@
 
   .ed-gp-side h2 {
     margin: 0 0 10px;
-    font-family: Fraunces, Georgia, serif;
+    font-family: "Cormorant Garamond", Palatino, serif;
     font-size: 36px;
     font-weight: 500;
     letter-spacing: -0.03em;
     line-height: 1.05;
-    color: #0E4D3C;
+    color: #7a2e3b;
   }
 
   .ed-gp-side h2 i {
     font-style: italic;
-    color: #E9A23B;
+    color: #c6a15a;
   }
 
   .ed-gp-side > p:nth-of-type(2) {
     margin: 0 0 18px;
-    color: #5E655F;
+    color: #7a655c;
     font-size: 14.5px;
     line-height: 1.45;
   }
@@ -635,12 +635,12 @@
     justify-content: space-between;
     margin-top: 8px;
     padding: 0 8px 0 18px;
-    background: #FFFDF8;
+    background: #fffaf4;
   }
 
   .ed-gp-keep b {
-    background: #EBE3D4;
-    color: #17201C;
+    background: #eadfce;
+    color: #2c1b22;
   }
 }
 
@@ -653,8 +653,8 @@
 
   .ed-shell .ed-proto {
     grid-column: 1 / -1;
-    background: #F4EEE3;
-    border-bottom: 1px solid rgba(23, 32, 28, 0.08);
+    background: #f6efe6;
+    border-bottom: 1px solid rgba(44, 27, 34, 0.08);
   }
 
   .ed-shell .ed-proto-mobile {
@@ -670,15 +670,15 @@
   }
 
   .ed-shell .ed-proto-desk .ed-proto-back {
-    border-color: rgba(23, 32, 28, 0.16);
-    color: #17201C;
+    border-color: rgba(44, 27, 34, 0.16);
+    color: #2c1b22;
   }
 
   .ed-shell .ed-proto-crumb {
     margin: 0;
     flex: 1;
     min-width: 0;
-    color: #5E655F;
+    color: #7a655c;
     font-size: 14px;
     font-weight: 600;
   }
@@ -689,7 +689,7 @@
   }
 
   .ed-shell .ed-proto-crumb b {
-    color: #17201C;
+    color: #2c1b22;
     font-weight: 700;
   }
 
@@ -697,7 +697,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #0E4D3C;
+    color: #7a2e3b;
     font-size: 13px;
     font-weight: 700;
   }
@@ -705,23 +705,23 @@
   .ed-shell .ed-proto-full {
     min-height: 40px;
     padding: 0 16px;
-    border: 1.5px solid rgba(23, 32, 28, 0.16);
+    border: 1.5px solid rgba(44, 27, 34, 0.16);
     border-radius: 999px;
-    background: #FFFDF8;
-    color: #17201C;
+    background: #fffaf4;
+    color: #2c1b22;
     font-weight: 700;
     cursor: pointer;
   }
 
   .ed-shell .ed-proto-main {
     padding: 28px 36px 0;
-    border-right: 1px solid rgba(23, 32, 28, 0.08);
+    border-right: 1px solid rgba(44, 27, 34, 0.08);
   }
 
   .ed-shell .ed-proto-kicker {
     display: block !important;
     margin: 0 0 6px;
-    color: #E9A23B;
+    color: #c6a15a;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.16em;
@@ -731,11 +731,11 @@
   .ed-shell .ed-proto-title {
     display: block !important;
     margin: 0 0 18px;
-    font-family: Fraunces, Georgia, serif;
+    font-family: "Cormorant Garamond", Palatino, serif;
     font-size: 48px;
     font-weight: 500;
     letter-spacing: -0.03em;
-    color: #17201C;
+    color: #2c1b22;
   }
 
   .ed-shell .ed-proto-steps {
@@ -748,17 +748,17 @@
 
   .ed-shell .ed-proto-steps button {
     color: #9AA096;
-    border-top-color: rgba(23, 32, 28, 0.12);
+    border-top-color: rgba(44, 27, 34, 0.12);
     font-size: 13px;
   }
 
   .ed-shell .ed-proto-steps button.is-on {
-    color: #17201C;
-    border-top-color: #E9A23B;
+    color: #2c1b22;
+    border-top-color: #c6a15a;
   }
 
   .ed-shell .ed-proto-steps button.is-done {
-    color: #5E655F;
+    color: #7a655c;
     border-top-color: rgba(233, 162, 59, 0.7);
   }
 
@@ -773,7 +773,7 @@
     gap: 16px;
     padding: 16px 0 24px;
     background: transparent;
-    border-top: 1px solid rgba(23, 32, 28, 0.08);
+    border-top: 1px solid rgba(44, 27, 34, 0.08);
   }
 
   .ed-shell .ed-proto-next {
@@ -796,18 +796,18 @@
     padding: 36px 40px;
     background:
       radial-gradient(circle at 78% 18%, rgba(233, 162, 59, 0.35), transparent 36%),
-      #0E4D3C;
+      #7a2e3b;
   }
 
   .ed-shell .ed-proto-livecopy {
     display: block !important;
     order: 2;
-    color: #F4EEE3;
+    color: #f6efe6;
   }
 
   .ed-shell .ed-proto-livecopy p {
     margin: 0 0 10px;
-    color: #E9A23B;
+    color: #c6a15a;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.16em;
@@ -816,11 +816,11 @@
 
   .ed-shell .ed-proto-livecopy strong {
     display: block;
-    font-family: Fraunces, Georgia, serif;
+    font-family: "Cormorant Garamond", Palatino, serif;
     font-size: 48px;
     font-weight: 500;
     line-height: 1.02;
-    color: #F6D29A;
+    color: #f3e4c4;
   }
 
   .ed-shell .ed-proto-livecopy span {
@@ -834,7 +834,7 @@
   .ed-shell .ed-proto-livecopy small {
     display: block;
     max-width: 280px;
-    color: rgba(244, 238, 227, 0.78);
+    color: rgba(246, 239, 230, 0.78);
     font-size: 15px;
     line-height: 1.45;
   }
@@ -869,7 +869,7 @@
     align-items: stretch;
     justify-content: flex-start;
     padding: 0;
-    background: #F4EEE3;
+    background: #f6efe6;
     z-index: 180;
     overflow: auto;
   }
@@ -884,9 +884,9 @@
     min-height: 100%;
     box-sizing: border-box;
     padding: 8px 20px 28px;
-    background: #F4EEE3;
-    color: #17201C;
-    font-family: Manrope, "Segoe UI", sans-serif;
+    background: #f6efe6;
+    color: #2c1b22;
+    font-family: Outfit, "Segoe UI", sans-serif;
   }
 
   .ed-auth-bar {
@@ -905,9 +905,9 @@
     height: 40px;
     margin-bottom: 0;
     border-radius: 50%;
-    border: 1.5px solid rgba(23, 32, 28, 0.14);
+    border: 1.5px solid rgba(44, 27, 34, 0.14);
     background: transparent;
-    color: #17201C;
+    color: #2c1b22;
     font-size: 17px;
     cursor: pointer;
   }
@@ -918,8 +918,8 @@
     gap: 12px;
     padding: 12px;
     border-radius: 20px;
-    background: #FFFDF8;
-    border: 1px solid rgba(23, 32, 28, 0.12);
+    background: #fffaf4;
+    border: 1px solid rgba(44, 27, 34, 0.12);
   }
 
   .ed-auth-ticket img,
@@ -929,7 +929,7 @@
     border-radius: 10px;
     object-fit: cover;
     flex-shrink: 0;
-    background: #CDCFBA;
+    background: #eadfce;
   }
 
   .ed-auth-ticket b {
@@ -945,14 +945,14 @@
     margin-top: 2px;
     font-size: 12px;
     font-weight: 700;
-    color: #0E4D3C;
+    color: #7a2e3b;
   }
 
   .ed-auth-ticket small svg { width: 14px; height: 14px; }
 
   .ed-auth-page h2 {
     margin: 18px 0 10px;
-    font-family: Fraunces, Georgia, serif;
+    font-family: "Cormorant Garamond", Palatino, serif;
     font-weight: 500;
     font-size: 40px;
     line-height: 1;
@@ -961,14 +961,14 @@
 
   .ed-auth-page h2 i {
     font-style: italic;
-    color: #0E4D3C;
+    color: #7a2e3b;
   }
 
   .ed-auth-page > p {
     margin: 0 0 18px;
     font-size: 14px;
     line-height: 1.55;
-    color: #5C675F;
+    color: #7a655c;
   }
 
   .ed-auth-swap {
@@ -977,7 +977,7 @@
     padding: 0;
     border: none;
     background: none;
-    color: #0E4D3C;
+    color: #7a2e3b;
     font-size: 13px;
     font-weight: 800;
     cursor: pointer;
@@ -991,12 +991,12 @@
   }
 
   .ed-auth-line span {
-    font-family: Manrope, "Segoe UI", sans-serif;
+    font-family: Outfit, "Segoe UI", sans-serif;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #5C675F;
+    color: #7a655c;
   }
 
   .ed-auth-page input {
@@ -1007,19 +1007,19 @@
     min-height: 0;
     border: 0 !important;
     border-radius: 0 !important;
-    border-bottom: 2px solid #17201C !important;
+    border-bottom: 2px solid #2c1b22 !important;
     background: transparent !important;
     box-shadow: none !important;
     outline: none !important;
     appearance: none;
-    font-family: Fraunces, Georgia, serif !important;
+    font-family: "Cormorant Garamond", Palatino, serif !important;
     font-size: 26px !important;
     font-weight: 500;
-    color: #17201C;
+    color: #2c1b22;
   }
 
   .ed-auth-page input:focus {
-    border-bottom-color: #0E4D3C !important;
+    border-bottom-color: #7a2e3b !important;
     box-shadow: none !important;
   }
 
@@ -1027,7 +1027,7 @@
     margin: 0 0 12px;
     font-size: 13px;
     font-weight: 800;
-    color: #9B2C2C;
+    color: #a33b45;
   }
 
   .ed-auth-go {
@@ -1040,8 +1040,8 @@
     padding: 0 8px 0 22px;
     border: none;
     border-radius: 18px;
-    background: #0E4D3C;
-    color: #F4EEE3;
+    background: #7a2e3b;
+    color: #f6efe6;
     font-weight: 800;
     font-size: 15.5px;
     cursor: pointer;
@@ -1057,8 +1057,8 @@
     width: 42px;
     height: 42px;
     border-radius: 13px;
-    background: #E9A23B;
-    color: #0E4D3C;
+    background: #c6a15a;
+    color: #7a2e3b;
     display: grid;
     place-items: center;
     font-size: 18px;
@@ -1072,7 +1072,7 @@
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.16em;
-    color: #8A918C;
+    color: #b3a297;
   }
 
   .ed-auth-or::before,
@@ -1080,22 +1080,22 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(23, 32, 28, 0.14);
+    background: rgba(44, 27, 34, 0.14);
   }
 
   .ed-auth-google {
     width: 100%;
     min-height: 56px;
     border-radius: 18px;
-    border: 1.5px solid rgba(23, 32, 28, 0.14);
-    background: #FFFDF8;
+    border: 1.5px solid rgba(44, 27, 34, 0.14);
+    background: #fffaf4;
     font-weight: 800;
     font-size: 14.5px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    color: #17201C;
+    color: #2c1b22;
     cursor: pointer;
   }
 
@@ -1104,11 +1104,11 @@
     margin: 14px 0 0;
     text-align: center;
     font-size: 12px;
-    color: #5C675F;
+    color: #7a655c;
   }
 
   .ed-auth-legal a {
-    color: #0E4D3C;
+    color: #7a2e3b;
     font-weight: 800;
     white-space: nowrap;
   }
@@ -1150,7 +1150,7 @@
     height: auto;
     margin: 0;
     padding: 0 !important;
-    background: #0E4D3C !important;
+    background: #7a2e3b !important;
     align-items: center;
     justify-content: center;
   }
@@ -1195,7 +1195,7 @@
     width: auto;
     height: auto;
     padding: 0;
-    background: #F4EEE3;
+    background: #f6efe6;
     z-index: 180;
     align-items: center;
     justify-content: center;
@@ -1213,8 +1213,8 @@
     margin: 0;
     padding: 8px 0 40px;
     background: transparent;
-    color: #17201C;
-    font-family: Manrope, "Segoe UI", sans-serif;
+    color: #2c1b22;
+    font-family: Outfit, "Segoe UI", sans-serif;
   }
 
   .ed-auth-bar {
@@ -1229,8 +1229,8 @@
     height: 78px;
     margin: 0;
     padding: 0 28px;
-    background: #F4EEE3;
-    border-bottom: 1px solid rgba(23, 32, 28, 0.12);
+    background: #f6efe6;
+    border-bottom: 1px solid rgba(44, 27, 34, 0.12);
   }
 
   .ed-auth-bar b {
@@ -1243,9 +1243,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1.5px solid rgba(23, 32, 28, 0.14);
+    border: 1.5px solid rgba(44, 27, 34, 0.14);
     background: transparent;
-    color: #17201C;
+    color: #2c1b22;
     font-size: 17px;
     cursor: pointer;
   }
@@ -1267,9 +1267,9 @@
     box-sizing: border-box;
     padding: 12px;
     border-radius: 18px;
-    background: rgba(244, 238, 227, 0.1);
-    border: 1px solid rgba(244, 238, 227, 0.2);
-    color: #F4EEE3;
+    background: rgba(246, 239, 230, 0.1);
+    border: 1px solid rgba(246, 239, 230, 0.2);
+    color: #f6efe6;
   }
 
   .ed-auth-chip img,
@@ -1279,7 +1279,7 @@
     border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
-    background: rgba(244, 238, 227, 0.2);
+    background: rgba(246, 239, 230, 0.2);
   }
 
   .ed-auth-chip b {
@@ -1293,7 +1293,7 @@
     align-items: center;
     gap: 4px;
     margin-top: 2px;
-    color: #E9A23B;
+    color: #c6a15a;
     font-size: 12px;
     font-weight: 700;
   }
@@ -1302,7 +1302,7 @@
 
   .ed-auth-page h2 {
     margin: 0 0 12px;
-    font-family: Fraunces, Georgia, serif;
+    font-family: "Cormorant Garamond", Palatino, serif;
     font-weight: 500;
     font-size: 64px;
     line-height: 0.95;
@@ -1311,7 +1311,7 @@
 
   .ed-auth-page h2 i {
     font-style: italic;
-    color: #0E4D3C;
+    color: #7a2e3b;
   }
 
   .ed-auth-page > p {
@@ -1319,7 +1319,7 @@
     max-width: 420px;
     font-size: 15px;
     line-height: 1.5;
-    color: #5C675F;
+    color: #7a655c;
   }
 
   .ed-auth-swap {
@@ -1328,7 +1328,7 @@
     padding: 0;
     border: 0;
     background: none;
-    color: #0E4D3C;
+    color: #7a2e3b;
     font-size: 13px;
     font-weight: 800;
     cursor: pointer;
@@ -1345,7 +1345,7 @@
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #5C675F;
+    color: #7a655c;
   }
 
   .ed-auth-page input {
@@ -1355,13 +1355,13 @@
     padding: 4px 0 8px !important;
     border: 0 !important;
     border-radius: 0 !important;
-    border-bottom: 2px solid #17201C !important;
+    border-bottom: 2px solid #2c1b22 !important;
     background: transparent !important;
     box-shadow: none !important;
     outline: none !important;
-    font-family: Fraunces, Georgia, serif !important;
+    font-family: "Cormorant Garamond", Palatino, serif !important;
     font-size: 28px !important;
-    color: #17201C;
+    color: #2c1b22;
   }
 
   .ed-auth-go {
@@ -1374,8 +1374,8 @@
     padding: 0 8px 0 22px;
     border: 0;
     border-radius: 18px;
-    background: #0E4D3C;
-    color: #F4EEE3;
+    background: #7a2e3b;
+    color: #f6efe6;
     font-weight: 800;
     font-size: 15.5px;
     cursor: pointer;
@@ -1385,8 +1385,8 @@
     width: 42px;
     height: 42px;
     border-radius: 13px;
-    background: #E9A23B;
-    color: #0E4D3C;
+    background: #c6a15a;
+    color: #7a2e3b;
     display: grid;
     place-items: center;
   }
@@ -1399,7 +1399,7 @@
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.16em;
-    color: #8A918C;
+    color: #b3a297;
   }
 
   .ed-auth-or::before,
@@ -1407,15 +1407,15 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(23, 32, 28, 0.14);
+    background: rgba(44, 27, 34, 0.14);
   }
 
   .ed-auth-google {
     width: 100%;
     min-height: 56px;
     border-radius: 18px;
-    border: 1.5px solid rgba(23, 32, 28, 0.14);
-    background: #FFFDF8;
+    border: 1.5px solid rgba(44, 27, 34, 0.14);
+    background: #fffaf4;
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -1428,11 +1428,11 @@
     margin: 16px 0 0;
     text-align: center;
     font-size: 12px;
-    color: #5C675F;
+    color: #7a655c;
   }
 
   .ed-auth-legal a {
-    color: #0E4D3C;
+    color: #7a2e3b;
     font-weight: 800;
   }
 }

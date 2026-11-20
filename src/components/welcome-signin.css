@@ -11,7 +11,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(23, 32, 28, 0.46);
+  background: rgba(44, 27, 34, 0.46);
   cursor: pointer;
 }
 
@@ -22,8 +22,8 @@
   max-height: min(720px, calc(100vh - 24px));
   overflow: auto;
   border-radius: 28px;
-  background: #f4eee3;
-  box-shadow: 0 24px 60px rgba(23, 32, 28, 0.28);
+  background: #f6efe6;
+  box-shadow: 0 24px 60px rgba(44, 27, 34, 0.28);
 }
 
 .wa-card .si-main {
@@ -49,10 +49,10 @@
   place-items: center;
   width: 40px;
   height: 40px;
-  border: 1.5px solid rgba(23, 32, 28, 0.16);
+  border: 1.5px solid rgba(44, 27, 34, 0.16);
   border-radius: 50%;
-  background: #fffdf8;
-  color: #17201c;
+  background: #fffaf4;
+  color: #2c1b22;
   cursor: pointer;
 }
 
@@ -63,7 +63,7 @@
   padding: 12px;
   border: 0;
   background: none;
-  color: #5c675f;
+  color: #7a655c;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;

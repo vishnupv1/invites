@@ -484,21 +484,23 @@
   "engagement": {
     "review": "",
     "whatYouGet": [
-      "There is no engagement-only template yet. The cards shown are wedding designs you could retitle. This page is a draft and is not indexed."
+      "Bali Romance opens with two fans, a coast road, and a scooter ride.",
+      "Guests see the date, the place, and a countdown.",
+      "They reply on the page. No app and no account."
     ],
     "howItWorks": [
-      "Pick a wedding design.",
-      "Change the heading to an engagement.",
+      "Open Bali Romance.",
+      "Add your names, the date, and the place.",
       "Share one link on WhatsApp."
     ],
     "wording": [
-      "Add an engagement wording sample when an engagement template exists."
+      "We are getting engaged. Save the date, and celebrate with us."
     ],
-    "price": "Do not publish this page until an engagement template exists.",
+    "price": "₹199, paid once. Designing and previewing stay free.",
     "faqs": [
       {
         "q": "Is there an engagement template?",
-        "a": "Not yet. This draft is noindex."
+        "a": "Yes. Bali Romance is an engagement invitation."
       }
     ]
   },

@@ -78,7 +78,9 @@
 
 .ir-browse-side h1 {
   margin: 0 0 8px;
-  font-size: 32px;
+  font-size: 34px;
+  font-weight: 500;
+  font-style: italic;
   line-height: 1.05;
 }
 
@@ -100,27 +102,37 @@
   min-width: 0;
   color: inherit;
   text-decoration: none;
+  transition: transform 0.35s ease;
 }
 
 .ir-browse-shot {
   position: relative;
   display: block;
-  aspect-ratio: 390 / 844;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: 22px;
-  background: #ebe4d6;
+  border-radius: 16px;
+  background: var(--paper-2);
+  box-shadow: 0 10px 24px rgba(44, 27, 34, 0.08);
 }
 
 .ir-browse-shot img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .ir-browse-card.is-current .ir-browse-shot {
   box-shadow: 0 0 0 2px var(--marigold);
+}
+
+@media (min-width: 900px) {
+  .ir-browse-card:hover { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ir-browse-card:hover { transform: none; }
 }
 
 .ir-browse-name {
@@ -128,7 +140,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-weight: 800;
+  font-family: var(--ir-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 16px;
 }
 
 .ir-browse-name span {
@@ -245,7 +260,7 @@
     padding: 0 16px;
     border-radius: 14px;
     background: var(--emerald);
-    color: #fffdf8;
+    color: #fffaf4;
     text-align: left;
   }
 
