@@ -136,7 +136,7 @@
   translate: -50% 0;
   opacity: 0;
 }
-.br.is-open .br-scooter { animation: br-ride 7s 1.8s linear both; }
+.br.is-open .br-scooter { animation: br-ride 5.5s 1.8s linear both; }
 .br button.br-cue {
   position: absolute;
   bottom: max(3%, env(safe-area-inset-bottom, 0px));
@@ -151,7 +151,7 @@
   pointer-events: none;
   z-index: 6;
 }
-.br.is-open button.br-cue { animation: br-appear 0.5s 8.8s both; pointer-events: auto; }
+.br.is-open button.br-cue { animation: br-appear 0.5s 7.3s both; pointer-events: auto; }
 
 .br-man { width: 38%; left: 7%; bottom: 6%; }
 .br-woman { width: 40%; right: 13%; bottom: 6%; }

@@ -197,7 +197,7 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
       go();
     };
     scooter?.addEventListener("animationend", onEnd);
-    const fallback = window.setTimeout(go, 7400);
+    const fallback = window.setTimeout(go, 5900);
     return () => {
       scooter?.removeEventListener("animationend", onEnd);
       window.clearTimeout(fallback);
