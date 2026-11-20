@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  secretgarden: "2026-11-20T17:23:00+05:30",
   bali: "2026-11-20T14:31:00+05:30",
   estate: "2026-11-19T22:48:00+05:30",
   forever: "2026-11-19T16:21:00+05:30",
@@ -83,6 +84,34 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "secretgarden",
+    name: "The Secret Garden",
+    style: "secretgarden",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Break a wax seal and the curtains part onto a garden wedding. Guests see the day, the venue, and reply on the page.",
+    asks: { photos: 3, audio: false, location: true },
+    meta: META.secretgarden,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "Together with their families",
+        names: "Amelia & Oliver",
+        title: "Invite you to celebrate their wedding",
+        detail: "A garden celebration",
+        date: "2027-10-16",
+        time: "16:00",
+        venue: "Royal Botanic Gardens, Kew",
+        address: "Richmond, London",
+        message: "Every little moment led us here.",
+        dress: "Garden formal",
+        rsvpBy: "2027-09-16",
+        lines: linesFor("secretgarden"),
+      }),
+    },
+  },
   {
     id: "bali",
     name: "Bali Romance",

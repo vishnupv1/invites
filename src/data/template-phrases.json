@@ -240,6 +240,12 @@
     "languages": ["English"],
     "hook": "with two fans that open onto a scooter ride along the coast"
   },
+  "secretgarden": {
+    "style": "Secret garden",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a wax seal you break so the curtains part"
+  },
   "estate": {
     "style": "Painted estate",
     "occasion": "Wedding",

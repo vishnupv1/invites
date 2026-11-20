@@ -1,4 +1,30 @@
 {
+  "secretgarden": {
+    "names": "couple",
+    "ceremony": "The ceremony",
+    "reception": "Dinner & dancing",
+    "themes": [{ "id": "secretgarden", "name": "The Secret Garden" }],
+    "defaultTheme": "secretgarden",
+    "shots": [
+      { "label": "A quiet hour" },
+      { "label": "The two of us" },
+      { "label": "With everyone" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 10 },
+    "components": [
+      { "id": "opening", "label": "The wax seal", "configurable": false, "fields": [] },
+      { "id": "hosts", "label": "Families", "configurable": true, "fields": ["hosts"] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "message", "label": "Our story", "configurable": true, "fields": ["message"] },
+      { "id": "when", "label": "Wedding day", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The garden", "configurable": true, "fields": ["venue", "address", "lat", "lng"] },
+      { "id": "dress", "label": "Dress", "configurable": true, "fields": ["dress"] },
+      { "id": "programme", "label": "The day", "configurable": true, "fields": ["lines"] },
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "gazal": {
     "names": "couple",
     "ceremony": "Nikah",

@@ -154,6 +154,12 @@
       "description": "Two fans open onto a coast road as a scooter carries the couple to their engagement. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
       "lead": "Woven fans, a watercolour coast road, and a celebration above the sea. Made for an engagement in Uluwatu, Bali."
     },
+    "secretgarden": {
+      "heading": "The Secret Garden wedding invitation",
+      "title": "The Secret Garden – Garden Wedding Invitation | InvitesReady",
+      "description": "Break a wax seal and the curtains part onto a garden wedding. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
+      "lead": "A wax seal, parted curtains, and a garden under a chandelier. Made for a wedding at Kew Gardens in London."
+    },
     "estate": {
       "heading": "The Painted Estate wedding invitation",
       "title": "The Painted Estate – Mediterranean Wedding Invitation | InvitesReady",
@@ -334,6 +340,7 @@
       "description": "Animated digital wedding invitations. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp. ₹199, paid once.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "secretgarden",
         "estate",
         "forever",
         "marble",

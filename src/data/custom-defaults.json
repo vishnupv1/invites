@@ -1,4 +1,16 @@
 {
+  "secretgarden": {
+    "programme": [
+      { "kick": "Saturday, 16 October", "title": "Welcome drinks", "time": "3:30 PM", "text": "Meet us in the gardens.", "note": "" },
+      { "kick": "Saturday, 16 October", "title": "The ceremony", "time": "4:00 PM", "text": "Our vows, surrounded by nature.", "note": "" },
+      { "kick": "Saturday, 16 October", "title": "Dinner & dancing", "time": "6:00 PM", "text": "Celebrate under the evening lights.", "note": "" }
+    ],
+    "faqs": [
+      { "q": "What should I wear?", "a": "Garden formal. Comfortable shoes are encouraged." },
+      { "q": "Can I bring a guest?", "a": "Please refer to your invitation and indicate your guest count below." },
+      { "q": "What about dietary requirements?", "a": "Include any requirements in your RSVP." }
+    ]
+  },
   "vivah": {
     "story": [
       { "year": "2019", "title": "A wrong train", "text": "Both missed the Chennai Mail — and shared a very long wait at Ernakulam." },

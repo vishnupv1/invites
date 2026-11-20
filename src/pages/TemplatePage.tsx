@@ -50,6 +50,7 @@ import { MarbleInvite } from "../components/MarbleInvite";
 import { ForeverInvite } from "../components/ForeverInvite";
 import { EstateInvite } from "../components/EstateInvite";
 import { BaliInvite } from "../components/BaliInvite";
+import { SecretGardenInvite } from "../components/SecretGardenInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -163,6 +164,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <EstateInvite fields={fields} />;
     case "bali":
       return <BaliInvite fields={fields} />;
+    case "secretgarden":
+      return <SecretGardenInvite fields={fields} />;
     case "raas":
       return <RaasInvite fields={fields} />;
     case "weddingride":
