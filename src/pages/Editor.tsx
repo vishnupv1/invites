@@ -39,10 +39,14 @@ import { MarbleInvite } from "../components/MarbleInvite";
 import { ForeverInvite } from "../components/ForeverInvite";
 import { EstateInvite } from "../components/EstateInvite";
 import { BaliInvite } from "../components/BaliInvite";
+import { AudioClipGuard } from "../components/AudioClipGuard";
+import { ClipWave } from "../components/ClipWave";
+import { SongControl } from "../components/SongControl";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
 import { SHAADI_SHOTS, SHAADI_STORY_COUNT, festivitiesOf, shaadiPhotoShots, type ShaadiFunction } from "../components/shaadi";
+import { CLIP_SECONDS, clipStart, librarySong, songFile, SONGS, withClip } from "../data/music";
 import { notesJson, photoNotes, spliceNotes, type PhotoNote } from "../data/photos";
 import { InviteView } from "../components/InviteView";
 import { Checkout } from "../components/Checkout";
@@ -311,6 +315,8 @@ export function Editor({
   const [authOpen, setAuthOpen] = useState(false);
   const [authIntent, setAuthIntent] = useState<"save" | "publish">("publish");
   const [playing, setPlaying] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [songLength, setSongLength] = useState(0);
   const [placeQuery, setPlaceQuery] = useState("");
   const [places, setPlaces] = useState<PlaceHit[]>([]);
   const [searching, setSearching] = useState(false);
@@ -551,6 +557,41 @@ export function Editor({
     beginPublishRef.current();
   }, [embedded, template, signedIn, model]);
 
+  const libraryPick = librarySong(model?.draft.audio || "");
+
+  useEffect(() => {
+    if (!libraryPick) {
+      setSongLength(0);
+      return;
+    }
+    const probe = new Audio(libraryPick.src);
+    probe.preload = "metadata";
+    const read = () => setSongLength(Number.isFinite(probe.duration) ? probe.duration : 0);
+    probe.addEventListener("loadedmetadata", read);
+    return () => {
+      probe.removeEventListener("loadedmetadata", read);
+      probe.src = "";
+    };
+  }, [libraryPick]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!playing || !preview) {
+      audio.pause();
+      return;
+    }
+    const wanted = assetUrl(songFile(preview));
+    if (audio.getAttribute("src") !== wanted) audio.src = wanted;
+    const start = clipStart(preview);
+    const seek = () => {
+      if (Math.abs(audio.currentTime - start) > 0.35) audio.currentTime = start;
+    };
+    if (audio.readyState >= 1) seek();
+    else audio.addEventListener("loadedmetadata", seek, { once: true });
+    void audio.play().catch(() => setPlaying(false));
+  }, [playing, preview]);
+
   if (!template) return embedded ? null : <Navigate to="/" replace />;
   if (!model) return <div className="ed-root"><p className="ed-save wait-line"><Spinner /> Opening your invitation…</p></div>;
 
@@ -569,7 +610,7 @@ export function Editor({
   const themeName = template.meta.themes.find((item) => item.id === model.swatch)?.name ?? "This design";
   const nameLabel = template.meta.names === "child" ? "Child's name" : template.meta.names === "family" ? "Family name" : "Your name";
   const tabs = TABS.filter((item) => {
-    if (item.id === "Music") return hasComponent(template, "music");
+    if (item.id === "Music") return true;
     if (item.id === "Functions") return hasComponent(template, "ceremony");
     if (item.id === "RSVP") return hasComponent(template, "rsvp");
     return true;
@@ -777,6 +818,7 @@ export function Editor({
       await ensureHost();
       const audio = await uploadMedia(file);
       patchDraft({ audio });
+      setPreview("");
       setPlaying(false);
       setError("");
     } catch (reason) {
@@ -786,19 +828,32 @@ export function Editor({
     }
   }
 
-  function togglePlay() {
-    const audio = audioRef.current;
-    if (!audio || !draft.audio) {
-      notify("Add a song file first. These invitations don't include a recording.", "warn");
+  function chooseAudio(src: string) {
+    audioRef.current?.pause();
+    setPlaying(false);
+    setPreview("");
+    patchDraft({ audio: src ? withClip(src, 0) : "" });
+  }
+
+  function setClip(start: number) {
+    const song = librarySong(draft.audio);
+    if (!song) return;
+    const next = withClip(song.src, start);
+    patchDraft({ audio: next });
+    setPreview((current) => (songFile(current) === song.src ? next : current));
+  }
+
+  function togglePreview(src: string) {
+    if (!src) {
+      notify("Add a song file first, or choose one from the library.", "warn");
       return;
     }
-    if (audio.paused) {
-      void audio.play();
-      setPlaying(true);
-    } else {
-      audio.pause();
+    if (songFile(preview) === songFile(src) && playing) {
       setPlaying(false);
+      return;
     }
+    setPreview(src);
+    setPlaying(true);
   }
 
   function toggleSection(id: string) {
@@ -1492,7 +1547,7 @@ export function Editor({
             <div className="ed-stack">
               <div className="ed-intro">
                 <h2>Background music</h2>
-                <p className="ed-lead">{template.id === "thiruvizha" ? "One nadaswaram plays when guests tap the music button. Upload a file only to replace it." : "Plays when guests tap the music button. Add your own file."}</p>
+                <p className="ed-lead">{template.id === "thiruvizha" ? "Choose a song, or leave the included nadaswaram. A library song plays for 30 seconds. Guests start it from the music button." : "Choose a song from the library, or add your own. A library song plays for 30 seconds, from the part you pick. Guests start it from the music button."}</p>
               </div>
               <div className={draft.audio ? "ed-row ed-track" : "ed-row ed-track on"}>
                 <button type="button" className="ed-play" aria-label="No music" disabled>
@@ -1502,29 +1557,68 @@ export function Editor({
                   <b>{template.id === "thiruvizha" && !draft.audio ? "Nadaswaram" : "No music"}</b>
                   <small>{template.id === "thiruvizha" && !draft.audio ? "Included with this design" : "Silent"}</small>
                 </div>
-                <button type="button" className={draft.audio ? "ed-use" : "ed-use on"} onClick={() => { patchDraft({ audio: "" }); setPlaying(false); }}>
+                <button type="button" className={draft.audio ? "ed-use" : "ed-use on"} onClick={() => chooseAudio("")}>
                   {draft.audio ? "Use" : "Selected"}
                 </button>
               </div>
-              <div className={draft.audio ? "ed-row ed-track on" : "ed-row ed-track"}>
-                <button type="button" className={playing ? "ed-play on" : "ed-play"} aria-label={playing ? "Pause your song" : "Play your song"} onClick={togglePlay}>
+              {SONGS.map((song) => {
+                const selected = songFile(draft.audio) === song.src;
+                const active = songFile(preview) === song.src && playing;
+                const rawStart = clipStart(draft.audio);
+                const maxStart = songLength > CLIP_SECONDS ? Math.floor(songLength - CLIP_SECONDS) : 0;
+                const start = songLength > 0 ? Math.min(rawStart, maxStart) : rawStart;
+                const end = songLength > 0 ? Math.min(start + CLIP_SECONDS, songLength) : start + CLIP_SECONDS;
+                return (
+                  <div className={selected ? "ed-song on" : "ed-song"} key={song.src}>
+                    <div className="ed-row ed-track">
+                      <button type="button" className={active ? "ed-play on" : "ed-play"} aria-label={active ? `Pause ${song.name}` : `Play ${song.name}`} onClick={() => togglePreview(selected ? withClip(song.src, start) : withClip(song.src, 0))}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d={active ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5l11 7-11 7z"} />
+                        </svg>
+                      </button>
+                      <div className="grow">
+                        <b>{song.name}</b>
+                        <small>{song.by}</small>
+                      </div>
+                      <button type="button" className={selected ? "ed-use on" : "ed-use"} onClick={() => chooseAudio(song.src)}>
+                        {selected ? "Selected" : "Use"}
+                      </button>
+                    </div>
+                    {selected ? (
+                      <div className="ed-clip">
+                        <ClipWave
+                          src={song.src}
+                          start={start}
+                          duration={songLength || end}
+                          playing={active}
+                          audioRef={audioRef}
+                          onStart={setClip}
+                          onToggle={() => togglePreview(withClip(song.src, start))}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+              <div className={draft.audio && !librarySong(draft.audio) ? "ed-row ed-track on" : "ed-row ed-track"}>
+                <button type="button" className={playing && preview && !librarySong(preview) ? "ed-play on" : "ed-play"} aria-label={playing && preview && !librarySong(preview) ? "Pause your song" : "Play your song"} onClick={() => togglePreview(draft.audio && !librarySong(draft.audio) ? draft.audio : "")}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d={playing ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5l11 7-11 7z"} />
                   </svg>
                 </button>
                 <div className="grow">
                   <b>Your song</b>
-                  <small>{draft.audio ? "Uploaded file" : "MP3 or a link"}</small>
+                  <small>{draft.audio && !librarySong(draft.audio) ? "Uploaded file" : "MP3, MPEG, or a link"}</small>
                 </div>
-                <button type="button" className={draft.audio ? "ed-use on" : "ed-use"} disabled={audioBusy} onClick={() => audioPickRef.current?.click()}>
-                  {audioBusy ? "Uploading…" : draft.audio ? "Selected" : "Use"}
+                <button type="button" className={draft.audio && !librarySong(draft.audio) ? "ed-use on" : "ed-use"} disabled={audioBusy} onClick={() => audioPickRef.current?.click()}>
+                  {audioBusy ? "Uploading…" : draft.audio && !librarySong(draft.audio) ? "Selected" : "Use"}
                 </button>
               </div>
               <input
                 ref={audioPickRef}
                 hidden
                 type="file"
-                accept="audio/*"
+                accept="audio/*,video/mpeg,.mp3,.mpeg,.mpg,.mp2"
                 onChange={(change) => {
                   const file = change.target.files?.[0];
                   change.target.value = "";
@@ -1542,7 +1636,8 @@ export function Editor({
                   onChange={(change) => patchDraft({ audio: change.target.value })}
                 />
               </div>
-              {draft.audio ? <audio ref={audioRef} src={assetUrl(draft.audio)} onEnded={() => setPlaying(false)} /> : null}
+              {preview || draft.audio ? <audio ref={audioRef} src={assetUrl(songFile(preview || draft.audio))} onEnded={() => setPlaying(false)} /> : null}
+              <AudioClipGuard src={preview || draft.audio} />
             </div>
           ) : null}
         </aside>
@@ -1681,6 +1776,7 @@ export function Editor({
                     <InviteView template={template} fields={previewFields} />
                   )}
                 </div>
+                {previewFields.audio && !hasComponent(template, "music") ? <SongControl src={previewFields.audio} /> : null}
               </div>
               {guestPreview ? (
                 <div className="ed-gp">

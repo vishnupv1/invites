@@ -20,7 +20,7 @@ function notifySession() {
 export const API_URL = (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "" : "https://invites-be.vercel.app")).replace(/\/$/, "");
 
 export function assetUrl(url: string) {
-  if (!url || /^(https?:|data:|blob:)/.test(url)) return url;
+  if (!url || /^(https?:|data:|blob:)/.test(url) || url.startsWith("/music/")) return url;
   return `${API_URL}${url.startsWith("/") ? url : `/${url}`}`;
 }
 
@@ -319,7 +319,8 @@ export async function sendGreeting(slug: string, body: { name: string; note: str
 export async function uploadMedia(file: File) {
   if (!file.size) throw new Error("That file is empty. Choose it again.");
   if (file.size > 4_500_000) throw new Error("That file is larger than 4.5 MB. Choose a smaller one.");
-  if (!file.type.startsWith("image/") && !file.type.startsWith("audio/")) {
+  const song = file.type.startsWith("audio/") || file.type === "video/mpeg" || file.type === "video/mpg" || /\.(mp3|mpeg|mpg|mp2|mpa)$/i.test(file.name);
+  if (!file.type.startsWith("image/") && !song) {
     throw new Error("Upload a photo or an audio file.");
   }
   const body = new FormData();

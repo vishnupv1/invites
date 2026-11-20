@@ -1,0 +1,18 @@
+.song-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 40;
+  margin: 0;
+  padding: 7px 14px;
+  border: 1px solid #9b7755;
+  border-radius: 999px;
+  background: #fffaf4;
+  color: #67452e;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.ed-screen .song-toggle { position: absolute; }

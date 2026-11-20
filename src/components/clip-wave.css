@@ -1,0 +1,84 @@
+.clip-wave {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.clip-len,
+.clip-pause {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid #2c1b22;
+  color: #2c1b22;
+  background: #fffaf4;
+  display: grid;
+  place-items: center;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.clip-pause {
+  cursor: pointer;
+  padding: 0;
+}
+
+.clip-pause svg { display: block; }
+.clip-pause.is-play svg { transform: translateX(1px); }
+
+.clip-track {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.clip-track:active { cursor: grabbing; }
+
+.clip-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.clip-bars i {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+  display: block;
+}
+
+.clip-window {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  border-radius: 8px;
+  border: 2.5px solid transparent;
+  background: linear-gradient(90deg, #ff8a18, #ff2d78, #a046ff) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.clip-head {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 999px;
+  background: #2c1b22;
+  pointer-events: none;
+}

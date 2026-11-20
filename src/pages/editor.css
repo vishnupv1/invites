@@ -448,7 +448,18 @@
 }
 .ed-step span { min-width: 28px; text-align: center; font-weight: 700; }
 .ed-track { border: 1px solid #eadfce; }
-.ed-track.on { border-color: #2c1b22; background: #fffaf4; }
+.ed-track .grow b,
+.ed-track .grow small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-song.on {
+  border: 1px solid #2c1b22;
+  border-radius: 16px;
+  background: #fffaf4;
+}
+.ed-song.on .ed-track {
+  border: none;
+  border-radius: 16px 16px 0 0;
+  background: transparent;
+}
 .ed-play {
   width: 40px;
   height: 40px;
@@ -475,6 +486,11 @@
   color: #2c1b22;
 }
 .ed-use.on { border: none; background: #f3e4c4; color: #2c1b22; }
+.ed-clip {
+  padding: 0 4px 12px;
+}
+.ed-clip p { margin: 0; font-size: 13px; color: #7a655c; }
+.ed-clip input[type="range"] { width: 100%; accent-color: #7a2e3b; }
 .ed-search { display: flex; gap: 8px; }
 .ed-search .ed-input { flex: 1; }
 .ed-search button,

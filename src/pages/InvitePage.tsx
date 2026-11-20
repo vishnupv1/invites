@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPublicInvite, sendGreeting } from "../api";
-import { GuestCta } from "../components/GuestCta";
+import { AudioClipGuard } from "../components/AudioClipGuard";
+import { InstagramLink } from "../components/InstagramLink";
 import { InviteSite } from "../components/InviteSite";
 import { Spinner } from "../components/Loader";
 import { DesktopNav } from "../components/shell/DesktopNav";
 import { IrApp } from "../components/shell/IrApp";
-import { getTemplate } from "../data/templates";
+import { SongControl } from "../components/SongControl";
+import { getTemplate, hasComponent } from "../data/templates";
 import { trackRsvpSubmit } from "../lib/analytics";
 import { decodeInvite } from "../lib/codec";
 import type { InviteFields, Template } from "../types";
@@ -75,7 +77,11 @@ export function InvitePage() {
           trackRsvpSubmit(reply.attending ? "yes" : "no", loaded.template);
         }}
       />
-      <GuestCta templateName={loaded.template.name} templateId={loaded.template.id} />
+      <footer className="guest-ig">
+        <InstagramLink />
+      </footer>
+      {loaded.fields.audio && !hasComponent(loaded.template, "music") ? <SongControl src={loaded.fields.audio} /> : null}
+      {loaded.fields.audio ? <AudioClipGuard src={loaded.fields.audio} /> : null}
     </div>
   );
 }
