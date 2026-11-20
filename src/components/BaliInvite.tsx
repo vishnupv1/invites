@@ -77,6 +77,9 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
     const item = fields.photos?.[index];
     return item ? assetUrl(item) : "";
   });
+  const hasPhotos = photos.some(Boolean);
+  const photosRef = useRef(hasPhotos);
+  photosRef.current = hasPhotos;
   const story = fields.message || "Now we want to celebrate our next chapter with you.";
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -133,7 +136,8 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
 
   function goTo(next: number) {
     const max = readyRef.current ? 5 : 0;
-    const target = Math.max(0, Math.min(max, next));
+    let target = Math.max(0, Math.min(max, next));
+    if (!photosRef.current && target === 4) target = next > pageRef.current ? 5 : 3;
     if (target === pageRef.current || lock.current) return;
     lock.current = true;
     pageRef.current = target;
@@ -150,6 +154,10 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
     const node = scrollRef.current?.querySelector<HTMLElement>(".is-on");
     if (node) node.scrollTop = 0;
   }, [page]);
+
+  useEffect(() => {
+    if (!hasPhotos && pageRef.current === 4) goTo(5);
+  }, [hasPhotos]);
 
   useEffect(() => {
     if (page !== 2) return;
@@ -360,11 +368,11 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
                   <a className="br-link br-tool" href={maps} target="_blank" rel="noopener">Open in maps</a>
                   <button className="br-tool" type="button" onClick={() => when && downloadCalendar(when, names, place)}>Add to calendar</button>
                 </div>
-                <button type="button" onClick={() => goTo(4)}>Continue</button>
+                <button type="button" onClick={() => goTo(hasPhotos ? 4 : 5)}>Continue</button>
               </aside>
             </section>
 
-            <section className={`br-gallery${page === 4 ? " is-on" : ""}`} data-scene="gallery">
+            {hasPhotos ? <section className={`br-gallery${page === 4 ? " is-on" : ""}`} data-scene="gallery">
               <small>Our photographs</small>
               <h2>Us, so far</h2>
               <div className="br-grid">
@@ -373,7 +381,7 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
                   : <span key={index} />)}
               </div>
               <button type="button" onClick={() => goTo(5)}>Continue</button>
-            </section>
+            </section> : null}
 
             <section className={`br-details${page === 5 ? " is-on" : ""}`}>
               <small>Counting down</small>
