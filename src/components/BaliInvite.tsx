@@ -185,15 +185,15 @@ export function BaliInvite({ fields, quiet = false, onReply }: {
       const id = window.setTimeout(showNext, 400);
       return () => window.clearTimeout(id);
     }
-    const scooter = scrollRef.current?.querySelector(".br-scooter");
+    const scooter = scrollRef.current?.querySelector<HTMLElement>(".br-scooter");
     let done = false;
     const go = () => {
       if (done) return;
       done = true;
       showNext();
     };
-    const onEnd = (event: AnimationEvent) => {
-      if (event.animationName !== "br-ride") return;
+    const onEnd = (event: Event) => {
+      if (!(event instanceof AnimationEvent) || event.animationName !== "br-ride") return;
       go();
     };
     scooter?.addEventListener("animationend", onEnd);
