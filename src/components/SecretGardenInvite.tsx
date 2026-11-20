@@ -104,7 +104,7 @@ export function SecretGardenInvite({ fields, quiet = false, onReply }: {
   useEffect(() => {
     if (phase !== "opening") return;
     const reduced = still || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const id = window.setTimeout(() => setPhase("open"), reduced ? 0 : 2000);
+    const id = window.setTimeout(() => setPhase("open"), reduced ? 0 : 700);
     return () => window.clearTimeout(id);
   }, [phase, still]);
 
@@ -277,7 +277,7 @@ export function SecretGardenInvite({ fields, quiet = false, onReply }: {
         </svg>
         <section className="sg-hero">
           <img className="sg-canopy" src={`${ART}/jasmine-vine.png`} alt="" />
-          <img className="sg-chandelier" src={`${ART}/chandelier.webp`} alt="" />
+          <img className="sg-chandelier" src={`${ART}/chandelier.png`} alt="" />
           <img className="sg-curtain is-left" src={`${ART}/curtain-left.webp`} alt="" />
           <img className="sg-curtain is-right" src={`${ART}/curtain-right.webp`} alt="" />
           <div className="sg-hero-inner">
