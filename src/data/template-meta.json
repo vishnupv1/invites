@@ -5,15 +5,25 @@
     "reception": "",
     "themes": [{ "id": "sage", "name": "Sage" }],
     "defaultTheme": "sage",
-    "shots": [{ "label": "The two of us" }],
-    "rsvp": { "meal": false, "song": false, "maxGuests": 0 },
+    "shots": [
+      { "label": "The two of us" },
+      { "label": "A quiet hour" },
+      { "label": "With everyone" },
+      { "label": "The place" },
+      { "label": "The evening" },
+      { "label": "One more" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 6 },
     "components": [
       { "id": "opening", "label": "The envelope", "configurable": false, "fields": [] },
       { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
       { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
       { "id": "when", "label": "The date", "configurable": true, "fields": ["date", "time"] },
       { "id": "ceremony", "label": "The place", "configurable": true, "fields": ["venue", "address"] },
-      { "id": "gallery", "label": "Photograph", "configurable": true, "fields": ["photos"] }
+      { "id": "gallery", "label": "Photographs", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "message", "label": "Scratch to reveal", "configurable": true, "fields": ["message"] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] }
     ]
   },
   "secretgarden": {

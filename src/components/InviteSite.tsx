@@ -478,7 +478,7 @@ export function InviteSite({
     return <SecretGardenInvite fields={fields} onReply={onReply} />;
   }
   if (template.style === "sage") {
-    return <SageInvite fields={fields} />;
+    return <SageInvite fields={fields} onReply={onReply} />;
   }
   if (template.style === "raas") {
     return <RaasInvite fields={fields} onReply={onReply} />;

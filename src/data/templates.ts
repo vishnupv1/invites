@@ -93,8 +93,8 @@ export const TEMPLATES: Template[] = [
     free: false,
     events: ["marriage"],
     tagline: "Save the date",
-    description: "Tap a sage envelope and a polaroid prints from the gold slot with your date. A save-the-date for the wedding.",
-    asks: { photos: 1, audio: false, location: false },
+    description: "Tap a sage envelope and a polaroid prints the date, then the day continues with photographs, a countdown, a scratch to reveal, and a reply.",
+    asks: { photos: 6, audio: false, location: false },
     meta: META.sage,
     samples: {
       marriage: sample("marriage", {
@@ -106,7 +106,7 @@ export const TEMPLATES: Template[] = [
         time: "16:00",
         venue: "The Orangery",
         address: "Lisbon",
-        message: "",
+        message: "Lisbon, in the spring light.",
         dress: "",
         rsvpBy: "",
       }),

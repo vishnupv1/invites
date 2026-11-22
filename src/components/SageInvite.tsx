@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { InviteFields } from "../types";
 import { assetUrl } from "../api";
 import { InstagramLink } from "./InstagramLink";
@@ -7,6 +7,7 @@ import { madeWithHref } from "../lib/share";
 import "./sage.css";
 
 type Phase = "closed" | "opening" | "open" | "print";
+type Reply = { name: string; note: string; attending: boolean };
 
 function stamp(value: string) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
@@ -14,12 +15,142 @@ function stamp(value: string) {
   return `${match[2]}/${match[3]}/${match[1]}`;
 }
 
-export function SageInvite({ fields, quiet = false }: { fields: InviteFields; quiet?: boolean }) {
+function useLeft(date: string, time: string) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  const target = new Date(`${date || "2027-04-29"}T${time || "16:00"}:00`).getTime();
+  const left = Math.max(0, (Number.isNaN(target) ? 0 : target) - now);
+  return [
+    Math.floor(left / 86400000),
+    Math.floor(left / 3600000) % 24,
+    Math.floor(left / 60000) % 60,
+    Math.floor(left / 1000) % 60,
+  ] as const;
+}
+
+function ScratchCard({ image }: { image: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || done) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    let dead = false;
+    let down = false;
+    let last: [number, number] | null = null;
+    let moves = 0;
+
+    const paint = () => {
+      if (moves > 0) return;
+      const box = canvas.getBoundingClientRect();
+      if (box.width < 2) return;
+      const ratio = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      canvas.width = Math.round(box.width * ratio);
+      canvas.height = Math.round(box.height * ratio);
+      context.globalCompositeOperation = "source-over";
+      context.fillStyle = "#d7e6cb";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "#5c6b4e";
+      context.textAlign = "center";
+      context.font = `${Math.round(13 * ratio)}px Jost, sans-serif`;
+      context.fillText("SCRATCH", canvas.width / 2, canvas.height / 2);
+    };
+
+    const check = () => {
+      const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      let total = 0;
+      let clear = 0;
+      for (let y = 0; y < canvas.height; y += 8) {
+        for (let x = 0; x < canvas.width; x += 8) {
+          total += 1;
+          if (data[(y * canvas.width + x) * 4 + 3] < 40) clear += 1;
+        }
+      }
+      if (total && clear / total > 0.42) setDone(true);
+    };
+
+    const point = (event: PointerEvent): [number, number] => {
+      const box = canvas.getBoundingClientRect();
+      return [(event.clientX - box.left) * canvas.width / box.width, (event.clientY - box.top) * canvas.height / box.height];
+    };
+
+    const draw = (event: PointerEvent) => {
+      const next = point(event);
+      context.globalCompositeOperation = "destination-out";
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.lineWidth = canvas.width * 0.14;
+      context.beginPath();
+      context.moveTo((last || next)[0], (last || next)[1]);
+      context.lineTo(next[0], next[1]);
+      context.stroke();
+      last = next;
+      moves += 1;
+      if (moves % 6 === 0) check();
+    };
+
+    const start = (event: PointerEvent) => {
+      down = true;
+      canvas.setPointerCapture(event.pointerId);
+      last = null;
+      draw(event);
+    };
+    const move = (event: PointerEvent) => {
+      if (down) draw(event);
+    };
+    const stop = () => {
+      down = false;
+      last = null;
+    };
+
+    paint();
+    const observer = new ResizeObserver(paint);
+    observer.observe(canvas);
+    canvas.addEventListener("pointerdown", start);
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerup", stop);
+    canvas.addEventListener("pointercancel", stop);
+    return () => {
+      dead = true;
+      observer.disconnect();
+      canvas.removeEventListener("pointerdown", start);
+      canvas.removeEventListener("pointermove", move);
+      canvas.removeEventListener("pointerup", stop);
+      canvas.removeEventListener("pointercancel", stop);
+      void dead;
+    };
+  }, [done]);
+
+  return (
+    <div className={`sa-frame${done ? " is-clear" : ""}`}>
+      <div className="sa-frame-well">
+        {image ? <img src={image} alt="" /> : <span>Your photograph</span>}
+        {done ? null : <canvas ref={canvasRef} aria-label="Scratch to reveal" />}
+      </div>
+      <img className="sa-frame-art" src="/sage/oval-frame.webp" alt="" />
+    </div>
+  );
+}
+
+export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteFields; quiet?: boolean; onReply?: (reply: Reply) => void | Promise<void> }) {
   useFonts("Great Vibes", "Cormorant Garamond", "Jost");
   const [phase, setPhase] = useState<Phase>(quiet ? "print" : "closed");
   const photo = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : "")).find(Boolean) || "";
+  const photos = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : "")).filter(Boolean);
   const place = [fields.venue, fields.address].filter(Boolean).join(" · ");
   const date = stamp(fields.date || "");
+  const left = useLeft(fields.date || "", fields.time || "");
+  const [attend, setAttend] = useState<"yes" | "no">("yes");
+  const [guest, setGuest] = useState("");
+  const [note, setNote] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     if (phase !== "opening") return;
@@ -41,6 +172,20 @@ export function SageInvite({ fields, quiet = false }: { fields: InviteFields; qu
   function openInvite() {
     if (phase !== "closed") return;
     setPhase("opening");
+  }
+
+  async function sendReply() {
+    if (!guest.trim()) {
+      setNameError(true);
+      return;
+    }
+    setSending(true);
+    try {
+      await onReply?.({ name: guest.trim(), note: note.trim(), attending: attend === "yes" });
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   }
 
   const lifting = phase === "opening" || phase === "open" || phase === "print";
@@ -67,12 +212,16 @@ export function SageInvite({ fields, quiet = false }: { fields: InviteFields; qu
               <img className="sa-slot" src="/sage/gold-slot.webp" alt="" />
             </div>
           </div>
-          {place ? <p className="sa-place">{place}</p> : null}
-          <button className="sa-replay" type="button" onClick={() => setPhase("closed")}>↻ Replay</button>
-          <div className="sa-credit">
-            <a href={madeWithHref("sage")}>Made with InvitesReady</a>
-            <InstagramLink />
-          </div>
+          {quiet && place ? <p className="sa-place">{place}</p> : null}
+          {quiet ? (
+            <>
+              <button className="sa-replay" type="button" onClick={() => setPhase("closed")}>↻ Replay</button>
+              <div className="sa-credit">
+                <a href={madeWithHref("sage")}>Made with InvitesReady</a>
+                <InstagramLink />
+              </div>
+            </>
+          ) : null}
         </section>
         {phase === "closed" || phase === "opening" ? (
           <div className="sa-env">
@@ -95,6 +244,76 @@ export function SageInvite({ fields, quiet = false }: { fields: InviteFields; qu
           </div>
         ) : null}
       </div>
+      {revealed && !quiet ? (
+        <div className="sa-pages">
+          <section className="sa-page" aria-label="Gallery">
+            <p className="sa-kicker">The photographs</p>
+            <h2>Moments</h2>
+            <div className={`sa-gallery${photos.length < 2 ? " is-single" : ""}`}>
+              {(photos.length ? photos : [""]).map((src, index) => (
+                <figure key={`${src}-${index}`}>
+                  {src ? <img src={src} alt="" /> : <span>Your photograph</span>}
+                </figure>
+              ))}
+            </div>
+          </section>
+          <section className="sa-page" aria-label="Countdown">
+            <p className="sa-kicker">{date || "The day"}</p>
+            <h2>Counting the days</h2>
+            <div className="sa-count">
+              {(["Days", "Hours", "Minutes", "Seconds"] as const).map((label, index) => (
+                <div key={label}>
+                  <b>{String(left[index]).padStart(2, "0")}</b>
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+            {place ? <p className="sa-when">{place}</p> : null}
+          </section>
+          <section className="sa-page" aria-label="Scratch to reveal">
+            <p className="sa-kicker">A note for you</p>
+            <h2>Scratch the card</h2>
+            <ScratchCard image={photos[1] || photos[0] || ""} />
+          </section>
+          <section className="sa-page" aria-label="Reply">
+            <p className="sa-kicker">Reply</p>
+            <h2>Will you be there?</h2>
+            {sent ? (
+              <p className="sa-sent">Thank you. Your reply is with {fields.names || "Ana & Luka"}.</p>
+            ) : (
+              <form className="sa-rsvp" onSubmit={(event) => { event.preventDefault(); void sendReply(); }}>
+                <label>
+                  Your name
+                  <input value={guest} onChange={(event) => { setGuest(event.target.value); setNameError(false); }} />
+                </label>
+                {nameError ? <small>Please add your name.</small> : null}
+                <div className="sa-choice">
+                  <button type="button" className={attend === "yes" ? "is-on" : ""} onClick={() => setAttend("yes")}>Joyfully yes</button>
+                  <button type="button" className={attend === "no" ? "is-on" : ""} onClick={() => setAttend("no")}>With regret</button>
+                </div>
+                <label>
+                  A note
+                  <textarea value={note} rows={3} onChange={(event) => setNote(event.target.value)} />
+                </label>
+                <button className="sa-send" type="submit" disabled={sending}>{sending ? "Sending" : "Send reply"}</button>
+              </form>
+            )}
+          </section>
+          <section className="sa-page sa-thanks" aria-label="Thank you">
+            <p className="sa-kicker">With love</p>
+            <h2>Thank you</h2>
+            <p>{fields.names || "Ana & Luka"}</p>
+            {place ? <p className="sa-thanks-place">{place}</p> : null}
+            <div className="sa-close">
+              <button className="sa-replay" type="button" onClick={() => setPhase("closed")}>↻ Replay</button>
+              <div className="sa-credit">
+                <a href={madeWithHref("sage")}>Made with InvitesReady</a>
+                <InstagramLink />
+              </div>
+            </div>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }
