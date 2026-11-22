@@ -443,13 +443,21 @@
   text-transform: uppercase;
   color: #9a5364;
 }
-.pn-page h2 {
+.pn-page > h2 {
+  max-width: 100%;
   margin: 0;
+  padding: 0.16em 0.28em 0.22em;
   font-family: "Great Vibes", cursive;
-  font-size: 52px;
+  font-size: clamp(32px, 9.4cqw, 52px);
   font-weight: 400;
-  line-height: 1.05;
+  line-height: 1.35;
+  text-wrap: balance;
+  overflow: visible;
   color: #7a2a3c;
+}
+@container peony (max-width: 360px) {
+  .pn-page { padding: 32px 12px; }
+  .pn-page > h2 { font-size: clamp(28px, 8.6cqw, 36px); }
 }
 .pn-gallery {
   display: flex;
@@ -468,16 +476,19 @@
   justify-content: center;
   overflow: hidden;
 }
-.pn-gallery figure {
+.pn-gallery button.pn-shot {
   flex: 0 0 78%;
   margin: 0;
   padding: 8px 8px 22px;
+  border: 0;
   scroll-snap-align: center;
   scroll-snap-stop: always;
   background: #f7f4ec;
   box-shadow: 0 10px 24px rgba(50, 60, 40, 0.12);
+  cursor: pointer;
 }
-.pn-gallery.is-single figure { flex-basis: min(78%, 320px); }
+.pn-gallery.is-single button.pn-shot { flex-basis: min(78%, 320px); }
+.pn-gallery button.pn-shot:disabled { cursor: default; }
 .pn-gallery img,
 .pn-gallery span {
   display: grid;
@@ -493,6 +504,23 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #b07a88;
+}
+.pn-lightbox {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+  background: rgba(74, 24, 36, 0.78);
+}
+.pn-lightbox img {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 16px 40px rgba(30, 8, 14, 0.35);
 }
 .pn-count {
   display: grid;

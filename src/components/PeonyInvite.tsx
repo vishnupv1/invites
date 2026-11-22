@@ -195,8 +195,18 @@ export function PeonyInvite({ fields, quiet = false, onReply }: { fields: Invite
   const [nameError, setNameError] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [photo, setPhoto] = useState<string | null>(null);
   const thanksRef = useRef<HTMLElement>(null);
   const [ink, setInk] = useState(false);
+
+  useEffect(() => {
+    if (!photo) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setPhoto(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [photo]);
 
   useEffect(() => {
     if (phase !== "opening") return;
@@ -326,9 +336,15 @@ export function PeonyInvite({ fields, quiet = false, onReply }: { fields: Invite
             <h2>Moments</h2>
             <div className={`pn-gallery${gallery.length < 2 ? " is-single" : ""}`}>
               {(gallery.length ? gallery : [""]).map((src, index) => (
-                <figure key={`${src}-${index}`}>
+                <button
+                  key={`${src}-${index}`}
+                  type="button"
+                  className="pn-shot"
+                  disabled={!src}
+                  onClick={() => src && setPhoto(src)}
+                >
                   {src ? <img src={src} alt="" /> : <span>Your photograph</span>}
-                </figure>
+                </button>
               ))}
             </div>
           </section>
@@ -401,6 +417,11 @@ export function PeonyInvite({ fields, quiet = false, onReply }: { fields: Invite
               </div>
             </div>
           </section>
+        </div>
+      ) : null}
+      {photo ? (
+        <div className="pn-lightbox" role="dialog" aria-modal="true" aria-label="Photograph" onClick={() => setPhoto(null)}>
+          <img src={photo} alt="" onClick={(event) => event.stopPropagation()} />
         </div>
       ) : null}
       </div>
