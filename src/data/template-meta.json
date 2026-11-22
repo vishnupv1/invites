@@ -6,12 +6,9 @@
     "themes": [{ "id": "sage", "name": "Sage" }],
     "defaultTheme": "sage",
     "shots": [
-      { "label": "The two of us" },
-      { "label": "A quiet hour" },
-      { "label": "With everyone" },
-      { "label": "The place" },
-      { "label": "The evening" },
-      { "label": "One more" }
+      { "label": "First page" },
+      { "label": "Reveal" },
+      { "label": "Gallery" }
     ],
     "rsvp": { "meal": false, "song": false, "maxGuests": 6 },
     "components": [

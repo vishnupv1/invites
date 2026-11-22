@@ -140,8 +140,10 @@ function ScratchCard({ image }: { image: string }) {
 export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteFields; quiet?: boolean; onReply?: (reply: Reply) => void | Promise<void> }) {
   useFonts("Great Vibes", "Cormorant Garamond", "Jost");
   const [phase, setPhase] = useState<Phase>(quiet ? "print" : "closed");
-  const photo = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : "")).find(Boolean) || "";
-  const photos = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : "")).filter(Boolean);
+  const shots = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : ""));
+  const cover = shots[0] || "";
+  const reveal = shots[1] || "";
+  const gallery = shots[2] || "";
   const place = [fields.venue, fields.address].filter(Boolean).join(" · ");
   const date = stamp(fields.date || "");
   const left = useLeft(fields.date || "", fields.time || "");
@@ -205,7 +207,7 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
               <div className="sa-mask">
                 <div className="sa-polaroid">
                   <div className="sa-photo">
-                    {photo ? <img src={photo} alt="" /> : <div className="sa-placeholder">Your couple photo</div>}
+                    {cover ? <img src={cover} alt="" /> : <div className="sa-placeholder">Your couple photo</div>}
                   </div>
                   {date ? <div className="sa-date">{date}</div> : null}
                 </div>
@@ -250,12 +252,10 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
           <section className="sa-page" aria-label="Gallery">
             <p className="sa-kicker">The photographs</p>
             <h2>Moments</h2>
-            <div className={`sa-gallery${photos.length < 2 ? " is-single" : ""}`}>
-              {(photos.length ? photos : [""]).map((src, index) => (
-                <figure key={`${src}-${index}`}>
-                  {src ? <img src={src} alt="" /> : <span>Your photograph</span>}
-                </figure>
-              ))}
+            <div className="sa-gallery is-single">
+              <figure>
+                {gallery ? <img src={gallery} alt="" /> : <span>Your photograph</span>}
+              </figure>
             </div>
           </section>
           <section className="sa-page" aria-label="Countdown">
@@ -274,7 +274,7 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
           <section className="sa-page" aria-label="Scratch to reveal">
             <p className="sa-kicker">A note for you</p>
             <h2>Scratch the card</h2>
-            <ScratchCard image={photos[1] || photos[0] || ""} />
+            <ScratchCard image={reveal} />
           </section>
           <section className="sa-page" aria-label="Reply">
             <p className="sa-kicker">Reply</p>
