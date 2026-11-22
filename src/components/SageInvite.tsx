@@ -199,7 +199,6 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
       <div className="sa-scroll">
       <div className="sa-stage">
         <section className="sa-invite" aria-label="Wedding announcement">
-          <div className="sa-lang" aria-hidden="true">🇬🇧 EN ⌄</div>
           <div className="sa-identity">
             <div className="sa-eyebrow">{fields.title || "We're getting married"}</div>
             <h1 className="sa-names">{fields.names || "Ana & Luka"}</h1>

@@ -58,17 +58,6 @@
   transition: opacity 0.85s ease;
 }
 .sa.is-open .sa-invite { opacity: 1; }
-.sa-lang {
-  position: absolute;
-  top: max(6%, env(safe-area-inset-top));
-  right: 7%;
-  border: 1px solid #ffffff70;
-  border-radius: 25px;
-  padding: 7px 11px;
-  color: white;
-  background: #ffffff12;
-  font: 11px Arial, sans-serif;
-}
 .sa-identity {
   position: absolute;
   top: 20%;
