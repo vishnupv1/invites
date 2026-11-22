@@ -252,7 +252,7 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
                 <img src="/sage/flap.webp" alt="" />
                 <span className="sa-flap-back" />
               </div>
-              <img className="sa-bow" src="/sage/ivory-bow.webp" alt="" />
+              <img className="sa-bow" src="/sage/wax-seal.webp" alt="" />
               <div className="sa-env-copy">
                 <span>A letter for you, with love</span>
                 <strong>{fields.names || "Ana & Luka"}</strong>
