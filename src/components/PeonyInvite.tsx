@@ -171,6 +171,7 @@ function ScratchCard({ image }: { image: string }) {
         {image ? <img src={image} alt="" /> : <span>Your photograph</span>}
         {done ? null : <canvas ref={canvasRef} aria-label="Scratch to reveal" />}
       </div>
+      <img className="pn-frame-art" src="/peony/frame.webp" alt="" />
     </div>
   );
 }
