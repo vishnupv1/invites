@@ -94,7 +94,7 @@ export const TEMPLATES: Template[] = [
     events: ["marriage"],
     tagline: "Save the date",
     description: "Tap a sage envelope and a polaroid prints the date, then the day continues with photographs, a countdown, a scratch to reveal, and a reply.",
-    asks: { photos: 3, audio: false, location: false },
+    asks: { photos: 8, audio: false, location: false },
     meta: META.sage,
     samples: {
       marriage: sample("marriage", {

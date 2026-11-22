@@ -143,7 +143,7 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
   const shots = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : ""));
   const cover = shots[0] || "";
   const reveal = shots[1] || "";
-  const gallery = shots[2] || "";
+  const gallery = shots.slice(2).filter(Boolean);
   const place = [fields.venue, fields.address].filter(Boolean).join(" · ");
   const date = stamp(fields.date || "");
   const left = useLeft(fields.date || "", fields.time || "");
@@ -252,10 +252,12 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
           <section className="sa-page" aria-label="Gallery">
             <p className="sa-kicker">The photographs</p>
             <h2>Moments</h2>
-            <div className="sa-gallery is-single">
-              <figure>
-                {gallery ? <img src={gallery} alt="" /> : <span>Your photograph</span>}
-              </figure>
+            <div className={`sa-gallery${gallery.length < 2 ? " is-single" : ""}`}>
+              {(gallery.length ? gallery : [""]).map((src, index) => (
+                <figure key={`${src}-${index}`}>
+                  {src ? <img src={src} alt="" /> : <span>Your photograph</span>}
+                </figure>
+              ))}
             </div>
           </section>
           <section className="sa-page" aria-label="Countdown">

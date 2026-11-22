@@ -8,6 +8,11 @@
     "shots": [
       { "label": "First page" },
       { "label": "Reveal" },
+      { "label": "Gallery" },
+      { "label": "Gallery" },
+      { "label": "Gallery" },
+      { "label": "Gallery" },
+      { "label": "Gallery" },
       { "label": "Gallery" }
     ],
     "rsvp": { "meal": false, "song": false, "maxGuests": 6 },
