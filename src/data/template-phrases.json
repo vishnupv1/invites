@@ -240,6 +240,12 @@
     "languages": ["English"],
     "hook": "with two fans that open onto a scooter ride along the coast"
   },
+  "sage": {
+    "style": "Sage envelope",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a sage envelope you tap so a polaroid prints the date"
+  },
   "secretgarden": {
     "style": "Secret garden",
     "occasion": "Wedding",

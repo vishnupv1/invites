@@ -146,7 +146,8 @@ export type TemplateStyle =
   | "forever"
   | "estate"
   | "bali"
-  | "secretgarden";
+  | "secretgarden"
+  | "sage";
 
 export type Template = {
   id: string;

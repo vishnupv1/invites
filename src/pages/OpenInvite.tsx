@@ -39,6 +39,7 @@ import { ForeverInvite } from "../components/ForeverInvite";
 import { EstateInvite } from "../components/EstateInvite";
 import { BaliInvite } from "../components/BaliInvite";
 import { SecretGardenInvite } from "../components/SecretGardenInvite";
+import { SageInvite } from "../components/SageInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -100,6 +101,7 @@ export function OpenInvite() {
       {template.style === "estate" ? <EstateInvite fields={fields} /> : null}
       {template.style === "bali" ? <BaliInvite fields={fields} /> : null}
       {template.style === "secretgarden" ? <SecretGardenInvite fields={fields} /> : null}
+      {template.style === "sage" ? <SageInvite fields={fields} /> : null}
       {template.style === "raas" ? <RaasInvite fields={fields} /> : null}
       {template.style === "starryfairytale" ? <StarryFairytaleInvite fields={fields} /> : null}
     </div>

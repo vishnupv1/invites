@@ -40,6 +40,7 @@ import { ForeverInvite } from "../components/ForeverInvite";
 import { EstateInvite } from "../components/EstateInvite";
 import { BaliInvite } from "../components/BaliInvite";
 import { SecretGardenInvite } from "../components/SecretGardenInvite";
+import { SageInvite } from "../components/SageInvite";
 import { AudioClipGuard } from "../components/AudioClipGuard";
 import { ClipWave } from "../components/ClipWave";
 import { SongControl } from "../components/SongControl";
@@ -1761,6 +1762,8 @@ export function Editor({
                     <BaliInvite fields={previewFields} />
                   ) : template.style === "secretgarden" ? (
                     <SecretGardenInvite fields={previewFields} />
+                  ) : template.style === "sage" ? (
+                    <SageInvite fields={previewFields} />
                   ) : template.style === "raas" ? (
                     <RaasInvite fields={previewFields} />
                   ) : template.style === "weddingride" ? (

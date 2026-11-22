@@ -154,6 +154,12 @@
       "description": "Two fans open onto a coast road as a scooter carries the couple to their engagement. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
       "lead": "Woven fans, a watercolour coast road, and a celebration above the sea. Made for an engagement in Uluwatu, Bali."
     },
+    "sage": {
+      "heading": "Sage save the date invitation",
+      "title": "Sage – Envelope Save the Date Invitation | InvitesReady",
+      "description": "Tap a sage envelope and a polaroid prints the wedding date. Animated opening, share on WhatsApp. ₹199 one-time.",
+      "lead": "A sage paper envelope, a gold slot, and a polaroid that prints the date. Made for a save the date in Lisbon."
+    },
     "secretgarden": {
       "heading": "The Secret Garden wedding invitation",
       "title": "The Secret Garden – Garden Wedding Invitation | InvitesReady",
@@ -340,6 +346,7 @@
       "description": "Animated digital wedding invitations. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp. ₹199, paid once.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "sage",
         "secretgarden",
         "estate",
         "forever",

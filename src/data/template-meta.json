@@ -1,4 +1,21 @@
 {
+  "sage": {
+    "names": "couple",
+    "ceremony": "The place",
+    "reception": "",
+    "themes": [{ "id": "sage", "name": "Sage" }],
+    "defaultTheme": "sage",
+    "shots": [{ "label": "The two of us" }],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 0 },
+    "components": [
+      { "id": "opening", "label": "The envelope", "configurable": false, "fields": [] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Invitation line", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "The date", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "The place", "configurable": true, "fields": ["venue", "address"] },
+      { "id": "gallery", "label": "Photograph", "configurable": true, "fields": ["photos"] }
+    ]
+  },
   "secretgarden": {
     "names": "couple",
     "ceremony": "The ceremony",

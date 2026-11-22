@@ -44,6 +44,7 @@ import { ForeverInvite } from "./ForeverInvite";
 import { EstateInvite } from "./EstateInvite";
 import { BaliInvite } from "./BaliInvite";
 import { SecretGardenInvite } from "./SecretGardenInvite";
+import { SageInvite } from "./SageInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -475,6 +476,9 @@ export function InviteSite({
   }
   if (template.style === "secretgarden") {
     return <SecretGardenInvite fields={fields} onReply={onReply} />;
+  }
+  if (template.style === "sage") {
+    return <SageInvite fields={fields} />;
   }
   if (template.style === "raas") {
     return <RaasInvite fields={fields} onReply={onReply} />;

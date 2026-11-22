@@ -36,6 +36,7 @@ import { ForeverInvite } from "./ForeverInvite";
 import { EstateInvite } from "./EstateInvite";
 import { BaliInvite } from "./BaliInvite";
 import { SecretGardenInvite } from "./SecretGardenInvite";
+import { SageInvite } from "./SageInvite";
 import { WeddingRideInvite } from "./WeddingRideInvite";
 import { StarryFairytaleInvite } from "./StarryFairytaleInvite";
 import { PeaceInvite } from "./PeaceInvite";
@@ -295,6 +296,8 @@ export function InviteView({ template, fields, live = false, demo = false }: { t
       return <BaliInvite fields={fields} quiet={!live} />;
     case "secretgarden":
       return <SecretGardenInvite fields={fields} quiet={!live} />;
+    case "sage":
+      return <SageInvite fields={fields} quiet={!live} />;
     case "raas":
       return <RaasInvite fields={fields} quiet={!live} />;
     case "home":

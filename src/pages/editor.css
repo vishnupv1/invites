@@ -604,7 +604,8 @@
 .ed-frame.ed-phone .pk:not(.is-page),
 .ed-frame.ed-phone .wj:not(.is-page),
 .ed-frame.ed-phone .tb:not(.is-page),
-.ed-frame.ed-phone .sb:not(.is-page) .sb-stage {
+.ed-frame.ed-phone .sb:not(.is-page) .sb-stage,
+.ed-frame.ed-phone .sa {
   height: 100cqh;
   min-height: 0;
   max-height: 100cqh;
