@@ -261,8 +261,8 @@
 .pn-seal-r {
   clip-path: polygon(54% 0, 100% 0, 100% 100%, 48% 100%, 55% 89%, 45% 78%, 56% 66%, 43% 54%, 57% 42%, 45% 30%, 58% 18%, 47% 9%);
 }
-.pn.is-opening .pn-seal-l { animation: pn-crack-l 2.4s cubic-bezier(0.33, 0, 0.2, 1) forwards; }
-.pn.is-opening .pn-seal-r { animation: pn-crack-r 2.4s cubic-bezier(0.33, 0, 0.2, 1) forwards; }
+.pn.is-opening .pn-seal-l { animation: pn-crack-l 1.55s cubic-bezier(0.33, 0, 0.2, 1) forwards; }
+.pn.is-opening .pn-seal-r { animation: pn-crack-r 1.55s cubic-bezier(0.33, 0, 0.2, 1) forwards; }
 .pn-drop {
   position: absolute;
   left: 50%;
@@ -275,9 +275,9 @@
 }
 .pn-drop-b { width: 5%; top: 48%; }
 .pn-drop-c { width: 4%; top: 36%; }
-.pn.is-opening .pn-drop-a { animation: pn-drip 2.2s ease-in 0.35s forwards; }
-.pn.is-opening .pn-drop-b { animation: pn-drip-b 2s ease-in 0.5s forwards; }
-.pn.is-opening .pn-drop-c { animation: pn-drip-c 1.8s ease-in 0.28s forwards; }
+.pn.is-opening .pn-drop-a { animation: pn-drip 1.4s ease-in 0.2s forwards; }
+.pn.is-opening .pn-drop-b { animation: pn-drip-b 1.25s ease-in 0.28s forwards; }
+.pn.is-opening .pn-drop-c { animation: pn-drip-c 1.15s ease-in 0.16s forwards; }
 .pn-env-copy {
   position: absolute;
   z-index: 4;
