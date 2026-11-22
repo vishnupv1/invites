@@ -186,8 +186,8 @@
   transform: rotateX(180deg);
   backface-visibility: hidden;
   background: #e2decb;
-  -webkit-mask-image: url("/bloom/flap.webp");
-  mask-image: url("/bloom/flap.webp");
+  -webkit-mask-image: url("/sage/flap.webp");
+  mask-image: url("/sage/flap.webp");
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
 }

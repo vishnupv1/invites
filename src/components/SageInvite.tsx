@@ -228,9 +228,9 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
         {phase === "closed" || phase === "opening" ? (
           <div className="sa-env">
             <div className="sa-sheet">
-              <img className="fit sa-front" src="/bloom/envelope.webp" alt="" />
+              <img className="fit sa-front" src="/sage/envelope.webp" alt="" />
               <div className="sa-flap">
-                <img src="/bloom/flap.webp" alt="" />
+                <img src="/sage/flap.webp" alt="" />
                 <span className="sa-flap-back" />
               </div>
               <img className="sa-bow" src="/sage/ivory-bow.webp" alt="" />
