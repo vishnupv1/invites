@@ -467,6 +467,7 @@
 }
 .sa-rsvp {
   display: flex;
+  flex: none;
   flex-direction: column;
   gap: 14px;
   width: min(100%, 400px);
@@ -478,6 +479,7 @@
 }
 .sa-rsvp label {
   display: flex;
+  flex: none;
   flex-direction: column;
   gap: 6px;
   font-family: Jost, Arial, sans-serif;
@@ -490,16 +492,27 @@
 .sa-rsvp input,
 .sa-rsvp textarea {
   width: 100%;
-  border: 0;
-  border-bottom: 1px solid rgba(44, 56, 36, 0.28);
-  background: transparent;
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid rgba(61, 74, 52, 0.28);
+  border-radius: 0;
+  background: #fff;
   color: #2c3824;
-  padding: 8px 0 10px;
+  padding: 10px 12px;
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1.35;
   letter-spacing: 0;
   text-transform: none;
-  resize: vertical;
+  resize: none;
+  outline: none;
+}
+.sa-rsvp input { height: 46px; }
+.sa-rsvp textarea { height: 76px; }
+.sa-rsvp input::placeholder,
+.sa-rsvp textarea::placeholder {
+  color: #9aa58e;
+  font-style: italic;
 }
 .sa-rsvp small {
   margin-top: -8px;
@@ -553,6 +566,42 @@
 .sa-close .sa-replay {
   border-color: rgba(61, 74, 52, 0.4);
   background: transparent;
+}
+.sa-thanks h2 { line-height: 1.45; overflow: visible; }
+.sa-thanks h2,
+.sa-thanks .sa-line { animation: none; }
+.sa-line { position: relative; display: inline-block; max-width: 100%; overflow: visible; }
+.sa-script {
+  display: inline-block;
+  line-height: 1.5;
+  padding: 0.28em 0.7em 0.42em 0.16em;
+  clip-path: inset(0 100% 0 0);
+}
+.sa-nib {
+  position: absolute;
+  top: 0.85em;
+  left: 0.16em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50% 50% 50% 0;
+  background: #3d4a34;
+  opacity: 0;
+  transform: rotate(-42deg);
+  pointer-events: none;
+}
+.sa-thanks.is-ink .sa-script { animation: sa-write 2.6s linear both; }
+.sa-thanks.is-ink .sa-nib { animation: sa-nib 2.6s linear both; }
+.sa-thanks.is-ink .is-mid { animation-duration: 2.7s; animation-delay: 2.2s; }
+.sa-thanks.is-ink .is-last { animation-duration: 2.8s; animation-delay: 4.4s; }
+@keyframes sa-write {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes sa-nib {
+  0% { left: 0; opacity: 0; }
+  4% { opacity: 1; }
+  94% { left: 100%; opacity: 1; }
+  100% { left: 100%; opacity: 0; }
 }
 .sa-thanks p {
   margin: 0;

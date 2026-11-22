@@ -153,6 +153,8 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
   const [nameError, setNameError] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const thanksRef = useRef<HTMLElement>(null);
+  const [ink, setInk] = useState(false);
 
   useEffect(() => {
     if (phase !== "opening") return;
@@ -192,6 +194,23 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
 
   const lifting = phase === "opening" || phase === "open" || phase === "print";
   const revealed = phase === "open" || phase === "print";
+
+  useEffect(() => {
+    const node = thanksRef.current;
+    if (!node) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setInk(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setInk(true);
+      observer.disconnect();
+    }, { threshold: 0.45 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [revealed]);
 
   return (
     <div className={`sa${lifting ? " is-opening" : ""}${revealed ? " is-open" : ""}${phase === "print" ? " is-print" : ""}${quiet ? " is-quiet" : ""}`}>
@@ -286,7 +305,7 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
               <form className="sa-rsvp" onSubmit={(event) => { event.preventDefault(); void sendReply(); }}>
                 <label>
                   Your name
-                  <input value={guest} onChange={(event) => { setGuest(event.target.value); setNameError(false); }} />
+                  <input value={guest} placeholder="Name" onChange={(event) => { setGuest(event.target.value); setNameError(false); }} />
                 </label>
                 {nameError ? <small>Please add your name.</small> : null}
                 <div className="sa-choice">
@@ -295,16 +314,25 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
                 </div>
                 <label>
                   A note
-                  <textarea value={note} rows={3} onChange={(event) => setNote(event.target.value)} />
+                  <textarea value={note} rows={2} placeholder="A few words" onChange={(event) => setNote(event.target.value)} />
                 </label>
                 <button className="sa-send" type="submit" disabled={sending}>{sending ? "Sending" : "Send reply"}</button>
               </form>
             )}
           </section>
-          <section className="sa-page sa-thanks" aria-label="Thank you">
-            <p className="sa-kicker">With love</p>
-            <h2>Thank you</h2>
-            <p>{fields.names || "Ana & Luka"}</p>
+          <section ref={thanksRef} className={`sa-page sa-thanks${ink ? " is-ink" : ""}`} aria-label="Thank you">
+            <p className="sa-line">
+              <span className="sa-script">With love</span>
+              <i className="sa-nib" aria-hidden="true" />
+            </p>
+            <h2 className="sa-line">
+              <span className="sa-script is-mid">Thank you</span>
+              <i className="sa-nib is-mid" aria-hidden="true" />
+            </h2>
+            <p className="sa-line sa-signed">
+              <span className="sa-script is-last">{fields.names || "Ana & Luka"}</span>
+              <i className="sa-nib is-last" aria-hidden="true" />
+            </p>
             {place ? <p className="sa-thanks-place">{place}</p> : null}
             <div className="sa-close">
               <button className="sa-replay" type="button" onClick={() => setPhase("closed")}>↻ Replay</button>
