@@ -193,8 +193,9 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
 
   return (
     <div className={`sa${lifting ? " is-opening" : ""}${revealed ? " is-open" : ""}${phase === "print" ? " is-print" : ""}${quiet ? " is-quiet" : ""}`}>
+      <div className="sa-paper" />
+      <div className="sa-scroll">
       <div className="sa-stage">
-        <div className="sa-paper" />
         <section className="sa-invite" aria-label="Wedding announcement">
           <div className="sa-lang" aria-hidden="true">🇬🇧 EN ⌄</div>
           <div className="sa-identity">
@@ -314,6 +315,7 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
           </section>
         </div>
       ) : null}
+      </div>
     </div>
   );
 }
