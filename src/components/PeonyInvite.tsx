@@ -263,10 +263,10 @@ export function PeonyInvite({ fields, quiet = false, onReply }: { fields: Invite
       <div className="pn-scroll">
       <div className="pn-stage">
         <div className="pn-spray pn-spray-top">
-          <img src="/peony/bouquet-trail.webp" alt="" />
+          <img src="/peony/spray-top.webp" alt="" />
         </div>
         <div className="pn-spray pn-spray-bottom">
-          <img src="/peony/bouquet-trail.webp" alt="" />
+          <img src="/peony/spray-bottom.webp" alt="" />
         </div>
         <section className="pn-invite" aria-label="Wedding announcement">
           <div className="pn-identity">
