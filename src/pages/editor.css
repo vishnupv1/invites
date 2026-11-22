@@ -605,12 +605,14 @@
 .ed-frame.ed-phone .wj:not(.is-page),
 .ed-frame.ed-phone .tb:not(.is-page),
 .ed-frame.ed-phone .sb:not(.is-page) .sb-stage,
-.ed-frame.ed-phone .sa {
+.ed-frame.ed-phone .sa,
+.ed-frame.ed-phone .pn {
   height: 100cqh;
   min-height: 0;
   max-height: 100cqh;
 }
-.ed-frame.ed-phone .sa.is-open:not(.is-quiet) { overflow: hidden; }
+.ed-frame.ed-phone .sa.is-open:not(.is-quiet),
+.ed-frame.ed-phone .pn.is-open:not(.is-quiet) { overflow: hidden; }
 .ed-frame.ed-phone .wj:not(.is-page) .wj-open {
   min-height: 0;
   height: 100%;

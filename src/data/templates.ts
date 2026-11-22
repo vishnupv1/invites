@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  peony: "2026-11-22T22:16:00+05:30",
   sage: "2026-11-21T23:31:00+05:30",
   secretgarden: "2026-11-20T17:23:00+05:30",
   bali: "2026-11-20T14:31:00+05:30",
@@ -85,6 +86,33 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "peony",
+    name: "Peony",
+    style: "peony",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Save the date",
+    description: "Tap a burgundy envelope and a polaroid prints the date, then the day continues with peonies, a countdown, a scratch to reveal, and a reply.",
+    asks: { photos: 8, audio: false, location: false },
+    meta: META.peony,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "",
+        names: "Clara & Julien",
+        title: "We joyfully invite you to our wedding",
+        detail: "",
+        date: "2027-06-20",
+        time: "17:00",
+        venue: "The Rose Conservatory",
+        address: "Florence",
+        message: "Among the peonies.",
+        dress: "",
+        rsvpBy: "",
+      }),
+    },
+  },
   {
     id: "sage",
     name: "Sage",

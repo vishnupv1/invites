@@ -246,6 +246,12 @@
     "languages": ["English"],
     "hook": "with a sage envelope you tap so a polaroid prints the date"
   },
+  "peony": {
+    "style": "Peony envelope",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a burgundy envelope you tap so a polaroid prints the date"
+  },
   "secretgarden": {
     "style": "Secret garden",
     "occasion": "Wedding",
