@@ -262,11 +262,11 @@ export function PeonyInvite({ fields, quiet = false, onReply }: { fields: Invite
       <div className="pn-paper" />
       <div className="pn-scroll">
       <div className="pn-stage">
-        <div className="pn-corner pn-corner-tl">
+        <div className="pn-spray pn-spray-top">
           <img src="/peony/bouquet-trail.webp" alt="" />
         </div>
-        <div className="pn-corner pn-corner-br">
-          <img src="/peony/bouquet-corner.webp" alt="" />
+        <div className="pn-spray pn-spray-bottom">
+          <img src="/peony/bouquet-trail.webp" alt="" />
         </div>
         <section className="pn-invite" aria-label="Wedding announcement">
           <div className="pn-identity">
@@ -299,7 +299,13 @@ export function PeonyInvite({ fields, quiet = false, onReply }: { fields: Invite
                 <img src="/peony/flap.webp" alt="" />
                 <span className="pn-flap-back" />
               </div>
-              <img className="pn-bow" src="/peony/seal.webp" alt="" />
+              <div className="pn-bow" aria-hidden="true">
+                <img className="pn-seal-l" src="/peony/seal.webp" alt="" />
+                <img className="pn-seal-r" src="/peony/seal.webp" alt="" />
+                <i className="pn-drop pn-drop-a" />
+                <i className="pn-drop pn-drop-b" />
+                <i className="pn-drop pn-drop-c" />
+              </div>
               <div className="pn-env-copy">
                 <span>A letter for you, with love</span>
                 <strong>{fields.names || "Clara & Julien"}</strong>
