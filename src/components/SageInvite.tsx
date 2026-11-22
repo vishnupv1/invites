@@ -161,13 +161,13 @@ export function SageInvite({ fields, quiet = false, onReply }: { fields: InviteF
       setPhase("print");
       return;
     }
-    const openAt = window.setTimeout(() => setPhase("open"), 3100);
+    const openAt = window.setTimeout(() => setPhase("open"), 2650);
     return () => window.clearTimeout(openAt);
   }, [phase]);
 
   useEffect(() => {
     if (phase !== "open") return;
-    const printAt = window.setTimeout(() => setPhase("print"), 480);
+    const printAt = window.setTimeout(() => setPhase("print"), 180);
     return () => window.clearTimeout(printAt);
   }, [phase]);
 
