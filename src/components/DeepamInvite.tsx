@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import type { InviteFields } from "../types";
+import { assetUrl } from "../api";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
 import { madeWithHref } from "../lib/share";
@@ -84,9 +85,10 @@ export function DeepamInvite({
   const left = useLeft(fields.date, fields.time);
   const when = partsOf(fields.date);
   const names = (fields.names || "Saranya & Sharathraj").split(/\s*&\s*/);
-  const shots = (fields.photos || []).filter(Boolean);
+  const photos = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : ""));
+  const shots = photos.filter(Boolean);
   const prints = ["/deepam/print-1.webp", "/deepam/print-2.webp", "/deepam/print-3.webp"].map(
-    (fallback, index) => (fields.photos || [])[index] || fallback,
+    (fallback, index) => photos[index] || fallback,
   );
   const revealed = phase === "open";
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
