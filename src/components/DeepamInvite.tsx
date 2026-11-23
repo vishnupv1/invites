@@ -207,12 +207,12 @@ export function DeepamInvite({
             <p className="dp-place">{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
             <figure className="dp-couple">
               <img src="/deepam/couple.webp" alt="" />
-              <span className="dp-blooms" aria-hidden="true">
-                <img className="dp-bloom dp-bloom-1" src="/deepam/hibiscus-purple.webp" alt="" />
-                <img className="dp-bloom dp-bloom-2" src="/deepam/jasmine.webp" alt="" />
-                <img className="dp-bloom dp-bloom-3" src="/deepam/hibiscus-red.webp" alt="" />
-              </span>
             </figure>
+            <span className="dp-blooms" aria-hidden="true">
+              <img className="dp-bloom dp-bloom-1" src="/deepam/hibiscus-purple.webp" alt="" />
+              <img className="dp-bloom dp-bloom-2" src="/deepam/jasmine.webp" alt="" />
+              <img className="dp-bloom dp-bloom-3" src="/deepam/hibiscus-red.webp" alt="" />
+            </span>
           </section>
 
           <section
