@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import type { InviteFields } from "../types";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
@@ -67,7 +67,7 @@ export function DeepamInvite({
   onReply?: (reply: { name: string; note: string; attending: boolean }) => void;
   quiet?: boolean;
 }) {
-  useFonts("Great Vibes", "Cormorant Garamond", "Playfair Display");
+  useFonts("Great Vibes", "Cormorant Garamond", "Caveat");
   const reduced = useMemo(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     [],
@@ -75,10 +75,15 @@ export function DeepamInvite({
   const [phase, setPhase] = useState<"dusk" | "lighting" | "lit" | "open">(quiet || reduced ? "open" : "dusk");
   const [rsvp, setRsvp] = useState({ name: "", note: "", attending: true, sent: false });
   const [photo, setPhoto] = useState<string | null>(null);
+  const [reelOn, setReelOn] = useState(quiet);
+  const reelRef = useRef<HTMLElement>(null);
   const left = useLeft(fields.date, fields.time);
   const when = partsOf(fields.date);
   const names = (fields.names || "Saranya & Sharathraj").split(/\s*&\s*/);
   const shots = (fields.photos || []).filter(Boolean);
+  const prints = ["/deepam/print-1.webp", "/deepam/print-2.webp", "/deepam/print-3.webp"].map(
+    (fallback, index) => (fields.photos || [])[index] || fallback,
+  );
   const revealed = phase === "open";
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     [fields.venue, fields.address].filter(Boolean).join(", ") || "Guruvayur Temple",
@@ -95,6 +100,23 @@ export function DeepamInvite({
     const id = window.setTimeout(() => setPhase("open"), 1400);
     return () => window.clearTimeout(id);
   }, [phase]);
+
+  useEffect(() => {
+    if (quiet || !revealed) return;
+    const node = reelRef.current;
+    if (!node) return;
+    if (reduced) {
+      setReelOn(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setReelOn(true);
+      observer.disconnect();
+    }, { threshold: 0.4 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [quiet, revealed, reduced]);
 
   useEffect(() => {
     if (!photo) return;
@@ -127,6 +149,17 @@ export function DeepamInvite({
           <div className="dp-warm" />
           <div className="dp-pool" />
           <div className="dp-lamp">
+            {WICKS.map((tier, tierIndex) => (
+              <i
+                key={tierIndex}
+                className="dp-halo"
+                style={{
+                  top: `${tier[2][1]}%`,
+                  width: `${100 + tierIndex * 14}%`,
+                  animationDelay: `${(WICKS.length - 1 - tierIndex) * 0.36}s`,
+                }}
+              />
+            ))}
             <img src="/deepam/lamp.webp" alt="" />
             {FLAMES.map((flame, index) => (
               <img
@@ -174,34 +207,35 @@ export function DeepamInvite({
             <p className="dp-place">{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
             <figure className="dp-couple">
               <img src="/deepam/couple.webp" alt="" />
+              <span className="dp-blooms" aria-hidden="true">
+                <img className="dp-bloom dp-bloom-1" src="/deepam/hibiscus-purple.webp" alt="" />
+                <img className="dp-bloom dp-bloom-2" src="/deepam/jasmine.webp" alt="" />
+                <img className="dp-bloom dp-bloom-3" src="/deepam/hibiscus-red.webp" alt="" />
+              </span>
             </figure>
           </section>
 
-          <section className="dp-page">
-            <h2>The Wedding Celebrations</h2>
-            <p className="dp-kicker">Join us for a day of joy</p>
-            <article className="dp-card">
-              <h3>Muhurtham</h3>
-              {when ? (
-                <p>
-                  {when.weekday}, {when.day} {when.month} {when.year}
-                </p>
-              ) : null}
-              {fields.time ? <p>{formatTime(fields.time)}</p> : null}
-              <p>{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
-            </article>
-            {fields.receptionVenue || fields.receptionTime ? (
-              <article className="dp-card">
-                <h3>Reception</h3>
-                {when ? (
-                  <p>
-                    {when.weekday}, {when.day} {when.month} {when.year}
-                  </p>
-                ) : null}
-                {fields.receptionTime ? <p>{formatTime(fields.receptionTime)}</p> : null}
-                <p>{[fields.receptionVenue, fields.receptionAddress].filter(Boolean).join(", ")}</p>
-              </article>
-            ) : null}
+          <section
+            className={`dp-page dp-reel${reelOn ? " is-run" : ""}${quiet || reduced ? " is-settled" : ""}`}
+            ref={reelRef}
+            aria-label="Printed photographs"
+          >
+            <div className="dp-printer">
+              <img className="dp-slot" src="/sage/gold-slot.webp" alt="" />
+              <div className="dp-mouth">
+                <div className="dp-strip">
+                  <figure className="dp-print">
+                    <img src={prints[2]} alt="" />
+                  </figure>
+                  <figure className="dp-print">
+                    <img src={prints[1]} alt="" />
+                  </figure>
+                  <figure className="dp-print">
+                    <img src={prints[0]} alt="" />
+                  </figure>
+                </div>
+              </div>
+            </div>
           </section>
 
           <section className="dp-page">
