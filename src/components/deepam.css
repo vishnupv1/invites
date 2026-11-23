@@ -220,11 +220,11 @@
   box-sizing: border-box;
   background: none;
 }
-.dp-page::before {
+.dp-page:not(.dp-invite)::before {
   content: "";
   position: absolute;
   right: 2%;
-  bottom: 20%;
+  bottom: 8%;
   left: 2%;
   height: 38%;
   z-index: -1;
