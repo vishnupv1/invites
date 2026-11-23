@@ -90,6 +90,31 @@
   translate: -50% 0;
   z-index: 2;
 }
+.dp-lamp::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 0;
+  width: 120%;
+  height: 4.2%;
+  translate: -50% 42%;
+  background: radial-gradient(ellipse at center, rgba(10, 8, 6, 0.62) 0%, rgba(18, 14, 10, 0.32) 42%, transparent 74%);
+  filter: blur(2.5px);
+  pointer-events: none;
+}
+.dp-lamp::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  left: 6%;
+  right: 6%;
+  bottom: 0;
+  height: 7%;
+  background: linear-gradient(to top, rgba(24, 18, 12, 0.55), rgba(24, 18, 12, 0.16) 46%, transparent 78%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
 .dp-lamp > img:not(.dp-flame) {
   position: absolute;
   inset: 0;
