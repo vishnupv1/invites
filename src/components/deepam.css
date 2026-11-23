@@ -85,7 +85,7 @@
   position: absolute;
   left: 50%;
   bottom: 3%;
-  width: min(46%, 280px);
+  width: min(32%, 190px);
   aspect-ratio: 259 / 970;
   translate: -50% 0;
   z-index: 2;
