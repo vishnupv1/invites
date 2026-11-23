@@ -717,7 +717,11 @@
 .pn-line { position: relative; display: inline-block; max-width: 100%; overflow: visible; }
 .pn-script {
   display: inline-block;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-style: normal;
   line-height: 1.5;
+  white-space: nowrap;
   padding: 0.28em 0.7em 0.42em 0.16em;
   clip-path: inset(0 100% 0 0);
 }
@@ -778,13 +782,16 @@
 .pn-letter h2,
 .pn-letter p {
   margin: 0;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
   line-height: 1;
+  white-space: nowrap;
 }
-.pn-letter h2 { font-size: 58px; }
+.pn-letter h2 { font-size: 46px; }
 .pn-letter p { font-size: 34px; }
 .pn-letter .pn-script {
-  line-height: 1.05;
-  padding: 0.08em 0.5em 0.16em 0.1em;
+  line-height: 1.15;
+  padding: 0.12em 0.45em 0.18em 0.12em;
 }
 .pn-thanks-place {
   font-family: Jost, Arial, sans-serif !important;
