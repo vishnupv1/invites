@@ -272,18 +272,31 @@
 .dp-couple {
   width: min(92%, 340px);
   margin: 52px 0 0;
-  opacity: 0;
-  transform: translateY(36px);
 }
-.dp.is-open:not(.is-quiet) .dp-couple {
-  animation: dp-lift 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.85s forwards;
+.dp.is-open:not(.is-quiet) .dp-couple > img {
+  animation: dp-paint 2.4s cubic-bezier(0.37, 0.04, 0.2, 1) 0.4s both;
 }
-.dp.is-quiet .dp-couple {
-  opacity: 1;
-  transform: none;
-}
-@keyframes dp-lift {
-  to { opacity: 1; transform: translateY(0); }
+@keyframes dp-paint {
+  0% {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 72%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 72%);
+    -webkit-mask-size: 100% 260%;
+    mask-size: 100% 260%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center 130%;
+    mask-position: center 130%;
+  }
+  100% {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 72%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 46%, transparent 72%);
+    -webkit-mask-size: 100% 260%;
+    mask-size: 100% 260%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center 0%;
+    mask-position: center 0%;
+  }
 }
 .dp-couple > img {
   display: block;
@@ -609,6 +622,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .dp-flame, .dp-warm, .dp-mantra, .dp-couple { animation: none; transition: none; opacity: 1; transform: none; }
+  .dp.is-open .dp-couple > img { animation: none; -webkit-mask: none; mask: none; }
   .dp-tap span { animation: none; opacity: 1; }
   .dp-bloom,
   .dp.is-open .dp-bloom { animation: none; opacity: 1; transform: rotate(var(--turn)); }
