@@ -289,18 +289,34 @@ export function DeepamInvite({
           <section className="dp-page dp-count">
             <h2>Until Our Forever</h2>
             <p className="dp-kicker">The countdown to our wedding begins</p>
+            {when ? (
+              <div className="dp-when">
+                <span>{when.weekday}</span>
+                <b>{when.day}</b>
+                <span>
+                  {when.month}
+                  <small>{when.year}</small>
+                </span>
+              </div>
+            ) : null}
+            {fields.time ? <p className="dp-muhurtham">{formatTime(fields.time)}</p> : null}
             <div className="dp-ticks">
-              {[
-                [left.days, "Days"],
-                [left.hours, "Hours"],
-                [left.minutes, "Minutes"],
-                [left.seconds, "Seconds"],
-              ].map(([value, label]) => (
-                <div key={label}>
-                  <b>{String(value).padStart(2, "0")}</b>
-                  <span>{label}</span>
-                </div>
-              ))}
+              <div className="dp-days">
+                <b>{left.days}</b>
+                <span>Days</span>
+              </div>
+              <div className="dp-rest">
+                {[
+                  [left.hours, "Hours"],
+                  [left.minutes, "Minutes"],
+                  [left.seconds, "Seconds"],
+                ].map(([value, label]) => (
+                  <div key={label}>
+                    <b>{String(value).padStart(2, "0")}</b>
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
             <p className="dp-place">{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
             <div className="dp-links">
@@ -315,25 +331,29 @@ export function DeepamInvite({
             </div>
           </section>
 
-          <section className="dp-page">
+          <section className="dp-page dp-reply">
             <h2>Will you be there?</h2>
+            <p className="dp-kicker">Kindly let us know</p>
             {rsvp.sent ? (
               <p className="dp-thanks-note">Thank you. Your reply is with us.</p>
             ) : (
               <form className="dp-rsvp" onSubmit={send}>
-                <input
-                  placeholder="Your name"
-                  value={rsvp.name}
-                  onChange={(event) => setRsvp({ ...rsvp, name: event.target.value })}
-                  required
-                />
-                <div className="dp-choice">
+                <label className="dp-field">
+                  <span>Your name</span>
+                  <input
+                    placeholder="Write it here"
+                    value={rsvp.name}
+                    onChange={(event) => setRsvp({ ...rsvp, name: event.target.value })}
+                    required
+                  />
+                </label>
+                <div className="dp-choice" role="group" aria-label="Will you attend">
                   <button
                     type="button"
                     className={rsvp.attending ? "is-on" : ""}
                     onClick={() => setRsvp({ ...rsvp, attending: true })}
                   >
-                    Joyfully yes
+                    Joyfully, yes
                   </button>
                   <button
                     type="button"
@@ -343,13 +363,16 @@ export function DeepamInvite({
                     With regrets
                   </button>
                 </div>
-                <textarea
-                  placeholder="A blessing for the couple"
-                  value={rsvp.note}
-                  onChange={(event) => setRsvp({ ...rsvp, note: event.target.value })}
-                />
+                <label className="dp-field">
+                  <span>A blessing</span>
+                  <textarea
+                    placeholder="A few words for the couple"
+                    value={rsvp.note}
+                    onChange={(event) => setRsvp({ ...rsvp, note: event.target.value })}
+                  />
+                </label>
                 <button className="dp-send" type="submit">
-                  Send RSVP
+                  Send your reply
                 </button>
               </form>
             )}
@@ -357,8 +380,23 @@ export function DeepamInvite({
 
           <section className="dp-page dp-close">
             <h2>Thank you</h2>
-            <p>We look forward to celebrating with you.</p>
-            <p className="dp-names">{fields.names || "Saranya & Sharathraj"}</p>
+            <p className="dp-kicker">We look forward to celebrating with you</p>
+            <p className="dp-close-names">
+              <span>{names[0]}</span>
+              <i>&amp;</i>
+              <span>{names[1] || ""}</span>
+            </p>
+            {when ? (
+              <div className="dp-when">
+                <span>{when.weekday}</span>
+                <b>{when.day}</b>
+                <span>
+                  {when.month}
+                  <small>{when.year}</small>
+                </span>
+              </div>
+            ) : null}
+            <p className="dp-place">{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
             {!quiet ? (
               <button className="dp-replay" type="button" onClick={() => setPhase("dusk")}>
                 Replay
