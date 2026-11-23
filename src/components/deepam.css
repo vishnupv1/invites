@@ -48,7 +48,7 @@
 .dp-pool {
   position: absolute;
   left: 50%;
-  bottom: 2%;
+  bottom: 11%;
   z-index: 1;
   width: 54%;
   height: 10%;
@@ -84,7 +84,7 @@
 .dp-lamp {
   position: absolute;
   left: 50%;
-  bottom: 3%;
+  bottom: 14%;
   width: min(32%, 190px);
   aspect-ratio: 259 / 970;
   translate: -50% 0;
