@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import type { InviteFields } from "../types";
 import { calendarUrl, formatTime } from "../lib/dates";
 import { useFonts } from "../lib/fonts";
@@ -75,8 +75,12 @@ export function DeepamInvite({
   const [phase, setPhase] = useState<"dusk" | "lighting" | "lit" | "open">(quiet || reduced ? "open" : "dusk");
   const [rsvp, setRsvp] = useState({ name: "", note: "", attending: true, sent: false });
   const [photo, setPhoto] = useState<string | null>(null);
-  const [reelOn, setReelOn] = useState(quiet);
-  const reelRef = useRef<HTMLElement>(null);
+  const settled = quiet || reduced;
+  const [pull, setPull] = useState(settled ? 1 : 0);
+  const pullRef = useRef(settled ? 1 : 0);
+  const dragY = useRef<number | null>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [stripHeight, setStripHeight] = useState(0);
   const left = useLeft(fields.date, fields.time);
   const when = partsOf(fields.date);
   const names = (fields.names || "Saranya & Sharathraj").split(/\s*&\s*/);
@@ -102,21 +106,33 @@ export function DeepamInvite({
   }, [phase]);
 
   useEffect(() => {
-    if (quiet || !revealed) return;
-    const node = reelRef.current;
+    const node = stripRef.current;
     if (!node) return;
-    if (reduced) {
-      setReelOn(true);
-      return;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry?.isIntersecting) return;
-      setReelOn(true);
-      observer.disconnect();
-    }, { threshold: 0.4 });
+    const measure = () => setStripHeight(node.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
     observer.observe(node);
     return () => observer.disconnect();
-  }, [quiet, revealed, reduced]);
+  }, [revealed, prints[0], prints[1], prints[2]]);
+
+  function beginPull(event: ReactPointerEvent<HTMLDivElement>) {
+    if (settled) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragY.current = event.clientY;
+  }
+
+  function movePull(event: ReactPointerEvent<HTMLDivElement>) {
+    if (dragY.current == null) return;
+    const travel = Math.max(stripHeight - 36, 1);
+    const next = Math.min(1, Math.max(0, pullRef.current + (event.clientY - dragY.current) / travel));
+    dragY.current = event.clientY;
+    pullRef.current = next;
+    setPull(next);
+  }
+
+  function endPull() {
+    dragY.current = null;
+  }
 
   useEffect(() => {
     if (!photo) return;
@@ -216,14 +232,21 @@ export function DeepamInvite({
           </section>
 
           <section
-            className={`dp-page dp-reel${reelOn ? " is-run" : ""}${quiet || reduced ? " is-settled" : ""}`}
-            ref={reelRef}
+            className={`dp-page dp-reel${settled ? " is-settled" : ""}`}
             aria-label="Printed photographs"
           >
             <div className="dp-printer">
               <img className="dp-slot" src="/sage/gold-slot.webp" alt="" />
-              <div className="dp-mouth">
-                <div className="dp-strip">
+              <div
+                className="dp-mouth"
+                style={settled ? undefined : { "--pull": pull, "--strip": `${stripHeight}px` } as React.CSSProperties}
+                onPointerDown={beginPull}
+                onPointerMove={movePull}
+                onPointerUp={endPull}
+                onPointerCancel={endPull}
+                aria-label="Pull the photographs"
+              >
+                <div className="dp-strip" ref={stripRef}>
                   <figure className="dp-print">
                     <img src={prints[2]} alt="" />
                   </figure>
@@ -235,6 +258,9 @@ export function DeepamInvite({
                   </figure>
                 </div>
               </div>
+              {settled || pull > 0.98 ? null : (
+                <p className="dp-pull" style={{ opacity: 1 - pull }}>Pull down</p>
+              )}
             </div>
           </section>
 

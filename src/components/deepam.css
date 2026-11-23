@@ -350,8 +350,21 @@
 }
 
 .dp-reel { justify-content: flex-start; padding-top: 28px; }
+.dp-reel::before {
+  content: "";
+  position: absolute;
+  right: 2%;
+  bottom: 20%;
+  left: 2%;
+  height: 38%;
+  z-index: 0;
+  background: url("/deepam/temple-gold.webp") center bottom / contain no-repeat;
+  opacity: 0.28;
+  pointer-events: none;
+}
 .dp-printer {
   position: relative;
+  z-index: 1;
   width: min(88%, 400px);
   margin: 8px auto 0;
 }
@@ -369,71 +382,53 @@
   position: relative;
   z-index: 3;
   width: 62%;
+  height: calc(36px + (var(--strip, 36px) - 36px) * var(--pull, 0));
   margin: 17.2% auto 0;
   overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
 }
+.dp-reel.is-settled .dp-mouth { height: auto; cursor: default; }
 .dp-strip {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-100%);
+  transform: translateY(calc(-100% + 36px + var(--pull, 0) * (100% - 36px)));
   filter: drop-shadow(0 6px 8px rgba(26, 20, 14, 0.16));
 }
-.dp-reel.is-run:not(.is-settled) .dp-strip {
-  animation: dp-reel 11s linear forwards;
-}
 .dp-reel.is-settled .dp-strip { transform: none; }
-.dp-reel.is-run:not(.is-settled) .dp-print:nth-child(n + 2) {
-  animation: dp-drop 0.55s ease 10.2s forwards;
+.dp-pull {
+  margin: 14px 0 0;
+  font-family: "Caveat", cursive;
+  font-size: 26px;
+  line-height: 1;
+  color: #6a5438;
+  pointer-events: none;
+  animation: dp-pull 1.6s ease-in-out infinite;
 }
-.dp-reel.is-settled .dp-print:nth-child(n + 2) { margin-top: 10px; }
-@keyframes dp-drop {
-  from { margin-top: 0; }
-  to { margin-top: 10px; }
+.dp-pull::after {
+  content: "";
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin: 4px auto 0;
+  border-right: 1.5px solid #6a5438;
+  border-bottom: 1.5px solid #6a5438;
+  transform: rotate(45deg);
 }
-@keyframes dp-reel {
-  0%, 2% { transform: translateY(-100%); }
-  6% { transform: translateY(-90%); }
-  12% { transform: translateY(-90%); }
-  16% { transform: translateY(-78%); }
-  22% { transform: translateY(-78%); }
-  26% { transform: translateY(-66%); }
-  32% { transform: translateY(-66%); }
-  36% { transform: translateY(-54%); }
-  42% { transform: translateY(-54%); }
-  46% { transform: translateY(-42%); }
-  52% { transform: translateY(-42%); }
-  56% { transform: translateY(-30%); }
-  62% { transform: translateY(-30%); }
-  66% { transform: translateY(-18%); }
-  72% { transform: translateY(-18%); }
-  76% { transform: translateY(-8%); }
-  84% { transform: translateY(-8%); }
-  90% { transform: translateY(0); }
-  100% { transform: translateY(0); }
+@keyframes dp-pull {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 .dp-print {
-  position: relative;
   width: 100%;
   margin: 0;
   padding: 6px 6px 12px;
   background: #faf3dc;
   line-height: 0;
 }
-.dp-print:not(:last-child) { padding-bottom: 12px; }
-.dp-print + .dp-print { padding-top: 6px; }
-.dp-print:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 10px;
-  bottom: 0;
-  left: 10px;
-  height: 3px;
-  background-image: radial-gradient(circle, #6a5438 1.15px, transparent 1.35px);
-  background-size: 8px 3px;
-  background-repeat: repeat-x;
-  background-position: center;
-}
+.dp-print + .dp-print { margin-top: -6px; }
 .dp-print img {
   display: block;
   width: 100%;
