@@ -497,29 +497,66 @@
 }
 .dp-card p { margin: 2px 0; }
 
-.dp-row {
-  display: flex;
-  gap: 12px;
-  width: calc(100% + 56px);
-  margin: 8px -28px 0;
-  padding: 4px 14% 8px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+.dp-journey { justify-content: flex-start; padding-top: 32px; }
+.dp-feet {
+  width: min(84%, 280px);
+  margin: 6px 0 0;
 }
-.dp-row::-webkit-scrollbar { display: none; }
-.dp-row.is-one { justify-content: center; }
+.dp-feet img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 100%);
+}
+.dp-journey .dp-kicker { margin-bottom: 6px; }
+.dp-journey .dp-kicker::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 1px;
+  margin: 14px auto 0;
+  background: #c9922a;
+}
+.dp-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: min(100%, 340px);
+  margin-top: 10px;
+}
+.dp-story.is-one {
+  grid-template-columns: 1fr;
+  width: min(78%, 260px);
+}
+.dp-story .dp-shot:first-child:nth-last-child(3) { grid-column: 1 / -1; }
 .dp-shot {
-  flex: 0 0 78%;
-  padding: 8px;
-  border: 0;
+  position: relative;
+  margin: 0;
+  padding: 7px 7px 18px;
+  border: 1px solid #c9922a;
   background: #faf3dc;
-  box-shadow: 0 8px 18px rgba(80, 40, 20, 0.12);
-  scroll-snap-align: center;
+  line-height: 0;
   cursor: pointer;
 }
-.dp-row.is-one .dp-shot { flex-basis: min(78%, 280px); }
-.dp-shot img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.dp-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.dp-story .dp-shot:first-child:nth-last-child(3) img { aspect-ratio: 4 / 3; }
+.dp-shot i {
+  position: absolute;
+  right: 8px;
+  bottom: 1px;
+  font-family: "Caveat", cursive;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1;
+  color: #6a5438;
+}
 .dp-empty { font-style: italic; color: #6a5438; }
 
 .dp-ticks {

@@ -264,14 +264,18 @@ export function DeepamInvite({
             </div>
           </section>
 
-          <section className="dp-page">
+          <section className="dp-page dp-journey" aria-label="Our journey">
             <h2>Our Journey</h2>
             <p className="dp-kicker">A story of friendship, love and togetherness</p>
+            <figure className="dp-feet">
+              <img src="/deepam/feet.webp" alt="" />
+            </figure>
             {shots.length ? (
-              <div className={`dp-row${shots.length === 1 ? " is-one" : ""}`}>
-                {shots.map((src) => (
+              <div className={`dp-story${shots.length === 1 ? " is-one" : ""}`}>
+                {shots.map((src, index) => (
                   <button key={src} className="dp-shot" type="button" onClick={() => setPhoto(src)}>
                     <img src={src} alt="" />
+                    <i>{String(index + 1).padStart(2, "0")}</i>
                   </button>
                 ))}
               </div>
