@@ -1,0 +1,316 @@
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import type { InviteFields } from "../types";
+import { calendarUrl, formatTime } from "../lib/dates";
+import { useFonts } from "../lib/fonts";
+import { madeWithHref } from "../lib/share";
+import { InstagramLink } from "./InstagramLink";
+import "./deepam.css";
+
+/** Wick cups on each dish, top tier first, as a percent of the lamp. */
+const WICKS = [
+  [[23.9, 18.4], [29.3, 17.7], [38.6, 17.4], [61.0, 17.4], [69.9, 17.6], [75.3, 18.2]],
+  [[20.8, 27.3], [25.5, 26.9], [34.4, 26.5], [66.8, 26.5], [74.9, 26.9], [79.5, 27.2]],
+  [[18.1, 35.8], [23.9, 35.3], [35.1, 35.1], [66.4, 35.1], [76.4, 35.3], [81.9, 35.7]],
+  [[15.1, 44.4], [21.6, 44.1], [33.6, 43.9], [68.0, 44.0], [78.8, 44.1], [84.9, 44.4]],
+  [[12.4, 53.6], [19.3, 53.4], [31.7, 53.3], [69.5, 53.3], [81.1, 53.4], [87.6, 53.6]],
+  [[10.8, 63.0], [18.5, 62.9], [31.7, 62.9], [69.5, 62.9], [81.9, 62.9], [89.2, 63.0]],
+  [[7.3, 72.5], [15.8, 72.5], [30.1, 72.5], [70.7, 72.5], [84.9, 72.5], [92.7, 72.5]],
+];
+
+const FLAMES = WICKS.flatMap((tier, tierIndex) =>
+  tier.map(([x, y], index) => ({
+    x,
+    y: y + 0.45,
+    w: 3.2,
+    delay: (WICKS.length - 1 - tierIndex) * 0.36 + index * 0.045,
+  })),
+);
+
+function partsOf(iso: string) {
+  if (!iso) return null;
+  const date = new Date(`${iso}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return null;
+  return {
+    weekday: date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase(),
+    day: String(date.getDate()),
+    month: date.toLocaleDateString("en-US", { month: "short" }).toUpperCase(),
+    year: String(date.getFullYear()),
+  };
+}
+
+function useLeft(iso: string, time: string) {
+  const target = useMemo(() => {
+    if (!iso) return 0;
+    const [hour, minute] = (time || "09:30").split(":");
+    return new Date(`${iso}T${hour || "09"}:${minute || "30"}:00`).getTime();
+  }, [iso, time]);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  const left = Math.max(0, target - now);
+  return {
+    days: Math.floor(left / 86400000),
+    hours: Math.floor(left / 3600000) % 24,
+    minutes: Math.floor(left / 60000) % 60,
+    seconds: Math.floor(left / 1000) % 60,
+  };
+}
+
+export function DeepamInvite({
+  fields,
+  onReply,
+  quiet = false,
+}: {
+  fields: InviteFields;
+  onReply?: (reply: { name: string; note: string; attending: boolean }) => void;
+  quiet?: boolean;
+}) {
+  useFonts("Great Vibes", "Cormorant Garamond", "Playfair Display");
+  const reduced = useMemo(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
+  const [phase, setPhase] = useState<"dusk" | "lighting" | "lit" | "open">(quiet || reduced ? "open" : "dusk");
+  const [rsvp, setRsvp] = useState({ name: "", note: "", attending: true, sent: false });
+  const [photo, setPhoto] = useState<string | null>(null);
+  const left = useLeft(fields.date, fields.time);
+  const when = partsOf(fields.date);
+  const names = (fields.names || "Saranya & Sharathraj").split(/\s*&\s*/);
+  const shots = (fields.photos || []).filter(Boolean);
+  const revealed = phase === "open";
+  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    [fields.venue, fields.address].filter(Boolean).join(", ") || "Guruvayur Temple",
+  )}`;
+
+  useEffect(() => {
+    if (phase !== "lighting") return;
+    const id = window.setTimeout(() => setPhase("lit"), 3000);
+    return () => window.clearTimeout(id);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "lit") return;
+    const id = window.setTimeout(() => setPhase("open"), 1400);
+    return () => window.clearTimeout(id);
+  }, [phase]);
+
+  useEffect(() => {
+    if (!photo) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPhoto(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [photo]);
+
+  function light() {
+    if (phase !== "dusk") return;
+    setPhase("lighting");
+  }
+
+  function send(event: FormEvent) {
+    event.preventDefault();
+    if (!rsvp.name.trim()) return;
+    onReply?.({ name: rsvp.name.trim(), note: rsvp.note.trim(), attending: rsvp.attending });
+    setRsvp((current) => ({ ...current, sent: true }));
+  }
+
+  return (
+    <div
+      className={`dp${phase === "lighting" ? " is-lighting" : ""}${phase === "lit" ? " is-lit" : ""}${revealed ? " is-open" : ""}${quiet ? " is-quiet" : ""}`}
+    >
+      {!revealed ? (
+        <div className="dp-dusk">
+          <img className="dp-temple" src="/deepam/temple.webp" alt="" />
+          <div className="dp-warm" />
+          <div className="dp-pool" />
+          <div className="dp-lamp">
+            <img src="/deepam/lamp.webp" alt="" />
+            {FLAMES.map((flame, index) => (
+              <img
+                key={index}
+                className="dp-flame"
+                src="/deepam/flame.webp"
+                alt=""
+                style={{
+                  left: `${flame.x}%`,
+                  top: `${flame.y}%`,
+                  width: `${flame.w}%`,
+                  animationDelay: `${flame.delay}s`,
+                }}
+              />
+            ))}
+          </div>
+          {phase === "dusk" ? (
+            <button className="dp-tap" type="button" aria-label="Open invitation" onClick={light}>
+              <span>Tap</span>
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
+      {revealed ? (
+        <div className="dp-scroll">
+          <section className="dp-page dp-invite">
+            <img className="dp-mantra" src="/deepam/mantra.webp" alt="ഗുരുവായൂരപ്പൻ തമ്പുരാൻ" />
+            <h1>
+              <span>{names[0]}</span>
+              <i>&amp;</i>
+              <span>{names[1] || ""}</span>
+            </h1>
+            {when ? (
+              <div className="dp-when">
+                <span>{when.weekday}</span>
+                <b>{when.day}</b>
+                <span>
+                  {when.month}
+                  <small>{when.year}</small>
+                </span>
+              </div>
+            ) : null}
+            {fields.time ? <p className="dp-muhurtham">Muhurtham: {formatTime(fields.time)}</p> : null}
+            <p className="dp-place">{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
+            <figure className="dp-couple">
+              <img src="/deepam/couple.webp" alt="" />
+            </figure>
+          </section>
+
+          <section className="dp-page">
+            <h2>The Wedding Celebrations</h2>
+            <p className="dp-kicker">Join us for a day of joy</p>
+            <article className="dp-card">
+              <h3>Muhurtham</h3>
+              {when ? (
+                <p>
+                  {when.weekday}, {when.day} {when.month} {when.year}
+                </p>
+              ) : null}
+              {fields.time ? <p>{formatTime(fields.time)}</p> : null}
+              <p>{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
+            </article>
+            {fields.receptionVenue || fields.receptionTime ? (
+              <article className="dp-card">
+                <h3>Reception</h3>
+                {when ? (
+                  <p>
+                    {when.weekday}, {when.day} {when.month} {when.year}
+                  </p>
+                ) : null}
+                {fields.receptionTime ? <p>{formatTime(fields.receptionTime)}</p> : null}
+                <p>{[fields.receptionVenue, fields.receptionAddress].filter(Boolean).join(", ")}</p>
+              </article>
+            ) : null}
+          </section>
+
+          <section className="dp-page">
+            <h2>Our Journey</h2>
+            <p className="dp-kicker">A story of friendship, love and togetherness</p>
+            {shots.length ? (
+              <div className={`dp-row${shots.length === 1 ? " is-one" : ""}`}>
+                {shots.map((src) => (
+                  <button key={src} className="dp-shot" type="button" onClick={() => setPhoto(src)}>
+                    <img src={src} alt="" />
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="dp-empty">Photographs will be added here.</p>
+            )}
+          </section>
+
+          <section className="dp-page dp-count">
+            <h2>Until Our Forever</h2>
+            <p className="dp-kicker">The countdown to our wedding begins</p>
+            <div className="dp-ticks">
+              {[
+                [left.days, "Days"],
+                [left.hours, "Hours"],
+                [left.minutes, "Minutes"],
+                [left.seconds, "Seconds"],
+              ].map(([value, label]) => (
+                <div key={label}>
+                  <b>{String(value).padStart(2, "0")}</b>
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+            <p className="dp-place">{[fields.venue, fields.address].filter(Boolean).join(", ")}</p>
+            <div className="dp-links">
+              <a href={maps} target="_blank" rel="noreferrer">
+                View on Maps
+              </a>
+              {calendarUrl(fields) ? (
+                <a href={calendarUrl(fields)} target="_blank" rel="noreferrer">
+                  Add to Calendar
+                </a>
+              ) : null}
+            </div>
+          </section>
+
+          <section className="dp-page">
+            <h2>Will you be there?</h2>
+            {rsvp.sent ? (
+              <p className="dp-thanks-note">Thank you. Your reply is with us.</p>
+            ) : (
+              <form className="dp-rsvp" onSubmit={send}>
+                <input
+                  placeholder="Your name"
+                  value={rsvp.name}
+                  onChange={(event) => setRsvp({ ...rsvp, name: event.target.value })}
+                  required
+                />
+                <div className="dp-choice">
+                  <button
+                    type="button"
+                    className={rsvp.attending ? "is-on" : ""}
+                    onClick={() => setRsvp({ ...rsvp, attending: true })}
+                  >
+                    Joyfully yes
+                  </button>
+                  <button
+                    type="button"
+                    className={!rsvp.attending ? "is-on" : ""}
+                    onClick={() => setRsvp({ ...rsvp, attending: false })}
+                  >
+                    With regrets
+                  </button>
+                </div>
+                <textarea
+                  placeholder="A blessing for the couple"
+                  value={rsvp.note}
+                  onChange={(event) => setRsvp({ ...rsvp, note: event.target.value })}
+                />
+                <button className="dp-send" type="submit">
+                  Send RSVP
+                </button>
+              </form>
+            )}
+          </section>
+
+          <section className="dp-page dp-close">
+            <h2>Thank you</h2>
+            <p>We look forward to celebrating with you.</p>
+            <p className="dp-names">{fields.names || "Saranya & Sharathraj"}</p>
+            {!quiet ? (
+              <button className="dp-replay" type="button" onClick={() => setPhase("dusk")}>
+                Replay
+              </button>
+            ) : null}
+            <p className="dp-made">
+              <a href={madeWithHref("deepam")}>Made with InvitesReady</a>
+            </p>
+            <InstagramLink />
+          </section>
+        </div>
+      ) : null}
+
+      {photo ? (
+        <div className="dp-lightbox" role="dialog" aria-modal="true" aria-label="Photograph" onClick={() => setPhoto(null)}>
+          <img src={photo} alt="" onClick={(event) => event.stopPropagation()} />
+        </div>
+      ) : null}
+    </div>
+  );
+}

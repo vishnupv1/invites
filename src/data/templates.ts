@@ -8,6 +8,7 @@ const META = catalogMeta as Record<string, TemplateMeta>;
 
 /** When each design was first added. Newer dates sort first in every catalog. */
 const TEMPLATE_CREATED: Record<string, string> = {
+  deepam: "2026-11-23T11:53:00+05:30",
   peony: "2026-11-22T22:16:00+05:30",
   sage: "2026-11-21T23:31:00+05:30",
   secretgarden: "2026-11-20T17:23:00+05:30",
@@ -86,6 +87,36 @@ function sample(
 }
 
 export const TEMPLATES: Template[] = [
+  {
+    id: "deepam",
+    name: "Deepam",
+    style: "deepam",
+    price: 199,
+    free: false,
+    events: ["marriage"],
+    tagline: "Wedding",
+    description: "Tap to light a brass deepastambham in a Kerala temple courtyard, then the invitation, the celebrations, a countdown, and a reply.",
+    asks: { photos: 4, audio: false, location: false },
+    meta: META.deepam,
+    samples: {
+      marriage: sample("marriage", {
+        hosts: "",
+        names: "Saranya & Sharathraj",
+        title: "With the Blessings of Sri Guruvayurappan",
+        detail: "",
+        date: "2027-05-15",
+        time: "09:30",
+        venue: "Guruvayur Temple",
+        address: "Guruvayur, Kerala",
+        message: "",
+        dress: "",
+        rsvpBy: "",
+        receptionTime: "18:30",
+        receptionVenue: "Kalyana Mandapam",
+        receptionAddress: "Guruvayur",
+      }),
+    },
+  },
   {
     id: "peony",
     name: "Peony",

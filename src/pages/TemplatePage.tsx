@@ -53,6 +53,7 @@ import { BaliInvite } from "../components/BaliInvite";
 import { SecretGardenInvite } from "../components/SecretGardenInvite";
 import { SageInvite } from "../components/SageInvite";
 import { PeonyInvite } from "../components/PeonyInvite";
+import { DeepamInvite } from "../components/DeepamInvite";
 import { WeddingRideInvite } from "../components/WeddingRideInvite";
 import { StarryFairytaleInvite } from "../components/StarryFairytaleInvite";
 import { PeaceInvite } from "../components/PeaceInvite";
@@ -172,6 +173,8 @@ function GuestPreview({ template, fields, swatch, lang }: { template: Template; 
       return <SageInvite fields={fields} />;
     case "peony":
       return <PeonyInvite fields={fields} />;
+    case "deepam":
+      return <DeepamInvite fields={fields} />;
     case "raas":
       return <RaasInvite fields={fields} />;
     case "weddingride":

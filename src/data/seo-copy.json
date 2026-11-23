@@ -160,6 +160,12 @@
       "description": "Tap a sage envelope and a polaroid prints the wedding date. Animated opening, share on WhatsApp. ₹199 one-time.",
       "lead": "A sage paper envelope, a gold slot, and a polaroid that prints the date. Made for a save the date in Lisbon."
     },
+    "deepam": {
+      "heading": "Deepam wedding invitation",
+      "title": "Deepam – Kerala Temple Wedding Invitation | InvitesReady",
+      "description": "Light a brass deepastambham in a Kerala temple courtyard. Animated opening, RSVP on the page, share on WhatsApp. ₹199 one-time.",
+      "lead": "A temple at dusk, a brass lamp that lights tier by tier, and an ivory invitation in gold. Made for a wedding at Guruvayur."
+    },
     "peony": {
       "heading": "Peony save the date invitation",
       "title": "Peony – Burgundy Envelope Save the Date | InvitesReady",
@@ -352,6 +358,7 @@
       "description": "Animated digital wedding invitations. One link for the schedule and venue. Guests RSVP with no app. Share on WhatsApp. ₹199, paid once.",
       "lead": "Digital wedding invitations for a garden, a beach, a floral day, or a palace door. Pick a design, add your details, and share one link. Guests RSVP in the browser.",
       "templates": [
+        "deepam",
         "peony",
         "sage",
         "secretgarden",

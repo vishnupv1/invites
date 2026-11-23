@@ -246,6 +246,12 @@
     "languages": ["English"],
     "hook": "with a sage envelope you tap so a polaroid prints the date"
   },
+  "deepam": {
+    "style": "Kerala temple lamp",
+    "occasion": "Wedding",
+    "languages": ["English"],
+    "hook": "with a brass lamp you light in a temple courtyard at dusk"
+  },
   "peony": {
     "style": "Peony envelope",
     "occasion": "Wedding",

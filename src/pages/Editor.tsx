@@ -42,6 +42,7 @@ import { BaliInvite } from "../components/BaliInvite";
 import { SecretGardenInvite } from "../components/SecretGardenInvite";
 import { SageInvite } from "../components/SageInvite";
 import { PeonyInvite } from "../components/PeonyInvite";
+import { DeepamInvite } from "../components/DeepamInvite";
 import { AudioClipGuard } from "../components/AudioClipGuard";
 import { ClipWave } from "../components/ClipWave";
 import { SongControl } from "../components/SongControl";
@@ -113,6 +114,7 @@ const SWATCHES = [
   { id: "blush", name: "Blush", cover: "#F8E6E4", dot: "#C27A78" },
   { id: "noir", name: "Noir", cover: "#1C1718", dot: "#E8C987" },
   { id: "sage", name: "Sage", cover: "#E4EBE3", dot: "#6E8A72" },
+  { id: "deepam", name: "Deepam", cover: "#F4E7C8", dot: "#1A140E" },
   { id: "peony", name: "Peony", cover: "#F8E4E2", dot: "#7A2A3C" },
   { id: "burgundy", name: "Burgundy & gold", cover: "#4A0716", dot: "#F3DDA8" },
   { id: "post", name: "Inland post", cover: "#CFE2F2", dot: "#C8342B" },
@@ -1768,6 +1770,8 @@ export function Editor({
                     <SageInvite fields={previewFields} />
                   ) : template.style === "peony" ? (
                     <PeonyInvite fields={previewFields} />
+                  ) : template.style === "deepam" ? (
+                    <DeepamInvite fields={previewFields} />
                   ) : template.style === "raas" ? (
                     <RaasInvite fields={previewFields} />
                   ) : template.style === "weddingride" ? (

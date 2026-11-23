@@ -1,4 +1,29 @@
 {
+  "deepam": {
+    "names": "couple",
+    "ceremony": "Muhurtham",
+    "reception": "Reception",
+    "themes": [{ "id": "deepam", "name": "Deepam" }],
+    "defaultTheme": "deepam",
+    "shots": [
+      { "label": "Our journey" },
+      { "label": "Our journey" },
+      { "label": "Our journey" },
+      { "label": "Our journey" }
+    ],
+    "rsvp": { "meal": false, "song": false, "maxGuests": 6 },
+    "components": [
+      { "id": "opening", "label": "The lamp", "configurable": false, "fields": [] },
+      { "id": "names", "label": "Couple", "configurable": true, "fields": ["names"] },
+      { "id": "line", "label": "Blessing", "configurable": true, "fields": ["title"] },
+      { "id": "when", "label": "Muhurtham", "configurable": true, "fields": ["date", "time"] },
+      { "id": "ceremony", "label": "Muhurtham", "configurable": true, "fields": ["venue", "address"] },
+      { "id": "reception", "label": "Reception", "configurable": true, "fields": ["receptionTime", "receptionVenue", "receptionAddress"] },
+      { "id": "gallery", "label": "Our journey", "configurable": true, "fields": ["photos"] },
+      { "id": "countdown", "label": "Countdown", "configurable": false, "fields": [] },
+      { "id": "rsvp", "label": "Reply", "configurable": true, "fields": ["rsvpBy"] }
+    ]
+  },
   "peony": {
     "names": "couple",
     "ceremony": "The place",

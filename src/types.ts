@@ -148,7 +148,8 @@ export type TemplateStyle =
   | "bali"
   | "secretgarden"
   | "sage"
-  | "peony";
+  | "peony"
+  | "deepam";
 
 export type Template = {
   id: string;
