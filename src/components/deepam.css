@@ -277,22 +277,22 @@
   transform-origin: 50% 100%;
 }
 .dp-bloom-1 { left: -18px; bottom: -22px; z-index: 1; width: 124px; --turn: -24deg; --sway: 5deg; }
-.dp-bloom-2 { left: 46px; bottom: 28px; z-index: 3; width: 62px; --turn: 10deg; --sway: 9deg; }
+.dp-bloom-2 { left: 46px; bottom: 28px; z-index: 3; width: 88px; --turn: 10deg; --sway: 9deg; }
 .dp-bloom-3 { left: 52px; bottom: -14px; z-index: 2; width: 108px; --turn: 22deg; --sway: 7deg; }
 .dp.is-open:not(.is-quiet) .dp-bloom-1 {
   animation:
     dp-bloom 0.85s cubic-bezier(0.18, 0.85, 0.22, 1.15) 1.85s forwards,
-    dp-wind 3.8s ease-in-out 2.75s infinite;
+    dp-wind 4.8s ease-in-out 2.75s infinite;
 }
 .dp.is-open:not(.is-quiet) .dp-bloom-2 {
   animation:
     dp-bloom 0.85s cubic-bezier(0.18, 0.85, 0.22, 1.15) 2.45s forwards,
-    dp-wind 2.9s ease-in-out 3.35s infinite;
+    dp-wind 3.8s ease-in-out 3.35s infinite;
 }
 .dp.is-open:not(.is-quiet) .dp-bloom-3 {
   animation:
     dp-bloom 0.85s cubic-bezier(0.18, 0.85, 0.22, 1.15) 3.05s forwards,
-    dp-wind 3.3s ease-in-out 3.95s infinite;
+    dp-wind 4.2s ease-in-out 3.95s infinite;
 }
 .dp.is-quiet .dp-bloom { opacity: 1; transform: rotate(var(--turn)); }
 @keyframes dp-bloom {
