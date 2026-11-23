@@ -104,7 +104,7 @@ export const TEMPLATES: Template[] = [
         names: "Saranya & Sharathraj",
         title: "With the Blessings of Sri Guruvayurappan",
         detail: "",
-        date: "2027-05-15",
+        date: "2027-01-30",
         time: "09:30",
         venue: "Guruvayur Temple",
         address: "Guruvayur, Kerala",
