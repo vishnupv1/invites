@@ -84,7 +84,7 @@ export function DeepamInvite({
   const [stripHeight, setStripHeight] = useState(0);
   const left = useLeft(fields.date, fields.time);
   const when = partsOf(fields.date);
-  const names = (fields.names || "Saranya & Sharathraj").split(/\s*&\s*/);
+  const names = (fields.names || "Arun & Anju").split(/\s*&\s*/);
   const photos = (fields.photos ?? []).map((item) => (item ? assetUrl(item) : ""));
   const shots = photos.filter(Boolean);
   const prints = ["/deepam/print-1.webp", "/deepam/print-2.webp", "/deepam/print-3.webp"].map(

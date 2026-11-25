@@ -101,7 +101,7 @@ export const TEMPLATES: Template[] = [
     samples: {
       marriage: sample("marriage", {
         hosts: "",
-        names: "Saranya & Sharathraj",
+        names: "Arun & Anju",
         title: "With the Blessings of Sri Guruvayurappan",
         detail: "",
         date: "2027-01-30",
